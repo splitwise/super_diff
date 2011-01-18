@@ -69,11 +69,17 @@ For RSpec (2). Specifically the case where you're doing a simple equality test b
     
 It's true that RSpec gives you a difference between the two data structures, but all it really does is call `complex_data_structure.inspect` and `another_complex_data_structure.inspect` and then run the two strings through the ubiquitous unified diff tool that's ordinarily used to find the difference between two text files, which really isn't that helpful. So I set out to solve that problem.
 
-## Neat! Can I use it?
+## Why not use Diff::LCS?
 
-Not at the moment. I'm still working on it. In fact, it doesn't work quite like the above -- it's close, but not quite. I will probably end up adding an RSpec matcher to go with it.
+Because Diff::LCS really only works for arrays (as far as I know). My goal is for this to work with hashes too (or possibly other Enumerable types).
 
-Anyway, if you have any ideas, I'm all ears -- my contact info is below.
+## Can I use it?
+
+Not at the moment. I'm still working on it. It doesn't work quite like the above (specifically, I don't have a separate reporter class at the moment), and I haven't handled all the cases yet. In fact, it's kind of proof-of-concept right now, so I may change the API or even the name of the project. If that's okay with you, feel free to try it out.
+
+## I've got an idea about this...
+
+Great! I'm not really accepting issues for this, but feel free to send me a Github message or email.
 
 ## Copyright/License
 
