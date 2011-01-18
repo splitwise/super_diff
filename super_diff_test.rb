@@ -18,7 +18,7 @@ class SuperDiffTest < Test::Unit::TestCase
   
   def setup
     @stdout = StringIO.new
-    @reporter = SuperDiff::Reporter.new(@stdout)
+    @reporter = SuperDiff::Differ.new(@stdout)
   end
   
   def test_equal_strings

@@ -1,7 +1,7 @@
 require 'pp'
 
 module SuperDiff
-  class Reporter
+  class Differ
     def initialize(stdout)
       @stdout = stdout
     end
