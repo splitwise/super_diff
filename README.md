@@ -40,25 +40,25 @@ This will dump some output to the reporter, so if you read this output you'll ge
 
     Breakdown:
     - *[0]: Differing strings.
-    - Expected: "foo"
-    - Got: "foz"
+      - Expected: "foo"
+      - Got: "foz"
     - *[1]: Values of differing type.
-    - Expected: ["bar", ["baz", "quux"]]
-    - Got: "bar"
+      - Expected: ["bar", ["baz", "quux"]]
+      - Got: "bar"
     - *[3]: Arrays of same size but with differing elements.
-    - *[1]: Differing strings.
-      - Expected: "zing"
-      - Got: "gragh"
-    - *[2]: Values of differing type.
-      - Expected: "fooz"
-      - Got: 1
-    - *[3]: Arrays of same size but with differing elements.
-      - *[1]: Arrays of differing size and elements.
-        - *[0]: Differing strings.
-          - Expected: "vermouth"
-          - Got: "ralston"
-        - *[1]: Expected to be present, but missing "eee".
-        - *[2]: Expected to be present, but missing "ffff".
+      - *[1]: Differing strings.
+        - Expected: "zing"
+        - Got: "gragh"
+      - *[2]: Values of differing type.
+        - Expected: "fooz"
+        - Got: 1
+      - *[3]: Arrays of same size but with differing elements.
+        - *[1]: Arrays of differing size and elements.
+          - *[0]: Differing strings.
+            - Expected: "vermouth"
+            - Got: "ralston"
+          - *[1]: Expected to be present, but missing "eee".
+          - *[2]: Expected to be present, but missing "ffff".
     - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
     
 ## Why did you make it?
