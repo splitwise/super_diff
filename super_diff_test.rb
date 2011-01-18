@@ -90,8 +90,8 @@ Got: ["foo", "baz"]
 
 Breakdown:
 - *[1]: Differing strings.
-- Expected: "bar"
-- Got: "baz"
+  - Expected: "bar"
+  - Got: "baz"
 EOT
     assert_equal msg, out
   end
@@ -117,13 +117,13 @@ Got: [["foo", "biz"], ["baz", "quarks"]]
 
 Breakdown:
 - *[0]: Arrays of same size but with differing elements.
-- *[1]: Differing strings.
-  - Expected: "bar"
-  - Got: "biz"
+  - *[1]: Differing strings.
+    - Expected: "bar"
+    - Got: "biz"
 - *[1]: Arrays of same size but with differing elements.
-- *[1]: Differing strings.
-  - Expected: "quux"
-  - Got: "quarks"
+  - *[1]: Differing strings.
+    - Expected: "quux"
+    - Got: "quarks"
 EOT
     assert_equal msg, out
   end
@@ -151,23 +151,23 @@ Got: ["foz", "bar", "ying", ["blargh", "gragh", 1, ["raz", ["ralston"]]]]
 
 Breakdown:
 - *[0]: Differing strings.
-- Expected: "foo"
-- Got: "foz"
+  - Expected: "foo"
+  - Got: "foz"
 - *[1]: Values of differing type.
-- Expected: ["bar", ["baz", "quux"]]
-- Got: "bar"
+  - Expected: ["bar", ["baz", "quux"]]
+  - Got: "bar"
 - *[3]: Arrays of same size but with differing elements.
-- *[1]: Differing strings.
-  - Expected: "zing"
-  - Got: "gragh"
-- *[2]: Values of differing type.
-  - Expected: "fooz"
-  - Got: 1
-- *[3]: Arrays of same size but with differing elements.
-  - *[1]: Arrays of same size but with differing elements.
-    - *[0]: Differing strings.
-      - Expected: "vermouth"
-      - Got: "ralston"
+  - *[1]: Differing strings.
+    - Expected: "zing"
+    - Got: "gragh"
+  - *[2]: Values of differing type.
+    - Expected: "fooz"
+    - Got: 1
+  - *[3]: Arrays of same size but with differing elements.
+    - *[1]: Arrays of same size but with differing elements.
+      - *[0]: Differing strings.
+        - Expected: "vermouth"
+        - Got: "ralston"
 EOT
     assert_equal msg, out
   end
@@ -215,8 +215,8 @@ Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
 Breakdown:
 - *[2]: Arrays of differing size (no differing elements).
-- *[2]: Expected to not be present, but found "quux".
-- *[3]: Expected to not be present, but found "blargh".
+  - *[2]: Expected to not be present, but found "quux".
+  - *[3]: Expected to not be present, but found "blargh".
 EOT
     assert_equal msg, out
   end
@@ -234,8 +234,8 @@ Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
 Breakdown:
 - *[2]: Arrays of differing size (no differing elements).
-- *[2]: Expected to be present, but missing "quux".
-- *[3]: Expected to be present, but missing "blargh".
+  - *[2]: Expected to be present, but missing "quux".
+  - *[3]: Expected to be present, but missing "blargh".
 EOT
     assert_equal msg, out
   end
