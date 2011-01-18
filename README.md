@@ -59,6 +59,12 @@ Differ#diff will dump some output to the stream you've given, so if we read the 
           - *[1]: Expected to be present, but missing "eee".
           - *[2]: Expected to be present, but missing "ffff".
     - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
+
+## Why not use Diff::LCS or \<insert other tool here\>?
+
+Because Diff::LCS really only works for arrays (as far as I know). My goal is for this to work with hashes too (or possibly other Enumerable types).
+
+As far as other tools, I know plenty of them exist, but from the brief googling I did, I didn't get the impression that any of them are that great or really give any helpful information. But feel free to prove me wrong.
     
 ## Why did you make it?
 
@@ -67,12 +73,6 @@ For RSpec (2). Specifically the case where you're doing a simple equality test b
     complex_data_structure.should == another_complex_data_structure
     
 It's true that RSpec gives you a difference between the two data structures, but all it really does is call `complex_data_structure.inspect` and `another_complex_data_structure.inspect` and then run the two strings through the ubiquitous unified diff tool that's ordinarily used to find the difference between two text files, which really isn't that helpful. So I set out to solve that problem.
-
-## Why not use Diff::LCS or <insert other tool here>?
-
-Because Diff::LCS really only works for arrays (as far as I know). My goal is for this to work with hashes too (or possibly other Enumerable types).
-
-As far as other tools, I know plenty of them exist, but from the brief googling I did, I didn't get the impression that any of them are that great or really give any helpful information. But feel free to prove me wrong.
 
 ## So what does it do?
 
