@@ -6,7 +6,7 @@ super_diff is a utility that helps you diff two complex data structures in Ruby,
 
 ## Can you give me an example?
 
-Sure. Let's say you have two arrays. Array A looks like this:
+Sure. Let's say we have two arrays. Array A looks like this:
 
     [
       "foo",
@@ -24,14 +24,13 @@ Array B looks like this:
       ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]
     ]
 
-You want to know what the difference is between them, so you say:
+We want to know what the difference is between them, so we say:
 
     stdout = StringIO.new
-    reporter = SuperDiff::Reporter.new(stdout)
-    differ = SuperDiff::Differ.new(reporter)
+    differ = SuperDiff::Differ.new(stdout)
     differ.diff(a, b)
 
-This will dump some output to the reporter, so if you read this output you'll get this:
+Differ#diff will dump some output to the stream you've given, so if we read the StringIO here, we'll get this:
 
     Error: Arrays of same size but with differing elements.
 
@@ -69,13 +68,19 @@ For RSpec (2). Specifically the case where you're doing a simple equality test b
     
 It's true that RSpec gives you a difference between the two data structures, but all it really does is call `complex_data_structure.inspect` and `another_complex_data_structure.inspect` and then run the two strings through the ubiquitous unified diff tool that's ordinarily used to find the difference between two text files, which really isn't that helpful. So I set out to solve that problem.
 
-## Why not use Diff::LCS?
+## Why not use Diff::LCS or <insert other tool here>?
 
 Because Diff::LCS really only works for arrays (as far as I know). My goal is for this to work with hashes too (or possibly other Enumerable types).
 
+As far as other tools, I know plenty of them exist, but from the brief googling I did, I didn't get the impression that any of them are that great or really give any helpful information. But feel free to prove me wrong.
+
+## So what does it do?
+
+At the moment, it only handles basic types (strings, numbers) and arrays. I plan on handling hashes, possibly other enumerables, and possibilities like circular data structures, though. I also plan on splitting the output part of the Differ into a separate Reporter class, and making an RSpec matcher.
+
 ## Can I use it?
 
-Not at the moment. I'm still working on it. It doesn't work quite like the above (specifically, I don't have a separate reporter class at the moment), and I haven't handled all the cases yet. In fact, it's kind of proof-of-concept right now, so I may change the API or even the name of the project. If that's okay with you, feel free to try it out.
+Sure, but keep in mind that this is really a proof-of-concept right now. I may change the API or even the name of the project. If that's okay with you, feel free to try it out.
 
 ## I've got an idea about this...
 
