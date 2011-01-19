@@ -1,9 +1,29 @@
+
+def rubygems_require(path)
+  require path
+rescue LoadError => e
+  require 'rubygems'
+  require path
+end
+
 require 'test/unit'
 require 'stringio'
+
+rubygems_require 'differ'
 
 require File.expand_path("../super_diff", __FILE__)
 
 module Matchers
+  # Override assert_equal to use Differ
+  def assert_equal(expected, actual, message=nil)
+    if String === expected && String === actual
+      difference = Differ.diff_by_char(expected, actual)
+      extra = "\n\nDifference:\n\n#{difference}"
+    end
+    full_message = build_message(message, "Expected: <#{expected.inspect}>\nGot: <#{actual.inspect}>#{extra}")
+    assert_block(full_message) { expected == actual }
+  end
+  
   def assert_empty(value, message="Expected value to be empty, but wasn't.")
     assert value.empty?, message
   end
@@ -214,7 +234,7 @@ Expected: ["foo", ["bar", "baz"], "ying"]
 Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
 Breakdown:
-- *[2]: Arrays of differing size (no differing elements).
+- *[1]: Arrays of differing size (no differing elements).
   - *[2]: Expected to not be present, but found "quux".
   - *[3]: Expected to not be present, but found "blargh".
 EOT
@@ -229,11 +249,11 @@ EOT
     msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
-Expected: ["foo", ["bar", "baz"], "ying"]
-Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
+Expected: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
+Got: ["foo", ["bar", "baz"], "ying"]
 
 Breakdown:
-- *[2]: Arrays of differing size (no differing elements).
+- *[1]: Arrays of differing size (no differing elements).
   - *[2]: Expected to be present, but missing "quux".
   - *[3]: Expected to be present, but missing "blargh".
 EOT
@@ -268,7 +288,7 @@ Breakdown:
 - *[1]: Values of differing type.
   - Expected: ["bar", ["baz", "quux"]]
   - Got: "bar"
-- *[3]: Arrays of same size but with differing elements.
+- *[3]: Arrays of differing size and elements.
   - *[1]: Differing strings.
     - Expected: "zing"
     - Got: "gragh"
@@ -282,7 +302,7 @@ Breakdown:
         - Got: "ralston"
       - *[1]: Expected to be present, but missing "eee".
       - *[2]: Expected to be present, but missing "ffff".
-- *[4]: Expected to not be present, but found ["foreal", ["zap"]].
+  - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
 EOT
     assert_equal msg, out
   end

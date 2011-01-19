@@ -34,13 +34,15 @@ module SuperDiff
             if expected.size == actual.size
               puts "#{formatted_prefix}: Arrays of same size but with differing elements."
             else
-              ##surplus_elements = actual - expected
-              ##missing_elements = expected - actual
-              # hmm... what we really want to know if there are any elements which
-              # are in actual that are not in expected *assuming that the other
-              # elements are equal*... and same for expected... that requires that
-              # we go through the array first, though.
-              puts "#{formatted_prefix}: Arrays of differing size and elements."
+              min_size = [expected.size, actual.size].min
+              #more_expected_than_actual = (num_surplus > 0)
+              #more_actual_than_expected = !more_expected_than_actual
+              everything_before_surplus_is_equal = (expected[0..min_size-1] == actual[0..min_size-1])
+              if everything_before_surplus_is_equal
+                puts "#{formatted_prefix}: Arrays of differing size (no differing elements)."
+              else
+                puts "#{formatted_prefix}: Arrays of differing size and elements."
+              end
             end
           else
             downcased_klass = klass.to_s.downcase
@@ -67,8 +69,22 @@ module SuperDiff
     end
   
     def diff_array(expected, actual, level, prefix, root)
+      new_level = (level == 0 && root ? level : level+1)      
       (0...expected.size).each do |i|
-        diff(expected[i], actual[i], (level == 0 && root ? level : level+1), "*[#{i}]", false)
+        new_prefix = "*[#{i}]"
+        formatted_prefix = format_prefix(new_prefix, new_level, false)
+        if i > actual.size - 1
+          puts "#{formatted_prefix}: Expected to be present, but missing #{expected[i].inspect}."
+        else
+          diff(expected[i], actual[i], new_level, new_prefix, false)
+        end
+      end
+      if actual.size > expected.size
+        (expected.size .. actual.size-1).each do |i|
+          new_prefix = "*[#{i}]"
+          formatted_prefix = format_prefix(new_prefix, new_level, false)
+          puts "#{formatted_prefix}: Expected to not be present, but found #{actual[i].inspect}."
+        end
       end
     end
   end
