@@ -18,16 +18,16 @@ class SuperDiffTest < Test::Unit::TestCase
   
   def setup
     @stdout = StringIO.new
-    @reporter = SuperDiff::Differ.new(@stdout)
+    @differ = SuperDiff::Differ.new(@stdout)
   end
   
   def test_equal_strings
-    @reporter.diff("foo", "foo")
+    @differ.diff("foo", "foo")
     assert_empty out
   end
   
   def test_differing_strings
-    @reporter.diff("foo", "bar")
+    @differ.diff("foo", "bar")
     msg = <<EOT
 Error: Differing strings.
 
@@ -38,12 +38,12 @@ EOT
   end
   
   def test_equal_numbers
-    @reporter.diff(1, 1)
+    @differ.diff(1, 1)
     assert_empty out
   end
   
   def test_differing_numbers
-    @reporter.diff(1, 2)
+    @differ.diff(1, 2)
     msg = <<EOT
 Error: Differing numbers.
 
@@ -54,7 +54,7 @@ EOT
   end
   
   def test_differing_simple_types
-    @reporter.diff("foo", 1)
+    @differ.diff("foo", 1)
     msg = <<EOT
 Error: Values of differing type.
 
@@ -65,7 +65,7 @@ EOT
   end
   
   def test_differing_complex_types
-    @reporter.diff("foo", %w(zing zang))
+    @differ.diff("foo", %w(zing zang))
     msg = <<EOT
 Error: Values of differing type.
 
@@ -76,12 +76,12 @@ EOT
   end
   
   def test_equal_shallow_arrays
-    @reporter.diff(["foo", "bar"], ["foo", "bar"])
+    @differ.diff(["foo", "bar"], ["foo", "bar"])
     assert_empty out
   end
   
   def test_shallow_arrays_of_equal_size_but_differing_elements
-    @reporter.diff(["foo", "bar"], ["foo", "baz"])
+    @differ.diff(["foo", "bar"], ["foo", "baz"])
     msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -97,7 +97,7 @@ EOT
   end
   
   def test_equal_deep_arrays
-    @reporter.diff(
+    @differ.diff(
       [["foo", "bar"], ["baz", "quux"]],
       [["foo", "bar"], ["baz", "quux"]]
     )
@@ -105,7 +105,7 @@ EOT
   end
   
   def test_deep_arrays_of_equal_size_but_differing_elements
-    @reporter.diff(
+    @differ.diff(
       [["foo", "bar"], ["baz", "quux"]],
       [["foo", "biz"], ["baz", "quarks"]]
     )
@@ -129,7 +129,7 @@ EOT
   end
   
   def test_deeper_arrays_with_differing_elements
-    @reporter.diff(
+    @differ.diff(
       [
         "foo",
         ["bar", ["baz", "quux"]],
@@ -173,7 +173,7 @@ EOT
   end
   
   def test_shallow_arrays_with_surplus_elements
-    @reporter.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
+    @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
     msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -188,7 +188,7 @@ EOT
   end
   
   def test_shallow_arrays_with_missing_elements
-    @reporter.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
+    @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
     msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -203,7 +203,7 @@ EOT
   end
   
   def test_deep_arrays_with_surplus_elements
-    @reporter.diff(
+    @differ.diff(
       ["foo", ["bar", "baz"], "ying"],
       ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
     )
@@ -222,7 +222,7 @@ EOT
   end
   
   def test_deep_arrays_with_missing_elements
-    @reporter.diff(
+    @differ.diff(
       ["foo", ["bar", "baz", "quux", "blargh"], "ying"],
       ["foo", ["bar", "baz"], "ying"]
     )
@@ -241,7 +241,7 @@ EOT
   end
   
   def test_deeper_arrays_with_variously_differing_arrays
-    @reporter.diff(
+    @differ.diff(
       [
         "foo",
         ["bar", ["baz", "quux"]],
