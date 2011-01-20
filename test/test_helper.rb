@@ -22,8 +22,8 @@ module SuperDiff
           difference = Differ.diff_by_char(expected, actual)
           extra = "\n\nDifference:\n\n#{difference}"
         end
-        full_message = build_message(message, "Expected: <#{expected.inspect}>\nGot: <#{actual.inspect}>#{extra}")
-        assert_block(full_message) { expected == actual }
+        full_message = message(message) { "Expected: <#{expected.inspect}>\n          Got: <#{actual.inspect}>#{extra}" }
+        assert(expected == actual, full_message)
       end
 
       def assert_empty(value, message="Expected value to be empty, but wasn't.")
