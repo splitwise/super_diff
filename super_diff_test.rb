@@ -481,7 +481,45 @@ EOT
     assert_equal msg, out
   end
   
-  def xtest_with_multiple_types
+  def test_mixed_types
+    @differ.diff(
+      {
+        "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+        "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+        "bananas" => {:apple => 11}
+      },
+      {
+        "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
+        "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+      }
+    )
+    msg = <<EOT
+Error: Hashes of differing size and elements.
+
+Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>["apple", "bananna", "orange"]}}, "biz"=>{:fiz=>["bing", "bong", "bam"], 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
+Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>["bang", "bong", "bam", "splat"], 1=>3}}
+
+Breakdown:
+- *["foo"]: Hashes of same size but with differing elements.
+  - *[1]: Hashes of differing size and elements.
+    - *["baz"]: Expected to have been found, but missing (value: {"quux"=>2}).
+    - *["foz"]: Arrays of same size but with differing elements.
+      - *[1]: Differing strings.
+        - Expected: "bananna"
+        - Got: "banana"
+- *["biz"]: Hashes of differing size and elements.
+  - *[:fiz]: Arrays of differing size and elements.
+    - *[0]: Differing strings.
+      - Expected: "bing"
+      - Got: "bang"
+    - *[3]: Expected to not be present, but found (value: "splat").
+  - *[1]: Values of differing type.
+    - Expected: {2=>:sym}
+    - Got: 3
+  - *[42]: Expected to not be present, but found (value: {:raz=>"matazz"}).
+- *["bananas"]: Expected to have been found, but missing (value: {:apple=>11}).
+EOT
+    assert_equal msg, out
   end
   
   def xtest_collapsed_output
