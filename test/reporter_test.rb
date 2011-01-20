@@ -3,7 +3,7 @@ require File.expand_path('../test_helper', __FILE__)
 require 'stringio'
 
 module SuperDiff
-  class ReporterTest < SuperDiff::TestCase
+  class ReporterTest < TestCase
     def out
       @stdout.string
     end
