@@ -41,11 +41,6 @@ class SuperDiffTest < Test::Unit::TestCase
     @differ = SuperDiff::Differ.new(@stdout)
   end
   
-  def test_equal_strings
-    @differ.diff("foo", "foo")
-    assert_empty out
-  end
-  
   def test_differing_strings
     @differ.diff("foo", "bar")
     msg = <<EOT
@@ -55,11 +50,6 @@ Expected: "foo"
 Got: "bar"
 EOT
     assert_equal msg, out
-  end
-  
-  def test_equal_numbers
-    @differ.diff(1, 1)
-    assert_empty out
   end
   
   def test_differing_numbers
@@ -95,12 +85,7 @@ EOT
     assert_equal msg, out
   end
   
-  def test_equal_shallow_arrays
-    @differ.diff(["foo", "bar"], ["foo", "bar"])
-    assert_empty out
-  end
-  
-  def test_shallow_arrays_of_equal_size_but_differing_elements
+  def test_shallow_arrays_of_same_size_but_differing_elements
     @differ.diff(["foo", "bar"], ["foo", "baz"])
     msg = <<EOT
 Error: Arrays of same size but with differing elements.
@@ -116,15 +101,7 @@ EOT
     assert_equal msg, out
   end
   
-  def test_equal_deep_arrays
-    @differ.diff(
-      [["foo", "bar"], ["baz", "quux"]],
-      [["foo", "bar"], ["baz", "quux"]]
-    )
-    assert_empty out
-  end
-  
-  def test_deep_arrays_of_equal_size_but_differing_elements
+  def test_deep_arrays_of_same_size_but_differing_elements
     @differ.diff(
       [["foo", "bar"], ["baz", "quux"]],
       [["foo", "biz"], ["baz", "quarks"]]
@@ -201,8 +178,8 @@ Expected: ["foo", "bar"]
 Got: ["foo", "bar", "baz", "quux"]
 
 Breakdown:
-- *[2]: Expected to not be present, but found "baz".
-- *[3]: Expected to not be present, but found "quux".
+- *[2]: Expected to not be present, but found (value: "baz").
+- *[3]: Expected to not be present, but found (value: "quux").
 EOT
     assert_equal msg, out
   end
@@ -216,8 +193,8 @@ Expected: ["foo", "bar", "baz", "quux"]
 Got: ["foo", "bar"]
 
 Breakdown:
-- *[2]: Expected to be present, but missing "baz".
-- *[3]: Expected to be present, but missing "quux".
+- *[2]: Expected to have been found, but missing (value: "baz").
+- *[3]: Expected to have been found, but missing (value: "quux").
 EOT
     assert_equal msg, out
   end
@@ -235,8 +212,8 @@ Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
 Breakdown:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to not be present, but found "quux".
-  - *[3]: Expected to not be present, but found "blargh".
+  - *[2]: Expected to not be present, but found (value: "quux").
+  - *[3]: Expected to not be present, but found (value: "blargh").
 EOT
     assert_equal msg, out
   end
@@ -254,8 +231,8 @@ Got: ["foo", ["bar", "baz"], "ying"]
 
 Breakdown:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to be present, but missing "quux".
-  - *[3]: Expected to be present, but missing "blargh".
+  - *[2]: Expected to have been found, but missing (value: "quux").
+  - *[3]: Expected to have been found, but missing (value: "blargh").
 EOT
     assert_equal msg, out
   end
@@ -300,10 +277,235 @@ Breakdown:
       - *[0]: Differing strings.
         - Expected: "vermouth"
         - Got: "ralston"
-      - *[1]: Expected to be present, but missing "eee".
-      - *[2]: Expected to be present, but missing "ffff".
-  - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
+      - *[1]: Expected to have been found, but missing (value: "eee").
+      - *[2]: Expected to have been found, but missing (value: "ffff").
+  - *[4]: Expected to not be present, but found (value: ["foreal", ["zap"]]).
 EOT
     assert_equal msg, out
+  end
+  
+  def test_shallow_hashes_of_same_size_but_differing_elements
+    @differ.diff(
+      {"foo" => "bar", "baz" => "quux"},
+      {"foo" => "bar", "baz" => "quarx"}
+    )
+    msg = <<EOT
+Error: Hashes of same size but with differing elements.
+
+Expected: {"foo"=>"bar", "baz"=>"quux"}
+Got: {"foo"=>"bar", "baz"=>"quarx"}
+
+Breakdown:
+- *["baz"]: Differing strings.
+  - Expected: "quux"
+  - Got: "quarx"
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_deep_hashes_of_same_size_but_differing_elements
+    @differ.diff(
+      {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
+      {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}}
+    )
+    msg = <<EOT
+Error: Hashes of same size but with differing elements.
+
+Expected: {"one"=>{"foo"=>"bar", "baz"=>"quux"}, :two=>{"ying"=>1, "zing"=>:zang}}
+Got: {"one"=>{"foo"=>"boo", "baz"=>"quux"}, :two=>{"ying"=>"yang", "zing"=>:bananas}}
+
+Breakdown:
+- *["one"]: Hashes of same size but with differing elements.
+  - *["foo"]: Differing strings.
+    - Expected: "bar"
+    - Got: "boo"
+- *[:two]: Hashes of same size but with differing elements.
+  - *["ying"]: Values of differing type.
+    - Expected: 1
+    - Got: "yang"
+  - *["zing"]: Differing symbols.
+    - Expected: :zang
+    - Got: :bananas
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_deeper_hashes_with_differing_elements
+    @differ.diff(
+      {
+        "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
+        "biz" => {:fiz => "gram", 1 => {2 => :sym}}
+      },
+      {
+        "foo" => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
+        "biz" => {:fiz => "graeme", 1 => 3}
+      }
+    )
+    msg = <<EOT
+Error: Hashes of same size but with differing elements.
+
+Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>{"fram"=>"frazzle"}}}, "biz"=>{:fiz=>"gram", 1=>{2=>:sym}}}
+Got: {"foo"=>{1=>{"baz"=>"quarx", "foz"=>{"fram"=>"razzle"}}}, "biz"=>{:fiz=>"graeme", 1=>3}}
+
+Breakdown:
+- *["foo"]: Hashes of same size but with differing elements.
+  - *[1]: Hashes of same size but with differing elements.
+    - *["baz"]: Values of differing type.
+      - Expected: {"quux"=>2}
+      - Got: "quarx"
+    - *["foz"]: Hashes of same size but with differing elements.
+      - *["fram"]: Differing strings.
+        - Expected: "frazzle"
+        - Got: "razzle"
+- *["biz"]: Hashes of same size but with differing elements.
+  - *[:fiz]: Differing strings.
+    - Expected: "gram"
+    - Got: "graeme"
+  - *[1]: Values of differing type.
+    - Expected: {2=>:sym}
+    - Got: 3
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_shallow_hashes_with_surplus_elements
+    @differ.diff(
+      {"foo" => "bar"},
+      {"foo" => "bar", "baz" => "quux", "ying" => "yang"}
+    )
+    msg = <<EOT
+Error: Hashes of differing size (no differing elements).
+
+Expected: {"foo"=>"bar"}
+Got: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
+
+Breakdown:
+- *["baz"]: Expected to not be present, but found (value: "quux").
+- *["ying"]: Expected to not be present, but found (value: "yang").
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_shallow_hashes_with_missing_elements
+    @differ.diff(
+      {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
+      {"foo" => "bar"}
+    )
+    msg = <<EOT
+Error: Hashes of differing size (no differing elements).
+
+Expected: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
+Got: {"foo"=>"bar"}
+
+Breakdown:
+- *["baz"]: Expected to have been found, but missing (value: "quux").
+- *["ying"]: Expected to have been found, but missing (value: "yang").
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_deep_hashes_with_surplus_elements
+    @differ.diff(
+      {"one" => {"foo" => "bar"}},
+      {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}
+    )
+    msg = <<EOT
+Error: Hashes of same size but with differing elements.
+
+Expected: {"one"=>{"foo"=>"bar"}}
+Got: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
+
+Breakdown:
+- *["one"]: Hashes of differing size (no differing elements).
+  - *["baz"]: Expected to not be present, but found (value: "quux").
+  - *["ying"]: Expected to not be present, but found (value: "yang").
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_deep_hashes_with_missing_elements
+    @differ.diff(
+      {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
+      {"one" => {"foo" => "bar"}}
+    )
+    msg = <<EOT
+Error: Hashes of same size but with differing elements.
+
+Expected: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
+Got: {"one"=>{"foo"=>"bar"}}
+
+Breakdown:
+- *["one"]: Hashes of differing size (no differing elements).
+  - *["baz"]: Expected to have been found, but missing (value: "quux").
+  - *["ying"]: Expected to have been found, but missing (value: "yang").
+EOT
+    assert_equal msg, out
+  end
+  
+  def test_deeper_hashes_with_variously_differing_hashes
+    @differ.diff(
+      {
+        "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
+        "biz" => {:fiz => "gram", 1 => {2 => :sym}},
+        "bananas" => {:apple => 11}
+      },
+      {
+        "foo" => {1 => {"foz" => {"fram" => "razzle"}}},
+        "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
+      }
+    )
+    msg = <<EOT
+Error: Hashes of differing size and elements.
+
+Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>{"fram"=>"frazzle"}}}, "biz"=>{:fiz=>"gram", 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
+Got: {"foo"=>{1=>{"foz"=>{"fram"=>"razzle"}}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>"graeme", 1=>3}}
+
+Breakdown:
+- *["foo"]: Hashes of same size but with differing elements.
+  - *[1]: Hashes of differing size and elements.
+    - *["baz"]: Expected to have been found, but missing (value: {"quux"=>2}).
+    - *["foz"]: Hashes of same size but with differing elements.
+      - *["fram"]: Differing strings.
+        - Expected: "frazzle"
+        - Got: "razzle"
+- *["biz"]: Hashes of differing size and elements.
+  - *[:fiz]: Differing strings.
+    - Expected: "gram"
+    - Got: "graeme"
+  - *[1]: Values of differing type.
+    - Expected: {2=>:sym}
+    - Got: 3
+  - *[42]: Expected to not be present, but found (value: {:raz=>"matazz"}).
+- *["bananas"]: Expected to have been found, but missing (value: {:apple=>11}).
+EOT
+    assert_equal msg, out
+  end
+  
+  def xtest_with_multiple_types
+  end
+  
+  def xtest_collapsed_output
+    msg = <<EOT
+    Error: ...
+
+    Expected: ...
+    Got: ...
+
+    Breakdown:
+    - *["foo"][1]["bar"][:baz]: Differing strings.
+    ....
+EOT
+  end
+  
+  def xtest_custom_string_differ
+  end
+  
+  def xtest_custom_array_differ
+  end
+  
+  def xtest_custom_hash_differ
+  end
+  
+  def xtest_custom_object_differ
   end
 end
