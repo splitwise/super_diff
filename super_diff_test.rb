@@ -178,8 +178,8 @@ Expected: ["foo", "bar"]
 Got: ["foo", "bar", "baz", "quux"]
 
 Breakdown:
-- *[2]: Expected to not be present, but found (value: "baz").
-- *[3]: Expected to not be present, but found (value: "quux").
+- *[2]: Expected to not be present, but found "baz".
+- *[3]: Expected to not be present, but found "quux".
 EOT
     assert_equal msg, out
   end
@@ -193,8 +193,8 @@ Expected: ["foo", "bar", "baz", "quux"]
 Got: ["foo", "bar"]
 
 Breakdown:
-- *[2]: Expected to have been found, but missing (value: "baz").
-- *[3]: Expected to have been found, but missing (value: "quux").
+- *[2]: Expected to have been found, but missing "baz".
+- *[3]: Expected to have been found, but missing "quux".
 EOT
     assert_equal msg, out
   end
@@ -212,8 +212,8 @@ Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
 Breakdown:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to not be present, but found (value: "quux").
-  - *[3]: Expected to not be present, but found (value: "blargh").
+  - *[2]: Expected to not be present, but found "quux".
+  - *[3]: Expected to not be present, but found "blargh".
 EOT
     assert_equal msg, out
   end
@@ -231,8 +231,8 @@ Got: ["foo", ["bar", "baz"], "ying"]
 
 Breakdown:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to have been found, but missing (value: "quux").
-  - *[3]: Expected to have been found, but missing (value: "blargh").
+  - *[2]: Expected to have been found, but missing "quux".
+  - *[3]: Expected to have been found, but missing "blargh".
 EOT
     assert_equal msg, out
   end
@@ -277,9 +277,9 @@ Breakdown:
       - *[0]: Differing strings.
         - Expected: "vermouth"
         - Got: "ralston"
-      - *[1]: Expected to have been found, but missing (value: "eee").
-      - *[2]: Expected to have been found, but missing (value: "ffff").
-  - *[4]: Expected to not be present, but found (value: ["foreal", ["zap"]]).
+      - *[1]: Expected to have been found, but missing "eee".
+      - *[2]: Expected to have been found, but missing "ffff".
+  - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
 EOT
     assert_equal msg, out
   end
@@ -380,8 +380,8 @@ Expected: {"foo"=>"bar"}
 Got: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 
 Breakdown:
-- *["baz"]: Expected to not be present, but found (value: "quux").
-- *["ying"]: Expected to not be present, but found (value: "yang").
+- *["baz"]: Expected to not be present, but found "quux".
+- *["ying"]: Expected to not be present, but found "yang".
 EOT
     assert_equal msg, out
   end
@@ -398,8 +398,8 @@ Expected: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 Got: {"foo"=>"bar"}
 
 Breakdown:
-- *["baz"]: Expected to have been found, but missing (value: "quux").
-- *["ying"]: Expected to have been found, but missing (value: "yang").
+- *["baz"]: Expected to have been found, but missing "quux".
+- *["ying"]: Expected to have been found, but missing "yang".
 EOT
     assert_equal msg, out
   end
@@ -417,8 +417,8 @@ Got: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
 
 Breakdown:
 - *["one"]: Hashes of differing size (no differing elements).
-  - *["baz"]: Expected to not be present, but found (value: "quux").
-  - *["ying"]: Expected to not be present, but found (value: "yang").
+  - *["baz"]: Expected to not be present, but found "quux".
+  - *["ying"]: Expected to not be present, but found "yang".
 EOT
     assert_equal msg, out
   end
@@ -436,8 +436,8 @@ Got: {"one"=>{"foo"=>"bar"}}
 
 Breakdown:
 - *["one"]: Hashes of differing size (no differing elements).
-  - *["baz"]: Expected to have been found, but missing (value: "quux").
-  - *["ying"]: Expected to have been found, but missing (value: "yang").
+  - *["baz"]: Expected to have been found, but missing "quux".
+  - *["ying"]: Expected to have been found, but missing "yang".
 EOT
     assert_equal msg, out
   end
@@ -463,7 +463,7 @@ Got: {"foo"=>{1=>{"foz"=>{"fram"=>"razzle"}}}, "biz"=>{42=>{:raz=>"matazz"}, :fi
 Breakdown:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
-    - *["baz"]: Expected to have been found, but missing (value: {"quux"=>2}).
+    - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
     - *["foz"]: Hashes of same size but with differing elements.
       - *["fram"]: Differing strings.
         - Expected: "frazzle"
@@ -475,8 +475,8 @@ Breakdown:
   - *[1]: Values of differing type.
     - Expected: {2=>:sym}
     - Got: 3
-  - *[42]: Expected to not be present, but found (value: {:raz=>"matazz"}).
-- *["bananas"]: Expected to have been found, but missing (value: {:apple=>11}).
+  - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
+- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
     assert_equal msg, out
   end
@@ -502,7 +502,7 @@ Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"ma
 Breakdown:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
-    - *["baz"]: Expected to have been found, but missing (value: {"quux"=>2}).
+    - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
     - *["foz"]: Arrays of same size but with differing elements.
       - *[1]: Differing strings.
         - Expected: "bananna"
@@ -512,27 +512,51 @@ Breakdown:
     - *[0]: Differing strings.
       - Expected: "bing"
       - Got: "bang"
-    - *[3]: Expected to not be present, but found (value: "splat").
+    - *[3]: Expected to not be present, but found "splat".
   - *[1]: Values of differing type.
     - Expected: {2=>:sym}
     - Got: 3
-  - *[42]: Expected to not be present, but found (value: {:raz=>"matazz"}).
-- *["bananas"]: Expected to have been found, but missing (value: {:apple=>11}).
+  - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
+- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
     assert_equal msg, out
   end
   
-  def xtest_collapsed_output
+  def test_collapsed_output
+    @differ.diff(
+      {
+        "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+        "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+        "bananas" => {:apple => 11}
+      },
+      {
+        "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
+        "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+      },
+      :collapsed => true
+    )
     msg = <<EOT
-    Error: ...
+Error: Hashes of differing size and elements.
 
-    Expected: ...
-    Got: ...
+Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>["apple", "bananna", "orange"]}}, "biz"=>{:fiz=>["bing", "bong", "bam"], 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
+Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>["bang", "bong", "bam", "splat"], 1=>3}}
 
-    Breakdown:
-    - *["foo"][1]["bar"][:baz]: Differing strings.
-    ....
+Breakdown:
+- *["foo"][1]["baz"]: Expected to have been found, but missing {"quux"=>2}.
+- *["foo"][1]["foz"][1]: Differing strings.
+  - Expected: "bananna"
+  - Got: "banana"
+- *["biz"][:fiz][0]: Differing strings.
+  - Expected: "bing"
+  - Got: "bang"
+- *["biz"][:fiz][3]: Expected to not be present, but found "splat".
+- *["biz"][1]: Values of differing type.
+  - Expected: {2=>:sym}
+  - Got: 3
+- *["biz"][42]: Expected to not be present, but found {:raz=>"matazz"}.
+- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
+    assert_equal msg, out
   end
   
   def xtest_custom_string_differ

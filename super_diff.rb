@@ -73,7 +73,7 @@ module SuperDiff
         new_prefix = "*[#{i}]"
         formatted_prefix = format_prefix(new_prefix, new_level, false)
         if i > actual.size - 1
-          puts "#{formatted_prefix}: Expected to have been found, but missing (value: #{expected[i].inspect})."
+          puts "#{formatted_prefix}: Expected to have been found, but missing #{expected[i].inspect}."
         else
           diff(expected[i], actual[i], new_level, new_prefix, false)
         end
@@ -82,7 +82,7 @@ module SuperDiff
         (expected.size .. actual.size-1).each do |i|
           new_prefix = "*[#{i}]"
           formatted_prefix = format_prefix(new_prefix, new_level, false)
-          puts "#{formatted_prefix}: Expected to not be present, but found (value: #{actual[i].inspect})."
+          puts "#{formatted_prefix}: Expected to not be present, but found #{actual[i].inspect}."
         end
       end
     end
@@ -95,13 +95,13 @@ module SuperDiff
         if actual.include?(k)
           diff(expected[k], actual[k], new_level, new_prefix, false)
         else
-          puts "#{formatted_prefix}: Expected to have been found, but missing (value: #{expected[k].inspect})."
+          puts "#{formatted_prefix}: Expected to have been found, but missing #{expected[k].inspect}."
         end
       end
       (actual.keys - expected.keys).each do |k|
         new_prefix = "*[#{k.inspect}]"
         formatted_prefix = format_prefix(new_prefix, new_level, false)
-        puts "#{formatted_prefix}: Expected to not be present, but found (value: #{actual[k].inspect})."
+        puts "#{formatted_prefix}: Expected to not be present, but found #{actual[k].inspect}."
       end
     end
   
