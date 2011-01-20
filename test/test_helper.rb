@@ -8,6 +8,7 @@ end
 require 'test/unit'
 require 'stringio'
 
+rubygems_require 'turn'
 rubygems_require 'differ'
 
 require File.expand_path("../../lib/super_diff", __FILE__)

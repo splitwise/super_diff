@@ -17,4 +17,8 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["{test,spec,features}/**/*"]
   s.executables   = Dir["bin/**/*"].map {|f| File.basename(f) }
   s.require_paths = ["lib"]
+  
+  s.add_development_dependency "ghi"
+  s.add_development_dependency "differ"
+  s.add_development_dependency "turn"
 end
