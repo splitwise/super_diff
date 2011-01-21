@@ -1,8 +1,8 @@
-# super_diff
+# SuperDiff
 
 ## What is this?
 
-super_diff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.
+SuperDiff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.
 
 ## How does it work?
 
@@ -89,7 +89,7 @@ Check out the [issue tracker](http://github.com/mcmire/super_diff/issues). If yo
 Totally! One thing is that I develop everything using [RVM](http://rvm.beginrescueend.com) these days. I'm going to assume you do, too. If not, at least ensure you're using 1.9. With that in mind, here's what you need to do. 
 
 * `rvm install 1.9.2` with a "super_diff" gemset. There's an .rvmrc so when you drop into the repo (assuming you've cloned it) you'll be in the gemset automatically.
-* Install Bundler, then `bundle install` (there are only a few development dependencies).
+* Install Bundler, then `bundle install` (this is only for development; SuperDiff proper doesn't require any dependencies).
 
 If you're contributing an idea:
 
