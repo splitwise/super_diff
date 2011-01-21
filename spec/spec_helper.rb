@@ -17,8 +17,6 @@ RSpec.configure do |c|
   ]
 end
 
-pp RSpec.configuration.backtrace_clean_patterns
-
 # Copied from Thor specs
 Kernel.module_eval do
   alias_method :must, :should
