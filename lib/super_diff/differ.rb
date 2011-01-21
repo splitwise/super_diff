@@ -4,10 +4,13 @@ module SuperDiff
     end
     
     def diff(expected, actual)
+      expected_type = type_of(expected)
+      actual_type   = type_of(actual)
       data = {
         :equal => (expected == actual),
-        :expected => {:value => expected, :type => type_of(expected)},
-        :actual => {:value => actual, :type => type_of(actual)}
+        :expected => {:value => expected, :type => expected_type},
+        :actual => {:value => actual, :type => actual_type},
+        :common_type => (expected_type if expected_type == actual_type)
       }
       if expected.class == actual.class
         if expected.class == Array

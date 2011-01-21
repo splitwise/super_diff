@@ -11,7 +11,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => true,
         :expected => {:value => "foo", :type => :string},
-        :actual => {:value => "foo", :type => :string}
+        :actual => {:value => "foo", :type => :string},
+        :common_type => :string
       }
       actual.must == expected
     end
@@ -21,7 +22,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => false,
         :expected => {:value => "foo", :type => :string},
-        :actual => {:value => "bar", :type => :string}
+        :actual => {:value => "bar", :type => :string},
+        :common_type => :string
       }
       actual.must == expected
     end
@@ -31,7 +33,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => true,
         :expected => {:value => 1, :type => :number},
-        :actual => {:value => 1, :type => :number}
+        :actual => {:value => 1, :type => :number},
+        :common_type => :number
       }
       actual.must == expected
     end
@@ -41,7 +44,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => false,
         :expected => {:value => 1, :type => :number},
-        :actual => {:value => 2, :type => :number}
+        :actual => {:value => 2, :type => :number},
+        :common_type => :number
       }
       actual.must == expected
     end
@@ -51,7 +55,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => false,
         :expected => {:value => "foo", :type => :string},
-        :actual => {:value => 1, :type => :number}
+        :actual => {:value => 1, :type => :number},
+        :common_type => nil
       }
       actual.must == expected
     end
@@ -61,7 +66,8 @@ describe SuperDiff::Differ do
       expected = {
         :equal => false,
         :expected => {:value => "foo", :type => :string},
-        :actual => {:value => %w(zing zang), :type => :array}
+        :actual => {:value => %w(zing zang), :type => :array},
+        :common_type => nil
       }
       actual.must == expected
     end
@@ -72,16 +78,19 @@ describe SuperDiff::Differ do
         :equal => false,
         :expected => {:value => ["foo", "bar"], :type => :array},
         :actual => {:value => ["foo", "baz"], :type => :array},
+        :common_type => :array,
         :breakdown => [
           [0, {
             :equal => true,
             :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string}
+            :actual => {:value => "foo", :type => :string},
+            :common_type => :string
           }],
           [1, {
             :equal => false,
             :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "baz", :type => :string}
+            :actual => {:value => "baz", :type => :string},
+            :common_type => :string
           }]
         ]
       }
@@ -97,21 +106,25 @@ describe SuperDiff::Differ do
         :equal => false,
         :expected => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array},
         :actual => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array},
+        :common_type => :array,
         :breakdown => [
           [0, {
             :equal => false,
             :expected => {:value => ["foo", "bar"], :type => :array},
             :actual => {:value => ["foo", "biz"], :type => :array},
+            :common_type => :array,
             :breakdown => [
               [0, {
                 :equal => true,
                 :expected => {:value => "foo", :type => :string},
-                :actual => {:value => "foo", :type => :string}
+                :actual => {:value => "foo", :type => :string},
+                :common_type => :string
               }],
               [1, {
                 :equal => false,
                 :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "biz", :type => :string}
+                :actual => {:value => "biz", :type => :string},
+                :common_type => :string
               }]
             ]
           }],
@@ -119,16 +132,19 @@ describe SuperDiff::Differ do
             :equal => false,
             :expected => {:value => ["baz", "quux"], :type => :array},
             :actual => {:value => ["baz", "quarks"], :type => :array},
+            :common_type => :array,
             :breakdown => [
               [0, {
                 :equal => true,
                 :expected => {:value => "baz", :type => :string},
-                :actual => {:value => "baz", :type => :string}
+                :actual => {:value => "baz", :type => :string},
+                :common_type => :string
               }],
               [1, {
                 :equal => false,
                 :expected => {:value => "quux", :type => :string},
-                :actual => {:value => "quarks", :type => :string}
+                :actual => {:value => "quarks", :type => :string},
+                :common_type => :string
               }]
             ]
           }]
@@ -172,21 +188,25 @@ describe SuperDiff::Differ do
           ],
           :type => :array
         },
+        :common_type => :array,
         :breakdown => [
           [0, {
             :equal => false,
             :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foz", :type => :string}
+            :actual => {:value => "foz", :type => :string},
+            :common_type => :string
           }],
           [1, {
             :equal => false,
             :expected => {:value => ["bar", ["baz", "quux"]], :type => :array},
-            :actual => {:value => "bar", :type => :string}
+            :actual => {:value => "bar", :type => :string},
+            :common_type => nil
           }],
           [2, {
             :equal => true,
             :expected => {:value => "ying", :type => :string},
-            :actual => {:value => "ying", :type => :string}
+            :actual => {:value => "ying", :type => :string},
+            :common_type => :string
           }],
           [3, {
             :equal => false,
@@ -198,41 +218,49 @@ describe SuperDiff::Differ do
               :value => ["blargh", "gragh", 1, ["raz", ["ralston"]]],
               :type => :array
             },
+            :common_type => :array,
             :breakdown => [
               [0, {
                 :equal => true,
                 :expected => {:value => "blargh", :type => :string},
-                :actual => {:value => "blargh", :type => :string}
+                :actual => {:value => "blargh", :type => :string},
+                :common_type => :string
               }],
               [1, {
                 :equal => false,
                 :expected => {:value => "zing", :type => :string},
-                :actual => {:value => "gragh", :type => :string}
+                :actual => {:value => "gragh", :type => :string},
+                :common_type => :string
               }],
               [2, {
                 :equal => false,
                 :expected => {:value => "fooz", :type => :string},
-                :actual => {:value => 1, :type => :number}
+                :actual => {:value => 1, :type => :number},
+                :common_type => nil
               }],
               [3, {
                 :equal => false,
                 :expected => {:value => ["raz", ["vermouth"]], :type => :array},
                 :actual => {:value => ["raz", ["ralston"]], :type => :array},
+                :common_type => :array,
                 :breakdown => [
                   [0, {
                     :equal => true,
                     :expected => {:value => "raz", :type => :string},
-                    :actual => {:value => "raz", :type => :string}
+                    :actual => {:value => "raz", :type => :string},
+                    :common_type => :string
                   }],
                   [1, {
                     :equal => false,
                     :expected => {:value => ["vermouth"], :type => :array},
                     :actual => {:value => ["ralston"], :type => :array},
+                    :common_type => :array,
                     :breakdown => [
                       [0, {
                         :equal => false,
                         :expected => {:value => "vermouth", :type => :string},
-                        :actual => {:value => "ralston", :type => :string}
+                        :actual => {:value => "ralston", :type => :string},
+                        :common_type => :string
                       }]
                     ]
                   }]
