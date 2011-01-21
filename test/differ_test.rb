@@ -72,15 +72,62 @@ describe SuperDiff::Differ do
       :expected => {:value => ["foo", "bar"], :type => :array},
       :actual => {:value => ["foo", "baz"], :type => :array},
       :breakdown => {
-        '[0]' => {
+        0 => {
           :equal => true,
           :expected => {:value => "foo", :type => :string},
           :actual => {:value => "foo", :type => :string}
         },
-        '[1]' => {
+        1 => {
           :equal => false,
           :expected => {:value => "bar", :type => :string},
           :actual => {:value => "baz", :type => :string}
+        }
+      }
+    }
+    actual.must_equal expected
+  end
+  
+  test "deep arrays of same size but with differing elements" do
+    actual = @differ.diff(
+      [["foo", "bar"], ["baz", "quux"]],
+      [["foo", "biz"], ["baz", "quarks"]]
+    )
+    expected = {
+      :equal => false,
+      :expected => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array},
+      :actual => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array},
+      :breakdown => {
+        0 => {
+          :equal => false,
+          :expected => {:value => ["foo", "bar"], :type => :array},
+          :actual => {:value => ["foo", "biz"], :type => :array},
+          :breakdown => {
+            0 => {
+              :equal => true,
+              :expected => {:value => "foo", :type => :string},
+              :actual => {:value => "foo", :type => :string}
+            },
+            1 => {
+              :expected => {:value => "bar", :type => :string},
+              :actual => {:value => "biz", :type => :string}
+            }
+          }
+        },
+        1 => {
+          :equal => false,
+          :expected => {:value => ["baz", "quux"], :type => :array},
+          :actual => {:value => ["baz", "quarks"], :type => :array},
+          :breakdown => {
+            0 => {
+              :equal => true,
+              :expected => {:value => "baz", :type => :string},
+              :actual => {:value => "baz", :type => :string}
+            },
+            1 => {
+              :expected => {:value => "quux", :type => :string},
+              :actual => {:value => "quarks", :type => :string}
+            }
+          }
         }
       }
     }
