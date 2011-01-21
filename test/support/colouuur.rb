@@ -42,14 +42,14 @@ MiniTest::Unit.class_eval do
 
     srand seed
 
-    @@out.puts "Loaded suite #{$0.sub(/\.rb$/, '')}\nStarted".bold.black
-    @@out.puts
+    #@@out.puts "Loaded suite #{$0.sub(/\.rb$/, '')}\nStarted".bold.black
+    #@@out.puts
 
     start = Time.now
     run_test_suites filter
 
-    @@out.puts "\n\n"
-    @@out.puts "Finished in #{'%.6f' % (Time.now - start)} seconds.".bold.black
+    #@@out.puts "\n\n"
+    #@@out.puts "Finished in #{'%.6f' % (Time.now - start)} seconds.".bold.black
 
     @report.each_with_index do |msg, i|
       @@out.puts "\n%3d) %s" % [i + 1, msg]
@@ -65,7 +65,7 @@ MiniTest::Unit.class_eval do
     help.push "--verbose" if @verbose
     help.push("--name", options[:filter].inspect) if options[:filter]
 
-    @@out.puts "Test run options: #{help.join(" ")}"
+    #@@out.puts "Test run options: #{help.join(" ")}"
 
     return failures + errors if @test_count > 0 # or return nil...
   rescue Interrupt
