@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.email       = ["elliot.winkler@gmail.com"]
   s.homepage    = "http://github.com/mcmire/super_diff"
   s.summary     = %q{Diff complex data structures in Ruby, with helpful output.}
-  s.description = %q{super_diff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.}
+  s.description = %q{SuperDiff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.}
 
   #s.rubyforge_project = "super_diff"
 
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   
   s.add_development_dependency "minitest"
+  s.add_development_dependency "colored"
   s.add_development_dependency "differ"
   s.add_development_dependency "ghi"
 end

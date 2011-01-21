@@ -2,7 +2,6 @@ require 'rubygems'
 
 gem 'minitest'
 require 'minitest/autorun'
-require 'minitest/pride'
 require 'stringio'
 
 require 'differ'
@@ -34,3 +33,5 @@ require File.expand_path("../../lib/super_diff", __FILE__)
 class << MiniTest::Spec
   alias_method :test, :it
 end
+
+Dir[File.expand_path("../support/**/*.rb", __FILE__)].each {|f| require f }
