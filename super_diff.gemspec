@@ -18,8 +18,10 @@ Gem::Specification.new do |s|
   s.executables   = Dir["bin/**/*"].map {|f| File.basename(f) }
   s.require_paths = ["lib"]
   
-  s.add_development_dependency "minitest"
-  s.add_development_dependency "colored"
-  s.add_development_dependency "differ"
+  s.add_development_dependency "rspec-core"
+  s.add_development_dependency "rspec-expectations"
+  s.add_development_dependency "guard-rspec"
+  s.add_development_dependency "rb-fsevent"
+  s.add_development_dependency "growl"
   s.add_development_dependency "ghi"
 end

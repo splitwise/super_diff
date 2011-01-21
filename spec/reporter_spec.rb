@@ -1,19 +1,19 @@
-require File.expand_path('../test_helper', __FILE__)
+require File.expand_path('../spec_helper', __FILE__)
 
 require 'stringio'
 
-module SuperDiff
-  class ReporterTest < TestCase
-    def out
-      @stdout.string
-    end
+describe SuperDiff::Reporter do
+  def out
+    @stdout.string
+  end
+
+  before do
+    @stdout = StringIO.new
+    @differ = SuperDiff::Reporter.new(@stdout)
+  end
   
-    def setup
-      @stdout = StringIO.new
-      @differ = SuperDiff::Reporter.new(@stdout)
-    end
-  
-    def test_differing_strings
+  describe '#diff', 'outputs correct message for' do
+    specify "differing strings" do
       @differ.diff("foo", "bar")
       msg = <<EOT
 Error: Differing strings.
@@ -21,10 +21,10 @@ Error: Differing strings.
 Expected: "foo"
 Got: "bar"
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_differing_numbers
+    specify "differing numbers" do
       @differ.diff(1, 2)
       msg = <<EOT
 Error: Differing numbers.
@@ -32,10 +32,10 @@ Error: Differing numbers.
 Expected: 1
 Got: 2
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_differing_simple_types
+    specify "differing simple types" do
       @differ.diff("foo", 1)
       msg = <<EOT
 Error: Values of differing type.
@@ -43,10 +43,10 @@ Error: Values of differing type.
 Expected: "foo"
 Got: 1
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_differing_complex_types
+    specify "differing complex types" do
       @differ.diff("foo", %w(zing zang))
       msg = <<EOT
 Error: Values of differing type.
@@ -54,10 +54,10 @@ Error: Values of differing type.
 Expected: "foo"
 Got: ["zing", "zang"]
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_arrays_of_same_size_but_differing_elements
+    specify "shallow arrays of same size but differing elements" do
       @differ.diff(["foo", "bar"], ["foo", "baz"])
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
@@ -70,10 +70,10 @@ Breakdown:
   - Expected: "bar"
   - Got: "baz"
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_arrays_of_same_size_but_differing_elements
+    specify "deep arrays of same size but differing elements" do
       @differ.diff(
         [["foo", "bar"], ["baz", "quux"]],
         [["foo", "biz"], ["baz", "quarks"]]
@@ -94,10 +94,10 @@ Breakdown:
     - Expected: "quux"
     - Got: "quarks"
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deeper_arrays_with_differing_elements
+    specify "deeper arrays with differing elements" do
       @differ.diff(
         [
           "foo",
@@ -138,10 +138,10 @@ Breakdown:
         - Expected: "vermouth"
         - Got: "ralston"
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_arrays_with_surplus_elements
+    specify "shallow arrays with surplus elements" do
       @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
@@ -153,10 +153,10 @@ Breakdown:
 - *[2]: Expected to not be present, but found "baz".
 - *[3]: Expected to not be present, but found "quux".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_arrays_with_missing_elements
+    specify "shallow arrays with missing elements" do
       @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
@@ -168,10 +168,10 @@ Breakdown:
 - *[2]: Expected to have been found, but missing "baz".
 - *[3]: Expected to have been found, but missing "quux".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_arrays_with_surplus_elements
+    specify "deep arrays with surplus elements" do
       @differ.diff(
         ["foo", ["bar", "baz"], "ying"],
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
@@ -187,10 +187,10 @@ Breakdown:
   - *[2]: Expected to not be present, but found "quux".
   - *[3]: Expected to not be present, but found "blargh".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_arrays_with_missing_elements
+    specify "deep arrays with missing elements" do
       @differ.diff(
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"],
         ["foo", ["bar", "baz"], "ying"]
@@ -206,10 +206,10 @@ Breakdown:
   - *[2]: Expected to have been found, but missing "quux".
   - *[3]: Expected to have been found, but missing "blargh".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deeper_arrays_with_variously_differing_arrays
+    specify "deeper arrays with variously differing arrays" do
       @differ.diff(
         [
           "foo",
@@ -253,10 +253,10 @@ Breakdown:
       - *[2]: Expected to have been found, but missing "ffff".
   - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_hashes_of_same_size_but_differing_elements
+    specify "shallow hashes of same size but differing elements" do
       @differ.diff(
         {"foo" => "bar", "baz" => "quux"},
         {"foo" => "bar", "baz" => "quarx"}
@@ -272,10 +272,10 @@ Breakdown:
   - Expected: "quux"
   - Got: "quarx"
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_hashes_of_same_size_but_differing_elements
+    specify "deep hashes of same size but differing elements" do
       @differ.diff(
         {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
         {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}}
@@ -299,10 +299,10 @@ Breakdown:
     - Expected: :zang
     - Got: :bananas
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deeper_hashes_with_differing_elements
+    specify "deeper hashes with differing elements" do
       @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
@@ -337,10 +337,10 @@ Breakdown:
     - Expected: {2=>:sym}
     - Got: 3
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_hashes_with_surplus_elements
+    specify "shallow hashes with surplus elements" do
       @differ.diff(
         {"foo" => "bar"},
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"}
@@ -355,10 +355,10 @@ Breakdown:
 - *["baz"]: Expected to not be present, but found "quux".
 - *["ying"]: Expected to not be present, but found "yang".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_shallow_hashes_with_missing_elements
+    specify "shallow hashes with missing elements" do
       @differ.diff(
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
         {"foo" => "bar"}
@@ -373,10 +373,10 @@ Breakdown:
 - *["baz"]: Expected to have been found, but missing "quux".
 - *["ying"]: Expected to have been found, but missing "yang".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_hashes_with_surplus_elements
+    specify "deep hashes with surplus elements" do
       @differ.diff(
         {"one" => {"foo" => "bar"}},
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}
@@ -392,10 +392,10 @@ Breakdown:
   - *["baz"]: Expected to not be present, but found "quux".
   - *["ying"]: Expected to not be present, but found "yang".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deep_hashes_with_missing_elements
+    specify "deep hashes with missing elements" do
       @differ.diff(
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
         {"one" => {"foo" => "bar"}}
@@ -411,10 +411,10 @@ Breakdown:
   - *["baz"]: Expected to have been found, but missing "quux".
   - *["ying"]: Expected to have been found, but missing "yang".
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_deeper_hashes_with_variously_differing_hashes
+    specify "deeper hashes with variously differing hashes" do
       @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
@@ -450,10 +450,10 @@ Breakdown:
   - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
 - *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def test_mixed_types
+    specify "arrays and hashes, mixed" do
       @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
@@ -491,10 +491,11 @@ Breakdown:
   - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
 - *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def xtest_collapsed_output
+    specify "collapsed output" do
+      pending
       @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
@@ -528,19 +529,15 @@ Breakdown:
 - *["biz"][42]: Expected to not be present, but found {:raz=>"matazz"}.
 - *["bananas"]: Expected to have been found, but missing {:apple=>11}.
 EOT
-      assert_equal msg, out
+      out.must == msg
     end
   
-    def xtest_custom_string_differ
-    end
+    specify "custom string differ"
+    
+    specify "custom array differ"
   
-    def xtest_custom_array_differ
-    end
+    specify "custom hash differ"
   
-    def xtest_custom_hash_differ
-    end
-  
-    def xtest_custom_object_differ
-    end
+    specify "custom object differ"
   end
 end
