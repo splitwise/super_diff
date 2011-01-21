@@ -11,9 +11,9 @@ module SuperDiff
       }
       if expected.class == actual.class
         if expected.class == Array
-          data[:breakdown] = {}
+          data[:breakdown] = []
           (0...expected.size).each do |i|
-            data[:breakdown][i] = diff(expected[i], actual[i])
+            data[:breakdown] << [i, diff(expected[i], actual[i])]
           end
         end
       end
