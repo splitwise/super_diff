@@ -6,20 +6,27 @@ module SuperDiff
     def diff(expected, actual)
       expected_type = type_of(expected)
       actual_type   = type_of(actual)
-      data = {
-        :equal => (expected == actual),
-        :expected => {:value => expected, :type => expected_type},
-        :actual => {:value => actual, :type => actual_type},
-        :common_type => (expected_type if expected_type == actual_type)
-      }
-      if expected.class == actual.class
+      same_type     = (expected_type == actual_type)
+      data = {}
+      if same_type && expected.class < Enumerable
         if expected.class == Array
+          equal = true
           data[:breakdown] = []
           (0...expected.size).each do |i|
-            data[:breakdown] << [i, diff(expected[i], actual[i])]
+            diff = diff(expected[i], actual[i])
+            data[:breakdown] << [i, diff]
+            equal &&= diff[:equal]
           end
         end
+      else
+        equal = (expected == actual)
       end
+      data.merge!(
+        :equal => equal,
+        :expected => {:value => expected, :type => expected_type},
+        :actual => {:value => actual, :type => actual_type},
+        :common_type => (expected_type if same_type)
+      )
       data
     end
     
