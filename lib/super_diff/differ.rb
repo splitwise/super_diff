@@ -3,6 +3,11 @@ module SuperDiff
     def initialize
     end
     
+    def diff!(expected, actual)
+      @data = diff(expected, actual)
+      self
+    end
+    
     def diff(expected, actual)
       expected_type = type_of(expected)
       actual_type   = type_of(actual)
@@ -26,14 +31,11 @@ module SuperDiff
       data
     end
     
-  private
-    def type_of(value)
-      case value
-        when Fixnum then :number
-        else value.class.to_s.downcase.to_sym
-      end
+    def report_to(stdout, data=@data)
+      Reporter.new(stdout).report(data)
     end
     
+  private
     def diff_array(expected, actual)
       equal = true
       breakdown = []
@@ -96,6 +98,13 @@ module SuperDiff
         breakdown << [k, subdata]
       end
       [equal, breakdown]
+    end
+    
+    def type_of(value)
+      case value
+        when Fixnum then :number
+        else value.class.to_s.downcase.to_sym
+      end
     end
   end
 end
