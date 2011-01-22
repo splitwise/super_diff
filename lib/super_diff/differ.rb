@@ -10,6 +10,8 @@ module SuperDiff
       if same_type && expected.class < Enumerable
         if expected.class == Array
           equal, breakdown = diff_array(expected, actual)
+        elsif expected.class == Hash
+          equal, breakdown = diff_hash(expected, actual)
         end
       else
         equal = (expected == actual)
@@ -61,6 +63,37 @@ module SuperDiff
           }
           breakdown << [i, subdata]
         end
+      end
+      [equal, breakdown]
+    end
+    
+    def diff_hash(expected, actual)
+      equal = true
+      breakdown = []
+      expected.keys.each do |k|
+        if actual.include?(k)
+          subdata = diff(expected[k], actual[k])
+          equal &&= subdata[:equal]
+        else
+          subdata = {
+            :state => :missing,
+            :expected => {:value => expected[k], :type => type_of(expected[k])},
+            :actual => nil,
+            :common_type => nil
+          }
+          equal = false
+        end
+        breakdown << [k, subdata]
+      end
+      (actual.keys - expected.keys).each do |k|
+        equal = false
+        subdata = {
+          :state => :surplus,
+          :expected => nil,
+          :actual => {:value => actual[k], :type => type_of(actual[k])},
+          :common_type => nil
+        }
+        breakdown << [k, subdata]
       end
       [equal, breakdown]
     end
