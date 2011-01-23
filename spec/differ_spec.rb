@@ -741,12 +741,12 @@ describe SuperDiff::Differ do
             :expected => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
               :type => :hash,
-              :size => 2
+              :size => 1
             },
             :actual => {
               :value => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
               :type => :hash,
-              :size => 2
+              :size => 1
             },
             :common_type => :hash,
             :breakdown => [
