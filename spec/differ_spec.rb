@@ -66,7 +66,7 @@ describe SuperDiff::Differ do
       expected = {
         :state => :inequal,
         :expected => {:value => "foo", :type => :string},
-        :actual => {:value => %w(zing zang), :type => :array},
+        :actual => {:value => %w(zing zang), :type => :array, :size => 2},
         :common_type => nil
       }
       actual.must == expected
@@ -76,8 +76,8 @@ describe SuperDiff::Differ do
       actual = @differ.diff(["foo", "bar"], ["foo", "baz"])
       expected = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar"], :type => :array},
-        :actual => {:value => ["foo", "baz"], :type => :array},
+        :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
+        :actual => {:value => ["foo", "baz"], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
@@ -104,14 +104,14 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array},
-        :actual => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array},
+        :expected => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
+        :actual => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :inequal,
-            :expected => {:value => ["foo", "bar"], :type => :array},
-            :actual => {:value => ["foo", "biz"], :type => :array},
+            :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
+            :actual => {:value => ["foo", "biz"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
@@ -130,8 +130,8 @@ describe SuperDiff::Differ do
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["baz", "quux"], :type => :array},
-            :actual => {:value => ["baz", "quarks"], :type => :array},
+            :expected => {:value => ["baz", "quux"], :type => :array, :size => 2},
+            :actual => {:value => ["baz", "quarks"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
@@ -177,7 +177,8 @@ describe SuperDiff::Differ do
             "ying",
             ["blargh", "zing", "fooz", ["raz", ["vermouth"]]]
           ],
-          :type => :array
+          :type => :array,
+          :size => 4
         },
         :actual => {
           :value => [
@@ -186,7 +187,8 @@ describe SuperDiff::Differ do
             "ying",
             ["blargh", "gragh", 1, ["raz", ["ralston"]]]
           ],
-          :type => :array
+          :type => :array,
+          :size => 4
         },
         :common_type => :array,
         :breakdown => [
@@ -198,7 +200,7 @@ describe SuperDiff::Differ do
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array},
+            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
             :actual => {:value => "bar", :type => :string},
             :common_type => nil
           }],
@@ -212,11 +214,13 @@ describe SuperDiff::Differ do
             :state => :inequal,
             :expected => {
               :value => ["blargh", "zing", "fooz", ["raz", ["vermouth"]]],
-              :type => :array
+              :type => :array,
+              :size => 4
             },
             :actual => {
               :value => ["blargh", "gragh", 1, ["raz", ["ralston"]]],
-              :type => :array
+              :type => :array,
+              :size => 4
             },
             :common_type => :array,
             :breakdown => [
@@ -240,8 +244,8 @@ describe SuperDiff::Differ do
               }],
               [3, {
                 :state => :inequal,
-                :expected => {:value => ["raz", ["vermouth"]], :type => :array},
-                :actual => {:value => ["raz", ["ralston"]], :type => :array},
+                :expected => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
+                :actual => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
@@ -252,8 +256,8 @@ describe SuperDiff::Differ do
                   }],
                   [1, {
                     :state => :inequal,
-                    :expected => {:value => ["vermouth"], :type => :array},
-                    :actual => {:value => ["ralston"], :type => :array},
+                    :expected => {:value => ["vermouth"], :type => :array, :size => 1},
+                    :actual => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
@@ -277,8 +281,8 @@ describe SuperDiff::Differ do
       actual = @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
       expected = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar"], :type => :array},
-        :actual => {:value => ["foo", "bar", "baz", "quux"], :type => :array},
+        :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
+        :actual => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :common_type => :array,
         :breakdown => [
           [0, {
@@ -314,8 +318,8 @@ describe SuperDiff::Differ do
       actual = @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
       expected = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar", "baz", "quux"], :type => :array},
-        :actual => {:value => ["foo", "bar"], :type => :array},
+        :expected => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
+        :actual => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
@@ -354,8 +358,8 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array},
-        :actual => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array},
+        :expected => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
+        :actual => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
         :breakdown => [
           [0, {
@@ -366,8 +370,8 @@ describe SuperDiff::Differ do
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", "baz"], :type => :array},
-            :actual => {:value => ["bar", "baz", "quux", "blargh"], :type => :array},
+            :expected => {:value => ["bar", "baz"], :type => :array, :size => 2},
+            :actual => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :common_type => :array,
             :breakdown => [
               [0, {
@@ -414,8 +418,8 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array},
-        :actual => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array},
+        :expected => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
+        :actual => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
         :breakdown => [
           [0, {
@@ -426,8 +430,8 @@ describe SuperDiff::Differ do
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", "baz", "quux", "blargh"], :type => :array},
-            :actual => {:value => ["bar", "baz"], :type => :array},
+            :expected => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
+            :actual => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
@@ -491,7 +495,8 @@ describe SuperDiff::Differ do
             "ying",
             ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]
           ],
-          :type => :array
+          :type => :array,
+          :size => 4
         },
         :actual => {
           :value => [
@@ -500,7 +505,8 @@ describe SuperDiff::Differ do
             "ying",
             ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]
           ],
-          :type => :array
+          :type => :array,
+          :size => 4
         },
         :common_type => :array,
         :breakdown => [
@@ -512,7 +518,7 @@ describe SuperDiff::Differ do
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array},
+            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
             :actual => {:value => "bar", :type => :string},
             :common_type => nil
           }],
@@ -524,8 +530,16 @@ describe SuperDiff::Differ do
           }],
           [3, {
             :state => :inequal,
-            :expected => {:value => ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]], :type => :array},
-            :actual => {:value => ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]], :type => :array},
+            :expected => {
+              :value => ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]],
+              :type => :array,
+              :size => 4
+            },
+            :actual => {
+              :value => ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]],
+              :type => :array,
+              :size => 5
+            },
             :common_type => :array,
             :breakdown => [
               [0, {
@@ -548,8 +562,8 @@ describe SuperDiff::Differ do
               }],
               [3, {
                 :state => :inequal,
-                :expected => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array},
-                :actual => {:value => ["raz", ["ralston"]], :type => :array},
+                :expected => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
+                :actual => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
@@ -560,8 +574,8 @@ describe SuperDiff::Differ do
                   }],
                   [1, {
                     :state => :inequal,
-                    :expected => {:value => ["vermouth", "eee", "ffff"], :type => :array},
-                    :actual => {:value => ["ralston"], :type => :array},
+                    :expected => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
+                    :actual => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
@@ -589,7 +603,7 @@ describe SuperDiff::Differ do
               [4, {
                 :state => :surplus,
                 :expected => nil,
-                :actual => {:value => ["foreal", ["zap"]], :type => :array},
+                :actual => {:value => ["foreal", ["zap"]], :type => :array, :size => 2},
                 :common_type => nil
               }]
             ]
@@ -606,8 +620,8 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash},
-        :actual => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash},
+        :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
+        :actual => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
@@ -636,18 +650,20 @@ describe SuperDiff::Differ do
         :state => :inequal,
         :expected => {
           :value => {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :actual => {
           :value => {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}},
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :common_type => :hash,
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash},
-            :actual => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash},
+            :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
+            :actual => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               ["foo", {
@@ -666,8 +682,8 @@ describe SuperDiff::Differ do
           }],
           [:two, {
             :state => :inequal,
-            :expected => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash},
-            :actual => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash},
+            :expected => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
+            :actual => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               ["ying", {
@@ -707,14 +723,16 @@ describe SuperDiff::Differ do
             "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
             "biz" => {:fiz => "gram", 1 => {2 => :sym}}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :actual => {
           :value => {
             "foo" => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
             "biz" => {:fiz => "graeme", 1 => 3}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :common_type => :hash,
         :breakdown => [
@@ -722,11 +740,13 @@ describe SuperDiff::Differ do
             :state => :inequal,
             :expected => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-              :type => :hash
+              :type => :hash,
+              :size => 2
             },
             :actual => {
               :value => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
-              :type => :hash
+              :type => :hash,
+              :size => 2
             },
             :common_type => :hash,
             :breakdown => [
@@ -734,24 +754,26 @@ describe SuperDiff::Differ do
                 :state => :inequal,
                 :expected => {
                   :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 2
                 },
                 :actual => {
                   :value => {"baz" => "quarx", "foz" => {"fram" => "razzle"}},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 2
                 },
                 :common_type => :hash,
                 :breakdown => [
                   ["baz", {
                     :state => :inequal,
-                    :expected => {:value => {"quux" => 2}, :type => :hash},
+                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
                     :actual => {:value => "quarx", :type => :string},
                     :common_type => nil
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash},
-                    :actual => {:value => {"fram" => "razzle"}, :type => :hash},
+                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
+                    :actual => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
                     :breakdown => [
                       ["fram", {
@@ -768,8 +790,8 @@ describe SuperDiff::Differ do
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash},
-            :actual => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash},
+            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
+            :actual => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               [:fiz, {
@@ -780,7 +802,7 @@ describe SuperDiff::Differ do
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash},
+                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
                 :actual => {:value => 3, :type => :number},
                 :common_type => nil
               }]
@@ -798,8 +820,8 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar"}, :type => :hash},
-        :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash},
+        :expected => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+        :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
@@ -832,8 +854,8 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash},
-        :actual => {:value => {"foo" => "bar"}, :type => :hash},
+        :expected => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+        :actual => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
@@ -866,14 +888,14 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => {"one" => {"foo" => "bar"}}, :type => :hash},
-        :actual => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash},
+        :expected => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
+        :actual => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
         :common_type => :hash,
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {:value => {"foo" => "bar"}, :type => :hash},
-            :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash},
+            :expected => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+            :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
             :common_type => :hash,
             :breakdown => [
               ["foo", {
@@ -908,14 +930,30 @@ describe SuperDiff::Differ do
       )
       expected = {
         :state => :inequal,
-        :expected => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash},
-        :actual => {:value => {"one" => {"foo" => "bar"}}, :type => :hash},
+        :expected => {
+          :value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
+          :type => :hash,
+          :size => 1
+        },
+        :actual => {
+          :value => {"one" => {"foo" => "bar"}},
+          :type => :hash,
+          :size => 1
+        },
         :common_type => :hash,
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash},
-            :actual => {:value => {"foo" => "bar"}, :type => :hash},
+            :expected => {
+              :value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
+              :type => :hash,
+              :size => 3
+            },
+            :actual => {
+              :value => {"foo" => "bar"},
+              :type => :hash,
+              :size => 1
+            },
             :common_type => :hash,
             :breakdown => [
               ["foo", {
@@ -963,14 +1001,16 @@ describe SuperDiff::Differ do
             "biz" => {:fiz => "gram", 1 => {2 => :sym}},
             "bananas" => {:apple => 11}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 3
         },
         :actual => {
           :value => {
             "foo" => {1 => {"foz" => {"fram" => "razzle"}}},
             "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :common_type => :hash,
         :breakdown => [
@@ -978,11 +1018,13 @@ describe SuperDiff::Differ do
             :state => :inequal,
             :expected => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-              :type => :hash
+              :type => :hash,
+              :size => 1
             },
             :actual => {
               :value => {1 => {"foz" => {"fram" => "razzle"}}},
-              :type => :hash
+              :type => :hash,
+              :size => 1
             },
             :common_type => :hash,
             :breakdown => [
@@ -990,24 +1032,26 @@ describe SuperDiff::Differ do
                 :state => :inequal,
                 :expected => {
                   :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 2
                 },
                 :actual => {
                   :value => {"foz" => {"fram" => "razzle"}},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 1
                 },
                 :common_type => :hash,
                 :breakdown => [
                   ["baz", {
                     :state => :missing,
-                    :expected => {:value => {"quux" => 2}, :type => :hash},
+                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
                     :actual => nil,
                     :common_type => nil
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash},
-                    :actual => {:value => {"fram" => "razzle"}, :type => :hash},
+                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
+                    :actual => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
                     :breakdown => [
                       ["fram", {
@@ -1024,8 +1068,8 @@ describe SuperDiff::Differ do
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash},
-            :actual => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash},
+            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
+            :actual => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
             :common_type => :hash,
             :breakdown => [
               [:fiz, {
@@ -1036,21 +1080,21 @@ describe SuperDiff::Differ do
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash},
+                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
                 :actual => {:value => 3, :type => :number},
                 :common_type => nil
               }],
               [42, {
                 :state => :surplus,
                 :expected => nil,
-                :actual => {:value => {:raz => "matazz"}, :type => :hash},
+                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
                 :common_type => nil
               }]
             ]
           }],
           ["bananas", {
             :state => :missing,
-            :expected => {:value => {:apple => 11}, :type => :hash},
+            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
             :actual => nil,
             :common_type => nil
           }]
@@ -1079,14 +1123,16 @@ describe SuperDiff::Differ do
             "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
             "bananas" => {:apple => 11}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 3
         },
         :actual => {
           :value => {
             "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
             "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
           },
-          :type => :hash
+          :type => :hash,
+          :size => 2
         },
         :common_type => :hash,
         :breakdown => [
@@ -1094,11 +1140,13 @@ describe SuperDiff::Differ do
             :state => :inequal,
             :expected => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-              :type => :hash
+              :type => :hash,
+              :size => 1
             },
             :actual => {
               :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
-              :type => :hash
+              :type => :hash,
+              :size => 1
             },
             :common_type => :hash,
             :breakdown => [
@@ -1106,24 +1154,26 @@ describe SuperDiff::Differ do
                 :state => :inequal,
                 :expected => {
                   :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 2
                 },
                 :actual => {
                   :value => {"foz" => ["apple", "banana", "orange"]},
-                  :type => :hash
+                  :type => :hash,
+                  :size => 1
                 },
                 :common_type => :hash,
                 :breakdown => [
                   ["baz", {
                     :state => :missing,
-                    :expected => {:value => {"quux" => 2}, :type => :hash},
+                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
                     :actual => nil,
                     :common_type => nil,
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => ["apple", "bananna", "orange"], :type => :array},
-                    :actual => {:value => ["apple", "banana", "orange"], :type => :array},
+                    :expected => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
+                    :actual => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
@@ -1154,18 +1204,20 @@ describe SuperDiff::Differ do
             :state => :inequal,
             :expected => {
               :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-              :type => :hash
+              :type => :hash,
+              :size => 2
             },
             :actual => {
               :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
-              :type => :hash
+              :type => :hash,
+              :size => 3
             },
             :common_type => :hash,
             :breakdown => [
               [:fiz, {
                 :state => :inequal,
-                :expected => {:value => ["bing", "bong", "bam"], :type => :array},
-                :actual => {:value => ["bang", "bong", "bam", "splat"], :type => :array},
+                :expected => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
+                :actual => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
@@ -1196,21 +1248,21 @@ describe SuperDiff::Differ do
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash},
+                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
                 :actual => {:value => 3, :type => :number},
                 :common_type => nil
               }],
               [42, {
                 :state => :surplus,
                 :expected => nil,
-                :actual => {:value => {:raz => "matazz"}, :type => :hash},
+                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
                 :common_type => nil
               }]
             ]
           }],
           ["bananas", {
             :state => :missing,
-            :expected => {:value => {:apple => 11}, :type => :hash},
+            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
             :actual => nil,
             :common_type => nil
           }]

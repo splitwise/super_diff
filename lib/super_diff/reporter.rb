@@ -4,102 +4,60 @@ module SuperDiff
       @stdout = stdout
     end
   
-    def diff(expected, actual, level=0, prefix="*", root=true)
-      if level == 0 && root
-        $stdout.puts
-        pp :expected => expected, :actual => actual
-        $stdout.puts
-      end
+    def report(data)
+      _report(data, 0, "*", true)
+    end
+    
+  private
+    def _report(data, level, prefix, root)
+      return if data[:state] == :equal
+      
       formatted_prefix = format_prefix(prefix, level, root)
-      if expected != actual
-        same_klass = (expected.class == actual.class)
-        klass = expected.class
-        if same_klass
-          if klass == Array
-            if expected.size == actual.size
-              puts "#{formatted_prefix}: Arrays of same size but with differing elements."
-            else
-              min_size = [expected.size, actual.size].min
-              common_keys_are_equal = (expected[0..min_size-1] == actual[0..min_size-1])
-              if common_keys_are_equal
-                puts "#{formatted_prefix}: Arrays of differing size (no differing elements)."
-              else
-                puts "#{formatted_prefix}: Arrays of differing size and elements."
-              end
-            end
-          elsif klass == Hash
-            if expected.size == actual.size
-              puts "#{formatted_prefix}: Hashes of same size but with differing elements."
-            else
-              common_keys = expected.keys & actual.keys
-              common_keys_are_equal = expected.values_at(*common_keys) == actual.values_at(*common_keys)
-              if common_keys_are_equal
-                puts "#{formatted_prefix}: Hashes of differing size (no differing elements)."
-              else
-                puts "#{formatted_prefix}: Hashes of differing size and elements."
-              end
-            end
-          else
-            downcased_klass = klass.to_s.downcase
-            downcased_klass = "number" if downcased_klass == "fixnum"
-            puts "#{formatted_prefix}: Differing #{downcased_klass}s."
-          end
-        else
+      
+      case data[:common_type]
+      when nil
+        case data[:state]
+        when :surplus
+          puts "#{formatted_prefix}: Expected to not be present, but found #{data[:actual][:value].inspect}."
+        when :missing
+          puts "#{formatted_prefix}: Expected to have been found, but missing #{data[:expected][:value].inspect}."
+        when :inequal
           puts "#{formatted_prefix}: Values of differing type."
         end
-        puts if level == 0 && root
-        if (level == 0 && root) || !same_klass || ![Array, Hash].include?(klass)
-          maybe_bullet = (level == 0 && root) ? "" : indented_bullet(level + 1)
-          puts "#{maybe_bullet}Expected: #{expected.inspect}"
-          puts "#{maybe_bullet}Got: #{actual.inspect}"
+      when :array, :hash
+        plural_type = pluralize(data[:common_type]).capitalize
+        if data[:expected][:size] == data[:actual][:size]
+          puts "#{formatted_prefix}: #{plural_type} of same size but with differing elements."
+        elsif data[:breakdown].none? {|k, subdata| subdata[:state] == :inequal }
+          puts "#{formatted_prefix}: #{plural_type} of differing size (no differing elements)."
+        else
+          puts "#{formatted_prefix}: #{plural_type} of differing size and elements."
         end
-        if (level == 0 && root) && same_klass && [Array, Hash].include?(klass)
+      else
+        plural_type = pluralize(data[:common_type])
+        puts "#{formatted_prefix}: Differing #{plural_type}."
+      end
+      puts if root
+      if data[:state] == :inequal && (root || !data[:common_type] || !data[:breakdown])
+        maybe_bullet = root ? "" : indented_bullet(level + 1)
+        puts "#{maybe_bullet}Expected: #{data[:expected][:value].inspect}"
+        puts "#{maybe_bullet}Got: #{data[:actual][:value].inspect}"
+      end
+      if data[:breakdown]
+        if root
           puts
           puts "Breakdown:"
         end
-        if same_klass
-          diff_array(expected, actual, level, prefix, root) if klass == Array
-          diff_hash(expected, actual, level, prefix, root) if klass == Hash
-        end
+        _report_breakdown(data[:breakdown], level, prefix, root)
       end
     end
   
-  private
-    def diff_array(expected, actual, level, prefix, root)
-      new_level = (level == 0 && root ? level : level+1)      
-      (0...expected.size).each do |i|
-        new_prefix = "*[#{i}]"
+    def _report_breakdown(breakdown, level, prefix, root)
+      new_level = root ? level : level+1
+      breakdown.each do |(key, subdata)|
+        new_prefix = "*[#{key.inspect}]"
         formatted_prefix = format_prefix(new_prefix, new_level, false)
-        if i > actual.size - 1
-          puts "#{formatted_prefix}: Expected to have been found, but missing #{expected[i].inspect}."
-        else
-          diff(expected[i], actual[i], new_level, new_prefix, false)
-        end
-      end
-      if actual.size > expected.size
-        (expected.size .. actual.size-1).each do |i|
-          new_prefix = "*[#{i}]"
-          formatted_prefix = format_prefix(new_prefix, new_level, false)
-          puts "#{formatted_prefix}: Expected to not be present, but found #{actual[i].inspect}."
-        end
-      end
-    end
-    
-    def diff_hash(expected, actual, level, prefix, root)
-      new_level = (level == 0 && root ? level : level+1)
-      expected.keys.each do |k|
-        new_prefix = "*[#{k.inspect}]"
-        formatted_prefix = format_prefix(new_prefix, new_level, false)
-        if actual.include?(k)
-          diff(expected[k], actual[k], new_level, new_prefix, false)
-        else
-          puts "#{formatted_prefix}: Expected to have been found, but missing #{expected[k].inspect}."
-        end
-      end
-      (actual.keys - expected.keys).each do |k|
-        new_prefix = "*[#{k.inspect}]"
-        formatted_prefix = format_prefix(new_prefix, new_level, false)
-        puts "#{formatted_prefix}: Expected to not be present, but found #{actual[k].inspect}."
+        _report(subdata, new_level, new_prefix, false)
       end
     end
   
@@ -109,6 +67,11 @@ module SuperDiff
   
     def format_prefix(prefix, level, root)
       (level == 0 && root) ? "Error" : indented_bullet(level) + prefix
+    end
+    
+    def pluralize(word)
+      word = word.to_s
+      word == "hash" ? "hashes" : "#{word}s"
     end
     
     def puts(*args)
