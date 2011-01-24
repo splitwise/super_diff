@@ -1,8 +1,5 @@
 module SuperDiff
   class Differ
-    def initialize
-    end
-    
     def diff!(expected, actual)
       @data = diff(expected, actual)
       self
