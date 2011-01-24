@@ -68,13 +68,7 @@ For testing, specifically with RSpec. For instance, say you're doing a simple eq
 
     complex_data_structure.should == another_complex_data_structure
 
-Now, RSpec (at least RSpec 2) *does* give you a difference between the two data structures, but all it really does is call `complex_data_structure.pretty_inspect` and `another_complex_data_structure.pretty_inspect` and then run the two strings through the unified diff tool that's ordinarily used to find the difference between two text files. It's not a bad solution, but it could be more helpful. So I set out to make this better.
-
-## Why not use Diff::LCS or \<insert other tool here\>?
-
-Because Diff::LCS really only works for arrays (as far as I know). My goal is for this to work with hashes too (or possibly other Enumerable types).
-
-As far as other tools, I know plenty of them exist, but from the brief googling I did, I didn't get the impression that any of them are that great or really give any helpful information. If I'm wasting my time, feel free to let me know.
+Now, RSpec (at least RSpec 2) *does* give you a difference between the two data structures, but all it really does is call `complex_data_structure.pretty_inspect` and `another_complex_data_structure.pretty_inspect` and then uses Diff::LCS to take the unified diff between the two strings (as though they were text files). It's not a terrible solution, but it's naive -- it doesn't know anything about the data structures involved, so you have to do a bit of work to read the unified diff output and then apply it to the data. I think this process could be made easier.
 
 ## Can I use it?
 
@@ -100,7 +94,7 @@ If you're contributing an idea or fixing a bug:
 
 ## Copyright/License
 
-&copy; 2011 Elliot Winkler. The code here is under no license; you're free to do whatever you want with it. If you do use it, an attached courtesy would be appreciated.
+&copy; 2011 Elliot Winkler. The code here is under no license; you're free to do whatever you want with it. If you do end up using it, an attached courtesy would be appreciated.
 
 ## Contact
 
