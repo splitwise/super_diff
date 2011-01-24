@@ -1491,19 +1491,160 @@ EOT
     end
   
     specify "collapsed output" do
-      pending
-      @reporter.diff(
-        {
-          "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-          "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-          "bananas" => {:apple => 11}
+      data = {
+        :state => :inequal,
+        :expected => {
+          :value => {
+            "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+            "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+            "bananas" => {:apple => 11}
+          },
+          :type => :hash,
+          :size => 3
         },
-        {
-          "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
-          "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+        :actual => {
+          :value => {
+            "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
+            "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+          },
+          :type => :hash,
+          :size => 2
         },
-        :collapsed => true
-      )
+        :common_type => :hash,
+        :breakdown => [
+          ["foo", {
+            :state => :inequal,
+            :expected => {
+              :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+              :type => :hash,
+              :size => 1
+            },
+            :actual => {
+              :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
+              :type => :hash,
+              :size => 1
+            },
+            :common_type => :hash,
+            :breakdown => [
+              [1, {
+                :state => :inequal,
+                :expected => {
+                  :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
+                  :type => :hash,
+                  :size => 2
+                },
+                :actual => {
+                  :value => {"foz" => ["apple", "banana", "orange"]},
+                  :type => :hash,
+                  :size => 1
+                },
+                :common_type => :hash,
+                :breakdown => [
+                  ["baz", {
+                    :state => :missing,
+                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
+                    :actual => nil,
+                    :common_type => nil,
+                  }],
+                  ["foz", {
+                    :state => :inequal,
+                    :expected => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
+                    :actual => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
+                    :common_type => :array,
+                    :breakdown => [
+                      [0, {
+                        :state => :equal,
+                        :expected => {:value => "apple", :type => :string},
+                        :actual => {:value => "apple", :type => :string},
+                        :common_type => :string
+                      }],
+                      [1, {
+                        :state => :inequal,
+                        :expected => {:value => "bananna", :type => :string},
+                        :actual => {:value => "banana", :type => :string},
+                        :common_type => :string
+                      }],
+                      [2, {
+                        :state => :equal,
+                        :expected => {:value => "orange", :type => :string},
+                        :actual => {:value => "orange", :type => :string},
+                        :common_type => :string
+                      }]
+                    ]
+                  }]
+                ]
+              }]
+            ]
+          }],
+          ["biz", {
+            :state => :inequal,
+            :expected => {
+              :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+              :type => :hash,
+              :size => 2
+            },
+            :actual => {
+              :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
+              :type => :hash,
+              :size => 3
+            },
+            :common_type => :hash,
+            :breakdown => [
+              [:fiz, {
+                :state => :inequal,
+                :expected => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
+                :actual => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
+                :common_type => :array,
+                :breakdown => [
+                  [0, {
+                    :state => :inequal,
+                    :expected => {:value => "bing", :type => :string},
+                    :actual => {:value => "bang", :type => :string},
+                    :common_type => :string
+                  }],
+                  [1, {
+                    :state => :equal,
+                    :expected => {:value => "bong", :type => :string},
+                    :actual => {:value => "bong", :type => :string},
+                    :common_type => :string,
+                  }],
+                  [2, {
+                    :state => :equal,
+                    :expected => {:value => "bam", :type => :string},
+                    :actual => {:value => "bam", :type => :string},
+                    :common_type => :string,
+                  }],
+                  [3, {
+                    :state => :surplus,
+                    :expected => nil,
+                    :actual => {:value => "splat", :type => :string},
+                    :common_type => nil
+                  }]
+                ]
+              }],
+              [1, {
+                :state => :inequal,
+                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
+                :actual => {:value => 3, :type => :number},
+                :common_type => nil
+              }],
+              [42, {
+                :state => :surplus,
+                :expected => nil,
+                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
+                :common_type => nil
+              }]
+            ]
+          }],
+          ["bananas", {
+            :state => :missing,
+            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
+            :actual => nil,
+            :common_type => nil
+          }]
+        ]
+      }
+      @reporter.report(data, :collapsed => true)
       msg = <<EOT
 Error: Hashes of differing size and elements.
 
