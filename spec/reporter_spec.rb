@@ -7,28 +7,28 @@ describe SuperDiff::Reporter do
     @stdout = StringIO.new
     @reporter = SuperDiff::Reporter.new(@stdout)
   end
-  
+
   def out
     @stdout.string
   end
-  
+
   describe '#report', 'outputs correct message for' do
     specify "same strings" do
       data = {
         :state => :equal,
-        :expected => {:value => "foo", :type => :string},
-        :actual => {:value => "foo", :type => :string},
+        :old_element => {:value => "foo", :type => :string},
+        :new_element => {:value => "foo", :type => :string},
         :common_type => :string
       }
       @reporter.report(data)
       out.must be_empty
     end
-    
+
     specify "differing strings" do
       data = {
         :state => :inequal,
-        :expected => {:value => "foo", :type => :string},
-        :actual => {:value => "bar", :type => :string},
+        :old_element => {:value => "foo", :type => :string},
+        :new_element => {:value => "bar", :type => :string},
         :common_type => :string
       }
       @reporter.report(data)
@@ -40,23 +40,23 @@ Got: "bar"
 EOT
       out.must == msg
     end
-    
+
     specify "same numbers" do
       data = {
         :state => :equal,
-        :expected => {:value => 1, :type => :number},
-        :actual => {:value => 1, :type => :number},
+        :old_element => {:value => 1, :type => :number},
+        :new_element => {:value => 1, :type => :number},
         :common_type => :number
       }
       @reporter.report(data)
       out.must be_empty
     end
-    
+
     specify "differing numbers" do
       data = {
         :state => :inequal,
-        :expected => {:value => 1, :type => :number},
-        :actual => {:value => 2, :type => :number},
+        :old_element => {:value => 1, :type => :number},
+        :new_element => {:value => 2, :type => :number},
         :common_type => :number
       }
       @reporter.report(data)
@@ -68,12 +68,12 @@ Got: 2
 EOT
       out.must == msg
     end
-  
+
     specify "values of differing simple types" do
       data = {
         :state => :inequal,
-        :expected => {:value => "foo", :type => :string},
-        :actual => {:value => 1, :type => :number},
+        :old_element => {:value => "foo", :type => :string},
+        :new_element => {:value => 1, :type => :number},
         :common_type => nil
       }
       @reporter.report(data)
@@ -85,12 +85,12 @@ Got: 1
 EOT
       out.must == msg
     end
-  
+
     specify "values of differing complex types" do
       data = {
         :state => :inequal,
-        :expected => {:value => "foo", :type => :string},
-        :actual => {:value => %w(zing zang), :type => :array},
+        :old_element => {:value => "foo", :type => :string},
+        :new_element => {:value => %w(zing zang), :type => :array},
         :common_type => nil
       }
       @reporter.report(data)
@@ -102,24 +102,24 @@ Got: ["zing", "zang"]
 EOT
       out.must == msg
     end
-  
+
     specify "shallow arrays of same size but differing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
-        :actual => {:value => ["foo", "baz"], :type => :array, :size => 2},
+        :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
+        :new_element => {:value => ["foo", "baz"], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :equal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foo", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "baz", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "baz", :type => :string},
             :common_type => :string
           }]
         ]
@@ -138,50 +138,50 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep arrays of same size but differing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
-        :actual => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
+        :old_element => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
+        :new_element => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :inequal,
-            :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
-            :actual => {:value => ["foo", "biz"], :type => :array, :size => 2},
+            :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
+            :new_element => {:value => ["foo", "biz"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "foo", :type => :string},
-                :actual => {:value => "foo", :type => :string},
+                :old_element => {:value => "foo", :type => :string},
+                :new_element => {:value => "foo", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "biz", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "biz", :type => :string},
                 :common_type => :string
               }]
             ]
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["baz", "quux"], :type => :array, :size => 2},
-            :actual => {:value => ["baz", "quarks"], :type => :array, :size => 2},
+            :old_element => {:value => ["baz", "quux"], :type => :array, :size => 2},
+            :new_element => {:value => ["baz", "quarks"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "baz", :type => :string},
-                :actual => {:value => "baz", :type => :string},
+                :old_element => {:value => "baz", :type => :string},
+                :new_element => {:value => "baz", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => "quux", :type => :string},
-                :actual => {:value => "quarks", :type => :string},
+                :old_element => {:value => "quux", :type => :string},
+                :new_element => {:value => "quarks", :type => :string},
                 :common_type => :string
               }]
             ]
@@ -207,11 +207,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deeper arrays with differing elements" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => [
             "foo",
             ["bar", ["baz", "quux"]],
@@ -221,7 +221,7 @@ EOT
           :type => :array,
           :size => 4
         },
-        :actual => {
+        :new_element => {
           :value => [
             "foz",
             "bar",
@@ -235,30 +235,30 @@ EOT
         :breakdown => [
           [0, {
             :state => :inequal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foz", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foz", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => nil
           }],
           [2, {
             :state => :equal,
-            :expected => {:value => "ying", :type => :string},
-            :actual => {:value => "ying", :type => :string},
+            :old_element => {:value => "ying", :type => :string},
+            :new_element => {:value => "ying", :type => :string},
             :common_type => :string
           }],
           [3, {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => ["blargh", "zing", "fooz", ["raz", ["vermouth"]]],
               :type => :array,
               :size => 4
             },
-            :actual => {
+            :new_element => {
               :value => ["blargh", "gragh", 1, ["raz", ["ralston"]]],
               :type => :array,
               :size => 4
@@ -267,44 +267,44 @@ EOT
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "blargh", :type => :string},
-                :actual => {:value => "blargh", :type => :string},
+                :old_element => {:value => "blargh", :type => :string},
+                :new_element => {:value => "blargh", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => "zing", :type => :string},
-                :actual => {:value => "gragh", :type => :string},
+                :old_element => {:value => "zing", :type => :string},
+                :new_element => {:value => "gragh", :type => :string},
                 :common_type => :string
               }],
               [2, {
                 :state => :inequal,
-                :expected => {:value => "fooz", :type => :string},
-                :actual => {:value => 1, :type => :number},
+                :old_element => {:value => "fooz", :type => :string},
+                :new_element => {:value => 1, :type => :number},
                 :common_type => nil
               }],
               [3, {
                 :state => :inequal,
-                :expected => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
-                :actual => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
+                :old_element => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
+                :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
                     :state => :equal,
-                    :expected => {:value => "raz", :type => :string},
-                    :actual => {:value => "raz", :type => :string},
+                    :old_element => {:value => "raz", :type => :string},
+                    :new_element => {:value => "raz", :type => :string},
                     :common_type => :string
                   }],
                   [1, {
                     :state => :inequal,
-                    :expected => {:value => ["vermouth"], :type => :array, :size => 1},
-                    :actual => {:value => ["ralston"], :type => :array, :size => 1},
+                    :old_element => {:value => ["vermouth"], :type => :array, :size => 1},
+                    :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
                         :state => :inequal,
-                        :expected => {:value => "vermouth", :type => :string},
-                        :actual => {:value => "ralston", :type => :string},
+                        :old_element => {:value => "vermouth", :type => :string},
+                        :new_element => {:value => "ralston", :type => :string},
                         :common_type => :string
                       }]
                     ]
@@ -344,36 +344,36 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "shallow arrays with surplus elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar"], :type => :array, :size => 2},
-        :actual => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
+        :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
+        :new_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :equal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foo", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :equal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => :string
           }],
           [2, {
             :state => :surplus,
-            :expected => nil,
-            :actual => {:value => "baz", :type => :string},
+            :old_element => nil,
+            :new_element => {:value => "baz", :type => :string},
             :common_type => nil
           }],
           [3, {
             :state => :surplus,
-            :expected => nil,
-            :actual => {:value => "quux", :type => :string},
+            :old_element => nil,
+            :new_element => {:value => "quux", :type => :string},
             :common_type => nil
           }]
         ]
@@ -391,36 +391,36 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "shallow arrays with missing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
-        :actual => {:value => ["foo", "bar"], :type => :array, :size => 2},
+        :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
+        :new_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :equal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foo", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :equal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => :string
           }],
           [2, {
             :state => :missing,
-            :expected => {:value => "baz", :type => :string},
-            :actual => nil,
+            :old_element => {:value => "baz", :type => :string},
+            :new_element => nil,
             :common_type => nil
           }],
           [3, {
             :state => :missing,
-            :expected => {:value => "quux", :type => :string},
-            :actual => nil,
+            :old_element => {:value => "quux", :type => :string},
+            :new_element => nil,
             :common_type => nil
           }]
         ]
@@ -438,56 +438,56 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep arrays with surplus elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
-        :actual => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
+        :old_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
+        :new_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :equal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foo", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", "baz"], :type => :array, :size => 2},
-            :actual => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
+            :old_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
+            :new_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :common_type => :array,
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "bar", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "bar", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :equal,
-                :expected => {:value => "baz", :type => :string},
-                :actual => {:value => "baz", :type => :string},
+                :old_element => {:value => "baz", :type => :string},
+                :new_element => {:value => "baz", :type => :string},
                 :common_type => :string
               }],
               [2, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => "quux", :type => :string},
+                :old_element => nil,
+                :new_element => {:value => "quux", :type => :string},
                 :common_type => nil
               }],
               [3, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => "blargh", :type => :string},
+                :old_element => nil,
+                :new_element => {:value => "blargh", :type => :string},
                 :common_type => nil
               }]
             ]
           }],
           [2, {
             :state => :equal,
-            :expected => {:value => "ying", :type => :string},
-            :actual => {:value => "ying", :type => :string},
+            :old_element => {:value => "ying", :type => :string},
+            :new_element => {:value => "ying", :type => :string},
             :common_type => :string
           }]
         ]
@@ -506,56 +506,56 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep arrays with missing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
-        :actual => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
+        :old_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
+        :new_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
         :breakdown => [
           [0, {
             :state => :equal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foo", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foo", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
-            :actual => {:value => ["bar", "baz"], :type => :array, :size => 2},
+            :old_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
+            :new_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :common_type => :array,
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "bar", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "bar", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :equal,
-                :expected => {:value => "baz", :type => :string},
-                :actual => {:value => "baz", :type => :string},
+                :old_element => {:value => "baz", :type => :string},
+                :new_element => {:value => "baz", :type => :string},
                 :common_type => :string
               }],
               [2, {
                 :state => :missing,
-                :expected => {:value => "quux", :type => :string},
-                :actual => nil,
+                :old_element => {:value => "quux", :type => :string},
+                :new_element => nil,
                 :common_type => nil
               }],
               [3, {
                 :state => :missing,
-                :expected => {:value => "blargh", :type => :string},
-                :actual => nil,
+                :old_element => {:value => "blargh", :type => :string},
+                :new_element => nil,
                 :common_type => nil
               }]
             ]
           }],
           [2, {
             :state => :equal,
-            :expected => {:value => "ying", :type => :string},
-            :actual => {:value => "ying", :type => :string},
+            :old_element => {:value => "ying", :type => :string},
+            :new_element => {:value => "ying", :type => :string},
             :common_type => :string
           }]
         ]
@@ -574,11 +574,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deeper arrays with variously differing arrays" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => [
             "foo",
             ["bar", ["baz", "quux"]],
@@ -588,7 +588,7 @@ EOT
           :type => :array,
           :size => 4
         },
-        :actual => {
+        :new_element => {
           :value => [
             "foz",
             "bar",
@@ -602,30 +602,30 @@ EOT
         :breakdown => [
           [0, {
             :state => :inequal,
-            :expected => {:value => "foo", :type => :string},
-            :actual => {:value => "foz", :type => :string},
+            :old_element => {:value => "foo", :type => :string},
+            :new_element => {:value => "foz", :type => :string},
             :common_type => :string
           }],
           [1, {
             :state => :inequal,
-            :expected => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => nil
           }],
           [2, {
             :state => :equal,
-            :expected => {:value => "ying", :type => :string},
-            :actual => {:value => "ying", :type => :string},
+            :old_element => {:value => "ying", :type => :string},
+            :new_element => {:value => "ying", :type => :string},
             :common_type => :string
           }],
           [3, {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]],
               :type => :array,
               :size => 4
             },
-            :actual => {
+            :new_element => {
               :value => ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]],
               :type => :array,
               :size => 5
@@ -634,56 +634,56 @@ EOT
             :breakdown => [
               [0, {
                 :state => :equal,
-                :expected => {:value => "blargh", :type => :string},
-                :actual => {:value => "blargh", :type => :string},
+                :old_element => {:value => "blargh", :type => :string},
+                :new_element => {:value => "blargh", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => "zing", :type => :string},
-                :actual => {:value => "gragh", :type => :string},
+                :old_element => {:value => "zing", :type => :string},
+                :new_element => {:value => "gragh", :type => :string},
                 :common_type => :string
               }],
               [2, {
                 :state => :inequal,
-                :expected => {:value => "fooz", :type => :string},
-                :actual => {:value => 1, :type => :number},
+                :old_element => {:value => "fooz", :type => :string},
+                :new_element => {:value => 1, :type => :number},
                 :common_type => nil
               }],
               [3, {
                 :state => :inequal,
-                :expected => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
-                :actual => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
+                :old_element => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
+                :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
                     :state => :equal,
-                    :expected => {:value => "raz", :type => :string},
-                    :actual => {:value => "raz", :type => :string},
+                    :old_element => {:value => "raz", :type => :string},
+                    :new_element => {:value => "raz", :type => :string},
                     :common_type => :string
                   }],
                   [1, {
                     :state => :inequal,
-                    :expected => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
-                    :actual => {:value => ["ralston"], :type => :array, :size => 1},
+                    :old_element => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
+                    :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
                         :state => :inequal,
-                        :expected => {:value => "vermouth", :type => :string},
-                        :actual => {:value => "ralston", :type => :string},
+                        :old_element => {:value => "vermouth", :type => :string},
+                        :new_element => {:value => "ralston", :type => :string},
                         :common_type => :string
                       }],
                       [1, {
                         :state => :missing,
-                        :expected => {:value => "eee", :type => :string},
-                        :actual => nil,
+                        :old_element => {:value => "eee", :type => :string},
+                        :new_element => nil,
                         :common_type => nil
                       }],
                       [2, {
                         :state => :missing,
-                        :expected => {:value => "ffff", :type => :string},
-                        :actual => nil,
+                        :old_element => {:value => "ffff", :type => :string},
+                        :new_element => nil,
                         :common_type => nil
                       }]
                     ]
@@ -692,8 +692,8 @@ EOT
               }],
               [4, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => ["foreal", ["zap"]], :type => :array, :size => 2},
+                :old_element => nil,
+                :new_element => {:value => ["foreal", ["zap"]], :type => :array, :size => 2},
                 :common_type => nil
               }]
             ]
@@ -732,24 +732,24 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "shallow hashes of same size but differing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
-        :actual => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
+        :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
+        :new_element => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
             :state => :equal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => :string
           }],
           ["baz", {
             :state => :inequal,
-            :expected => {:value => "quux", :type => :string},
-            :actual => {:value => "quarx", :type => :string},
+            :old_element => {:value => "quux", :type => :string},
+            :new_element => {:value => "quarx", :type => :string},
             :common_type => :string
           }]
         ]
@@ -768,16 +768,16 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep hashes of same size but differing elements" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
           :type => :hash,
           :size => 2
         },
-        :actual => {
+        :new_element => {
           :value => {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}},
           :type => :hash,
           :size => 2
@@ -786,40 +786,40 @@ EOT
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
-            :actual => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
+            :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
+            :new_element => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               ["foo", {
                 :state => :inequal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "boo", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "boo", :type => :string},
                 :common_type => :string
               }],
               ["baz", {
                 :state => :equal,
-                :expected => {:value => "quux", :type => :string},
-                :actual => {:value => "quux", :type => :string},
+                :old_element => {:value => "quux", :type => :string},
+                :new_element => {:value => "quux", :type => :string},
                 :common_type => :string
               }]
             ]
           }],
           [:two, {
             :state => :inequal,
-            :expected => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
-            :actual => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
+            :old_element => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
+            :new_element => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               ["ying", {
                 :state => :inequal,
-                :expected => {:value => 1, :type => :number},
-                :actual => {:value => "yang", :type => :string},
+                :old_element => {:value => 1, :type => :number},
+                :new_element => {:value => "yang", :type => :string},
                 :common_type => nil
               }],
               ["zing", {
                 :state => :inequal,
-                :expected => {:value => :zang, :type => :symbol},
-                :actual => {:value => :bananas, :type => :symbol},
+                :old_element => {:value => :zang, :type => :symbol},
+                :new_element => {:value => :bananas, :type => :symbol},
                 :common_type => :symbol
               }]
             ]
@@ -848,11 +848,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deeper hashes with differing elements" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {
             "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
             "biz" => {:fiz => "gram", 1 => {2 => :sym}}
@@ -860,7 +860,7 @@ EOT
           :type => :hash,
           :size => 2
         },
-        :actual => {
+        :new_element => {
           :value => {
             "foo" => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
             "biz" => {:fiz => "graeme", 1 => 3}
@@ -872,12 +872,12 @@ EOT
         :breakdown => [
           ["foo", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
               :type => :hash,
               :size => 1
             },
-            :actual => {
+            :new_element => {
               :value => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
               :type => :hash,
               :size => 1
@@ -886,12 +886,12 @@ EOT
             :breakdown => [
               [1, {
                 :state => :inequal,
-                :expected => {
+                :old_element => {
                   :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
                   :type => :hash,
                   :size => 2
                 },
-                :actual => {
+                :new_element => {
                   :value => {"baz" => "quarx", "foz" => {"fram" => "razzle"}},
                   :type => :hash,
                   :size => 2
@@ -900,20 +900,20 @@ EOT
                 :breakdown => [
                   ["baz", {
                     :state => :inequal,
-                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :actual => {:value => "quarx", :type => :string},
+                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
+                    :new_element => {:value => "quarx", :type => :string},
                     :common_type => nil
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
-                    :actual => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
+                    :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
+                    :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
                     :breakdown => [
                       ["fram", {
                         :state => :inequal,
-                        :expected => {:value => "frazzle", :type => :string},
-                        :actual => {:value => "razzle", :type => :string},
+                        :old_element => {:value => "frazzle", :type => :string},
+                        :new_element => {:value => "razzle", :type => :string},
                         :common_type => :string
                       }]
                     ]
@@ -924,20 +924,20 @@ EOT
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
-            :actual => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
+            :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
+            :new_element => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
             :common_type => :hash,
             :breakdown => [
               [:fiz, {
                 :state => :inequal,
-                :expected => {:value => "gram", :type => :string},
-                :actual => {:value => "graeme", :type => :string},
+                :old_element => {:value => "gram", :type => :string},
+                :new_element => {:value => "graeme", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :actual => {:value => 3, :type => :number},
+                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
+                :new_element => {:value => 3, :type => :number},
                 :common_type => nil
               }]
             ]
@@ -971,30 +971,30 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "shallow hashes with surplus elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
-        :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+        :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+        :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
             :state => :equal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => :string
           }],
           ["baz", {
             :state => :surplus,
-            :expected => nil,
-            :actual => {:value => "quux", :type => :string},
+            :old_element => nil,
+            :new_element => {:value => "quux", :type => :string},
             :common_type => nil
           }],
           ["ying", {
             :state => :surplus,
-            :expected => nil,
-            :actual => {:value => "yang", :type => :string},
+            :old_element => nil,
+            :new_element => {:value => "yang", :type => :string},
             :common_type => nil
           }]
         ]
@@ -1012,30 +1012,30 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "shallow hashes with missing elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
-        :actual => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+        :old_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+        :new_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :common_type => :hash,
         :breakdown => [
           ["foo", {
             :state => :equal,
-            :expected => {:value => "bar", :type => :string},
-            :actual => {:value => "bar", :type => :string},
+            :old_element => {:value => "bar", :type => :string},
+            :new_element => {:value => "bar", :type => :string},
             :common_type => :string
           }],
           ["baz", {
             :state => :missing,
-            :expected => {:value => "quux", :type => :string},
-            :actual => nil,
+            :old_element => {:value => "quux", :type => :string},
+            :new_element => nil,
             :common_type => nil
           }],
           ["ying", {
             :state => :missing,
-            :expected => {:value => "yang", :type => :string},
-            :actual => nil,
+            :old_element => {:value => "yang", :type => :string},
+            :new_element => nil,
             :common_type => nil
           }]
         ]
@@ -1053,36 +1053,36 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep hashes with surplus elements" do
       data = {
         :state => :inequal,
-        :expected => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
-        :actual => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
+        :old_element => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
+        :new_element => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
         :common_type => :hash,
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
-            :actual => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+            :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+            :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
             :common_type => :hash,
             :breakdown => [
               ["foo", {
                 :state => :equal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "bar", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "bar", :type => :string},
                 :common_type => :string
               }],
               ["baz", {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => "quux", :type => :string},
+                :old_element => nil,
+                :new_element => {:value => "quux", :type => :string},
                 :common_type => nil
               }],
               ["ying", {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => "yang", :type => :string},
+                :old_element => nil,
+                :new_element => {:value => "yang", :type => :string},
                 :common_type => nil
               }]
             ]
@@ -1103,16 +1103,16 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deep hashes with missing elements" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
           :type => :hash,
           :size => 1
         },
-        :actual => {
+        :new_element => {
           :value => {"one" => {"foo" => "bar"}},
           :type => :hash,
           :size => 1
@@ -1121,12 +1121,12 @@ EOT
         :breakdown => [
           ["one", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
               :type => :hash,
               :size => 3
             },
-            :actual => {
+            :new_element => {
               :value => {"foo" => "bar"},
               :type => :hash,
               :size => 1
@@ -1135,20 +1135,20 @@ EOT
             :breakdown => [
               ["foo", {
                 :state => :equal,
-                :expected => {:value => "bar", :type => :string},
-                :actual => {:value => "bar", :type => :string},
+                :old_element => {:value => "bar", :type => :string},
+                :new_element => {:value => "bar", :type => :string},
                 :common_type => :string
               }],
               ["baz", {
                 :state => :missing,
-                :expected => {:value => "quux", :type => :string},
-                :actual => nil,
+                :old_element => {:value => "quux", :type => :string},
+                :new_element => nil,
                 :common_type => nil
               }],
               ["ying", {
                 :state => :missing,
-                :expected => {:value => "yang", :type => :string},
-                :actual => nil,
+                :old_element => {:value => "yang", :type => :string},
+                :new_element => nil,
                 :common_type => nil
               }]
             ]
@@ -1169,11 +1169,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "deeper hashes with variously differing hashes" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {
             "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
             "biz" => {:fiz => "gram", 1 => {2 => :sym}},
@@ -1182,7 +1182,7 @@ EOT
           :type => :hash,
           :size => 3
         },
-        :actual => {
+        :new_element => {
           :value => {
             "foo" => {1 => {"foz" => {"fram" => "razzle"}}},
             "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
@@ -1194,12 +1194,12 @@ EOT
         :breakdown => [
           ["foo", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
               :type => :hash,
               :size => 1
             },
-            :actual => {
+            :new_element => {
               :value => {1 => {"foz" => {"fram" => "razzle"}}},
               :type => :hash,
               :size => 1
@@ -1208,12 +1208,12 @@ EOT
             :breakdown => [
               [1, {
                 :state => :inequal,
-                :expected => {
+                :old_element => {
                   :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
                   :type => :hash,
                   :size => 2
                 },
-                :actual => {
+                :new_element => {
                   :value => {"foz" => {"fram" => "razzle"}},
                   :type => :hash,
                   :size => 1
@@ -1222,20 +1222,20 @@ EOT
                 :breakdown => [
                   ["baz", {
                     :state => :missing,
-                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :actual => nil,
+                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
+                    :new_element => nil,
                     :common_type => nil
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
-                    :actual => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
+                    :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
+                    :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
                     :breakdown => [
                       ["fram", {
                         :state => :inequal,
-                        :expected => {:value => "frazzle", :type => :string},
-                        :actual => {:value => "razzle", :type => :string},
+                        :old_element => {:value => "frazzle", :type => :string},
+                        :new_element => {:value => "razzle", :type => :string},
                         :common_type => :string
                       }]
                     ]
@@ -1246,34 +1246,34 @@ EOT
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
-            :actual => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
+            :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
+            :new_element => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
             :common_type => :hash,
             :breakdown => [
               [:fiz, {
                 :state => :inequal,
-                :expected => {:value => "gram", :type => :string},
-                :actual => {:value => "graeme", :type => :string},
+                :old_element => {:value => "gram", :type => :string},
+                :new_element => {:value => "graeme", :type => :string},
                 :common_type => :string
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :actual => {:value => 3, :type => :number},
+                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
+                :new_element => {:value => 3, :type => :number},
                 :common_type => nil
               }],
               [42, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
+                :old_element => nil,
+                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
                 :common_type => nil
               }]
             ]
           }],
           ["bananas", {
             :state => :missing,
-            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :actual => nil,
+            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
+            :new_element => nil,
             :common_type => nil
           }]
         ]
@@ -1305,11 +1305,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "arrays and hashes, mixed" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {
             "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
             "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
@@ -1318,7 +1318,7 @@ EOT
           :type => :hash,
           :size => 3
         },
-        :actual => {
+        :new_element => {
           :value => {
             "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
             "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
@@ -1330,12 +1330,12 @@ EOT
         :breakdown => [
           ["foo", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
               :type => :hash,
               :size => 1
             },
-            :actual => {
+            :new_element => {
               :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
               :type => :hash,
               :size => 1
@@ -1344,12 +1344,12 @@ EOT
             :breakdown => [
               [1, {
                 :state => :inequal,
-                :expected => {
+                :old_element => {
                   :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
                   :type => :hash,
                   :size => 2
                 },
-                :actual => {
+                :new_element => {
                   :value => {"foz" => ["apple", "banana", "orange"]},
                   :type => :hash,
                   :size => 1
@@ -1358,32 +1358,32 @@ EOT
                 :breakdown => [
                   ["baz", {
                     :state => :missing,
-                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :actual => nil,
+                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
+                    :new_element => nil,
                     :common_type => nil,
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
-                    :actual => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
+                    :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
+                    :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
                         :state => :equal,
-                        :expected => {:value => "apple", :type => :string},
-                        :actual => {:value => "apple", :type => :string},
+                        :old_element => {:value => "apple", :type => :string},
+                        :new_element => {:value => "apple", :type => :string},
                         :common_type => :string
                       }],
                       [1, {
                         :state => :inequal,
-                        :expected => {:value => "bananna", :type => :string},
-                        :actual => {:value => "banana", :type => :string},
+                        :old_element => {:value => "bananna", :type => :string},
+                        :new_element => {:value => "banana", :type => :string},
                         :common_type => :string
                       }],
                       [2, {
                         :state => :equal,
-                        :expected => {:value => "orange", :type => :string},
-                        :actual => {:value => "orange", :type => :string},
+                        :old_element => {:value => "orange", :type => :string},
+                        :new_element => {:value => "orange", :type => :string},
                         :common_type => :string
                       }]
                     ]
@@ -1394,12 +1394,12 @@ EOT
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
               :type => :hash,
               :size => 2
             },
-            :actual => {
+            :new_element => {
               :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
               :type => :hash,
               :size => 3
@@ -1408,54 +1408,54 @@ EOT
             :breakdown => [
               [:fiz, {
                 :state => :inequal,
-                :expected => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
-                :actual => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
+                :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
+                :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
                     :state => :inequal,
-                    :expected => {:value => "bing", :type => :string},
-                    :actual => {:value => "bang", :type => :string},
+                    :old_element => {:value => "bing", :type => :string},
+                    :new_element => {:value => "bang", :type => :string},
                     :common_type => :string
                   }],
                   [1, {
                     :state => :equal,
-                    :expected => {:value => "bong", :type => :string},
-                    :actual => {:value => "bong", :type => :string},
+                    :old_element => {:value => "bong", :type => :string},
+                    :new_element => {:value => "bong", :type => :string},
                     :common_type => :string,
                   }],
                   [2, {
                     :state => :equal,
-                    :expected => {:value => "bam", :type => :string},
-                    :actual => {:value => "bam", :type => :string},
+                    :old_element => {:value => "bam", :type => :string},
+                    :new_element => {:value => "bam", :type => :string},
                     :common_type => :string,
                   }],
                   [3, {
                     :state => :surplus,
-                    :expected => nil,
-                    :actual => {:value => "splat", :type => :string},
+                    :old_element => nil,
+                    :new_element => {:value => "splat", :type => :string},
                     :common_type => nil
                   }]
                 ]
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :actual => {:value => 3, :type => :number},
+                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
+                :new_element => {:value => 3, :type => :number},
                 :common_type => nil
               }],
               [42, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
+                :old_element => nil,
+                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
                 :common_type => nil
               }]
             ]
           }],
           ["bananas", {
             :state => :missing,
-            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :actual => nil,
+            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
+            :new_element => nil,
             :common_type => nil
           }]
         ]
@@ -1489,11 +1489,11 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "collapsed output" do
       data = {
         :state => :inequal,
-        :expected => {
+        :old_element => {
           :value => {
             "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
             "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
@@ -1502,7 +1502,7 @@ EOT
           :type => :hash,
           :size => 3
         },
-        :actual => {
+        :new_element => {
           :value => {
             "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
             "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
@@ -1514,12 +1514,12 @@ EOT
         :breakdown => [
           ["foo", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
               :type => :hash,
               :size => 1
             },
-            :actual => {
+            :new_element => {
               :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
               :type => :hash,
               :size => 1
@@ -1528,12 +1528,12 @@ EOT
             :breakdown => [
               [1, {
                 :state => :inequal,
-                :expected => {
+                :old_element => {
                   :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
                   :type => :hash,
                   :size => 2
                 },
-                :actual => {
+                :new_element => {
                   :value => {"foz" => ["apple", "banana", "orange"]},
                   :type => :hash,
                   :size => 1
@@ -1542,32 +1542,32 @@ EOT
                 :breakdown => [
                   ["baz", {
                     :state => :missing,
-                    :expected => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :actual => nil,
+                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
+                    :new_element => nil,
                     :common_type => nil,
                   }],
                   ["foz", {
                     :state => :inequal,
-                    :expected => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
-                    :actual => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
+                    :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
+                    :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
                     :breakdown => [
                       [0, {
                         :state => :equal,
-                        :expected => {:value => "apple", :type => :string},
-                        :actual => {:value => "apple", :type => :string},
+                        :old_element => {:value => "apple", :type => :string},
+                        :new_element => {:value => "apple", :type => :string},
                         :common_type => :string
                       }],
                       [1, {
                         :state => :inequal,
-                        :expected => {:value => "bananna", :type => :string},
-                        :actual => {:value => "banana", :type => :string},
+                        :old_element => {:value => "bananna", :type => :string},
+                        :new_element => {:value => "banana", :type => :string},
                         :common_type => :string
                       }],
                       [2, {
                         :state => :equal,
-                        :expected => {:value => "orange", :type => :string},
-                        :actual => {:value => "orange", :type => :string},
+                        :old_element => {:value => "orange", :type => :string},
+                        :new_element => {:value => "orange", :type => :string},
                         :common_type => :string
                       }]
                     ]
@@ -1578,12 +1578,12 @@ EOT
           }],
           ["biz", {
             :state => :inequal,
-            :expected => {
+            :old_element => {
               :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
               :type => :hash,
               :size => 2
             },
-            :actual => {
+            :new_element => {
               :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
               :type => :hash,
               :size => 3
@@ -1592,54 +1592,54 @@ EOT
             :breakdown => [
               [:fiz, {
                 :state => :inequal,
-                :expected => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
-                :actual => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
+                :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
+                :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
                 :breakdown => [
                   [0, {
                     :state => :inequal,
-                    :expected => {:value => "bing", :type => :string},
-                    :actual => {:value => "bang", :type => :string},
+                    :old_element => {:value => "bing", :type => :string},
+                    :new_element => {:value => "bang", :type => :string},
                     :common_type => :string
                   }],
                   [1, {
                     :state => :equal,
-                    :expected => {:value => "bong", :type => :string},
-                    :actual => {:value => "bong", :type => :string},
+                    :old_element => {:value => "bong", :type => :string},
+                    :new_element => {:value => "bong", :type => :string},
                     :common_type => :string,
                   }],
                   [2, {
                     :state => :equal,
-                    :expected => {:value => "bam", :type => :string},
-                    :actual => {:value => "bam", :type => :string},
+                    :old_element => {:value => "bam", :type => :string},
+                    :new_element => {:value => "bam", :type => :string},
                     :common_type => :string,
                   }],
                   [3, {
                     :state => :surplus,
-                    :expected => nil,
-                    :actual => {:value => "splat", :type => :string},
+                    :old_element => nil,
+                    :new_element => {:value => "splat", :type => :string},
                     :common_type => nil
                   }]
                 ]
               }],
               [1, {
                 :state => :inequal,
-                :expected => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :actual => {:value => 3, :type => :number},
+                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
+                :new_element => {:value => 3, :type => :number},
                 :common_type => nil
               }],
               [42, {
                 :state => :surplus,
-                :expected => nil,
-                :actual => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
+                :old_element => nil,
+                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
                 :common_type => nil
               }]
             ]
           }],
           ["bananas", {
             :state => :missing,
-            :expected => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :actual => nil,
+            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
+            :new_element => nil,
             :common_type => nil
           }]
         ]
@@ -1668,13 +1668,13 @@ Breakdown:
 EOT
       out.must == msg
     end
-  
+
     specify "custom string differ"
-    
+
     specify "custom array differ"
-  
+
     specify "custom hash differ"
-  
+
     specify "custom object differ"
   end
 end

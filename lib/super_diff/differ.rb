@@ -1,97 +1,97 @@
 module SuperDiff
   class Differ
-    def diff!(expected, actual)
-      @data = diff(expected, actual)
+    def diff!(old_element, new_element)
+      @data = diff(old_element, new_element)
       self
     end
-    
-    def diff(expected, actual)
-      _diff(:expected => expected, :actual => actual)
+
+    def diff(old_element, new_element)
+      _diff(:old_element => old_element, :new_element => new_element)
     end
-    
+
     def report_to(stdout, data=@data)
       Reporter.new(stdout).report(data)
     end
     alias :report :report_to
-    
+
   private
     def _diff(args)
-      data = {:expected => nil, :actual => nil, :common_type => nil}
-      data[:expected] = value_data_for(args[:expected]) if args[:expected]
-      data[:actual] = value_data_for(args[:actual]) if args[:actual]
-      if data[:expected] && data[:actual] && data[:expected][:type] == data[:actual][:type]
-        data[:common_type] = data[:expected][:type]
+      data = {:old_element => nil, :new_element => nil, :common_type => nil}
+      data[:old_element] = value_data_for(args[:old_element]) if args[:old_element]
+      data[:new_element] = value_data_for(args[:new_element]) if args[:new_element]
+      if data[:old_element] && data[:new_element] && data[:old_element][:type] == data[:new_element][:type]
+        data[:common_type] = data[:old_element][:type]
       end
-      
+
       diff_method = "_diff_#{data[:common_type]}"
       if data[:common_type] && respond_to?(diff_method, true)
-        equal, breakdown = __send__(diff_method, args[:expected], args[:actual])
+        equal, breakdown = __send__(diff_method, args[:old_element], args[:new_element])
       else
-        equal = (args[:expected] == args[:actual])
+        equal = (args[:old_element] == args[:new_element])
       end
-      
-      if args[:expected] && args[:actual]
+
+      if args[:old_element] && args[:new_element]
         data[:state] = (equal ? :equal : :inequal)
-      elsif args[:expected]
+      elsif args[:old_element]
         data[:state] = :missing
-      elsif args[:actual]
+      elsif args[:new_element]
         data[:state] = :surplus
       end
       data[:breakdown] = breakdown if breakdown
       data
     end
-  
-    def _diff_array(expected, actual)
+
+    def _diff_array(old_element, new_element)
       equal = true
       breakdown = []
-      (0...expected.size).each do |i|
-        if i > actual.size - 1
-          subdata = _diff(:expected => expected[i])
+      (0...old_element.size).each do |i|
+        if i > new_element.size - 1
+          subdata = _diff(:old_element => old_element[i])
           equal = false
         else
-          subdata = _diff(:expected => expected[i], :actual => actual[i])
+          subdata = _diff(:old_element => old_element[i], :new_element => new_element[i])
           equal &&= (subdata[:state] == :equal)
         end
         breakdown << [i, subdata]
       end
-      if actual.size > expected.size
+      if new_element.size > old_element.size
         equal = false
-        (expected.size .. actual.size-1).each do |i|
-          subdata = _diff(:actual => actual[i])
+        (old_element.size .. new_element.size-1).each do |i|
+          subdata = _diff(:new_element => new_element[i])
           breakdown << [i, subdata]
         end
       end
       [equal, breakdown]
     end
-    
-    def _diff_hash(expected, actual)
+
+    def _diff_hash(old_element, new_element)
       equal = true
       breakdown = []
-      expected.keys.each do |k|
-        if actual.include?(k)
-          subdata = _diff(:expected => expected[k], :actual => actual[k])
+      old_element.keys.each do |k|
+        if new_element.include?(k)
+          subdata = _diff(:old_element => old_element[k], :new_element => new_element[k])
           equal &&= (subdata[:state] == :equal)
         else
-          subdata = _diff(:expected => expected[k])
+          subdata = _diff(:old_element => old_element[k])
           equal = false
         end
         breakdown << [k, subdata]
       end
-      (actual.keys - expected.keys).each do |k|
+      (new_element.keys - old_element.keys).each do |k|
         equal = false
-        subdata = _diff(:actual => actual[k])
+        subdata = _diff(:new_element => new_element[k])
         breakdown << [k, subdata]
       end
       [equal, breakdown]
     end
-    
+
     def type_of(value)
       case value
         when Fixnum then :number
         else value.class.to_s.downcase.to_sym
       end
     end
-    
+
     def value_data_for(value)
       data = {:value => value, :type => type_of(value)}
       data[:size] = value.size if value.is_a?(Enumerable)
