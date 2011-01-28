@@ -7,74 +7,74 @@ describe SuperDiff::Differ do
 
   describe '#diff', 'generates correct data for' do
     specify "same strings" do
-      new_element = @differ.diff("foo", "foo")
-      old_element = {
+      actual = @differ.diff("foo", "foo")
+      expected = {
         :state => :equal,
         :old_element => {:value => "foo", :type => :string},
         :new_element => {:value => "foo", :type => :string},
         :common_type => :string
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "differing strings" do
-      new_element = @differ.diff("foo", "bar")
-      old_element = {
+      actual = @differ.diff("foo", "bar")
+      expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
         :new_element => {:value => "bar", :type => :string},
         :common_type => :string
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "same numbers" do
-      new_element = @differ.diff(1, 1)
-      old_element = {
+      actual = @differ.diff(1, 1)
+      expected = {
         :state => :equal,
         :old_element => {:value => 1, :type => :number},
         :new_element => {:value => 1, :type => :number},
         :common_type => :number
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "differing numbers" do
-      new_element = @differ.diff(1, 2)
-      old_element = {
+      actual = @differ.diff(1, 2)
+      expected = {
         :state => :inequal,
         :old_element => {:value => 1, :type => :number},
         :new_element => {:value => 2, :type => :number},
         :common_type => :number
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "values of differing simple types" do
-      new_element = @differ.diff("foo", 1)
-      old_element = {
+      actual = @differ.diff("foo", 1)
+      expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
         :new_element => {:value => 1, :type => :number},
         :common_type => nil
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "values of differing complex types" do
-      new_element = @differ.diff("foo", %w(zing zang))
-      old_element = {
+      actual = @differ.diff("foo", %w(zing zang))
+      expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
         :new_element => {:value => %w(zing zang), :type => :array, :size => 2},
         :common_type => nil
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow arrays of same size but with differing elements" do
-      new_element = @differ.diff(["foo", "bar"], ["foo", "baz"])
-      old_element = {
+      actual = @differ.diff(["foo", "bar"], ["foo", "baz"])
+      expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "baz"], :type => :array, :size => 2},
@@ -94,15 +94,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow arrays with inserted elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         %w(a b),
         %w(a 1 2 b),
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => %w(a b), :type => :array, :size => 2},
         :new_element => {:value => %w(a 1 2 b), :type => :array, :size => 4},
@@ -134,14 +134,15 @@ describe SuperDiff::Differ do
           }
         ]
       }
+      actual.must == expected
     end
 
     specify "deep arrays of same size but with differing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         [["foo", "bar"], ["baz", "quux"]],
         [["foo", "biz"], ["baz", "quarks"]]
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
         :new_element => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
@@ -189,11 +190,11 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deeper arrays with differing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         [
           "foo",
           ["bar", ["baz", "quux"]],
@@ -207,7 +208,7 @@ describe SuperDiff::Differ do
           ["blargh", "gragh", 1, ["raz", ["ralston"]]]
         ]
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => [
@@ -313,12 +314,12 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow arrays with surplus elements" do
-      new_element = @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
-      old_element = {
+      actual = @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
+      expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
@@ -350,12 +351,12 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow arrays with missing elements" do
-      new_element = @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
-      old_element = {
+      actual = @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
+      expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :new_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -387,15 +388,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deep arrays with surplus elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         ["foo", ["bar", "baz"], "ying"],
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
@@ -447,15 +448,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deep arrays with missing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"],
         ["foo", ["bar", "baz"], "ying"]
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
@@ -507,11 +508,11 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deeper arrays with variously differing arrays" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         [
           "foo",
           ["bar", ["baz", "quux"]],
@@ -525,7 +526,7 @@ describe SuperDiff::Differ do
           ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]
         ]
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => [
@@ -649,15 +650,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow hashes of same size but differing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"foo" => "bar", "baz" => "quux"},
         {"foo" => "bar", "baz" => "quarx"}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
         :new_element => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
@@ -677,15 +678,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deep hashes of same size but differing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
         {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
@@ -741,11 +742,11 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deeper hashes with differing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
           "biz" => {:fiz => "gram", 1 => {2 => :sym}}
@@ -755,7 +756,7 @@ describe SuperDiff::Differ do
           "biz" => {:fiz => "graeme", 1 => 3}
         }
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => {
@@ -849,15 +850,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow hashes with surplus elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"foo" => "bar"},
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
@@ -883,15 +884,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "shallow hashes with missing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
         {"foo" => "bar"}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :new_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
@@ -917,15 +918,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deep hashes with surplus elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"one" => {"foo" => "bar"}},
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
         :new_element => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
@@ -959,15 +960,15 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deep hashes with missing elements" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
         {"one" => {"foo" => "bar"}}
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
@@ -1017,11 +1018,11 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "deeper hashes with variously differing hashes" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
           "biz" => {:fiz => "gram", 1 => {2 => :sym}},
@@ -1032,7 +1033,7 @@ describe SuperDiff::Differ do
           "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
         }
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => {
@@ -1139,11 +1140,11 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
 
     specify "arrays and hashes, mixed" do
-      new_element = @differ.diff(
+      actual = @differ.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
           "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
@@ -1154,7 +1155,7 @@ describe SuperDiff::Differ do
           "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
         }
       )
-      old_element = {
+      expected = {
         :state => :inequal,
         :old_element => {
           :value => {
@@ -1307,7 +1308,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      new_element.must == old_element
+      actual.must == expected
     end
   end
 end
