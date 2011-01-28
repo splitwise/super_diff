@@ -12,6 +12,7 @@ module SuperDiff
     def report_to(stdout, data=@data)
       Reporter.new(stdout).report(data)
     end
+    alias :report :report_to
     
   private
     def _diff(args)

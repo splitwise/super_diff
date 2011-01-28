@@ -96,6 +96,45 @@ describe SuperDiff::Differ do
       }
       actual.must == expected
     end
+    
+    specify "shallow arrays with inserted elements" do
+      actual = @differ.diff(
+        %w(a b),
+        %w(a 1 2 b),
+      )
+      expected = {
+        :state => :inequal,
+        :expected => {:value => %w(a b), :type => :array, :size => 2},
+        :actual => {:value => %w(a 1 2 b), :type => :array, :size => 4},
+        :common_type => :array,
+        :breakdown => [
+          {
+            :state => :equal,
+            :expected => {:value => "a", :type => :string, :location => 0},
+            :actual => {:value => "foo", :type => :string, :location => 0},
+            :common_type => :string
+          },
+          {
+            :state => :surplus,
+            :expected => nil,
+            :actual => {:value => "1", :type => :string},
+            :common_type => nil
+          },
+          {
+            :state => :surplus,
+            :expected => nil,
+            :actual => {:value => "2", :type => :string},
+            :common_type => nil
+          },
+          {
+            :state => :moved,
+            :expected => {:value => "b", :type => :string, :location => 1},
+            :actual => {:value => "b", :type => :string, :location => 3},
+            :common_type => :string
+          }
+        ]
+      }
+    end
   
     specify "deep arrays of same size but with differing elements" do
       actual = @differ.diff(
