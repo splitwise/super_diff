@@ -80,12 +80,7 @@ Check out the [issue tracker](http://github.com/mcmire/super_diff/issues). If yo
 
 ## Can I hack on it?
 
-Totally! Here's what you need to do to get going:
-
-* If you use RVM, `rvm install 1.9.2` with a "super_diff" gemset. There's an .rvmrc so when you drop into the repo (assuming you've cloned it) you'll be in the gemset automatically.
-
-  If you aren't using RVM, you'll still want to install 1.9. It won't be required to actually use SuperDiff in production, but it's important for testing since hashes are ordered in 1.9 and therefore the output the Reporter generates is done so in a guaranteed order.
-* Install Bundler, then `bundle install` (this is only for development; SuperDiff proper doesn't require any dependencies).
+Totally! All you should have to do is run `bundle install` (this is only for development; SuperDiff proper doesn't require any dependencies), then hack away!
 
 If you're contributing an idea or fixing a bug:
 
