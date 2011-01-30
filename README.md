@@ -80,7 +80,7 @@ Check out the [issue tracker](http://github.com/mcmire/super_diff/issues). If yo
 
 ## Can I hack on it?
 
-Totally! All you should have to do is run `bundle install` (this is only for development; SuperDiff proper doesn't require any dependencies), then hack away!
+Totally! All you'll need to do is install Ruby 1.9, then run `bundle install`. (Neither Ruby 1.9 nor Bundler will be required to use SuperDiff in production code; 1.9 is only necessary for testing, since hashes are defined in a guaranteed order, and there are a few development dependencies so I'm merely using Bundler for convenience.)
 
 If you're contributing an idea or fixing a bug:
 
