@@ -12,8 +12,8 @@ module SuperDiff
     def _report(data, args)
       return if data[:state] == :equal
 
-      if !args[:root] && args[:collapsed] && data[:breakdown]
-        _report_breakdown(data[:breakdown], args)
+      if !args[:root] && args[:collapsed] && data[:details]
+        _report_details(data[:details], args)
         return
       end
 
@@ -33,7 +33,7 @@ module SuperDiff
         plural_type = pluralize(data[:common_type]).capitalize
         if data[:old_element][:size] == data[:new_element][:size]
           puts "#{formatted_prefix}: #{plural_type} of same size but with differing elements."
-        elsif data[:breakdown].none? {|k, subdata| subdata[:state] == :inequal }
+        elsif data[:details].none? {|k, subdata| subdata[:state] == :inequal }
           puts "#{formatted_prefix}: #{plural_type} of differing size (no differing elements)."
         else
           puts "#{formatted_prefix}: #{plural_type} of differing size and elements."
@@ -43,23 +43,23 @@ module SuperDiff
         puts "#{formatted_prefix}: Differing #{plural_type}."
       end
       puts if args[:root]
-      if data[:state] == :inequal && (args[:root] || !data[:common_type] || !data[:breakdown])
+      if data[:state] == :inequal && (args[:root] || !data[:common_type] || !data[:details])
         maybe_bullet = args[:root] ? "" : indented_bullet(args[:level] + 1)
         puts "#{maybe_bullet}Expected: #{data[:old_element][:value].inspect}"
         puts "#{maybe_bullet}Got: #{data[:new_element][:value].inspect}"
       end
-      if data[:breakdown]
+      if data[:details]
         if args[:root]
           puts
-          puts "Breakdown:"
+          puts "Details:"
         end
         new_level = args[:root] ? args[:level] : args[:level]+1
-        _report_breakdown(data[:breakdown], args.merge(:level => new_level))
+        _report_details(data[:details], args.merge(:level => new_level))
       end
     end
 
-    def _report_breakdown(breakdown, args)
-      breakdown.each do |(key, subdata)|
+    def _report_details(details, args)
+      details.each do |(key, subdata)|
         new_prefix = args[:collapsed] ? "#{args[:prefix]}[#{key.inspect}]" : "*[#{key.inspect}]"
         new_args = args.merge(:prefix => new_prefix, :root => false)
         _report(subdata, new_args)

@@ -25,7 +25,7 @@ module SuperDiff
 
       diff_method = "_diff_#{data[:common_type]}"
       if data[:common_type] && respond_to?(diff_method, true)
-        equal, breakdown = __send__(diff_method, args[:old_element], args[:new_element])
+        equal, details = __send__(diff_method, args[:old_element], args[:new_element])
       else
         equal = (args[:old_element] == args[:new_element])
       end
@@ -37,13 +37,13 @@ module SuperDiff
       elsif args[:new_element]
         data[:state] = :surplus
       end
-      data[:breakdown] = breakdown if breakdown
+      data[:details] = details if details
       data
     end
 
     def _diff_array(old_element, new_element)
       equal = true
-      breakdown = []
+      details = []
       (0...old_element.size).each do |i|
         if i > new_element.size - 1
           subdata = _diff(:old_element => old_element[i])
@@ -52,21 +52,21 @@ module SuperDiff
           subdata = _diff(:old_element => old_element[i], :new_element => new_element[i])
           equal &&= (subdata[:state] == :equal)
         end
-        breakdown << [i, subdata]
+        details << [i, subdata]
       end
       if new_element.size > old_element.size
         equal = false
         (old_element.size .. new_element.size-1).each do |i|
           subdata = _diff(:new_element => new_element[i])
-          breakdown << [i, subdata]
+          details << [i, subdata]
         end
       end
-      [equal, breakdown]
+      [equal, details]
     end
 
     def _diff_hash(old_element, new_element)
       equal = true
-      breakdown = []
+      details = []
       old_element.keys.each do |k|
         if new_element.include?(k)
           subdata = _diff(:old_element => old_element[k], :new_element => new_element[k])
@@ -75,14 +75,14 @@ module SuperDiff
           subdata = _diff(:old_element => old_element[k])
           equal = false
         end
-        breakdown << [k, subdata]
+        details << [k, subdata]
       end
       (new_element.keys - old_element.keys).each do |k|
         equal = false
         subdata = _diff(:new_element => new_element[k])
-        breakdown << [k, subdata]
+        details << [k, subdata]
       end
-      [equal, breakdown]
+      [equal, details]
     end
 
     def type_of(value)

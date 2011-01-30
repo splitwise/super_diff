@@ -79,7 +79,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "baz"], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -107,7 +107,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => %w(a b), :type => :array, :size => 2},
         :new_element => {:value => %w(a 1 2 b), :type => :array, :size => 4},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           {
             :state => :equal,
             :old_element => {:value => "a", :type => :string, :location => 0},
@@ -147,13 +147,13 @@ describe SuperDiff::Differ do
         :old_element => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
         :new_element => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
             :new_element => {:value => ["foo", "biz"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "foo", :type => :string},
@@ -173,7 +173,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => ["baz", "quux"], :type => :array, :size => 2},
             :new_element => {:value => ["baz", "quarks"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "baz", :type => :string},
@@ -231,7 +231,7 @@ describe SuperDiff::Differ do
           :size => 4
         },
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => "foo", :type => :string},
@@ -263,7 +263,7 @@ describe SuperDiff::Differ do
               :size => 4
             },
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "blargh", :type => :string},
@@ -287,7 +287,7 @@ describe SuperDiff::Differ do
                 :old_element => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
                 :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :equal,
                     :old_element => {:value => "raz", :type => :string},
@@ -299,7 +299,7 @@ describe SuperDiff::Differ do
                     :old_element => {:value => ["vermouth"], :type => :array, :size => 1},
                     :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :inequal,
                         :old_element => {:value => "vermouth", :type => :string},
@@ -324,7 +324,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -361,7 +361,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :new_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -401,7 +401,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -413,7 +413,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :new_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -461,7 +461,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -473,7 +473,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :new_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -549,7 +549,7 @@ describe SuperDiff::Differ do
           :size => 4
         },
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => "foo", :type => :string},
@@ -581,7 +581,7 @@ describe SuperDiff::Differ do
               :size => 5
             },
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "blargh", :type => :string},
@@ -605,7 +605,7 @@ describe SuperDiff::Differ do
                 :old_element => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
                 :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :equal,
                     :old_element => {:value => "raz", :type => :string},
@@ -617,7 +617,7 @@ describe SuperDiff::Differ do
                     :old_element => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
                     :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :inequal,
                         :old_element => {:value => "vermouth", :type => :string},
@@ -663,7 +663,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
         :new_element => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -699,13 +699,13 @@ describe SuperDiff::Differ do
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
             :new_element => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :inequal,
                 :old_element => {:value => "bar", :type => :string},
@@ -725,7 +725,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
             :new_element => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["ying", {
                 :state => :inequal,
                 :old_element => {:value => 1, :type => :number},
@@ -775,7 +775,7 @@ describe SuperDiff::Differ do
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -789,7 +789,7 @@ describe SuperDiff::Differ do
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -803,7 +803,7 @@ describe SuperDiff::Differ do
                   :size => 2
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :inequal,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -815,7 +815,7 @@ describe SuperDiff::Differ do
                     :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
                     :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
-                    :breakdown => [
+                    :details => [
                       ["fram", {
                         :state => :inequal,
                         :old_element => {:value => "frazzle", :type => :string},
@@ -833,7 +833,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
             :new_element => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => "gram", :type => :string},
@@ -863,7 +863,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -897,7 +897,7 @@ describe SuperDiff::Differ do
         :old_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :new_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -931,13 +931,13 @@ describe SuperDiff::Differ do
         :old_element => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
         :new_element => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
             :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -981,7 +981,7 @@ describe SuperDiff::Differ do
           :size => 1
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {
@@ -995,7 +995,7 @@ describe SuperDiff::Differ do
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -1053,7 +1053,7 @@ describe SuperDiff::Differ do
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -1067,7 +1067,7 @@ describe SuperDiff::Differ do
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -1081,7 +1081,7 @@ describe SuperDiff::Differ do
                   :size => 1
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :missing,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -1093,7 +1093,7 @@ describe SuperDiff::Differ do
                     :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
                     :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
-                    :breakdown => [
+                    :details => [
                       ["fram", {
                         :state => :inequal,
                         :old_element => {:value => "frazzle", :type => :string},
@@ -1111,7 +1111,7 @@ describe SuperDiff::Differ do
             :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
             :new_element => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => "gram", :type => :string},
@@ -1175,7 +1175,7 @@ describe SuperDiff::Differ do
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -1189,7 +1189,7 @@ describe SuperDiff::Differ do
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -1203,7 +1203,7 @@ describe SuperDiff::Differ do
                   :size => 1
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :missing,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -1215,7 +1215,7 @@ describe SuperDiff::Differ do
                     :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
                     :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :equal,
                         :old_element => {:value => "apple", :type => :string},
@@ -1253,13 +1253,13 @@ describe SuperDiff::Differ do
               :size => 3
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
                 :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :inequal,
                     :old_element => {:value => "bing", :type => :string},

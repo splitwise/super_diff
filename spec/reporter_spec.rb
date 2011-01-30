@@ -109,7 +109,7 @@ EOT
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "baz"], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -131,7 +131,7 @@ Error: Arrays of same size but with differing elements.
 Expected: ["foo", "bar"]
 Got: ["foo", "baz"]
 
-Breakdown:
+Details:
 - *[1]: Differing strings.
   - Expected: "bar"
   - Got: "baz"
@@ -145,13 +145,13 @@ EOT
         :old_element => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
         :new_element => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
             :new_element => {:value => ["foo", "biz"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "foo", :type => :string},
@@ -171,7 +171,7 @@ EOT
             :old_element => {:value => ["baz", "quux"], :type => :array, :size => 2},
             :new_element => {:value => ["baz", "quarks"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "baz", :type => :string},
@@ -195,7 +195,7 @@ Error: Arrays of same size but with differing elements.
 Expected: [["foo", "bar"], ["baz", "quux"]]
 Got: [["foo", "biz"], ["baz", "quarks"]]
 
-Breakdown:
+Details:
 - *[0]: Arrays of same size but with differing elements.
   - *[1]: Differing strings.
     - Expected: "bar"
@@ -232,7 +232,7 @@ EOT
           :size => 4
         },
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => "foo", :type => :string},
@@ -264,7 +264,7 @@ EOT
               :size => 4
             },
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "blargh", :type => :string},
@@ -288,7 +288,7 @@ EOT
                 :old_element => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
                 :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :equal,
                     :old_element => {:value => "raz", :type => :string},
@@ -300,7 +300,7 @@ EOT
                     :old_element => {:value => ["vermouth"], :type => :array, :size => 1},
                     :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :inequal,
                         :old_element => {:value => "vermouth", :type => :string},
@@ -322,7 +322,7 @@ Error: Arrays of same size but with differing elements.
 Expected: ["foo", ["bar", ["baz", "quux"]], "ying", ["blargh", "zing", "fooz", ["raz", ["vermouth"]]]]
 Got: ["foz", "bar", "ying", ["blargh", "gragh", 1, ["raz", ["ralston"]]]]
 
-Breakdown:
+Details:
 - *[0]: Differing strings.
   - Expected: "foo"
   - Got: "foz"
@@ -351,7 +351,7 @@ EOT
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :new_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -385,7 +385,7 @@ Error: Arrays of differing size (no differing elements).
 Expected: ["foo", "bar"]
 Got: ["foo", "bar", "baz", "quux"]
 
-Breakdown:
+Details:
 - *[2]: Expected to not be present, but found "baz".
 - *[3]: Expected to not be present, but found "quux".
 EOT
@@ -398,7 +398,7 @@ EOT
         :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
         :new_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -432,7 +432,7 @@ Error: Arrays of differing size (no differing elements).
 Expected: ["foo", "bar", "baz", "quux"]
 Got: ["foo", "bar"]
 
-Breakdown:
+Details:
 - *[2]: Expected to have been found, but missing "baz".
 - *[3]: Expected to have been found, but missing "quux".
 EOT
@@ -445,7 +445,7 @@ EOT
         :old_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -457,7 +457,7 @@ EOT
             :old_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :new_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -499,7 +499,7 @@ Error: Arrays of same size but with differing elements.
 Expected: ["foo", ["bar", "baz"], "ying"]
 Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 
-Breakdown:
+Details:
 - *[1]: Arrays of differing size (no differing elements).
   - *[2]: Expected to not be present, but found "quux".
   - *[3]: Expected to not be present, but found "blargh".
@@ -513,7 +513,7 @@ EOT
         :old_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
         :new_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :equal,
             :old_element => {:value => "foo", :type => :string},
@@ -525,7 +525,7 @@ EOT
             :old_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
             :new_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -567,7 +567,7 @@ Error: Arrays of same size but with differing elements.
 Expected: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
 Got: ["foo", ["bar", "baz"], "ying"]
 
-Breakdown:
+Details:
 - *[1]: Arrays of differing size (no differing elements).
   - *[2]: Expected to have been found, but missing "quux".
   - *[3]: Expected to have been found, but missing "blargh".
@@ -599,7 +599,7 @@ EOT
           :size => 4
         },
         :common_type => :array,
-        :breakdown => [
+        :details => [
           [0, {
             :state => :inequal,
             :old_element => {:value => "foo", :type => :string},
@@ -631,7 +631,7 @@ EOT
               :size => 5
             },
             :common_type => :array,
-            :breakdown => [
+            :details => [
               [0, {
                 :state => :equal,
                 :old_element => {:value => "blargh", :type => :string},
@@ -655,7 +655,7 @@ EOT
                 :old_element => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
                 :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :equal,
                     :old_element => {:value => "raz", :type => :string},
@@ -667,7 +667,7 @@ EOT
                     :old_element => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
                     :new_element => {:value => ["ralston"], :type => :array, :size => 1},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :inequal,
                         :old_element => {:value => "vermouth", :type => :string},
@@ -707,7 +707,7 @@ Error: Arrays of same size but with differing elements.
 Expected: ["foo", ["bar", ["baz", "quux"]], "ying", ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]]
 Got: ["foz", "bar", "ying", ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]]
 
-Breakdown:
+Details:
 - *[0]: Differing strings.
   - Expected: "foo"
   - Got: "foz"
@@ -739,7 +739,7 @@ EOT
         :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
         :new_element => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -761,7 +761,7 @@ Error: Hashes of same size but with differing elements.
 Expected: {"foo"=>"bar", "baz"=>"quux"}
 Got: {"foo"=>"bar", "baz"=>"quarx"}
 
-Breakdown:
+Details:
 - *["baz"]: Differing strings.
   - Expected: "quux"
   - Got: "quarx"
@@ -783,13 +783,13 @@ EOT
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
             :new_element => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :inequal,
                 :old_element => {:value => "bar", :type => :string},
@@ -809,7 +809,7 @@ EOT
             :old_element => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
             :new_element => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["ying", {
                 :state => :inequal,
                 :old_element => {:value => 1, :type => :number},
@@ -833,7 +833,7 @@ Error: Hashes of same size but with differing elements.
 Expected: {"one"=>{"foo"=>"bar", "baz"=>"quux"}, :two=>{"ying"=>1, "zing"=>:zang}}
 Got: {"one"=>{"foo"=>"boo", "baz"=>"quux"}, :two=>{"ying"=>"yang", "zing"=>:bananas}}
 
-Breakdown:
+Details:
 - *["one"]: Hashes of same size but with differing elements.
   - *["foo"]: Differing strings.
     - Expected: "bar"
@@ -869,7 +869,7 @@ EOT
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -883,7 +883,7 @@ EOT
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -897,7 +897,7 @@ EOT
                   :size => 2
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :inequal,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -909,7 +909,7 @@ EOT
                     :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
                     :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
-                    :breakdown => [
+                    :details => [
                       ["fram", {
                         :state => :inequal,
                         :old_element => {:value => "frazzle", :type => :string},
@@ -927,7 +927,7 @@ EOT
             :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
             :new_element => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => "gram", :type => :string},
@@ -951,7 +951,7 @@ Error: Hashes of same size but with differing elements.
 Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>{"fram"=>"frazzle"}}}, "biz"=>{:fiz=>"gram", 1=>{2=>:sym}}}
 Got: {"foo"=>{1=>{"baz"=>"quarx", "foz"=>{"fram"=>"razzle"}}}, "biz"=>{:fiz=>"graeme", 1=>3}}
 
-Breakdown:
+Details:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of same size but with differing elements.
     - *["baz"]: Values of differing type.
@@ -978,7 +978,7 @@ EOT
         :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -1006,7 +1006,7 @@ Error: Hashes of differing size (no differing elements).
 Expected: {"foo"=>"bar"}
 Got: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 
-Breakdown:
+Details:
 - *["baz"]: Expected to not be present, but found "quux".
 - *["ying"]: Expected to not be present, but found "yang".
 EOT
@@ -1019,7 +1019,7 @@ EOT
         :old_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
         :new_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :equal,
             :old_element => {:value => "bar", :type => :string},
@@ -1047,7 +1047,7 @@ Error: Hashes of differing size (no differing elements).
 Expected: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 Got: {"foo"=>"bar"}
 
-Breakdown:
+Details:
 - *["baz"]: Expected to have been found, but missing "quux".
 - *["ying"]: Expected to have been found, but missing "yang".
 EOT
@@ -1060,13 +1060,13 @@ EOT
         :old_element => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
         :new_element => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
             :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -1096,7 +1096,7 @@ Error: Hashes of same size but with differing elements.
 Expected: {"one"=>{"foo"=>"bar"}}
 Got: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
 
-Breakdown:
+Details:
 - *["one"]: Hashes of differing size (no differing elements).
   - *["baz"]: Expected to not be present, but found "quux".
   - *["ying"]: Expected to not be present, but found "yang".
@@ -1118,7 +1118,7 @@ EOT
           :size => 1
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["one", {
             :state => :inequal,
             :old_element => {
@@ -1132,7 +1132,7 @@ EOT
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               ["foo", {
                 :state => :equal,
                 :old_element => {:value => "bar", :type => :string},
@@ -1162,7 +1162,7 @@ Error: Hashes of same size but with differing elements.
 Expected: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
 Got: {"one"=>{"foo"=>"bar"}}
 
-Breakdown:
+Details:
 - *["one"]: Hashes of differing size (no differing elements).
   - *["baz"]: Expected to have been found, but missing "quux".
   - *["ying"]: Expected to have been found, but missing "yang".
@@ -1191,7 +1191,7 @@ EOT
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -1205,7 +1205,7 @@ EOT
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -1219,7 +1219,7 @@ EOT
                   :size => 1
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :missing,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -1231,7 +1231,7 @@ EOT
                     :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
                     :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
                     :common_type => :hash,
-                    :breakdown => [
+                    :details => [
                       ["fram", {
                         :state => :inequal,
                         :old_element => {:value => "frazzle", :type => :string},
@@ -1249,7 +1249,7 @@ EOT
             :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
             :new_element => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => "gram", :type => :string},
@@ -1285,7 +1285,7 @@ Error: Hashes of differing size and elements.
 Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>{"fram"=>"frazzle"}}}, "biz"=>{:fiz=>"gram", 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
 Got: {"foo"=>{1=>{"foz"=>{"fram"=>"razzle"}}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>"graeme", 1=>3}}
 
-Breakdown:
+Details:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
     - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
@@ -1327,7 +1327,7 @@ EOT
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -1341,7 +1341,7 @@ EOT
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -1355,7 +1355,7 @@ EOT
                   :size => 1
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :missing,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -1367,7 +1367,7 @@ EOT
                     :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
                     :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :equal,
                         :old_element => {:value => "apple", :type => :string},
@@ -1405,13 +1405,13 @@ EOT
               :size => 3
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
                 :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :inequal,
                     :old_element => {:value => "bing", :type => :string},
@@ -1467,7 +1467,7 @@ Error: Hashes of differing size and elements.
 Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>["apple", "bananna", "orange"]}}, "biz"=>{:fiz=>["bing", "bong", "bam"], 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
 Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>["bang", "bong", "bam", "splat"], 1=>3}}
 
-Breakdown:
+Details:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
     - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
@@ -1511,7 +1511,7 @@ EOT
           :size => 2
         },
         :common_type => :hash,
-        :breakdown => [
+        :details => [
           ["foo", {
             :state => :inequal,
             :old_element => {
@@ -1525,7 +1525,7 @@ EOT
               :size => 1
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [1, {
                 :state => :inequal,
                 :old_element => {
@@ -1539,7 +1539,7 @@ EOT
                   :size => 1
                 },
                 :common_type => :hash,
-                :breakdown => [
+                :details => [
                   ["baz", {
                     :state => :missing,
                     :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
@@ -1551,7 +1551,7 @@ EOT
                     :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
                     :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
                     :common_type => :array,
-                    :breakdown => [
+                    :details => [
                       [0, {
                         :state => :equal,
                         :old_element => {:value => "apple", :type => :string},
@@ -1589,13 +1589,13 @@ EOT
               :size => 3
             },
             :common_type => :hash,
-            :breakdown => [
+            :details => [
               [:fiz, {
                 :state => :inequal,
                 :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
                 :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
                 :common_type => :array,
-                :breakdown => [
+                :details => [
                   [0, {
                     :state => :inequal,
                     :old_element => {:value => "bing", :type => :string},
@@ -1651,7 +1651,7 @@ Error: Hashes of differing size and elements.
 Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>["apple", "bananna", "orange"]}}, "biz"=>{:fiz=>["bing", "bong", "bam"], 1=>{2=>:sym}}, "bananas"=>{:apple=>11}}
 Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>["bang", "bong", "bam", "splat"], 1=>3}}
 
-Breakdown:
+Details:
 - *["foo"][1]["baz"]: Expected to have been found, but missing {"quux"=>2}.
 - *["foo"][1]["foz"][1]: Differing strings.
   - Expected: "bananna"
