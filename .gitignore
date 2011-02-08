@@ -2,3 +2,4 @@
 *.tmproj
 .rvmrc
 Gemfile.lock
+.idea
