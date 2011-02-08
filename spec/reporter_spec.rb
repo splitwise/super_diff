@@ -16,9 +16,11 @@ describe SuperDiff::Reporter do
     specify "same strings" do
       data = {
         :state => :equal,
-        :old_element => {:value => "foo", :type => :string},
-        :new_element => {:value => "foo", :type => :string},
-        :common_type => :string
+        :elements => {
+          :old => {:value => "foo", :type => :string},
+          :new => {:value => "foo", :type => :string},
+          :common => {:value => nil, :type => :string}
+        }
       }
       @reporter.report(data)
       out.must be_empty
@@ -27,9 +29,11 @@ describe SuperDiff::Reporter do
     specify "differing strings" do
       data = {
         :state => :inequal,
-        :old_element => {:value => "foo", :type => :string},
-        :new_element => {:value => "bar", :type => :string},
-        :common_type => :string
+        :elements => {
+          :old => {:value => "foo", :type => :string},
+          :new => {:value => "bar", :type => :string},
+          :common => {:value => nil, :type => :string}
+        }
       }
       @reporter.report(data)
       msg = <<EOT
@@ -44,9 +48,11 @@ EOT
     specify "same numbers" do
       data = {
         :state => :equal,
-        :old_element => {:value => 1, :type => :number},
-        :new_element => {:value => 1, :type => :number},
-        :common_type => :number
+        :elements => {
+          :old => {:value => 1, :type => :number},
+          :new => {:value => 1, :type => :number},
+          :common => {:value => nil, :type => :number}
+        }
       }
       @reporter.report(data)
       out.must be_empty
@@ -55,9 +61,11 @@ EOT
     specify "differing numbers" do
       data = {
         :state => :inequal,
-        :old_element => {:value => 1, :type => :number},
-        :new_element => {:value => 2, :type => :number},
-        :common_type => :number
+        :elements => {
+          :old => {:value => 1, :type => :number},
+          :new => {:value => 2, :type => :number},
+          :common => {:value => nil, :type => :number}
+        }
       }
       @reporter.report(data)
       msg = <<EOT
@@ -72,9 +80,11 @@ EOT
     specify "values of differing simple types" do
       data = {
         :state => :inequal,
-        :old_element => {:value => "foo", :type => :string},
-        :new_element => {:value => 1, :type => :number},
-        :common_type => nil
+        :elements => {
+          :old => {:value => "foo", :type => :string},
+          :new => {:value => 1, :type => :number},
+          :common => {:value => nil, :type => nil}
+        }
       }
       @reporter.report(data)
       msg = <<EOT
@@ -89,9 +99,11 @@ EOT
     specify "values of differing complex types" do
       data = {
         :state => :inequal,
-        :old_element => {:value => "foo", :type => :string},
-        :new_element => {:value => %w(zing zang), :type => :array},
-        :common_type => nil
+        :elements => {
+          :old => {:value => "foo", :type => :string},
+          :new => {:value => %w(zing zang), :type => :array},
+          :common => {:value => nil, :type => nil}
+        }
       }
       @reporter.report(data)
       msg = <<EOT
@@ -106,22 +118,32 @@ EOT
     specify "shallow arrays of same size but differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
-        :new_element => {:value => ["foo", "baz"], :type => :array, :size => 2},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
+          :new => {:value => ["foo", "baz"], :type => :array, :size => 2},
+          :common => {:value => nil, :type => :array, :size => 2}
+        },
         :details => [
-          [0, {
-            :state => :equal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foo", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "baz", :type => :string},
-            :common_type => :string
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "baz", :type => :string, :key => 1},
+                :common => {:value => nil, :type => :string, :key => 1}
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -142,50 +164,76 @@ EOT
     specify "deep arrays of same size but differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
-        :new_element => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
+          :new => {:value => [["foo", "biz"], ["baz", "quarks"]], :type => :array, :size => 2},
+          :common => {:value => nil, :type => :array, :size => 2}
+        },
         :details => [
-          [0, {
-            :state => :inequal,
-            :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
-            :new_element => {:value => ["foo", "biz"], :type => :array, :size => 2},
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "foo", :type => :string},
-                :new_element => {:value => "foo", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "biz", :type => :string},
-                :common_type => :string
-              }]
-            ]
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => ["baz", "quux"], :type => :array, :size => 2},
-            :new_element => {:value => ["baz", "quarks"], :type => :array, :size => 2},
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "baz", :type => :string},
-                :new_element => {:value => "baz", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => "quux", :type => :string},
-                :new_element => {:value => "quarks", :type => :string},
-                :common_type => :string
-              }]
-            ]
-          }]
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => ["foo", "bar"], :type => :array, :size => 2, :key => 0},
+                :new => {:value => ["foo", "biz"], :type => :array, :size => 2, :key => 0},
+                :common => {:value => nil, :type => :array, :size => 2, :key => 0}
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "foo", :type => :string, :key => 0},
+                      :new => {:value => "foo", :type => :string, :key => 0},
+                      :common => {:value => "foo", :type => :string, :key => 0}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => 1},
+                      :new => {:value => "biz", :type => :string, :key => 1},
+                      :common => {:value => "biz", :type => :string, :key => 1}
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => ["baz", "quux"], :type => :array, :size => 2, :key => 1},
+                :new => {:value => ["baz", "quarks"], :type => :array, :size => 2, :key => 1},
+                :common => {:value => nil, :type => :array, :size => 2, :key => 1}
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "baz", :type => :string, :key => 0},
+                      :new => {:value => "baz", :type => :string, :key => 0},
+                      :common => {:value => "baz", :type => :string, :key => 0}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "quux", :type => :string, :key => 1},
+                      :new => {:value => "quarks", :type => :string, :key => 1},
+                      :common => {:value => nil, :type => :string, :key => 1}
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -211,108 +259,165 @@ EOT
     specify "deeper arrays with differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => [
-            "foo",
-            ["bar", ["baz", "quux"]],
-            "ying",
-            ["blargh", "zing", "fooz", ["raz", ["vermouth"]]]
-          ],
-          :type => :array,
-          :size => 4
+        :elements => {
+          :old => {
+            :value => [
+              "foo",
+              ["bar", ["baz", "quux"]],
+              "ying",
+              ["blargh", "zing", "fooz", ["raz", ["vermouth"]]]
+            ],
+            :type => :array,
+            :size => 4
+          },
+          :new => {
+            :value => [
+              "foz",
+              "bar",
+              "ying",
+              ["blargh", "gragh", 1, ["raz", ["ralston"]]]
+            ],
+            :type => :array,
+            :size => 4
+          },
+          :common => {
+            :value => nil,
+            :type => :array,
+            :size => 4
+          }
         },
-        :new_element => {
-          :value => [
-            "foz",
-            "bar",
-            "ying",
-            ["blargh", "gragh", 1, ["raz", ["ralston"]]]
-          ],
-          :type => :array,
-          :size => 4
-        },
-        :common_type => :array,
         :details => [
-          [0, {
-            :state => :inequal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foz", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => nil
-          }],
-          [2, {
-            :state => :equal,
-            :old_element => {:value => "ying", :type => :string},
-            :new_element => {:value => "ying", :type => :string},
-            :common_type => :string
-          }],
-          [3, {
-            :state => :inequal,
-            :old_element => {
-              :value => ["blargh", "zing", "fooz", ["raz", ["vermouth"]]],
-              :type => :array,
-              :size => 4
-            },
-            :new_element => {
-              :value => ["blargh", "gragh", 1, ["raz", ["ralston"]]],
-              :type => :array,
-              :size => 4
-            },
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "blargh", :type => :string},
-                :new_element => {:value => "blargh", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => "zing", :type => :string},
-                :new_element => {:value => "gragh", :type => :string},
-                :common_type => :string
-              }],
-              [2, {
-                :state => :inequal,
-                :old_element => {:value => "fooz", :type => :string},
-                :new_element => {:value => 1, :type => :number},
-                :common_type => nil
-              }],
-              [3, {
-                :state => :inequal,
-                :old_element => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2},
-                :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
-                :common_type => :array,
-                :details => [
-                  [0, {
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foz", :type => :string, :key => 0},
+                :common => {:value => nil, :type => :string, :key => 0}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => nil, :type => nil, :key => 1}
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "ying", :type => :string, :key => 2},
+                :new => {:value => "ying", :type => :string, :key => 2},
+                :common => {:value => "ying", :type => :string, :key => 2}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => ["blargh", "zing", "fooz", ["raz", ["vermouth"]]],
+                  :type => :array,
+                  :size => 4,
+                  :key => 3
+                },
+                :new => {
+                  :value => ["blargh", "gragh", 1, ["raz", ["ralston"]]],
+                  :type => :array,
+                  :size => 4,
+                  :key => 3
+                },
+                :common => {
+                  :value => nil,
+                  :type => :array,
+                  :size => 4,
+                  :key => 3
+                }
+              },
+              :details => [
+                [:equal, [
+                  {
                     :state => :equal,
-                    :old_element => {:value => "raz", :type => :string},
-                    :new_element => {:value => "raz", :type => :string},
-                    :common_type => :string
-                  }],
-                  [1, {
+                    :elements => {
+                      :old => {:value => "blargh", :type => :string, :key => 0},
+                      :new => {:value => "blargh", :type => :string, :key => 0},
+                      :common => {:value => "blargh", :type => :string, :key => 0}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => ["vermouth"], :type => :array, :size => 1},
-                    :new_element => {:value => ["ralston"], :type => :array, :size => 1},
-                    :common_type => :array,
+                    :elements => {
+                      :old => {:value => "zing", :type => :string, :key => 1},
+                      :new => {:value => "gragh", :type => :string, :key => 1},
+                      :common => {:value => nil, :type => :string, :key => 1}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "fooz", :type => :string, :key => 2},
+                      :new => {:value => 1, :type => :number, :key => 2},
+                      :common => {:value => nil, :type => nil, :key => 2}
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => ["raz", ["vermouth"]], :type => :array, :size => 2, :key => 3},
+                      :new => {:value => ["raz", ["ralston"]], :type => :array, :size => 2, :key => 3},
+                      :common => {:value => nil, :type => :array, :size => 2, :key => 3}
+                    },
                     :details => [
-                      [0, {
-                        :state => :inequal,
-                        :old_element => {:value => "vermouth", :type => :string},
-                        :new_element => {:value => "ralston", :type => :string},
-                        :common_type => :string
-                      }]
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "raz", :type => :string, :key => 0},
+                            :new => {:value => "raz", :type => :string, :key => 0},
+                            :common => {:value => "raz", :type => :string, :key => 0}
+                          }
+                        }
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => ["vermouth"], :type => :array, :size => 1, :key => 1},
+                            :new => {:value => ["ralston"], :type => :array, :size => 1, :key => 1},
+                            :common => {:value => nil, :type => :array, :size => 1, :key => 1}
+                          },
+                          :details => [
+                            [:inequal, [
+                              {
+                                :state => :inequal,
+                                :elements => {
+                                  :old => {:value => "vermouth", :type => :string, :key => 0},
+                                  :new => {:value => "ralston", :type => :string, :key => 0},
+                                  :common => {:value => nil, :type => :string, :key => 0}
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }]
-            ]
-          }]
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -345,37 +450,114 @@ EOT
       out.must == msg
     end
 
-    specify "shallow arrays with surplus elements" do
+    specify "shallow arrays with surplus elements that appear at the beginning" do
       data = {
         :state => :inequal,
-        :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
-        :new_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
+          :new => {:value => ["baz", "quux", "foo", "bar"], :type => :array, :size => 4},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
         :details => [
-          [0, {
-            :state => :equal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foo", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :equal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => :string
-          }],
-          [2, {
-            :state => :surplus,
-            :old_element => nil,
-            :new_element => {:value => "baz", :type => :string},
-            :common_type => nil
-          }],
-          [3, {
-            :state => :surplus,
-            :old_element => nil,
-            :new_element => {:value => "quux", :type => :string},
-            :common_type => nil
-          }]
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "baz", :type => :string, :key => 0},
+                :common => nil
+              }
+            },
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "quux", :type => :string, :key => 1},
+                :common => nil
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 2},
+                :common => {:value => "foo", :type => :string, :key => nil}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 3},
+                :common => {:value => "bar", :type => :string, :key => nil}
+              }
+            }
+          ]]
+        ]
+      }
+      @reporter.report(data)
+      msg = <<EOT
+Error: Arrays of differing size (no differing elements).
+
+Expected: ["foo", "bar"]
+Got: ["baz", "quux", "foo", "bar"]
+
+Details:
+- *[? -> 0..1]: "baz", "quux" unexpectedly found before "foo".
+EOT
+      out.must == msg
+    end
+
+    specify "shallow arrays with surplus elements that appear at the end" do
+      data = {
+        :state => :inequal,
+        :elements => {
+          :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
+          :new => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
+        :details => [
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => 1}
+              }
+            }
+          ]],
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :new => {:value => "baz", :type => :string, :key => 2},
+                :common => nil
+              }
+            },
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "quux", :type => :string, :key => 3},
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -386,43 +568,195 @@ Expected: ["foo", "bar"]
 Got: ["foo", "bar", "baz", "quux"]
 
 Details:
-- *[2]: Expected to not be present, but found "baz".
-- *[3]: Expected to not be present, but found "quux".
+- *[? -> 2..3]: "baz", "quux" unexpectedly found after "bar".
 EOT
       out.must == msg
     end
 
-    specify "shallow arrays with missing elements" do
+    specify "shallow arrays with surplus elements that appear after a changed element" do
       data = {
         :state => :inequal,
-        :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
-        :new_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => ["foo", "bar", "baz"], :type => :array, :size => 3},
+          :new => {:value => ["foo", "bar", "buzz", "quux", "blargh"], :type => :array, :size => 5},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
         :details => [
-          [0, {
-            :state => :equal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foo", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :equal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => :string
-          }],
-          [2, {
-            :state => :missing,
-            :old_element => {:value => "baz", :type => :string},
-            :new_element => nil,
-            :common_type => nil
-          }],
-          [3, {
-            :state => :missing,
-            :old_element => {:value => "quux", :type => :string},
-            :new_element => nil,
-            :common_type => nil
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => 1}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "baz", :type => :string, :key => 2},
+                :new => {:value => "buzz", :type => :string, :key => 2},
+                :common => {:value => nil, :type => :string, :key => 2}
+              }
+            }
+          ]],
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "quux", :type => :string, :key => 3},
+                :common => nil
+              }
+            },
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "blargh", :type => :string, :key => 4},
+                :common => nil
+              }
+            }
+          ]]
+        ]
+      }
+      @reporter.report(data)
+      msg = <<EOT
+Error: Arrays of differing size and elements.
+
+Expected: ["foo", "bar", "baz"]
+Got: ["foo", "bar", "buzz", "quux", "blargh"]
+
+Details:
+- *[2]: Differing strings.
+  - Expected: "baz"
+  - Got: "buzz"
+- *[? -> 3..4]: "quux", "blargh" unexpectedly found after "baz" (now "buzz").
+EOT
+      out.must == msg
+    end
+
+    specify "shallow arrays with missing elements that were removed at the beginning" do
+      data = {
+        :state => :inequal,
+        :elements => {
+          :old => {:value => ["baz", "quux", "foo", "bar"], :type => :array, :size => 4},
+          :new => {:value => ["foo", "bar"], :type => :array, :size => 2},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
+        :details => [
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "baz", :type => :string, :key => 0},
+                :new => nil,
+                :common => nil
+              }
+            },
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "quux", :type => :string, :key => 1},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 2},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => nil}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 3},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => nil}
+              }
+            }
+          ]]
+        ]
+      }
+      @reporter.report(data)
+      msg = <<EOT
+Error: Arrays of differing size (no differing elements).
+
+Expected: ["baz", "quux", "foo", "bar"]
+Got: ["foo", "bar"]
+
+Details:
+- *[0..1 -> ?]: "baz", "quux" unexpectedly missing from before "foo".
+EOT
+      out.must == msg
+    end
+
+    specify "shallow arrays with missing elements that were removed at the end" do
+      data = {
+        :state => :inequal,
+        :elements => {
+          :old => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
+          :new => {:value => ["foo", "bar"], :type => :array, :size => 2},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
+        :details => [
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => 1}
+              }
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "baz", :type => :string, :key => 2},
+                :new => nil,
+                :common => nil
+              }
+            },
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "quux", :type => :string, :key => 3},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -433,8 +767,82 @@ Expected: ["foo", "bar", "baz", "quux"]
 Got: ["foo", "bar"]
 
 Details:
-- *[2]: Expected to have been found, but missing "baz".
-- *[3]: Expected to have been found, but missing "quux".
+- *[2..3 -> ?]: "baz", "quux" unexpectedly missing from after "bar".
+EOT
+      out.must == msg
+    end
+
+    specify "shallow arrays with missing elements that were removed after a changed element" do
+      data = {
+        :state => :inequal,
+        :elements => {
+          :old => {:value => ["foo", "bar", "baz", "quux", "blargh"], :type => :array, :size => 5},
+          :new => {:value => ["foo", "bar", "buzz"], :type => :array, :size => 3},
+          :common => {:value => nil, :type => :array, :size => nil}
+        },
+        :details => [
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              },
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => 1}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "baz", :type => :string, :key => 2},
+                :new => {:value => "buzz", :type => :string, :key => 2},
+                :common => {:value => nil, :type => :string, :key => 2}
+              }
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "quux", :type => :string, :key => 3},
+                :new => nil,
+                :common => nil
+              }
+            },
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "blargh", :type => :string, :key => 4},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
+        ]
+      }
+      @reporter.report(data)
+      msg = <<EOT
+Error: Arrays of differing size and elements.
+
+Expected: ["foo", "bar", "baz", "quux", "blargh"]
+Got: ["foo", "bar", "buzz"]
+
+Details:
+- *[2]: Differing strings.
+  - Expected: "baz"
+  - Got: "buzz"
+- *[3..4 -> ?]: "quux", "blargh" unexpectedly missing from after "baz" (now "buzz").
 EOT
       out.must == msg
     end
@@ -442,54 +850,102 @@ EOT
     specify "deep arrays with surplus elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
-        :new_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
+          :new => {:value => ["foo", ["bar", "quux", "zing", "baz", "blargh"], "yang", "ying"], :type => :array, :size => 3},
+          :common => {:value => nil, :type => :array, :size => 3}
+        },
         :details => [
-          [0, {
-            :state => :equal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foo", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
-            :new_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "bar", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :equal,
-                :old_element => {:value => "baz", :type => :string},
-                :new_element => {:value => "baz", :type => :string},
-                :common_type => :string
-              }],
-              [2, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => "quux", :type => :string},
-                :common_type => nil
-              }],
-              [3, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => "blargh", :type => :string},
-                :common_type => nil
-              }]
-            ]
-          }],
-          [2, {
-            :state => :equal,
-            :old_element => {:value => "ying", :type => :string},
-            :new_element => {:value => "ying", :type => :string},
-            :common_type => :string
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => ["bar", "baz"], :type => :array, :key => 1, :size => 2},
+                :new => {:value => ["bar", "quux", "zing", "baz", "blargh"], :type => :array, :key => 1, :size => 5},
+                :common => {:value => nil, :type => :array, :key => 1, :size => nil}
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => 0},
+                      :new => {:value => "bar", :type => :string, :key => 0},
+                      :common => {:value => "bar", :type => :string, :key => 0}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "quux", :type => :string, :key => 1},
+                      :common => nil
+                    }
+                  },
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "zing", :type => :string, :key => 2},
+                      :common => nil
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "baz", :type => :string, :key => 1},
+                      :new => {:value => "baz", :type => :string, :key => 3},
+                      :common => {:value => "baz", :type => :string, :key => nil}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "blargh", :type => :string, :key => 4},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "yang", :type => :string, :key => 2},
+                :common => nil
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "ying", :type => :string, :key => 2},
+                :new => {:value => "ying", :type => :string, :key => 3},
+                :common => {:value => "ying", :type => :string, :key => nil}
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -497,12 +953,13 @@ EOT
 Error: Arrays of same size but with differing elements.
 
 Expected: ["foo", ["bar", "baz"], "ying"]
-Got: ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
+Got: ["foo", ["bar", "quux", "zing", "baz", "blargh"], "yang", "ying"]
 
 Details:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to not be present, but found "quux".
-  - *[3]: Expected to not be present, but found "blargh".
+  - *[? -> 1..2]: "quux", "zing" unexpectedly found after "bar".
+  - *[? -> 4]: "blargh" unexpectedly found after "baz".
+- *[? -> 2]: "yang" unexpectedly found after ["bar", "baz"] (now ["bar", "quux", "zing", "baz", "blargh"]).
 EOT
       out.must == msg
     end
@@ -510,54 +967,82 @@ EOT
     specify "deep arrays with missing elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
-        :new_element => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
-        :common_type => :array,
+        :elements => {
+          :old => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
+          :new => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
+          :common => {:value => nil, :type => :array, :size => 3}
+        },
         :details => [
-          [0, {
-            :state => :equal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foo", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4},
-            :new_element => {:value => ["bar", "baz"], :type => :array, :size => 2},
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "bar", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :equal,
-                :old_element => {:value => "baz", :type => :string},
-                :new_element => {:value => "baz", :type => :string},
-                :common_type => :string
-              }],
-              [2, {
-                :state => :missing,
-                :old_element => {:value => "quux", :type => :string},
-                :new_element => nil,
-                :common_type => nil
-              }],
-              [3, {
-                :state => :missing,
-                :old_element => {:value => "blargh", :type => :string},
-                :new_element => nil,
-                :common_type => nil
-              }]
-            ]
-          }],
-          [2, {
-            :state => :equal,
-            :old_element => {:value => "ying", :type => :string},
-            :new_element => {:value => "ying", :type => :string},
-            :common_type => :string
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foo", :type => :string, :key => 0},
+                :common => {:value => "foo", :type => :string, :key => 0}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => ["bar", "baz", "quux", "blargh"], :type => :array, :size => 4, :key => 1},
+                :new => {:value => ["bar", "baz"], :type => :array, :size => 2, :key => 1},
+                :common => {:value => nil, :type => :array, :size => nil, :key => 1}
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => 0},
+                      :new => {:value => "bar", :type => :string, :key => 0},
+                      :common => {:value => "bar", :type => :string, :key => 0}
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "baz", :type => :string, :key => 1},
+                      :new => {:value => "baz", :type => :string, :key => 1},
+                      :common => {:value => "baz", :type => :string, :key => 1}
+                    }
+                  }
+                ]],
+                [:missing, [
+                  {
+                    :state => :missing,
+                    :elements => {
+                      :old => {:value => "quux", :type => :string, :key => 2},
+                      :new => nil,
+                      :common => nil
+                    }
+                  },
+                  {
+                    :state => :missing,
+                    :elements => {
+                      :old => {:value => "blargh", :type => :string, :key => 3},
+                      :new => nil,
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "ying", :type => :string, :key => 2},
+                :new => {:value => "ying", :type => :string, :key => 2},
+                :common => {:value => "ying", :type => :string, :key => 2}
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -569,166 +1054,256 @@ Got: ["foo", ["bar", "baz"], "ying"]
 
 Details:
 - *[1]: Arrays of differing size (no differing elements).
-  - *[2]: Expected to have been found, but missing "quux".
-  - *[3]: Expected to have been found, but missing "blargh".
+  - *[2..3 -> ?]: "quux", "blargh" unexpectedly missing from after "baz".
 EOT
       out.must == msg
     end
 
+    # TODO: Need to fix this one in more detail
     specify "deeper arrays with variously differing arrays" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => [
-            "foo",
-            ["bar", ["baz", "quux"]],
-            "ying",
-            ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]
-          ],
-          :type => :array,
-          :size => 4
+        :elements => {
+          :old => {
+            :value => [
+              "foo",
+              "bar",
+              ["baz", "quux"],
+              "ying",
+              ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]
+            ],
+            :type => :array,
+            :size => 4
+          },
+          :new => {
+            :value => [
+              "foz",
+              "bar",
+              "ying",
+              ["xyzzy", "blargh", "zing", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]
+            ],
+            :type => :array,
+            :size => 4
+          },
+          :common => {
+            :value => nil,
+            :type => :array,
+            :size => 4
+          }
         },
-        :new_element => {
-          :value => [
-            "foz",
-            "bar",
-            "ying",
-            ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]
-          ],
-          :type => :array,
-          :size => 4
-        },
-        :common_type => :array,
         :details => [
-          [0, {
-            :state => :inequal,
-            :old_element => {:value => "foo", :type => :string},
-            :new_element => {:value => "foz", :type => :string},
-            :common_type => :string
-          }],
-          [1, {
-            :state => :inequal,
-            :old_element => {:value => ["bar", ["baz", "quux"]], :type => :array, :size => 2},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => nil
-          }],
-          [2, {
-            :state => :equal,
-            :old_element => {:value => "ying", :type => :string},
-            :new_element => {:value => "ying", :type => :string},
-            :common_type => :string
-          }],
-          [3, {
-            :state => :inequal,
-            :old_element => {
-              :value => ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]],
-              :type => :array,
-              :size => 4
-            },
-            :new_element => {
-              :value => ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]],
-              :type => :array,
-              :size => 5
-            },
-            :common_type => :array,
-            :details => [
-              [0, {
-                :state => :equal,
-                :old_element => {:value => "blargh", :type => :string},
-                :new_element => {:value => "blargh", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => "zing", :type => :string},
-                :new_element => {:value => "gragh", :type => :string},
-                :common_type => :string
-              }],
-              [2, {
-                :state => :inequal,
-                :old_element => {:value => "fooz", :type => :string},
-                :new_element => {:value => 1, :type => :number},
-                :common_type => nil
-              }],
-              [3, {
-                :state => :inequal,
-                :old_element => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2},
-                :new_element => {:value => ["raz", ["ralston"]], :type => :array, :size => 2},
-                :common_type => :array,
-                :details => [
-                  [0, {
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "foo", :type => :string, :key => 0},
+                :new => {:value => "foz", :type => :string, :key => 0},
+                :common => {:value => nil, :type => :string, :key => 0}
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => 1},
+                :new => {:value => "bar", :type => :string, :key => 1},
+                :common => {:value => "bar", :type => :string, :key => 1}
+              }
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => ["baz", "quux"], :type => :array, :size => 2, :key => 2},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]],
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "ying", :type => :string, :key => 3},
+                :new => {:value => "ying", :type => :string, :key => 2},
+                :common => {:value => "ying", :type => :string, :key => nil}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]],
+                  :type => :array,
+                  :size => 4,
+                  :key => 4
+                },
+                :new => {
+                  :value => ["xyzzy", "blargh", "zing", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]],
+                  :type => :array,
+                  :size => 5,
+                  :key => 3
+                },
+                :common => {
+                  :value => nil,
+                  :type => :array,
+                  :size => nil,
+                  :key => nil
+                }
+              },
+              :details => [
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "xyzzy", :type => :string, :key => 0},
+                      :common => nil
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
                     :state => :equal,
-                    :old_element => {:value => "raz", :type => :string},
-                    :new_element => {:value => "raz", :type => :string},
-                    :common_type => :string
-                  }],
-                  [1, {
+                    :elements => {
+                      :old => {:value => "blargh", :type => :string, :key => 0},
+                      :new => {:value => "blargh", :type => :string, :key => 1},
+                      :common => {:value => "blargh", :type => :string, :key => nil}
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "zing", :type => :string, :key => 1},
+                      :new => {:value => "zing", :type => :string, :key => 2},
+                      :common => {:value => nil, :type => :string, :key => nil}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3},
-                    :new_element => {:value => ["ralston"], :type => :array, :size => 1},
-                    :common_type => :array,
+                    :elements => {
+                      :old => {:value => "fooz", :type => :string, :key => 2},
+                      :new => {:value => 1, :type => :number, :key => 3},
+                      :common => {:value => nil, :type => nil, :key => nil}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => ["raz", ["vermouth", "eee", "ffff"]], :type => :array, :size => 2, :key => 3},
+                      :new => {:value => ["raz", ["ralston"]], :type => :array, :size => 2, :key => 4},
+                      :common => {:value => nil, :type => :array, :size => 2, :key => nil}
+                    },
                     :details => [
-                      [0, {
-                        :state => :inequal,
-                        :old_element => {:value => "vermouth", :type => :string},
-                        :new_element => {:value => "ralston", :type => :string},
-                        :common_type => :string
-                      }],
-                      [1, {
-                        :state => :missing,
-                        :old_element => {:value => "eee", :type => :string},
-                        :new_element => nil,
-                        :common_type => nil
-                      }],
-                      [2, {
-                        :state => :missing,
-                        :old_element => {:value => "ffff", :type => :string},
-                        :new_element => nil,
-                        :common_type => nil
-                      }]
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "raz", :type => :string, :key => 0},
+                            :new => {:value => "raz", :type => :string, :key => 0},
+                            :common => {:value => "raz", :type => :string, :key => 0}
+                          }
+                        },
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => ["vermouth", "eee", "ffff"], :type => :array, :size => 3, :key => 1},
+                            :new => {:value => ["ralston"], :type => :array, :size => 1, :key => 1},
+                            :common => {:value => nil, :type => :array, :size => nil, :key => 1}
+                          },
+                          :details => [
+                            # Deleting all elements and then adding one back counts as a wholesale replacement
+                            [:missing, [
+                              {
+                                :state => :missing,
+                                :elements => {
+                                  :old => {:value => "vermouth", :type => :string, :key => 0},
+                                  :new => nil,
+                                  :common => nil
+                                }
+                              },
+                              {
+                                :state => :missing,
+                                :elements => {
+                                  :old => {:value => "eee", :type => :string, :key => 1},
+                                  :new => nil,
+                                  :common => nil
+                                }
+                              },
+                              {
+                                :state => :missing,
+                                :elements => {
+                                  :old => {:value => "ffff", :type => :string, :key => 2},
+                                  :new => nil,
+                                  :common => nil
+                                }
+                              }
+                            ]],
+                            [:surplus, [
+                              {
+                                :state => :surplus,
+                                :elements => {
+                                  :old => nil,
+                                  :new => {:value => "ralston", :type => :string, :key => 0},
+                                  :common => nil
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }],
-              [4, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => ["foreal", ["zap"]], :type => :array, :size => 2},
-                :common_type => nil
-              }]
-            ]
-          }]
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => ["foreal", ["zap"]], :type => :array, :size => 2, :key => 5},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
-Expected: ["foo", ["bar", ["baz", "quux"]], "ying", ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]]
-Got: ["foz", "bar", "ying", ["blargh", "gragh", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]]
+Expected: ["foo", "bar", ["baz", "quux"], "ying", ["blargh", "zing", "fooz", ["raz", ["vermouth", "eee", "ffff"]]]]
+Got: ["foz", "bar", "ying", ["xyzzy", "blargh", "zing", 1, ["raz", ["ralston"]], ["foreal", ["zap"]]]]
 
 Details:
 - *[0]: Differing strings.
   - Expected: "foo"
   - Got: "foz"
-- *[1]: Values of differing type.
-  - Expected: ["bar", ["baz", "quux"]]
-  - Got: "bar"
-- *[3]: Arrays of differing size and elements.
-  - *[1]: Differing strings.
-    - Expected: "zing"
-    - Got: "gragh"
-  - *[2]: Values of differing type.
+- *[2 -> ?]: ["baz", "quux"] unexpectedly missing from after "bar".
+- *[4 -> 3]: Arrays of differing size and elements.
+  - *[? -> 0]: "xyzzy" unexpectedly found before "blargh".
+  - *[2 -> 3]: Values of differing type.
     - Expected: "fooz"
     - Got: 1
-  - *[3]: Arrays of same size but with differing elements.
-    - *[1]: Arrays of differing size and elements.
-      - *[0]: Differing strings.
-        - Expected: "vermouth"
-        - Got: "ralston"
-      - *[1]: Expected to have been found, but missing "eee".
-      - *[2]: Expected to have been found, but missing "ffff".
-  - *[4]: Expected to not be present, but found ["foreal", ["zap"]].
+  - *[3 -> 4]: Arrays of same size but with differing elements.
+    - *[1]: Differing arrays.
+      - Expected: ["vermouth", "eee", "ffff"]
+      - Got: ["ralston"]
+  - *[? -> 5]: ["foreal", ["zap"]] unexpectedly found after ["raz", ["ralston"]].
 EOT
       out.must == msg
     end
@@ -736,22 +1311,32 @@ EOT
     specify "shallow hashes of same size but differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
-        :new_element => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
-        :common_type => :hash,
+        :elements => {
+          :old => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
+          :new => {:value => {"foo" => "bar", "baz" => "quarx"}, :type => :hash, :size => 2},
+          :common => {:value => nil, :type => :hash, :size => 2}
+        },
         :details => [
-          ["foo", {
-            :state => :equal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => :string
-          }],
-          ["baz", {
-            :state => :inequal,
-            :old_element => {:value => "quux", :type => :string},
-            :new_element => {:value => "quarx", :type => :string},
-            :common_type => :string
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => "foo"},
+                :new => {:value => "bar", :type => :string, :key => "foo"},
+                :common => {:value => "bar", :type => :string, :key => "foo"}
+              }
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => "quux", :type => :string, :key => "baz"},
+                :new => {:value => "quarx", :type => :string, :key => "baz"},
+                :common => {:value => nil, :type => :string, :key => "baz"}
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -772,58 +1357,88 @@ EOT
     specify "deep hashes of same size but differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
-          :type => :hash,
-          :size => 2
+        :elements => {
+          :old => {
+            :value => {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
+            :type => :hash,
+            :size => 2
+          },
+          :new => {
+            :value => {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}},
+            :type => :hash,
+            :size => 2
+          },
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => 2
+          }
         },
-        :new_element => {
-          :value => {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}},
-          :type => :hash,
-          :size => 2
-        },
-        :common_type => :hash,
         :details => [
-          ["one", {
-            :state => :inequal,
-            :old_element => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
-            :new_element => {:value =>  {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2},
-            :common_type => :hash,
-            :details => [
-              ["foo", {
-                :state => :inequal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "boo", :type => :string},
-                :common_type => :string
-              }],
-              ["baz", {
-                :state => :equal,
-                :old_element => {:value => "quux", :type => :string},
-                :new_element => {:value => "quux", :type => :string},
-                :common_type => :string
-              }]
-            ]
-          }],
-          [:two, {
-            :state => :inequal,
-            :old_element => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2},
-            :new_element => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2},
-            :common_type => :hash,
-            :details => [
-              ["ying", {
-                :state => :inequal,
-                :old_element => {:value => 1, :type => :number},
-                :new_element => {:value => "yang", :type => :string},
-                :common_type => nil
-              }],
-              ["zing", {
-                :state => :inequal,
-                :old_element => {:value => :zang, :type => :symbol},
-                :new_element => {:value => :bananas, :type => :symbol},
-                :common_type => :symbol
-              }]
-            ]
-          }]
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2, :key => "one"},
+                :new => {:value => {"foo" => "boo", "baz" => "quux"}, :type => :hash, :size => 2, :key => "one"},
+                :common => {:value => nil, :type => :hash, :size => 2, :key => "one"}
+              },
+              :details => [
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => "foo"},
+                      :new => {:value => "boo", :type => :string, :key => "foo"},
+                      :common => {:value => "boo", :type => :string, :key => "foo"}
+                    }
+                  }
+                ]],
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "quux", :type => :string, :key => "baz"},
+                      :new => {:value => "quux", :type => :string, :key => "baz"},
+                      :common => {:value => "quux", :type => :string, :key => "baz"}
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:two, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => {"ying" => 1, "zing" => :zang}, :type => :hash, :size => 2, :key => :two},
+                :new => {:value => {"ying" => "yang", "zing" => :bananas}, :type => :hash, :size => 2, :key => :two},
+                :common => {:value => nil, :type => :hash, :size => 2, :key => :two}
+              },
+              :details => [
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => 1, :type => :number, :key => "ying"},
+                      :new => {:value => "yang", :type => :string, :key => "ying"},
+                      :common => {:value => nil, :type => nil, :key => "ying"}
+                    }
+                  }
+                ]],
+                ["zing", [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => :zang, :type => :symbol, :key => "zing"},
+                      :new => {:value => :bananas, :type => :symbol, :key => "zing"},
+                      :common => {:value => nil, :type => :symbol, :key => "zing"}
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -852,96 +1467,148 @@ EOT
     specify "deeper hashes with differing elements" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {
-            "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-            "biz" => {:fiz => "gram", 1 => {2 => :sym}}
+        :elements => {
+          :old => {
+            :value => {
+              "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
+              "biz" => {:fiz => "gram", 1 => {2 => :sym}}
+            },
+            :type => :hash,
+            :size => 2
           },
-          :type => :hash,
-          :size => 2
-        },
-        :new_element => {
-          :value => {
-            "foo" => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
-            "biz" => {:fiz => "graeme", 1 => 3}
+          :new => {
+            :value => {
+              "foo" => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
+              "biz" => {:fiz => "graeme", 1 => 3}
+            },
+            :type => :hash,
+            :size => 2
           },
-          :type => :hash,
-          :size => 2
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => 2
+          }
         },
-        :common_type => :hash,
         :details => [
-          ["foo", {
-            :state => :inequal,
-            :old_element => {
-              :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-              :type => :hash,
-              :size => 1
-            },
-            :new_element => {
-              :value => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
-              :type => :hash,
-              :size => 1
-            },
-            :common_type => :hash,
-            :details => [
-              [1, {
-                :state => :inequal,
-                :old_element => {
-                  :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
                   :type => :hash,
-                  :size => 2
+                  :size => 1,
+                  :key => "foo"
                 },
-                :new_element => {
-                  :value => {"baz" => "quarx", "foz" => {"fram" => "razzle"}},
+                :new => {
+                  :value => {1 => {"baz" => "quarx", "foz" => {"fram" => "razzle"}}},
                   :type => :hash,
-                  :size => 2
+                  :size => 1,
+                  :key => "foo"
                 },
-                :common_type => :hash,
-                :details => [
-                  ["baz", {
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => 1,
+                  :key => "foo"
+                },
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :new_element => {:value => "quarx", :type => :string},
-                    :common_type => nil
-                  }],
-                  ["foz", {
-                    :state => :inequal,
-                    :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
-                    :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
-                    :common_type => :hash,
+                    :elements => {
+                      :old => {
+                        :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      },
+                      :new => {
+                        :value => {"baz" => "quarx", "foz" => {"fram" => "razzle"}},
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      },
+                      :common => {
+                        :value => nil,
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      }
+                    },
                     :details => [
-                      ["fram", {
-                        :state => :inequal,
-                        :old_element => {:value => "frazzle", :type => :string},
-                        :new_element => {:value => "razzle", :type => :string},
-                        :common_type => :string
-                      }]
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => {"quux" => 2}, :type => :hash, :size => 1, :key => "baz"},
+                            :new => {:value => "quarx", :type => :string, :key => "baz"},
+                            :common => {:value => nil, :type => nil, :key => "baz"}
+                          }
+                        }
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1, :key => "foz"},
+                            :new => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1, :key => "foz"},
+                            :common => {:value => nil, :type => :hash, :size => 1, :key => "foz"},
+                          },
+                          :details => [
+                            [:inequal, [
+                              {
+                                :state => :inequal,
+                                :elements => {
+                                  :old => {:value => "frazzle", :type => :string, :key => "fram"},
+                                  :new => {:value => "razzle", :type => :string, :key => "fram"},
+                                  :common => {:value => nil, :type => :string, :key => "fram"}
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }]
-            ]
-          }],
-          ["biz", {
-            :state => :inequal,
-            :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
-            :new_element => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2},
-            :common_type => :hash,
-            :details => [
-              [:fiz, {
-                :state => :inequal,
-                :old_element => {:value => "gram", :type => :string},
-                :new_element => {:value => "graeme", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :new_element => {:value => 3, :type => :number},
-                :common_type => nil
-              }]
-            ]
-          }]
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2, :key => "biz"},
+                :new => {:value => {:fiz => "graeme", 1 => 3}, :type => :hash, :size => 2, :key => "biz"},
+                :common => {:value => nil, :type => :hash, :size => 2, :key => "biz"},
+              },
+              :details => [
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "gram", :type => :string, :key => :fiz},
+                      :new => {:value => "graeme", :type => :string, :key => :fiz},
+                      :common => {:value => nil, :type => :string, :key => :fiz}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => {2 => :sym}, :type => :hash, :size => 1, :key => 1},
+                      :new => {:value => 3, :type => :number, :key => 1},
+                      :common => {:value => nil, :type => nil, :key => 1}
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -975,28 +1642,42 @@ EOT
     specify "shallow hashes with surplus elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
-        :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
-        :common_type => :hash,
+        :elements => {
+          :old => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+          :new => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+          :common => {:value => nil, :type => :hash, :size => nil},
+        },
         :details => [
-          ["foo", {
-            :state => :equal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => :string
-          }],
-          ["baz", {
-            :state => :surplus,
-            :old_element => nil,
-            :new_element => {:value => "quux", :type => :string},
-            :common_type => nil
-          }],
-          ["ying", {
-            :state => :surplus,
-            :old_element => nil,
-            :new_element => {:value => "yang", :type => :string},
-            :common_type => nil
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => "foo"},
+                :new => {:value => "bar", :type => :string, :key => "foo"},
+                :common => {:value => "bar", :type => :string, :key => "foo"}
+              }
+            }
+          ]],
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "quux", :type => :string, :key => "baz"},
+                :common => nil
+              }
+            }
+          ]],
+          [:surplus, [
+            {
+              :state => :surplus,
+              :elements => {
+                :old => nil,
+                :new => {:value => "yang", :type => :string, :key => "ying"},
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1007,8 +1688,8 @@ Expected: {"foo"=>"bar"}
 Got: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 
 Details:
-- *["baz"]: Expected to not be present, but found "quux".
-- *["ying"]: Expected to not be present, but found "yang".
+- *[? -> "baz"]: "quux" unexpectedly found.
+- *[? -> "ying"]: "yang" unexpectedly found.
 EOT
       out.must == msg
     end
@@ -1016,28 +1697,42 @@ EOT
     specify "shallow hashes with missing elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
-        :new_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
-        :common_type => :hash,
+        :elements => {
+          :old => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
+          :new => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
+          :common => {:value => nil, :type => :hash, :size => nil}
+        },
         :details => [
-          ["foo", {
-            :state => :equal,
-            :old_element => {:value => "bar", :type => :string},
-            :new_element => {:value => "bar", :type => :string},
-            :common_type => :string
-          }],
-          ["baz", {
-            :state => :missing,
-            :old_element => {:value => "quux", :type => :string},
-            :new_element => nil,
-            :common_type => nil
-          }],
-          ["ying", {
-            :state => :missing,
-            :old_element => {:value => "yang", :type => :string},
-            :new_element => nil,
-            :common_type => nil
-          }]
+          [:equal, [
+            {
+              :state => :equal,
+              :elements => {
+                :old => {:value => "bar", :type => :string, :key => "foo"},
+                :new => {:value => "bar", :type => :string, :key => "foo"},
+                :common => {:value => "bar", :type => :string, :key => "foo"}
+              }
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "quux", :type => :string, :key => "baz"},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => "yang", :type => :string, :key => "ying"},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1048,8 +1743,8 @@ Expected: {"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}
 Got: {"foo"=>"bar"}
 
 Details:
-- *["baz"]: Expected to have been found, but missing "quux".
-- *["ying"]: Expected to have been found, but missing "yang".
+- *["baz" -> ?]: "quux" unexpectedly missing.
+- *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
       out.must == msg
     end
@@ -1057,36 +1752,54 @@ EOT
     specify "deep hashes with surplus elements" do
       data = {
         :state => :inequal,
-        :old_element => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
-        :new_element => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
-        :common_type => :hash,
+        :elements => {
+          :old => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
+          :new => {:value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}, :type => :hash, :size => 1},
+          :common => {:value => nil, :type => :hash, :size => 1},
+        },
         :details => [
-          ["one", {
-            :state => :inequal,
-            :old_element => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
-            :new_element => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
-            :common_type => :hash,
-            :details => [
-              ["foo", {
-                :state => :equal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "bar", :type => :string},
-                :common_type => :string
-              }],
-              ["baz", {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => "quux", :type => :string},
-                :common_type => nil
-              }],
-              ["ying", {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => "yang", :type => :string},
-                :common_type => nil
-              }]
-            ]
-          }]
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => {"foo" => "bar"}, :type => :hash, :size => 1, :key => "one"},
+                :new => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3, :key => "one"},
+                :common => {:value => nil, :type => :hash, :size => nil, :key => "one"},
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => "foo"},
+                      :new => {:value => "bar", :type => :string, :key => "foo"},
+                      :common => {:value => "bar", :type => :string, :key => "foo"}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "quux", :type => :string, :key => "baz"},
+                      :common => nil
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => "yang", :type => :string, :key => "ying"},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1098,8 +1811,8 @@ Got: {"one"=>{"foo"=>"bar", "baz"=>"quux", "ying"=>"yang"}}
 
 Details:
 - *["one"]: Hashes of differing size (no differing elements).
-  - *["baz"]: Expected to not be present, but found "quux".
-  - *["ying"]: Expected to not be present, but found "yang".
+  - *[? -> "baz"]: "quux" unexpectedly found.
+  - *[? -> "ying"]: "yang" unexpectedly found.
 EOT
       out.must == msg
     end
@@ -1107,52 +1820,81 @@ EOT
     specify "deep hashes with missing elements" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
-          :type => :hash,
-          :size => 1
+        :elements => {
+          :old => {
+            :value => {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
+            :type => :hash,
+            :size => 1
+          },
+          :new => {
+            :value => {"one" => {"foo" => "bar"}},
+            :type => :hash,
+            :size => 1
+          },
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => 1
+          }
         },
-        :new_element => {
-          :value => {"one" => {"foo" => "bar"}},
-          :type => :hash,
-          :size => 1
-        },
-        :common_type => :hash,
         :details => [
-          ["one", {
-            :state => :inequal,
-            :old_element => {
-              :value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
-              :type => :hash,
-              :size => 3
-            },
-            :new_element => {
-              :value => {"foo" => "bar"},
-              :type => :hash,
-              :size => 1
-            },
-            :common_type => :hash,
-            :details => [
-              ["foo", {
-                :state => :equal,
-                :old_element => {:value => "bar", :type => :string},
-                :new_element => {:value => "bar", :type => :string},
-                :common_type => :string
-              }],
-              ["baz", {
-                :state => :missing,
-                :old_element => {:value => "quux", :type => :string},
-                :new_element => nil,
-                :common_type => nil
-              }],
-              ["ying", {
-                :state => :missing,
-                :old_element => {:value => "yang", :type => :string},
-                :new_element => nil,
-                :common_type => nil
-              }]
-            ]
-          }]
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
+                  :type => :hash,
+                  :size => 3,
+                  :key => "one"
+                },
+                :new => {
+                  :value => {"foo" => "bar"},
+                  :type => :hash,
+                  :size => 1,
+                  :key => "one"
+                },
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => nil,
+                  :key => "one"
+                }
+              },
+              :details => [
+                [:equal, [
+                  {
+                    :state => :equal,
+                    :elements => {
+                      :old => {:value => "bar", :type => :string, :key => "foo"},
+                      :new => {:value => "bar", :type => :string, :key => "foo"},
+                      :common => {:value => "bar", :type => :string, :key => "foo"}
+                    }
+                  }
+                ]],
+                [:missing, [
+                  {
+                    :state => :missing,
+                    :elements => {
+                      :old => {:value => "quux", :type => :string, :key => "baz"},
+                      :new => nil,
+                      :common => nil
+                    }
+                  }
+                ]],
+                [:missing, [
+                  {
+                    :state => :missing,
+                    :elements => {
+                      :old => {:value => "yang", :type => :string, :key => "ying"},
+                      :new => nil,
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1164,8 +1906,8 @@ Got: {"one"=>{"foo"=>"bar"}}
 
 Details:
 - *["one"]: Hashes of differing size (no differing elements).
-  - *["baz"]: Expected to have been found, but missing "quux".
-  - *["ying"]: Expected to have been found, but missing "yang".
+  - *["baz" -> ?]: "quux" unexpectedly missing.
+  - *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
       out.must == msg
     end
@@ -1173,109 +1915,169 @@ EOT
     specify "deeper hashes with variously differing hashes" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {
-            "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-            "biz" => {:fiz => "gram", 1 => {2 => :sym}},
-            "bananas" => {:apple => 11}
+        :elements => {
+          :old => {
+            :value => {
+              "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
+              "biz" => {:fiz => "gram", 1 => {2 => :sym}},
+              "bananas" => {:apple => 11}
+            },
+            :type => :hash,
+            :size => 3
           },
-          :type => :hash,
-          :size => 3
-        },
-        :new_element => {
-          :value => {
-            "foo" => {1 => {"foz" => {"fram" => "razzle"}}},
-            "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
+          :new => {
+            :value => {
+              "foo" => {1 => {"foz" => {"fram" => "razzle"}}},
+              "biz" => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}
+            },
+            :type => :hash,
+            :size => 2
           },
-          :type => :hash,
-          :size => 2
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => nil
+          }
         },
-        :common_type => :hash,
         :details => [
-          ["foo", {
-            :state => :inequal,
-            :old_element => {
-              :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
-              :type => :hash,
-              :size => 1
-            },
-            :new_element => {
-              :value => {1 => {"foz" => {"fram" => "razzle"}}},
-              :type => :hash,
-              :size => 1
-            },
-            :common_type => :hash,
-            :details => [
-              [1, {
-                :state => :inequal,
-                :old_element => {
-                  :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
                   :type => :hash,
-                  :size => 2
+                  :size => 1,
+                  :key => "foo"
                 },
-                :new_element => {
-                  :value => {"foz" => {"fram" => "razzle"}},
+                :new => {
+                  :value => {1 => {"foz" => {"fram" => "razzle"}}},
                   :type => :hash,
-                  :size => 1
+                  :size => 1,
+                  :key => "foo"
                 },
-                :common_type => :hash,
-                :details => [
-                  ["baz", {
-                    :state => :missing,
-                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :new_element => nil,
-                    :common_type => nil
-                  }],
-                  ["foz", {
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => 1,
+                  :key => "foo"
+                }
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1},
-                    :new_element => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1},
-                    :common_type => :hash,
+                    :elements => {
+                      :old => {
+                        :value => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}},
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      },
+                      :new => {
+                        :value => {"foz" => {"fram" => "razzle"}},
+                        :type => :hash,
+                        :size => 1,
+                        :key => 1
+                      },
+                      :common => {
+                        :value => nil,
+                        :type => :hash,
+                        :size => nil,
+                        :key => 1
+                      }
+                    },
                     :details => [
-                      ["fram", {
-                        :state => :inequal,
-                        :old_element => {:value => "frazzle", :type => :string},
-                        :new_element => {:value => "razzle", :type => :string},
-                        :common_type => :string
-                      }]
+                      [:missing, [
+                        {
+                          :state => :missing,
+                          :elements => {
+                            :old => {:value => {"quux" => 2}, :type => :hash, :size => 1, :key => "baz"},
+                            :new => nil,
+                            :common => nil
+                          }
+                        }
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => {"fram" => "frazzle"}, :type => :hash, :size => 1, :key => "foz"},
+                            :new => {:value => {"fram" => "razzle"}, :type => :hash, :size => 1, :key => "foz"},
+                            :common => {:value => nil, :type => :hash, :size => 1, :key => "foz"}
+                          },
+                          :details => [
+                            [:inequal, [
+                              {
+                                :state => :inequal,
+                                :elements => {
+                                  :old => {:value => "frazzle", :type => :string, :key => "fram"},
+                                  :new => {:value => "razzle", :type => :string, :key => "fram"},
+                                  :common => {:value => nil, :type => :string, :key => "fram"}
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }]
-            ]
-          }],
-          ["biz", {
-            :state => :inequal,
-            :old_element => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2},
-            :new_element => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3},
-            :common_type => :hash,
-            :details => [
-              [:fiz, {
-                :state => :inequal,
-                :old_element => {:value => "gram", :type => :string},
-                :new_element => {:value => "graeme", :type => :string},
-                :common_type => :string
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :new_element => {:value => 3, :type => :number},
-                :common_type => nil
-              }],
-              [42, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
-                :common_type => nil
-              }]
-            ]
-          }],
-          ["bananas", {
-            :state => :missing,
-            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :new_element => nil,
-            :common_type => nil
-          }]
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {:value => {:fiz => "gram", 1 => {2 => :sym}}, :type => :hash, :size => 2, :key => "biz"},
+                :new => {:value => {42 => {:raz => "matazz"}, :fiz => "graeme", 1 => 3}, :type => :hash, :size => 3, :key => "biz"},
+                :common => {:value => nil, :type => :hash, :size => nil, :key => "biz"}
+              },
+              :details => [
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => "gram", :type => :string, :key => :fiz},
+                      :new => {:value => "graeme", :type => :string, :key => :fiz},
+                      :common => {:value => nil, :type => :string, :key => :fiz}
+                    }
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => {2 => :sym}, :type => :hash, :size => 1, :key => 1},
+                      :new => {:value => 3, :type => :number, :key => 1},
+                      :common => {:value => nil, :type => nil, :key => 1}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
+                    :state => :surplus,
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => {:raz => "matazz"}, :type => :hash, :size => 1, :key => 42},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => {:apple => 11}, :type => :hash, :size => 1, :key => "bananas"},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1288,7 +2090,7 @@ Got: {"foo"=>{1=>{"foz"=>{"fram"=>"razzle"}}}, "biz"=>{42=>{:raz=>"matazz"}, :fi
 Details:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
-    - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
+    - *["baz" -> ?]: {"quux"=>2} unexpectedly missing.
     - *["foz"]: Hashes of same size but with differing elements.
       - *["fram"]: Differing strings.
         - Expected: "frazzle"
@@ -1300,8 +2102,8 @@ Details:
   - *[1]: Values of differing type.
     - Expected: {2=>:sym}
     - Got: 3
-  - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
-- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
+  - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
+- *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
       out.must == msg
     end
@@ -1309,155 +2111,246 @@ EOT
     specify "arrays and hashes, mixed" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {
-            "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-            "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-            "bananas" => {:apple => 11}
+        :elements => {
+          :old => {
+            :value => {
+              "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+              "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+              "bananas" => {:apple => 11}
+            },
+            :type => :hash,
+            :size => 3
           },
-          :type => :hash,
-          :size => 3
-        },
-        :new_element => {
-          :value => {
-            "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
-            "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+          :new => {
+            :value => {
+              "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
+              "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+            },
+            :type => :hash,
+            :size => 2
           },
-          :type => :hash,
-          :size => 2
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => nil
+          }
         },
-        :common_type => :hash,
         :details => [
-          ["foo", {
-            :state => :inequal,
-            :old_element => {
-              :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-              :type => :hash,
-              :size => 1
-            },
-            :new_element => {
-              :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
-              :type => :hash,
-              :size => 1
-            },
-            :common_type => :hash,
-            :details => [
-              [1, {
-                :state => :inequal,
-                :old_element => {
-                  :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
                   :type => :hash,
-                  :size => 2
+                  :size => 1,
+                  :key => "foo"
                 },
-                :new_element => {
-                  :value => {"foz" => ["apple", "banana", "orange"]},
+                :new => {
+                  :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
                   :type => :hash,
-                  :size => 1
+                  :size => 1,
+                  :key => "foo"
                 },
-                :common_type => :hash,
-                :details => [
-                  ["baz", {
-                    :state => :missing,
-                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :new_element => nil,
-                    :common_type => nil,
-                  }],
-                  ["foz", {
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => 1,
+                  :key => "foo"
+                }
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
-                    :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
-                    :common_type => :array,
+                    :elements => {
+                      :old => {
+                        :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      },
+                      :new => {
+                        :value => {"foz" => ["apple", "banana", "orange"]},
+                        :type => :hash,
+                        :size => 1,
+                        :key => 1
+                      },
+                      :common => {
+                        :value => nil,
+                        :type => :hash,
+                        :size => nil,
+                        :key => 1
+                      }
+                    },
                     :details => [
-                      [0, {
-                        :state => :equal,
-                        :old_element => {:value => "apple", :type => :string},
-                        :new_element => {:value => "apple", :type => :string},
-                        :common_type => :string
-                      }],
-                      [1, {
-                        :state => :inequal,
-                        :old_element => {:value => "bananna", :type => :string},
-                        :new_element => {:value => "banana", :type => :string},
-                        :common_type => :string
-                      }],
-                      [2, {
-                        :state => :equal,
-                        :old_element => {:value => "orange", :type => :string},
-                        :new_element => {:value => "orange", :type => :string},
-                        :common_type => :string
-                      }]
+                      [:missing, [
+                        {
+                          :state => :missing,
+                          :elements => {
+                            :old => {:value => {"quux" => 2}, :type => :hash, :size => 1, :key => "baz"},
+                            :new => nil,
+                            :common => nil
+                          }
+                        }
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3, :key => "foz"},
+                            :new => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3, :key => "foz"},
+                            :common => {:value => nil, :type => :array, :size => 3, :key => "foz"}
+                          },
+                          :details => [
+                            [:equal, [
+                              {
+                                :state => :equal,
+                                :elements => {
+                                  :old => {:value => "apple", :type => :string, :key => 0},
+                                  :new => {:value => "apple", :type => :string, :key => 0},
+                                  :common => {:value => "apple", :type => :string, :key => 0}
+                                }
+                              }
+                            ]],
+                            [:inequal, [
+                              {
+                                :state => :inequal,
+                                :elements => {
+                                  :old => {:value => "bananna", :type => :string, :key => 1},
+                                  :new => {:value => "banana", :type => :string, :key => 1},
+                                  :common => {:value => nil, :type => :string, :key => 1}
+                                }
+                              }
+                            ]],
+                            [:equal, [
+                              {
+                                :state => :equal,
+                                :elements => {
+                                  :old => {:value => "orange", :type => :string, :key => 2},
+                                  :new => {:value => "orange", :type => :string, :key => 2},
+                                  :common => {:value => "orange", :type => :string, :key => 2}
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }]
-            ]
-          }],
-          ["biz", {
-            :state => :inequal,
-            :old_element => {
-              :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-              :type => :hash,
-              :size => 2
-            },
-            :new_element => {
-              :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
-              :type => :hash,
-              :size => 3
-            },
-            :common_type => :hash,
-            :details => [
-              [:fiz, {
-                :state => :inequal,
-                :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
-                :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
-                :common_type => :array,
-                :details => [
-                  [0, {
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+                  :type => :hash,
+                  :size => 2,
+                  :key => "biz"
+                },
+                :new => {
+                  :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
+                  :type => :hash,
+                  :size => 3,
+                  :key => "biz"
+                },
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => nil,
+                  :key => "biz"
+                }
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => "bing", :type => :string},
-                    :new_element => {:value => "bang", :type => :string},
-                    :common_type => :string
-                  }],
-                  [1, {
-                    :state => :equal,
-                    :old_element => {:value => "bong", :type => :string},
-                    :new_element => {:value => "bong", :type => :string},
-                    :common_type => :string,
-                  }],
-                  [2, {
-                    :state => :equal,
-                    :old_element => {:value => "bam", :type => :string},
-                    :new_element => {:value => "bam", :type => :string},
-                    :common_type => :string,
-                  }],
-                  [3, {
+                    :elements => {
+                      :old => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3, :key => :fiz},
+                      :new => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4, :key => :fiz},
+                      :common => {:value => nil, :type => :array, :size => nil, :key => :fiz}
+                    },
+                    :details => [
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => "bing", :type => :string, :key => 0},
+                            :new => {:value => "bang", :type => :string, :key => 0},
+                            :common => {:value => nil, :type => :string, :key => 0}
+                          }
+                        }
+                      ]],
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "bong", :type => :string, :key => 1},
+                            :new => {:value => "bong", :type => :string, :key => 1},
+                            :common => {:value => "bong", :type => :string, :key => 1}
+                          }
+                        }
+                      ]],
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "bam", :type => :string, :key => 2},
+                            :new => {:value => "bam", :type => :string, :key => 2},
+                            :common => {:value => "bam", :type => :string, :key => 2}
+                          }
+                        }
+                      ]],
+                      [:surplus, [
+                        {
+                          :state => :surplus,
+                          :elements => {
+                            :old => nil,
+                            :new => {:value => "splat", :type => :string, :key => 3},
+                            :common => nil
+                          }
+                        }
+                      ]]
+                    ]
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => {2 => :sym}, :type => :hash, :size => 1, :key => 1},
+                      :new => {:value => 3, :type => :number, :key => 1},
+                      :common => {:value => nil, :type => nil, :key => 1}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
                     :state => :surplus,
-                    :old_element => nil,
-                    :new_element => {:value => "splat", :type => :string},
-                    :common_type => nil
-                  }]
-                ]
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :new_element => {:value => 3, :type => :number},
-                :common_type => nil
-              }],
-              [42, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
-                :common_type => nil
-              }]
-            ]
-          }],
-          ["bananas", {
-            :state => :missing,
-            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :new_element => nil,
-            :common_type => nil
-          }]
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => {:raz => "matazz"}, :type => :hash, :size => 1, :key => 42},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => {:apple => 11}, :type => :hash, :size => 1, :key => "bananas"},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data)
@@ -1470,7 +2363,7 @@ Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"ma
 Details:
 - *["foo"]: Hashes of same size but with differing elements.
   - *[1]: Hashes of differing size and elements.
-    - *["baz"]: Expected to have been found, but missing {"quux"=>2}.
+    - *["baz" -> ?]: {"quux"=>2} unexpectedly missing.
     - *["foz"]: Arrays of same size but with differing elements.
       - *[1]: Differing strings.
         - Expected: "bananna"
@@ -1480,12 +2373,12 @@ Details:
     - *[0]: Differing strings.
       - Expected: "bing"
       - Got: "bang"
-    - *[3]: Expected to not be present, but found "splat".
+    - *[? -> 3]: "splat" unexpectedly found after "bam".
   - *[1]: Values of differing type.
     - Expected: {2=>:sym}
     - Got: 3
-  - *[42]: Expected to not be present, but found {:raz=>"matazz"}.
-- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
+  - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
+- *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
       out.must == msg
     end
@@ -1493,155 +2386,246 @@ EOT
     specify "collapsed output" do
       data = {
         :state => :inequal,
-        :old_element => {
-          :value => {
-            "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-            "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-            "bananas" => {:apple => 11}
+        :elements => {
+          :old => {
+            :value => {
+              "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
+              "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+              "bananas" => {:apple => 11}
+            },
+            :type => :hash,
+            :size => 3
           },
-          :type => :hash,
-          :size => 3
-        },
-        :new_element => {
-          :value => {
-            "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
-            "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+          :new => {
+            :value => {
+              "foo" => {1 => {"foz" => ["apple", "banana", "orange"]}},
+              "biz" => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3}
+            },
+            :type => :hash,
+            :size => 2
           },
-          :type => :hash,
-          :size => 2
+          :common => {
+            :value => nil,
+            :type => :hash,
+            :size => nil
+          }
         },
-        :common_type => :hash,
         :details => [
-          ["foo", {
-            :state => :inequal,
-            :old_element => {
-              :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
-              :type => :hash,
-              :size => 1
-            },
-            :new_element => {
-              :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
-              :type => :hash,
-              :size => 1
-            },
-            :common_type => :hash,
-            :details => [
-              [1, {
-                :state => :inequal,
-                :old_element => {
-                  :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
                   :type => :hash,
-                  :size => 2
+                  :size => 1,
+                  :key => "foo"
                 },
-                :new_element => {
-                  :value => {"foz" => ["apple", "banana", "orange"]},
+                :new => {
+                  :value => {1 => {"foz" => ["apple", "banana", "orange"]}},
                   :type => :hash,
-                  :size => 1
+                  :size => 1,
+                  :key => "foo"
                 },
-                :common_type => :hash,
-                :details => [
-                  ["baz", {
-                    :state => :missing,
-                    :old_element => {:value => {"quux" => 2}, :type => :hash, :size => 1},
-                    :new_element => nil,
-                    :common_type => nil,
-                  }],
-                  ["foz", {
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => 1,
+                  :key => "foo"
+                }
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3},
-                    :new_element => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3},
-                    :common_type => :array,
+                    :elements => {
+                      :old => {
+                        :value => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]},
+                        :type => :hash,
+                        :size => 2,
+                        :key => 1
+                      },
+                      :new => {
+                        :value => {"foz" => ["apple", "banana", "orange"]},
+                        :type => :hash,
+                        :size => 1,
+                        :key => 1
+                      },
+                      :common => {
+                        :value => nil,
+                        :type => :hash,
+                        :size => nil,
+                        :key => 1
+                      }
+                    },
                     :details => [
-                      [0, {
-                        :state => :equal,
-                        :old_element => {:value => "apple", :type => :string},
-                        :new_element => {:value => "apple", :type => :string},
-                        :common_type => :string
-                      }],
-                      [1, {
-                        :state => :inequal,
-                        :old_element => {:value => "bananna", :type => :string},
-                        :new_element => {:value => "banana", :type => :string},
-                        :common_type => :string
-                      }],
-                      [2, {
-                        :state => :equal,
-                        :old_element => {:value => "orange", :type => :string},
-                        :new_element => {:value => "orange", :type => :string},
-                        :common_type => :string
-                      }]
+                      [:missing, [
+                        {
+                          :state => :missing,
+                          :elements => {
+                            :old => {:value => {"quux" => 2}, :type => :hash, :size => 1, :key => "baz"},
+                            :new => nil,
+                            :common => nil,
+                          }
+                        }
+                      ]],
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => ["apple", "bananna", "orange"], :type => :array, :size => 3, :key => "foz"},
+                            :new => {:value => ["apple", "banana", "orange"], :type => :array, :size => 3, :key => "foz"},
+                            :common => {:value => nil, :type => :array, :size => 3, :key => "foz"}
+                          },
+                          :details => [
+                            [:equal, [
+                              {
+                                :state => :equal,
+                                :elements => {
+                                  :old => {:value => "apple", :type => :string, :key => 0},
+                                  :new => {:value => "apple", :type => :string, :key => 0},
+                                  :common => {:value => "apple", :type => :string, :key => 0}
+                                }
+                              }
+                            ]],
+                            [:inequal, [
+                              {
+                                :state => :inequal,
+                                :elements => {
+                                  :old => {:value => "bananna", :type => :string, :key => 1},
+                                  :new => {:value => "banana", :type => :string, :key => 1},
+                                  :common => {:value => nil, :type => :string, :key => 1}
+                                }
+                              }
+                            ]],
+                            [:equal, [
+                              {
+                                :state => :equal,
+                                :elements => {
+                                  :old => {:value => "orange", :type => :string, :key => 2},
+                                  :new => {:value => "orange", :type => :string, :key => 2},
+                                  :common => {:value => "orange", :type => :string, :key => 2}
+                                }
+                              }
+                            ]]
+                          ]
+                        }
+                      ]]
                     ]
-                  }]
-                ]
-              }]
-            ]
-          }],
-          ["biz", {
-            :state => :inequal,
-            :old_element => {
-              :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
-              :type => :hash,
-              :size => 2
-            },
-            :new_element => {
-              :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
-              :type => :hash,
-              :size => 3
-            },
-            :common_type => :hash,
-            :details => [
-              [:fiz, {
-                :state => :inequal,
-                :old_element => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3},
-                :new_element => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4},
-                :common_type => :array,
-                :details => [
-                  [0, {
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:inequal, [
+            {
+              :state => :inequal,
+              :elements => {
+                :old => {
+                  :value => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},
+                  :type => :hash,
+                  :size => 2,
+                  :key => "biz"
+                },
+                :new => {
+                  :value => {42 => {:raz => "matazz"}, :fiz => ["bang", "bong", "bam", "splat"], 1 => 3},
+                  :type => :hash,
+                  :size => 3,
+                  :key => "biz"
+                },
+                :common => {
+                  :value => nil,
+                  :type => :hash,
+                  :size => nil,
+                  :key => "biz"
+                }
+              },
+              :details => [
+                [:inequal, [
+                  {
                     :state => :inequal,
-                    :old_element => {:value => "bing", :type => :string},
-                    :new_element => {:value => "bang", :type => :string},
-                    :common_type => :string
-                  }],
-                  [1, {
-                    :state => :equal,
-                    :old_element => {:value => "bong", :type => :string},
-                    :new_element => {:value => "bong", :type => :string},
-                    :common_type => :string,
-                  }],
-                  [2, {
-                    :state => :equal,
-                    :old_element => {:value => "bam", :type => :string},
-                    :new_element => {:value => "bam", :type => :string},
-                    :common_type => :string,
-                  }],
-                  [3, {
+                    :elements => {
+                      :old => {:value => ["bing", "bong", "bam"], :type => :array, :size => 3, :key => :fiz},
+                      :new => {:value => ["bang", "bong", "bam", "splat"], :type => :array, :size => 4, :key => :fiz},
+                      :common => {:value => nil, :type => :array, :size => nil, :key => :fiz}
+                    },
+                    :details => [
+                      [:inequal, [
+                        {
+                          :state => :inequal,
+                          :elements => {
+                            :old => {:value => "bing", :type => :string, :key => 0},
+                            :new => {:value => "bang", :type => :string, :key => 0},
+                            :common => {:value => nil, :type => :string, :key => 0}
+                          }
+                        }
+                      ]],
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "bong", :type => :string, :key => 1},
+                            :new => {:value => "bong", :type => :string, :key => 1},
+                            :common => {:value => "bong", :type => :string, :key => 1}
+                          }
+                        }
+                      ]],
+                      [:equal, [
+                        {
+                          :state => :equal,
+                          :elements => {
+                            :old => {:value => "bam", :type => :string, :key => 2},
+                            :new => {:value => "bam", :type => :string, :key => 2},
+                            :common => {:value => "bam", :type => :string, :key => 2}
+                          }
+                        }
+                      ]],
+                      [:surplus, [
+                        {
+                          :state => :surplus,
+                          :elements => {
+                            :old => nil,
+                            :new => {:value => "splat", :type => :string, :key => 3},
+                            :common => nil
+                          }
+                        }
+                      ]]
+                    ]
+                  }
+                ]],
+                [:inequal, [
+                  {
+                    :state => :inequal,
+                    :elements => {
+                      :old => {:value => {2 => :sym}, :type => :hash, :size => 1, :key => 1},
+                      :new => {:value => 3, :type => :number, :key => 1},
+                      :common => {:value => nil, :type => nil, :key => 1}
+                    }
+                  }
+                ]],
+                [:surplus, [
+                  {
                     :state => :surplus,
-                    :old_element => nil,
-                    :new_element => {:value => "splat", :type => :string},
-                    :common_type => nil
-                  }]
-                ]
-              }],
-              [1, {
-                :state => :inequal,
-                :old_element => {:value => {2 => :sym}, :type => :hash, :size => 1},
-                :new_element => {:value => 3, :type => :number},
-                :common_type => nil
-              }],
-              [42, {
-                :state => :surplus,
-                :old_element => nil,
-                :new_element => {:value => {:raz => "matazz"}, :type => :hash, :size => 1},
-                :common_type => nil
-              }]
-            ]
-          }],
-          ["bananas", {
-            :state => :missing,
-            :old_element => {:value => {:apple => 11}, :type => :hash, :size => 1},
-            :new_element => nil,
-            :common_type => nil
-          }]
+                    :elements => {
+                      :old => nil,
+                      :new => {:value => {:raz => "matazz"}, :type => :hash, :size => 1, :key => 42},
+                      :common => nil
+                    }
+                  }
+                ]]
+              ]
+            }
+          ]],
+          [:missing, [
+            {
+              :state => :missing,
+              :elements => {
+                :old => {:value => {:apple => 11}, :type => :hash, :size => 1, :key => "bananas"},
+                :new => nil,
+                :common => nil
+              }
+            }
+          ]]
         ]
       }
       @reporter.report(data, :collapsed => true)
@@ -1652,19 +2636,19 @@ Expected: {"foo"=>{1=>{"baz"=>{"quux"=>2}, "foz"=>["apple", "bananna", "orange"]
 Got: {"foo"=>{1=>{"foz"=>["apple", "banana", "orange"]}}, "biz"=>{42=>{:raz=>"matazz"}, :fiz=>["bang", "bong", "bam", "splat"], 1=>3}}
 
 Details:
-- *["foo"][1]["baz"]: Expected to have been found, but missing {"quux"=>2}.
+- *["foo"][1]["baz" -> ?]: {"quux"=>2} unexpectedly missing.
 - *["foo"][1]["foz"][1]: Differing strings.
   - Expected: "bananna"
   - Got: "banana"
 - *["biz"][:fiz][0]: Differing strings.
   - Expected: "bing"
   - Got: "bang"
-- *["biz"][:fiz][3]: Expected to not be present, but found "splat".
+- *["biz"][:fiz][? -> 3]: "splat" unexpectedly found after "bam".
 - *["biz"][1]: Values of differing type.
   - Expected: {2=>:sym}
   - Got: 3
-- *["biz"][42]: Expected to not be present, but found {:raz=>"matazz"}.
-- *["bananas"]: Expected to have been found, but missing {:apple=>11}.
+- *["biz"][? -> 42]: {:raz=>"matazz"} unexpectedly found.
+- *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
       out.must == msg
     end
