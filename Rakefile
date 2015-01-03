@@ -3,7 +3,6 @@ Bundler::GemHelper.install_tasks
 
 require 'rspec/core/rake_task'
 
-desc "Run the tests"
-task :spec do
-  require 'rspec/autorun'
-end
+RSpec::Core::RakeTask.new(:spec)
+
+task default: :spec
