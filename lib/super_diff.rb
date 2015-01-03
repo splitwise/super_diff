@@ -1,9 +1,5 @@
-require File.expand_path('../super_diff/path', __FILE__)
-
-SuperDiff.libpath {
-  require 'super_diff/differ'
-  require 'super_diff/reporter'
-}
+require 'super_diff/differ'
+require 'super_diff/reporter'
 
 module SuperDiff
   def self.diff_to(expected, actual, stdout=$stdout)
@@ -13,4 +9,3 @@ end
 
 # For debugging purposes
 require 'pp'
-
