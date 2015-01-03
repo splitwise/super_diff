@@ -1057,7 +1057,6 @@ EOT
       out.should == msg
     end
 
-    # TODO: Need to fix this one in more detail
     specify "deeper arrays with variously differing arrays" do
       data = {
         :state => :inequal,

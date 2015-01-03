@@ -191,7 +191,7 @@ module SuperDiff
     end
 
     def puts(*args)
-      $stdout.puts(*args)
+      #$stdout.puts(*args)
       @stdout.puts(*args)
     end
   end
