@@ -108,30 +108,30 @@ describe SuperDiff::Differ do
         :new_element => {:value => %w(a 1 2 b), :type => :array, :size => 4},
         :common_type => :array,
         :details => [
-          {
+          [0, {
             :state => :equal,
-            :old_element => {:value => "a", :type => :string, :location => 0},
-            :new_element => {:value => "foo", :type => :string, :location => 0},
+            :old_element => {:value => "a", :type => :string},
+            :new_element => {:value => "a", :type => :string},
             :common_type => :string
-          },
-          {
-            :state => :surplus,
-            :old_element => nil,
+          }],
+          [1, {
+            :state => :inequal,
+            :old_element => {:value => "b", :type => :string},
             :new_element => {:value => "1", :type => :string},
-            :common_type => nil
-          },
-          {
+            :common_type => :string
+          }],
+          [2, {
             :state => :surplus,
             :old_element => nil,
             :new_element => {:value => "2", :type => :string},
             :common_type => nil
-          },
-          {
-            :state => :moved,
-            :old_element => {:value => "b", :type => :string, :location => 1},
-            :new_element => {:value => "b", :type => :string, :location => 3},
-            :common_type => :string
-          }
+          }],
+          [3, {
+            :state => :surplus,
+            :old_element => nil,
+            :new_element => {:value => "b", :type => :string},
+            :common_type => nil
+          }]
         ]
       }
       actual.should == expected
