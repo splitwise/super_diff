@@ -1,11 +1,9 @@
-require 'rubygems'
-
-require File.expand_path("../../lib/super_diff", __FILE__)
-
 require 'stringio'
 
 require 'rspec/core'
 require 'rspec/expectations'
+
+require 'super_diff'
 
 RSpec.configure do |c|
   c.mock_framework = :nothing

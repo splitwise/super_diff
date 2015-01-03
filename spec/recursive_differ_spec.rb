@@ -1,8 +1,5 @@
-require File.expand_path('../spec_helper', __FILE__)
-
-SuperDiff.libpath do
-  require 'super_diff/recursive_differ'
-end
+require 'spec_helper'
+require 'super_diff/recursive_differ'
 
 describe SuperDiff::RecursiveDiffer do
   describe '#diff' do
