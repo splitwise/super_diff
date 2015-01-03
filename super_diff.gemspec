@@ -9,7 +9,9 @@ Gem::Specification.new do |s|
   s.email       = ["elliot.winkler@gmail.com"]
   s.homepage    = "http://github.com/mcmire/super_diff"
   s.summary     = %q{Diff complex data structures in Ruby, with helpful output.}
-  s.description = %q{SuperDiff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.}
+  s.description = %q{SuperDiff is a utility that helps you diff two complex data
+  structures in Ruby, and gives you helpful output to show you exactly how the
+  two data structures differ.}
 
   #s.rubyforge_project = "super_diff"
 
@@ -17,11 +19,6 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["{test,spec,features}/**/*"]
   s.executables   = Dir["bin/**/*"].map {|f| File.basename(f) }
   s.require_paths = ["lib"]
-  
-  s.add_development_dependency "rspec-core"
-  s.add_development_dependency "rspec-expectations"
-  s.add_development_dependency "guard-rspec"
-  s.add_development_dependency "rb-fsevent"
-  s.add_development_dependency "growl"
-  s.add_development_dependency "ghi"
+
+  s.add_dependency 'diff-lcs', '1.1.3'
 end
