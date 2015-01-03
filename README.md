@@ -1,5 +1,8 @@
 # SuperDiff
 
+**NOTE: This readme hasn't been updated since the start of the project, so some
+parts are probably outdated.**
+
 ## What is this?
 
 SuperDiff is a utility that helps you diff two complex data structures in Ruby, and gives you helpful output to show you exactly how the two data structures differ.
