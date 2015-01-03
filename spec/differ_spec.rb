@@ -14,7 +14,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => "foo", :type => :string},
         :common_type => :string
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "differing strings" do
@@ -25,7 +25,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => "bar", :type => :string},
         :common_type => :string
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "same numbers" do
@@ -36,7 +36,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => 1, :type => :number},
         :common_type => :number
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "differing numbers" do
@@ -47,7 +47,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => 2, :type => :number},
         :common_type => :number
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "values of differing simple types" do
@@ -58,7 +58,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => 1, :type => :number},
         :common_type => nil
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "values of differing complex types" do
@@ -69,7 +69,7 @@ describe SuperDiff::Differ do
         :new_element => {:value => %w(zing zang), :type => :array, :size => 2},
         :common_type => nil
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow arrays of same size but with differing elements" do
@@ -94,7 +94,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow arrays with inserted elements" do
@@ -134,7 +134,7 @@ describe SuperDiff::Differ do
           }
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep arrays of same size but with differing elements" do
@@ -190,7 +190,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deeper arrays with differing elements" do
@@ -314,7 +314,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow arrays with surplus elements" do
@@ -351,7 +351,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow arrays with missing elements" do
@@ -388,7 +388,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep arrays with surplus elements" do
@@ -448,7 +448,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep arrays with missing elements" do
@@ -508,7 +508,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deeper arrays with variously differing arrays" do
@@ -650,7 +650,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow hashes of same size but differing elements" do
@@ -678,7 +678,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep hashes of same size but differing elements" do
@@ -742,7 +742,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deeper hashes with differing elements" do
@@ -850,7 +850,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow hashes with surplus elements" do
@@ -884,7 +884,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "shallow hashes with missing elements" do
@@ -918,7 +918,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep hashes with surplus elements" do
@@ -960,7 +960,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deep hashes with missing elements" do
@@ -1018,7 +1018,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "deeper hashes with variously differing hashes" do
@@ -1140,7 +1140,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
 
     specify "arrays and hashes, mixed" do
@@ -1308,7 +1308,7 @@ describe SuperDiff::Differ do
           }]
         ]
       }
-      actual.must == expected
+      actual.should == expected
     end
   end
 end

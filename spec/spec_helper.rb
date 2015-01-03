@@ -14,11 +14,3 @@ RSpec.configure do |c|
     /lib\/rspec\/(core|expectations|matchers|mocks)/
   ]
 end
-
-# Copied from Thor specs
-Kernel.module_eval do
-  alias_method :must, :should
-  alias_method :must_not, :should_not
-  undef_method :should
-  undef_method :should_not
-end

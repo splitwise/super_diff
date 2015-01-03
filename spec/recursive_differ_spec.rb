@@ -6,7 +6,7 @@ describe SuperDiff::RecursiveDiffer do
     it "returns what would normally be returned for shallow arrays" do
       seq1 = %w(a b c d e f g)
       seq2 = %w(1 2 a b e f g h i)
-      SuperDiff::RecursiveDiffer.diff(seq1, seq2).must == [
+      SuperDiff::RecursiveDiffer.diff(seq1, seq2).should == [
         SuperDiff::RecursiveDiffer::Event.new("+", 0, nil, 0, "1"),
         SuperDiff::RecursiveDiffer::Event.new("+", 0, nil, 1, "2"),
         SuperDiff::RecursiveDiffer::Event.new("=", 0, "a", 2, "a"),
@@ -24,7 +24,7 @@ describe SuperDiff::RecursiveDiffer do
     it "performs the LCS on arrays within arrays" do
       seq1 = [ %w(a b c d e f g) ]
       seq2 = [ %w(1 2 a b e f g h i) ]
-      SuperDiff::RecursiveDiffer.diff(seq1, seq2).must == [
+      SuperDiff::RecursiveDiffer.diff(seq1, seq2).should == [
         SuperDiff::RecursiveDiffer::Event.new("!", 0, %w(a b c d e f g), 0, %w(1 2 a b e f g h i), [
           SuperDiff::RecursiveDiffer::Event.new("+", 0, nil, 0, "1"),
           SuperDiff::RecursiveDiffer::Event.new("+", 0, nil, 1, "2"),
@@ -44,7 +44,7 @@ describe SuperDiff::RecursiveDiffer do
     it "ignores hashes within arrays" do
       seq1 = [ {:foo => "bar"} ]
       seq2 = [ {:foo => "baz"} ]
-      SuperDiff::RecursiveDiffer.diff(seq1, seq2).must == [
+      SuperDiff::RecursiveDiffer.diff(seq1, seq2).should == [
         SuperDiff::RecursiveDiffer::Event.new("!", 0, {:foo => "bar"}, 0, {:foo => "baz"}, [])
       ]
     end

@@ -21,7 +21,7 @@ describe SuperDiff::Reporter do
         }
       }
       @reporter.report(data)
-      out.must be_empty
+      out.should be_empty
     end
 
     specify "differing strings" do
@@ -40,7 +40,7 @@ Error: Differing strings.
 Expected: "foo"
 Got: "bar"
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "same numbers" do
@@ -53,7 +53,7 @@ EOT
         }
       }
       @reporter.report(data)
-      out.must be_empty
+      out.should be_empty
     end
 
     specify "differing numbers" do
@@ -72,7 +72,7 @@ Error: Differing numbers.
 Expected: 1
 Got: 2
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "values of differing simple types" do
@@ -91,7 +91,7 @@ Error: Values of differing type.
 Expected: "foo"
 Got: 1
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "values of differing complex types" do
@@ -110,7 +110,7 @@ Error: Values of differing type.
 Expected: "foo"
 Got: ["zing", "zang"]
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays of same size but differing elements" do
@@ -156,7 +156,7 @@ Details:
   - Expected: "bar"
   - Got: "baz"
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep arrays of same size but differing elements" do
@@ -251,7 +251,7 @@ Details:
     - Expected: "quux"
     - Got: "quarks"
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deeper arrays with differing elements" do
@@ -445,7 +445,7 @@ Details:
         - Expected: "vermouth"
         - Got: "ralston"
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear at the beginning" do
@@ -507,7 +507,7 @@ Got: ["baz", "quux", "foo", "bar"]
 Details:
 - *[? -> 0..1]: "baz", "quux" unexpectedly found before "foo".
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear at the end" do
@@ -568,7 +568,7 @@ Got: ["foo", "bar", "baz", "quux"]
 Details:
 - *[? -> 2..3]: "baz", "quux" unexpectedly found after "bar".
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear after a changed element" do
@@ -643,7 +643,7 @@ Details:
   - Got: "buzz"
 - *[? -> 3..4]: "quux", "blargh" unexpectedly found after "baz" (now "buzz").
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed at the beginning" do
@@ -705,7 +705,7 @@ Got: ["foo", "bar"]
 Details:
 - *[0..1 -> ?]: "baz", "quux" unexpectedly missing from before "foo".
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed at the end" do
@@ -767,7 +767,7 @@ Got: ["foo", "bar"]
 Details:
 - *[2..3 -> ?]: "baz", "quux" unexpectedly missing from after "bar".
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed after a changed element" do
@@ -842,7 +842,7 @@ Details:
   - Got: "buzz"
 - *[3..4 -> ?]: "quux", "blargh" unexpectedly missing from after "baz" (now "buzz").
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep arrays with surplus elements" do
@@ -959,7 +959,7 @@ Details:
   - *[? -> 4]: "blargh" unexpectedly found after "baz".
 - *[? -> 2]: "yang" unexpectedly found after ["bar", "baz"] (now ["bar", "quux", "zing", "baz", "blargh"]).
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep arrays with missing elements" do
@@ -1054,7 +1054,7 @@ Details:
 - *[1]: Arrays of differing size (no differing elements).
   - *[2..3 -> ?]: "quux", "blargh" unexpectedly missing from after "baz".
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     # TODO: Need to fix this one in more detail
@@ -1303,7 +1303,7 @@ Details:
       - Got: ["ralston"]
   - *[? -> 5]: ["foreal", ["zap"]] unexpectedly found after ["raz", ["ralston"]].
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow hashes of same size but differing elements" do
@@ -1349,7 +1349,7 @@ Details:
   - Expected: "quux"
   - Got: "quarx"
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep hashes of same size but differing elements" do
@@ -1459,7 +1459,7 @@ Details:
     - Expected: :zang
     - Got: :bananas
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deeper hashes with differing elements" do
@@ -1634,7 +1634,7 @@ Details:
     - Expected: {2=>:sym}
     - Got: 3
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow hashes with surplus elements" do
@@ -1689,7 +1689,7 @@ Details:
 - *[? -> "baz"]: "quux" unexpectedly found.
 - *[? -> "ying"]: "yang" unexpectedly found.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "shallow hashes with missing elements" do
@@ -1744,7 +1744,7 @@ Details:
 - *["baz" -> ?]: "quux" unexpectedly missing.
 - *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep hashes with surplus elements" do
@@ -1812,7 +1812,7 @@ Details:
   - *[? -> "baz"]: "quux" unexpectedly found.
   - *[? -> "ying"]: "yang" unexpectedly found.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deep hashes with missing elements" do
@@ -1907,7 +1907,7 @@ Details:
   - *["baz" -> ?]: "quux" unexpectedly missing.
   - *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "deeper hashes with variously differing hashes" do
@@ -2103,7 +2103,7 @@ Details:
   - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "arrays and hashes, mixed" do
@@ -2378,7 +2378,7 @@ Details:
   - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "collapsed output" do
@@ -2648,7 +2648,7 @@ Details:
 - *["biz"][? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.must == msg
+      out.should == msg
     end
 
     specify "custom string differ"
