@@ -1,5 +1,4 @@
+!.ruby-version
 .DS_Store
-*.tmproj
-.rvmrc
-Gemfile.lock
-.idea
+/*.tmproj
+/Gemfile.lock
