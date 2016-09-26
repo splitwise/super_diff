@@ -1,13 +1,9 @@
 require 'spec_helper'
 
 describe SuperDiff::Differ do
-  before do
-    @differ = SuperDiff::Differ.new
-  end
-
-  describe '#diff', 'generates correct data for' do
+  describe '.diff', 'generates correct data for' do
     specify "same strings" do
-      actual = @differ.diff("foo", "foo")
+      actual = described_class.diff("foo", "foo")
       expected = {
         :state => :equal,
         :old_element => {:value => "foo", :type => :string},
@@ -18,7 +14,7 @@ describe SuperDiff::Differ do
     end
 
     specify "differing strings" do
-      actual = @differ.diff("foo", "bar")
+      actual = described_class.diff("foo", "bar")
       expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
@@ -29,7 +25,7 @@ describe SuperDiff::Differ do
     end
 
     specify "same numbers" do
-      actual = @differ.diff(1, 1)
+      actual = described_class.diff(1, 1)
       expected = {
         :state => :equal,
         :old_element => {:value => 1, :type => :number},
@@ -40,7 +36,7 @@ describe SuperDiff::Differ do
     end
 
     specify "differing numbers" do
-      actual = @differ.diff(1, 2)
+      actual = described_class.diff(1, 2)
       expected = {
         :state => :inequal,
         :old_element => {:value => 1, :type => :number},
@@ -51,7 +47,7 @@ describe SuperDiff::Differ do
     end
 
     specify "values of differing simple types" do
-      actual = @differ.diff("foo", 1)
+      actual = described_class.diff("foo", 1)
       expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
@@ -62,7 +58,7 @@ describe SuperDiff::Differ do
     end
 
     specify "values of differing complex types" do
-      actual = @differ.diff("foo", %w(zing zang))
+      actual = described_class.diff("foo", %w(zing zang))
       expected = {
         :state => :inequal,
         :old_element => {:value => "foo", :type => :string},
@@ -73,7 +69,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow arrays of same size but with differing elements" do
-      actual = @differ.diff(["foo", "bar"], ["foo", "baz"])
+      actual = described_class.diff(["foo", "bar"], ["foo", "baz"])
       expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -98,7 +94,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow arrays with inserted elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         %w(a b),
         %w(a 1 2 b),
       )
@@ -138,7 +134,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep arrays of same size but with differing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         [["foo", "bar"], ["baz", "quux"]],
         [["foo", "biz"], ["baz", "quarks"]]
       )
@@ -194,7 +190,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deeper arrays with differing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         [
           "foo",
           ["bar", ["baz", "quux"]],
@@ -318,7 +314,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow arrays with surplus elements" do
-      actual = @differ.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
+      actual = described_class.diff(["foo", "bar"], ["foo", "bar", "baz", "quux"])
       expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -355,7 +351,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow arrays with missing elements" do
-      actual = @differ.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
+      actual = described_class.diff(["foo", "bar", "baz", "quux"], ["foo", "bar"])
       expected = {
         :state => :inequal,
         :old_element => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
@@ -392,7 +388,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep arrays with surplus elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         ["foo", ["bar", "baz"], "ying"],
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"]
       )
@@ -452,7 +448,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep arrays with missing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         ["foo", ["bar", "baz", "quux", "blargh"], "ying"],
         ["foo", ["bar", "baz"], "ying"]
       )
@@ -512,7 +508,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deeper arrays with variously differing arrays" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         [
           "foo",
           ["bar", ["baz", "quux"]],
@@ -654,7 +650,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow hashes of same size but differing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"foo" => "bar", "baz" => "quux"},
         {"foo" => "bar", "baz" => "quarx"}
       )
@@ -682,7 +678,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep hashes of same size but differing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"one" => {"foo" => "bar", "baz" => "quux"}, :two => {"ying" => 1, "zing" => :zang}},
         {"one" => {"foo" => "boo", "baz" => "quux"}, :two => {"ying" => "yang", "zing" => :bananas}}
       )
@@ -746,7 +742,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deeper hashes with differing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
           "biz" => {:fiz => "gram", 1 => {2 => :sym}}
@@ -854,7 +850,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow hashes with surplus elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"foo" => "bar"},
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"}
       )
@@ -888,7 +884,7 @@ describe SuperDiff::Differ do
     end
 
     specify "shallow hashes with missing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"foo" => "bar", "baz" => "quux", "ying" => "yang"},
         {"foo" => "bar"}
       )
@@ -922,7 +918,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep hashes with surplus elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"one" => {"foo" => "bar"}},
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}}
       )
@@ -964,7 +960,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deep hashes with missing elements" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {"one" => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}},
         {"one" => {"foo" => "bar"}}
       )
@@ -1022,7 +1018,7 @@ describe SuperDiff::Differ do
     end
 
     specify "deeper hashes with variously differing hashes" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => {"fram" => "frazzle"}}},
           "biz" => {:fiz => "gram", 1 => {2 => :sym}},
@@ -1144,7 +1140,7 @@ describe SuperDiff::Differ do
     end
 
     specify "arrays and hashes, mixed" do
-      actual = @differ.diff(
+      actual = described_class.diff(
         {
           "foo" => {1 => {"baz" => {"quux" => 2}, "foz" => ["apple", "bananna", "orange"]}},
           "biz" => {:fiz => ["bing", "bong", "bam"], 1 => {2 => :sym}},

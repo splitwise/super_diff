@@ -1,11 +1,21 @@
 module SuperDiff
   class Reporter
-    def initialize(stdout)
-      @stdout = stdout
+    def self.report(change, **options)
+      output = options.delete(:to)
+      new(change, output, options).report
     end
 
-    def report(change, options={})
-      report_change(change, options.merge(:level => 0, :prefix => "*", :root => true))
+    def initialize(change, output, options)
+      @change = change
+      @output = output
+      @options = options
+    end
+
+    def report
+      report_change(
+        @change,
+        @options.merge(level: 0, prefix: "*", root: true)
+      )
     end
 
   private
@@ -192,7 +202,7 @@ module SuperDiff
 
     def puts(*args)
       $stdout.puts(*args)
-      @stdout.puts(*args)
+      @output.puts(*args)
     end
   end
 end

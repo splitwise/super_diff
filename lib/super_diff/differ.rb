@@ -1,18 +1,17 @@
 module SuperDiff
   class Differ
-    def diff!(old_element, new_element)
-      @data = diff(old_element, new_element)
-      self
+    def self.diff(old_element, new_element)
+      new(old_element, new_element).diff
     end
 
-    def diff(old_element, new_element)
-      _diff(:old_element => old_element, :new_element => new_element)
+    def initialize(old_element, new_element)
+      @old_element = old_element
+      @new_element = new_element
     end
 
-    def report_to(stdout, data=@data)
-      Reporter.new(stdout).report(data)
+    def diff
+      _diff(:old_element => @old_element, :new_element => @new_element)
     end
-    alias :report :report_to
 
   private
     def _diff(args)

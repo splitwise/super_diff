@@ -1,18 +1,11 @@
 require 'spec_helper'
 
 describe SuperDiff::Reporter do
-  before do
-    @stdout = StringIO.new
-    @reporter = SuperDiff::Reporter.new(@stdout)
-  end
+  let(:stdout) { StringIO.new }
 
-  def out
-    @stdout.string
-  end
-
-  describe '#report', 'outputs correct message for' do
+  describe '.report', 'outputs correct message for' do
     specify "same strings" do
-      data = {
+      change = {
         :state => :equal,
         :elements => {
           :old => {:value => "foo", :type => :string},
@@ -20,12 +13,12 @@ describe SuperDiff::Reporter do
           :common => {:value => nil, :type => :string}
         }
       }
-      @reporter.report(data)
-      out.should be_empty
+      described_class.report(change, to: stdout)
+      stdout.string.should be_empty
     end
 
     specify "differing strings" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => "foo", :type => :string},
@@ -33,18 +26,18 @@ describe SuperDiff::Reporter do
           :common => {:value => nil, :type => :string}
         }
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Differing strings.
 
 Expected: "foo"
 Got: "bar"
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "same numbers" do
-      data = {
+      change = {
         :state => :equal,
         :elements => {
           :old => {:value => 1, :type => :number},
@@ -52,12 +45,12 @@ EOT
           :common => {:value => nil, :type => :number}
         }
       }
-      @reporter.report(data)
-      out.should be_empty
+      described_class.report(change, to: stdout)
+      stdout.string.should be_empty
     end
 
     specify "differing numbers" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => 1, :type => :number},
@@ -65,18 +58,18 @@ EOT
           :common => {:value => nil, :type => :number}
         }
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Differing numbers.
 
 Expected: 1
 Got: 2
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "values of differing simple types" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => "foo", :type => :string},
@@ -84,18 +77,18 @@ EOT
           :common => {:value => nil, :type => nil}
         }
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Values of differing type.
 
 Expected: "foo"
 Got: 1
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "values of differing complex types" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => "foo", :type => :string},
@@ -103,18 +96,18 @@ EOT
           :common => {:value => nil, :type => nil}
         }
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Values of differing type.
 
 Expected: "foo"
 Got: ["zing", "zang"]
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays of same size but differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -144,7 +137,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -156,11 +149,11 @@ Details:
   - Expected: "bar"
   - Got: "baz"
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep arrays of same size but differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => [["foo", "bar"], ["baz", "quux"]], :type => :array, :size => 2},
@@ -234,7 +227,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -251,11 +244,11 @@ Details:
     - Expected: "quux"
     - Got: "quarks"
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deeper arrays with differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -418,7 +411,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -445,11 +438,11 @@ Details:
         - Expected: "vermouth"
         - Got: "ralston"
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear at the beginning" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -497,7 +490,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -507,11 +500,11 @@ Got: ["baz", "quux", "foo", "bar"]
 Details:
 - *[? -> 0..1]: "baz", "quux" unexpectedly found before "foo".
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear at the end" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar"], :type => :array, :size => 2},
@@ -558,7 +551,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -568,11 +561,11 @@ Got: ["foo", "bar", "baz", "quux"]
 Details:
 - *[? -> 2..3]: "baz", "quux" unexpectedly found after "bar".
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with surplus elements that appear after a changed element" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar", "baz"], :type => :array, :size => 3},
@@ -630,7 +623,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size and elements.
 
@@ -643,11 +636,11 @@ Details:
   - Got: "buzz"
 - *[? -> 3..4]: "quux", "blargh" unexpectedly found after "baz" (now "buzz").
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed at the beginning" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["baz", "quux", "foo", "bar"], :type => :array, :size => 4},
@@ -695,7 +688,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -705,11 +698,11 @@ Got: ["foo", "bar"]
 Details:
 - *[0..1 -> ?]: "baz", "quux" unexpectedly missing from before "foo".
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed at the end" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar", "baz", "quux"], :type => :array, :size => 4},
@@ -757,7 +750,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size (no differing elements).
 
@@ -767,11 +760,11 @@ Got: ["foo", "bar"]
 Details:
 - *[2..3 -> ?]: "baz", "quux" unexpectedly missing from after "bar".
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow arrays with missing elements that were removed after a changed element" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", "bar", "baz", "quux", "blargh"], :type => :array, :size => 5},
@@ -829,7 +822,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of differing size and elements.
 
@@ -842,11 +835,11 @@ Details:
   - Got: "buzz"
 - *[3..4 -> ?]: "quux", "blargh" unexpectedly missing from after "baz" (now "buzz").
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep arrays with surplus elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", ["bar", "baz"], "ying"], :type => :array, :size => 3},
@@ -946,7 +939,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -959,11 +952,11 @@ Details:
   - *[? -> 4]: "blargh" unexpectedly found after "baz".
 - *[? -> 2]: "yang" unexpectedly found after ["bar", "baz"] (now ["bar", "quux", "zing", "baz", "blargh"]).
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep arrays with missing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => ["foo", ["bar", "baz", "quux", "blargh"], "ying"], :type => :array, :size => 3},
@@ -1043,7 +1036,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -1054,12 +1047,12 @@ Details:
 - *[1]: Arrays of differing size (no differing elements).
   - *[2..3 -> ?]: "quux", "blargh" unexpectedly missing from after "baz".
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     # TODO: Need to fix this one in more detail
     specify "deeper arrays with variously differing arrays" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -1280,7 +1273,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Arrays of same size but with differing elements.
 
@@ -1303,11 +1296,11 @@ Details:
       - Got: ["ralston"]
   - *[? -> 5]: ["foreal", ["zap"]] unexpectedly found after ["raz", ["ralston"]].
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow hashes of same size but differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => {"foo" => "bar", "baz" => "quux"}, :type => :hash, :size => 2},
@@ -1337,7 +1330,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of same size but with differing elements.
 
@@ -1349,11 +1342,11 @@ Details:
   - Expected: "quux"
   - Got: "quarx"
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep hashes of same size but differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -1439,7 +1432,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of same size but with differing elements.
 
@@ -1459,11 +1452,11 @@ Details:
     - Expected: :zang
     - Got: :bananas
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deeper hashes with differing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -1609,7 +1602,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of same size but with differing elements.
 
@@ -1634,11 +1627,11 @@ Details:
     - Expected: {2=>:sym}
     - Got: 3
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow hashes with surplus elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => {"foo" => "bar"}, :type => :hash, :size => 1},
@@ -1678,7 +1671,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of differing size (no differing elements).
 
@@ -1689,11 +1682,11 @@ Details:
 - *[? -> "baz"]: "quux" unexpectedly found.
 - *[? -> "ying"]: "yang" unexpectedly found.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "shallow hashes with missing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => {"foo" => "bar", "baz" => "quux", "ying" => "yang"}, :type => :hash, :size => 3},
@@ -1733,7 +1726,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of differing size (no differing elements).
 
@@ -1744,11 +1737,11 @@ Details:
 - *["baz" -> ?]: "quux" unexpectedly missing.
 - *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep hashes with surplus elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {:value => {"one" => {"foo" => "bar"}}, :type => :hash, :size => 1},
@@ -1800,7 +1793,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of same size but with differing elements.
 
@@ -1812,11 +1805,11 @@ Details:
   - *[? -> "baz"]: "quux" unexpectedly found.
   - *[? -> "ying"]: "yang" unexpectedly found.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deep hashes with missing elements" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -1895,7 +1888,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of same size but with differing elements.
 
@@ -1907,11 +1900,11 @@ Details:
   - *["baz" -> ?]: "quux" unexpectedly missing.
   - *["ying" -> ?]: "yang" unexpectedly missing.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "deeper hashes with variously differing hashes" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -2078,7 +2071,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of differing size and elements.
 
@@ -2103,11 +2096,11 @@ Details:
   - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "arrays and hashes, mixed" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -2351,7 +2344,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data)
+      described_class.report(change, to: stdout)
       msg = <<EOT
 Error: Hashes of differing size and elements.
 
@@ -2378,11 +2371,11 @@ Details:
   - *[? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "collapsed output" do
-      data = {
+      change = {
         :state => :inequal,
         :elements => {
           :old => {
@@ -2626,7 +2619,7 @@ EOT
           ]]
         ]
       }
-      @reporter.report(data, :collapsed => true)
+      described_class.report(change, to: stdout, collapsed: true)
       msg = <<EOT
 Error: Hashes of differing size and elements.
 
@@ -2648,7 +2641,7 @@ Details:
 - *["biz"][? -> 42]: {:raz=>"matazz"} unexpectedly found.
 - *["bananas" -> ?]: {:apple=>11} unexpectedly missing.
 EOT
-      out.should == msg
+      stdout.string.should == msg
     end
 
     specify "custom string differ"
