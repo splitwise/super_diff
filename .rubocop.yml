@@ -1,0 +1,257 @@
+---
+AllCops:
+  Exclude:
+    - db/schema.rb
+  TargetRubyVersion: 2.4
+Layout/DotPosition:
+  EnforcedStyle: trailing
+Layout/ExtraSpacing:
+  Enabled: true
+Layout/InitialIndentation:
+  Enabled: false
+Layout/IndentArray:
+  EnforcedStyle: "consistent"
+Layout/IndentHash:
+  EnforcedStyle: "consistent"
+Layout/MultilineOperationIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+Layout/MultilineMethodCallIndentation:
+  Enabled: true
+  EnforcedStyle: indented
+Lint/AmbiguousOperator:
+  Enabled: false
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+Lint/AssignmentInCondition:
+  Enabled: false
+Lint/CircularArgumentReference:
+  Enabled: false
+Lint/ConditionPosition:
+  Enabled: false
+Lint/DeprecatedClassMethods:
+  Enabled: false
+Lint/DuplicatedKey:
+  Enabled: false
+Lint/EachWithObjectArgument:
+  Enabled: false
+Lint/ElseLayout:
+  Enabled: false
+Lint/FormatParameterMismatch:
+  Enabled: false
+Lint/HandleExceptions:
+  Enabled: false
+Lint/LiteralInInterpolation:
+  Enabled: false
+Lint/Loop:
+  Enabled: false
+Lint/NestedMethodDefinition:
+  Enabled: false
+Lint/NonLocalExitFromIterator:
+  Enabled: false
+Lint/ParenthesesAsGroupedExpression:
+  Enabled: false
+Lint/RequireParentheses:
+  Enabled: false
+Lint/UnderscorePrefixedVariableName:
+  Enabled: false
+Lint/UnneededDisable:
+  Enabled: false
+Lint/Void:
+  Enabled: false
+Metrics/AbcSize:
+  Enabled: false
+Metrics/BlockNesting:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/CyclomaticComplexity:
+  Enabled: false
+Metrics/LineLength:
+  Max: 120
+Metrics/MethodLength:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/ParameterLists:
+  Enabled: false
+Naming/AccessorMethodName:
+  Enabled: false
+Naming/AsciiIdentifiers:
+  Enabled: false
+Naming/BinaryOperatorParameterName:
+  Enabled: false
+Naming/FileName:
+  Enabled: false
+Naming/PredicateName:
+  NamePrefixBlacklist:
+    - is_
+  Exclude:
+    - spec/**/*
+Performance/CaseWhenSplat:
+  Enabled: false
+Performance/Count:
+  Enabled: false
+Performance/Detect:
+  Enabled: false
+Performance/FlatMap:
+  Enabled: false
+Performance/ReverseEach:
+  Enabled: false
+Performance/Sample:
+  Enabled: false
+Performance/Size:
+  Enabled: false
+Performance/StringReplacement:
+  Enabled: false
+Rails/ActionFilter:
+  Enabled: false
+Rails/Date:
+  Enabled: false
+Rails/Delegate:
+  Enabled: false
+Rails/FindBy:
+  Enabled: false
+Rails/FindEach:
+  Enabled: false
+Rails/HasAndBelongsToMany:
+  Enabled: false
+Rails/Output:
+  Enabled: false
+Rails/ReadWriteAttribute:
+  Enabled: false
+Rails/ScopeArgs:
+  Enabled: false
+Rails/TimeZone:
+  Enabled: false
+Rails/Validation:
+  Enabled: false
+Style/Alias:
+  Enabled: false
+Style/ArrayJoin:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Style/Attr:
+  Enabled: false
+Style/BracesAroundHashParameters:
+  Enabled: false
+Style/CaseEquality:
+  Enabled: false
+Style/CharacterLiteral:
+  Enabled: false
+Style/ClassAndModuleChildren:
+  Enabled: true
+  EnforcedStyle: nested
+Style/ClassVars:
+  Enabled: false
+Style/CollectionMethods:
+  Enabled: true
+  PreferredMethods:
+    find: detect
+    inject: reduce
+    collect: map
+    find_all: select
+Style/ColonMethodCall:
+  Enabled: false
+Style/CommentAnnotation:
+  Enabled: false
+Style/Documentation:
+  Enabled: false
+Style/DoubleNegation:
+  Enabled: false
+Style/EachWithObject:
+  Enabled: false
+Style/EmptyLiteral:
+  Enabled: false
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+Style/Encoding:
+  Enabled: false
+Style/EvenOdd:
+  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Style/FlipFlop:
+  Enabled: false
+Style/FormatString:
+  Enabled: false
+Style/GlobalVars:
+  Enabled: false
+Style/GuardClause:
+  Enabled: false
+Style/IfUnlessModifier:
+  Enabled: false
+Style/IfWithSemicolon:
+  Enabled: false
+Style/InlineComment:
+  Enabled: false
+Style/Lambda:
+  Enabled: false
+Style/LambdaCall:
+  Enabled: false
+Style/LineEndConcatenation:
+  Enabled: false
+Style/ModuleFunction:
+  Enabled: false
+Style/MultilineBlockChain:
+  Enabled: false
+Style/NegatedIf:
+  Enabled: false
+Style/NegatedWhile:
+  Enabled: false
+Style/Next:
+  Enabled: false
+Style/NilComparison:
+  Enabled: false
+Style/Not:
+  Enabled: false
+Style/NumericLiterals:
+  Enabled: false
+Style/OneLineConditional:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  Enabled: false
+Style/PerlBackrefs:
+  Enabled: false
+Style/PreferredHashMethods:
+  Enabled: false
+Style/Proc:
+  Enabled: false
+Style/RaiseArgs:
+  Enabled: false
+Style/RegexpLiteral:
+  Enabled: false
+Style/SafeNavigation:
+  Enabled: false
+Style/SelfAssignment:
+  Enabled: false
+Style/SingleLineBlockParams:
+  Enabled: false
+Style/SingleLineMethods:
+  Enabled: false
+Style/SignalException:
+  Enabled: false
+Style/SpecialGlobalVars:
+  Enabled: false
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  Enabled: true
+Style/SymbolArray:
+  Enabled: false
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+  Enabled: true
+Style/TrivialAccessors:
+  Enabled: false
+Style/VariableInterpolation:
+  Enabled: false
+Style/WhenThen:
+  Enabled: false
+Style/WhileUntilModifier:
+  Enabled: false
+Style/WordArray:
+  Enabled: false
