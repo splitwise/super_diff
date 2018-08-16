@@ -27,6 +27,8 @@ module SuperDiff
           diff_strings
         elsif expected.is_a?(Array) && actual.is_a?(Array)
           diff_arrays
+        elsif expected.is_a?(Hash) && actual.is_a?(Hash)
+          diff_hashes
         else
           diff_objects
         end
@@ -137,6 +139,49 @@ module SuperDiff
       OUTPUT
     end
 
+    def diff_hashes
+      all_keys = (expected.keys | actual.keys)
+
+      details = all_keys.inject([]) do |array, key|
+        if expected.include?(key)
+          if actual.include?(key)
+            if expected[key] == actual[key]
+              array
+            else
+              array << "*[#{key.inspect}]: " +
+                "Differing #{plural_type_for(actual[key])}.\n" +
+                "  Expected: #{expected[key].inspect}\n" +
+                "    Actual: #{actual[key].inspect}"
+            end
+          else
+            array << "*[#{key.inspect} -> ?]: Actual is missing key."
+          end
+        else
+          if actual.include?(key)
+            array << "*[? -> #{key.inspect}]: " +
+              "Actual has extra key (with value of #{actual[key].inspect})."
+          else
+            array
+          end
+        end
+      end
+
+      if details.any?
+        <<~OUTPUT
+          Differing hashes.
+
+          Expected: #{inspect(expected)}
+            Actual: #{inspect(actual)}
+
+          Details:
+
+          #{details.map { |detail| "- #{detail}"}.join("\n")}
+        OUTPUT
+      else
+        ""
+      end
+    end
+
     def diff_objects
       <<~OUTPUT
         Differing #{plural_type_for(actual)}.
@@ -164,6 +209,17 @@ module SuperDiff
       when String then "strings"
       when Symbol then "symbols"
       else "objects"
+      end
+    end
+
+    def inspect(value)
+      if value.is_a?(Hash)
+        value.inspect.
+          gsub(/([^,]+)=>([^,]+)/, '\1 => \2').
+          gsub(/:(\w+) => /, '\1: ').
+          gsub(/\{([^{}]+)\}/, '{ \1 }')
+      else
+        value.inspect
       end
     end
   end

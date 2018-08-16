@@ -258,7 +258,7 @@ RSpec.describe SuperDiff::Differ do
       end
     end
 
-    context "given two one-dimensional arrays where the actual has added elements" do
+    context "given two one-dimensional arrays where the actual has extra elements" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["foo", "bar"],
@@ -307,11 +307,159 @@ RSpec.describe SuperDiff::Differ do
     context "given the same hash" do
       it "returns an empty string" do
         output = described_class.call(
-          expected: { foo: "bar" },
-          actual: { foo: "bar" }
+          expected: { name: "Elliot" },
+          actual: { name: "Elliot" }
         )
 
         expect(output).to eq("")
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the same key has differing numbers" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { tall: 12, grande: 19, venti: 20 },
+          actual: { tall: 12, grande: 16, venti: 20 }
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { tall: 12, grande: 19, venti: 20 }
+            Actual: { tall: 12, grande: 16, venti: 20 }
+
+          Details:
+
+          - *[:grande]: Differing numbers.
+            Expected: 19
+              Actual: 16
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the same key has differing symbols" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { tall: :small, grande: :grand, venti: :large },
+          actual: { tall: :small, grande: :medium, venti: :large },
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { tall: :small, grande: :grand, venti: :large }
+            Actual: { tall: :small, grande: :medium, venti: :large }
+
+          Details:
+
+          - *[:grande]: Differing symbols.
+            Expected: :grand
+              Actual: :medium
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the same key has differing strings" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { tall: "small", grande: "grand", venti: "large" },
+          actual: { tall: "small", grande: "medium", venti: "large" },
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { tall: "small", grande: "grand", venti: "large" }
+            Actual: { tall: "small", grande: "medium", venti: "large" }
+
+          Details:
+
+          - *[:grande]: Differing strings.
+            Expected: "grand"
+              Actual: "medium"
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the same key has differing objects" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: {
+            steve: SuperDiff::Test::Person.new(name: "Jobs"),
+            susan: SuperDiff::Test::Person.new(name: "Kare")
+          },
+          actual: {
+            steve: SuperDiff::Test::Person.new(name: "Wozniak"),
+            susan: SuperDiff::Test::Person.new(name: "Kare")
+          }
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { steve: #<Person name="Jobs">, susan: #<Person name="Kare"> }
+            Actual: { steve: #<Person name="Wozniak">, susan: #<Person name="Kare"> }
+
+          Details:
+
+          - *[:steve]: Differing objects.
+            Expected: #<Person name="Jobs">
+              Actual: #<Person name="Wozniak">
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the actual has extra keys" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { latte: 4.5 },
+          actual: { latte: 4.5, mocha: 3.5, cortado: 3 }
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { latte: 4.5 }
+            Actual: { latte: 4.5, mocha: 3.5, cortado: 3 }
+
+          Details:
+
+          - *[? -> :mocha]: Actual has extra key (with value of 3.5).
+          - *[? -> :cortado]: Actual has extra key (with value of 3).
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where the actual has missing keys" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { latte: 4.5, mocha: 3.5, cortado: 3 },
+          actual: { latte: 4.5 }
+        )
+
+        expected_output = <<~STR
+          Differing hashes.
+
+          Expected: { latte: 4.5, mocha: 3.5, cortado: 3 }
+            Actual: { latte: 4.5 }
+
+          Details:
+
+          - *[:mocha -> ?]: Actual is missing key.
+          - *[:cortado -> ?]: Actual is missing key.
+        STR
+
+        expect(actual_output).to eq(expected_output)
       end
     end
 
