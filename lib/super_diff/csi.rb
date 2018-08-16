@@ -1,5 +1,6 @@
 require_relative "csi/reset_sequence"
 
+# Source: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 module SuperDiff
   module Csi
     def self.reset_sequence
