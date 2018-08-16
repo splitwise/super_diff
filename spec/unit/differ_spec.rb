@@ -25,6 +25,29 @@ RSpec.describe SuperDiff::Differ do
       end
     end
 
+    context "given the same symbol" do
+      it "returns an empty string" do
+        output = described_class.call(expected: :foo, actual: :foo)
+
+        expect(output).to eq("")
+      end
+    end
+
+    context "given differing symbols" do
+      it "returns a message along with a comparison" do
+        actual_output = described_class.call(expected: :foo, actual: :bar)
+
+        expected_output = <<~STR
+          Differing symbols.
+
+          Expected: :foo
+            Actual: :bar
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
     context "given the same string" do
       it "returns an empty string" do
         output = described_class.call(expected: "", actual: "")
@@ -131,30 +154,6 @@ RSpec.describe SuperDiff::Differ do
       end
     end
 
-    context "given two equal-length, one-dimensional arrays with differing strings" do
-      it "returns a message along with the diff" do
-        actual_output = described_class.call(
-          expected: ["foo", "bar", "qux"],
-          actual: ["foo", "baz", "qux"]
-        )
-
-        expected_output = <<~STR
-          Differing arrays.
-
-          Expected: ["foo", "bar", "qux"]
-            Actual: ["foo", "baz", "qux"]
-
-          Details:
-
-          - *[1]: Differing strings.
-            Expected: "bar"
-              Actual: "baz"
-        STR
-
-        expect(actual_output).to eq(expected_output)
-      end
-    end
-
     context "given two equal-length, one-dimensional arrays with differing numbers" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
@@ -173,6 +172,54 @@ RSpec.describe SuperDiff::Differ do
           - *[2]: Differing numbers.
             Expected: 3
               Actual: 99
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-length, one-dimensional arrays with differing symbols" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: [:one, :fish, :two, :fish],
+          actual: [:one, :FISH, :two, :fish]
+        )
+
+        expected_output = <<~STR
+          Differing arrays.
+
+          Expected: [:one, :fish, :two, :fish]
+            Actual: [:one, :FISH, :two, :fish]
+
+          Details:
+
+          - *[1]: Differing symbols.
+            Expected: :fish
+              Actual: :FISH
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-length, one-dimensional arrays with differing strings" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: ["foo", "bar", "qux"],
+          actual: ["foo", "baz", "qux"]
+        )
+
+        expected_output = <<~STR
+          Differing arrays.
+
+          Expected: ["foo", "bar", "qux"]
+            Actual: ["foo", "baz", "qux"]
+
+          Details:
+
+          - *[1]: Differing strings.
+            Expected: "bar"
+              Actual: "baz"
         STR
 
         expect(actual_output).to eq(expected_output)

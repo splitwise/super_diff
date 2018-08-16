@@ -162,6 +162,7 @@ module SuperDiff
       case value
       when Numeric then "numbers"
       when String then "strings"
+      when Symbol then "symbols"
       else "objects"
       end
     end
