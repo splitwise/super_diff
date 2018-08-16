@@ -71,11 +71,6 @@ module SuperDiff
 
           Expected: #{expected.inspect}
             Actual: #{actual.inspect}
-
-          Diff:
-
-          #{deleted("- #{expected}")}
-          #{inserted("+ #{actual}")}
         OUTPUT
       end
     end

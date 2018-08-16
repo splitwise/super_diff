@@ -66,27 +66,17 @@ RSpec.describe SuperDiff::Differ do
 
     context "given completely different single-line strings" do
       it "returns a message along with the diff" do
-        actual_output = described_class.call(expected: "foo", actual: "bar")
+        actual_output = described_class.call(
+          expected: "Marty",
+          actual: "Jennifer"
+        )
 
-        expected_output = colored do |str, color|
-          str << color.plain(<<~STR)
-            Differing strings.
+        expected_output = <<~STR
+          Differing strings.
 
-            Expected: "foo"
-              Actual: "bar"
-
-            Diff:
-
-          STR
-
-          str << color.line do |line|
-            line << color.light_red_bg("- foo")
-          end
-
-          str << color.line do |line|
-            line << color.light_green_bg("+ bar")
-          end
-        end
+          Expected: "Marty"
+            Actual: "Jennifer"
+        STR
 
         expect(actual_output).to eq(expected_output)
       end
@@ -94,22 +84,17 @@ RSpec.describe SuperDiff::Differ do
 
     context "given closely different single-line strings" do
       it "returns a message along with the diff" do
-        actual_output = described_class.call(expected: "foo", actual: "foobar")
+        actual_output = described_class.call(
+          expected: "Marty",
+          actual: "Marty McFly"
+        )
 
-        expected_output = colored do |str, color|
-          str << color.plain(<<~STR)
-            Differing strings.
+        expected_output = <<~STR
+          Differing strings.
 
-            Expected: "foo"
-              Actual: "foobar"
-
-            Diff:
-
-          STR
-
-          str << color.line(color.light_red_bg("- foo"))
-          str << color.line(color.light_green_bg("+ foobar"))
-        end
+          Expected: "Marty"
+            Actual: "Marty McFly"
+        STR
 
         expect(actual_output).to eq(expected_output)
       end
@@ -156,7 +141,10 @@ RSpec.describe SuperDiff::Differ do
 
     context "given the same array" do
       it "returns an empty string" do
-        output = described_class.call(expected: ["foo"], actual: ["foo"])
+        output = described_class.call(
+          expected: ["sausage", "egg", "cheese"],
+          actual: ["sausage", "egg", "cheese"]
+        )
 
         expect(output).to eq("")
       end
@@ -213,21 +201,21 @@ RSpec.describe SuperDiff::Differ do
     context "given two equal-length, one-dimensional arrays with differing strings" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: ["foo", "bar", "qux"],
-          actual: ["foo", "baz", "qux"]
+          expected: ["sausage", "egg", "cheese"],
+          actual: ["bacon", "egg", "cheese"]
         )
 
         expected_output = <<~STR
           Differing arrays.
 
-          Expected: ["foo", "bar", "qux"]
-            Actual: ["foo", "baz", "qux"]
+          Expected: ["sausage", "egg", "cheese"]
+            Actual: ["bacon", "egg", "cheese"]
 
           Details:
 
-          - *[1]: Differing strings.
-            Expected: "bar"
-              Actual: "baz"
+          - *[0]: Differing strings.
+            Expected: "sausage"
+              Actual: "bacon"
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -237,21 +225,27 @@ RSpec.describe SuperDiff::Differ do
     context "given two equal-length, one-dimensional arrays with differing objects" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: [:foo, SuperDiff::Test::Person.new(name: "Elliot"), :bar],
-          actual: [:foo, SuperDiff::Test::Person.new(name: "Joe"), :bar],
+          expected: [
+            SuperDiff::Test::Person.new(name: "Marty"),
+            SuperDiff::Test::Person.new(name: "Jennifer")
+          ],
+          actual: [
+            SuperDiff::Test::Person.new(name: "Marty"),
+            SuperDiff::Test::Person.new(name: "Doc")
+          ],
         )
 
         expected_output = <<~STR
           Differing arrays.
 
-          Expected: [:foo, #<Person name="Elliot">, :bar]
-            Actual: [:foo, #<Person name="Joe">, :bar]
+          Expected: [#<Person name="Marty">, #<Person name="Jennifer">]
+            Actual: [#<Person name="Marty">, #<Person name="Doc">]
 
           Details:
 
           - *[1]: Differing objects.
-            Expected: #<Person name="Elliot">
-              Actual: #<Person name="Joe">
+            Expected: #<Person name="Jennifer">
+              Actual: #<Person name="Doc">
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -261,20 +255,20 @@ RSpec.describe SuperDiff::Differ do
     context "given two one-dimensional arrays where the actual has extra elements" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: ["foo", "bar"],
-          actual: ["foo", "baz", "qux", "bar"]
+          expected: ["bread"],
+          actual: ["bread", "eggs", "milk"]
         )
 
         expected_output = <<~STR
           Differing arrays.
 
-          Expected: ["foo", "bar"]
-            Actual: ["foo", "baz", "qux", "bar"]
+          Expected: ["bread"]
+            Actual: ["bread", "eggs", "milk"]
 
           Details:
 
-          - *[? -> 1]: Actual has extra element "baz".
-          - *[? -> 2]: Actual has extra element "qux".
+          - *[? -> 1]: Actual has extra element "eggs".
+          - *[? -> 2]: Actual has extra element "milk".
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -284,20 +278,20 @@ RSpec.describe SuperDiff::Differ do
     context "given two one-dimensional arrays where the actual has missing elements" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: ["foo", "baz", "qux", "bar"],
-          actual: ["foo", "bar"]
+          expected: ["bread", "eggs", "milk"],
+          actual: ["bread"]
         )
 
         expected_output = <<~STR
           Differing arrays.
 
-          Expected: ["foo", "baz", "qux", "bar"]
-            Actual: ["foo", "bar"]
+          Expected: ["bread", "eggs", "milk"]
+            Actual: ["bread"]
 
           Details:
 
-          - *[1 -> ?]: Actual is missing element "baz".
-          - *[2 -> ?]: Actual is missing element "qux".
+          - *[1 -> ?]: Actual is missing element "eggs".
+          - *[2 -> ?]: Actual is missing element "milk".
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -307,8 +301,8 @@ RSpec.describe SuperDiff::Differ do
     context "given the same hash" do
       it "returns an empty string" do
         output = described_class.call(
-          expected: { name: "Elliot" },
-          actual: { name: "Elliot" }
+          expected: { name: "Marty" },
+          actual: { name: "Marty" }
         )
 
         expect(output).to eq("")
@@ -465,8 +459,8 @@ RSpec.describe SuperDiff::Differ do
 
     context "given two objects which == each other" do
       it "returns an empty string" do
-        expected = SuperDiff::Test::Person.new(name: "Elliot")
-        actual = SuperDiff::Test::Person.new(name: "Elliot")
+        expected = SuperDiff::Test::Person.new(name: "Marty")
+        actual = SuperDiff::Test::Person.new(name: "Marty")
 
         output = described_class.call(expected: expected, actual: actual)
 
@@ -476,16 +470,16 @@ RSpec.describe SuperDiff::Differ do
 
     context "given two objects which do not == each other" do
       it "returns a message along with a comparison" do
-        expected = SuperDiff::Test::Person.new(name: "Elliot")
-        actual = SuperDiff::Test::Person.new(name: "Joe")
+        expected = SuperDiff::Test::Person.new(name: "Marty")
+        actual = SuperDiff::Test::Person.new(name: "Doc")
 
         actual_output = described_class.call(expected: expected, actual: actual)
 
         expected_output = <<~STR
           Differing objects.
 
-          Expected: #<Person name="Elliot">
-            Actual: #<Person name="Joe">
+          Expected: #<Person name="Marty">
+            Actual: #<Person name="Doc">
         STR
 
         expect(actual_output).to eq(expected_output)
