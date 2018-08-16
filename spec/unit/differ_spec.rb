@@ -252,7 +252,7 @@ RSpec.describe SuperDiff::Differ do
       end
     end
 
-    context "given two one-dimensional arrays where the actual has extra elements" do
+    context "given two one-dimensional arrays where the actual has elements added to the end" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["bread"],
@@ -275,7 +275,7 @@ RSpec.describe SuperDiff::Differ do
       end
     end
 
-    context "given two one-dimensional arrays where the actual has missing elements" do
+    context "given two one-dimensional arrays where the actual has elements missing from the end" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["bread", "eggs", "milk"],
@@ -292,6 +292,52 @@ RSpec.describe SuperDiff::Differ do
 
           - *[1 -> ?]: Actual is missing element "eggs".
           - *[2 -> ?]: Actual is missing element "milk".
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two one-dimensional arrays where the actual has elements added to the beginning" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: ["milk"],
+          actual: ["bread", "eggs", "milk"]
+        )
+
+        expected_output = <<~STR
+          Differing arrays.
+
+          Expected: ["milk"]
+            Actual: ["bread", "eggs", "milk"]
+
+          Details:
+
+          - *[? -> 0]: Actual has extra element "bread".
+          - *[? -> 1]: Actual has extra element "eggs".
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two one-dimensional arrays where the actual has elements removed from the beginning" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: ["bread", "eggs", "milk"],
+          actual: ["milk"]
+        )
+
+        expected_output = <<~STR
+          Differing arrays.
+
+          Expected: ["bread", "eggs", "milk"]
+            Actual: ["milk"]
+
+          Details:
+
+          - *[0 -> ?]: Actual is missing element "bread".
+          - *[1 -> ?]: Actual is missing element "eggs".
         STR
 
         expect(actual_output).to eq(expected_output)
