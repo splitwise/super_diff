@@ -2,9 +2,17 @@ require "spec_helper"
 
 RSpec.describe SuperDiff::Differ do
   describe "#call" do
-    context "given the same number" do
+    context "given the same integers" do
       it "returns an empty string" do
         output = described_class.call(expected: 1, actual: 1)
+
+        expect(output).to eq("")
+      end
+    end
+
+    context "given the same numbers (even if they're different types)" do
+      it "returns an empty string" do
+        output = described_class.call(expected: 1, actual: 1.0)
 
         expect(output).to eq("")
       end
