@@ -4,13 +4,13 @@ require_relative "string"
 require_relative "object"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     module Detector
       def self.call(klass)
-        if Differs.const_defined?(klass.name, false)
-          Differs.const_get(klass.name)
+        if EqualityMatchers.const_defined?(klass.name, false)
+          EqualityMatchers.const_get(klass.name)
         else
-          Differs::Object
+          EqualityMatchers::Object
         end
       end
     end

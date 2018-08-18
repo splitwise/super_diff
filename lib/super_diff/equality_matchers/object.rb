@@ -1,7 +1,7 @@
 require_relative "base"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     class Object < Base
       def fail
         <<~OUTPUT.strip

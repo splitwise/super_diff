@@ -1,7 +1,7 @@
 require_relative "collection"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     class Hash < Collection
       def fail
         <<~OUTPUT.strip

@@ -3,7 +3,7 @@ require "patience_diff"
 require_relative "base"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     class MultiLineString < Base
       def initialize(expected, actual)
         @expected = split_into_lines(expected)

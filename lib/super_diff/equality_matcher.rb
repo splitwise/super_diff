@@ -1,8 +1,8 @@
-require_relative "differs/detector"
-require_relative "differs/object"
+require_relative "equality_matchers/detector"
+require_relative "equality_matchers/object"
 
 module SuperDiff
-  class Differ
+  class EqualityMatcher
     def self.call(expected:, actual:)
       new(expected: expected, actual: actual).call
     end
@@ -14,9 +14,9 @@ module SuperDiff
 
     def call
       if expected.is_a?(actual.class)
-        Differs::Detector.call(expected.class).call(expected, actual)
+        EqualityMatchers::Detector.call(expected.class).call(expected, actual)
       else
-        Differs::Object.call(expected, actual)
+        EqualityMatchers::Object.call(expected, actual)
       end
     end
 

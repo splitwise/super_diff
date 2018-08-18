@@ -3,7 +3,7 @@ require "patience_diff"
 require_relative "collection"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     class Array < Collection
       def initialize(expected, actual)
         super(expected, actual)

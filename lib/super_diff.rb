@@ -1,1 +1,1 @@
-require_relative "super_diff/differ"
+require_relative "super_diff/equality_matcher"

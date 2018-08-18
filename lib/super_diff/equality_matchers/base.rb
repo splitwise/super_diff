@@ -1,7 +1,7 @@
 require_relative "../csi"
 
 module SuperDiff
-  module Differs
+  module EqualityMatchers
     class Base
       ICONS = { deleted: "-", inserted: "+" }
       STYLES = { inserted: :inserted, deleted: :deleted, equal: :normal }
