@@ -1,5 +1,5 @@
 module SuperDiff
-  module EqualityMatchers
+  module OperationalSequencers
     class Base
       def self.call(expected, actual)
         new(expected, actual).call
@@ -11,20 +11,12 @@ module SuperDiff
       end
 
       def call
-        if expected == actual
-          ""
-        else
-          fail
-        end
-      end
-
-      protected
-
-      attr_reader :expected, :actual
-
-      def fail
         raise NotImplementedError
       end
+
+      private
+
+      attr_reader :expected, :actual
     end
   end
 end

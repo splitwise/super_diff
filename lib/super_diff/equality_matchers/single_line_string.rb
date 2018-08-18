@@ -7,8 +7,18 @@ module SuperDiff
         <<~OUTPUT.strip
           Differing strings.
 
-          #{style :deleted,  "Expected: #{inspect(expected)}"}
-          #{style :inserted, "  Actual: #{inspect(actual)}"}
+          #{
+            Helpers.style(
+              :deleted,
+              "Expected: #{Helpers.inspect_object(expected)}"
+            )
+          }
+          #{
+            Helpers.style(
+              :inserted,
+              "  Actual: #{Helpers.inspect_object(actual)}"
+            )
+          }
         OUTPUT
       end
     end

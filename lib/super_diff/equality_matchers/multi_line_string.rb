@@ -1,5 +1,5 @@
-require "patience_diff"
-
+require_relative "../operational_sequencers/array"
+require_relative "../diff_formatters/multi_line_string"
 require_relative "base"
 
 module SuperDiff
@@ -11,15 +11,24 @@ module SuperDiff
 
         @original_expected = @expected.join
         @original_actual = @actual.join
-        @sequence_matcher = PatienceDiff::SequenceMatcher.new
       end
 
       def fail
         <<~OUTPUT.strip
           Differing strings.
 
-          #{style :deleted,  "Expected: #{inspect(original_expected)}"}
-          #{style :inserted, "  Actual: #{inspect(original_actual)}"}
+          #{
+            Helpers.style(
+              :deleted,
+              "Expected: #{Helpers.inspect_object(original_expected)}"
+            )
+          }
+          #{
+            Helpers.style(
+              :inserted,
+              "  Actual: #{Helpers.inspect_object(original_actual)}"
+            )
+          }
 
           Diff:
 
@@ -29,26 +38,18 @@ module SuperDiff
 
       private
 
-      attr_reader :original_expected, :original_actual, :sequence_matcher
+      attr_reader :original_expected, :original_actual
 
       def split_into_lines(str)
-        str.split(/\n/).map { |line| "#{line}⏎" }
+        str.split(/(\n)/).map { |v| v.tr("\n", "⏎") }.each_slice(2).map(&:join)
       end
 
       def diff
-        opcodes.flat_map do |code, a_start, a_end, b_start, b_end|
-          if code == :equal
-            actual[b_start..b_end].map { |line| style(:normal, " #{line}") }
-          elsif code == :insert
-            actual[b_start..b_end].map { |line| style(:inserted, "+ #{line}") }
-          else
-            expected[a_start..a_end].map { |line| style(:deleted, "- #{line}") }
-          end
-        end.join("\n")
+        DiffFormatters::MultiLineString.call(operations, indent: 0)
       end
 
-      def opcodes
-        sequence_matcher.diff_opcodes(expected, actual)
+      def operations
+        OperationalSequencers::Array.call(expected, actual)
       end
     end
   end
