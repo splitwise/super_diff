@@ -1,17 +1,20 @@
-require_relative "../helpers"
-
 module SuperDiff
   module DiffFormatters
-    class Array
-      def self.call(operations, indent:)
+    class Array < Base
+      def self.applies_to?(operations)
+        operations.is_a?(OperationSequences::Array)
+      end
+
+      def call
         Collection.call(
           open_token: "[",
           close_token: "]",
+          collection_prefix: collection_prefix,
+          build_item_prefix: -> (op) { "" },
           operations: operations,
-          indent: indent
-        ) do |op|
-          Helpers.inspect_object(op.collection[op.index])
-        end
+          indent_level: indent_level,
+          add_comma: add_comma?
+        )
       end
     end
   end

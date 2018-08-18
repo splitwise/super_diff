@@ -1,8 +1,10 @@
-require_relative "base"
-
 module SuperDiff
   module EqualityMatchers
     class SingleLineString < Base
+      def self.applies_to?(value)
+        value.class == ::String
+      end
+
       def fail
         <<~OUTPUT.strip
           Differing strings.

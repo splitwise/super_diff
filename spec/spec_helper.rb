@@ -22,10 +22,10 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 end
 
+require_relative "../lib/super_diff"
+
 Dir.glob(File.expand_path("../support/**/*.rb", __FILE__)).each do |file|
   require file
 end
-
-require_relative "../lib/super_diff"
 
 require "pp"

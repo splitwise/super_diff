@@ -1,43 +1,56 @@
-require "patience_diff"
-
-require_relative "base"
-
 module SuperDiff
   module OperationalSequencers
     class Array < Base
-      def initialize(expected, actual)
-        super(expected, actual)
+      def self.applies_to?(value)
+        value.is_a?(::Array)
+      end
+
+      def initialize(*args)
+        super(*args)
+
         @sequence_matcher = PatienceDiff::SequenceMatcher.new
       end
 
-      def call
+      protected
+
+      def unary_operations
         opcodes.flat_map do |code, a_start, a_end, b_start, b_end|
           if code == :delete
             (a_start..a_end).map do |index|
-              Operation.new(
+              UnaryOperation.new(
                 name: :delete,
                 collection: expected,
-                index: index
+                key: index,
+                index: index,
+                value: expected[index]
               )
             end
           elsif code == :insert
             (b_start..b_end).map do |index|
-              Operation.new(
+              UnaryOperation.new(
                 name: :insert,
                 collection: actual,
-                index: index
+                key: index,
+                index: index,
+                value: actual[index]
               )
             end
           else
             (b_start..b_end).map do |index|
-              Operation.new(
+              UnaryOperation.new(
                 name: :noop,
                 collection: actual,
-                index: index
+                key: index,
+                index: index,
+                value: actual[index]
               )
             end
           end
         end
+      end
+
+      def operation_sequence_class
+        OperationSequences::Array
       end
 
       private
@@ -46,16 +59,6 @@ module SuperDiff
 
       def opcodes
         sequence_matcher.diff_opcodes(expected, actual)
-      end
-
-      class Operation
-        attr_reader :name, :collection, :index
-
-        def initialize(name:, collection:, index:)
-          @name = name
-          @collection = collection
-          @index = index
-        end
       end
     end
   end

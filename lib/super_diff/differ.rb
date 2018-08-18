@@ -1,18 +1,22 @@
 module SuperDiff
-  class EqualityMatcher
+  class Differ
     def self.call(*args)
       new(*args).call
     end
 
     def initialize(
-      expected:,
-      actual:,
+      expected,
+      actual,
+      indent_level:,
+      index_in_collection: nil,
       extra_classes: [],
       extra_operational_sequencer_classes: [],
       extra_diff_formatter_classes: []
     )
       @expected = expected
       @actual = actual
+      @indent_level = indent_level
+      @index_in_collection = index_in_collection
       @extra_classes = extra_classes
       @extra_operational_sequencer_classes = extra_operational_sequencer_classes
       @extra_diff_formatter_classes = extra_diff_formatter_classes
@@ -20,8 +24,10 @@ module SuperDiff
 
     def call
       resolved_class.call(
-        expected: expected,
-        actual: actual,
+        expected,
+        actual,
+        indent_level: indent_level,
+        index_in_collection: index_in_collection,
         extra_operational_sequencer_classes: extra_operational_sequencer_classes,
         extra_diff_formatter_classes: extra_diff_formatter_classes
       )
@@ -29,15 +35,8 @@ module SuperDiff
 
     private
 
-    attr_reader :expected, :actual, :extra_classes,
-      :extra_operational_sequencer_classes, :extra_diff_formatter_classes
-
     def resolved_class
-      matching_class || EqualityMatchers::Object
-    end
-
-    def matching_class
-      (EqualityMatchers::DEFAULTS + extra_classes).detect do |klass|
+      (Differs::DEFAULTS + extra_classes).detect do |klass|
         klass.applies_to?(expected) && klass.applies_to?(actual)
       end
     end

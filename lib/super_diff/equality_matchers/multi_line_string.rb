@@ -1,11 +1,16 @@
-require_relative "../operational_sequencers/array"
-require_relative "../diff_formatters/multi_line_string"
-require_relative "base"
-
 module SuperDiff
   module EqualityMatchers
     class MultiLineString < Base
-      def initialize(expected, actual)
+      def self.applies_to?(value)
+        value.class == ::String && value.include?("\n")
+      end
+
+      def initialize(
+        expected:,
+        actual:,
+        extra_operational_sequencer_classes:,
+        extra_diff_formatter_classes:
+      )
         @expected = split_into_lines(expected)
         @actual = split_into_lines(actual)
 
@@ -45,11 +50,11 @@ module SuperDiff
       end
 
       def diff
-        DiffFormatters::MultiLineString.call(operations, indent: 0)
+        DiffFormatters::MultiLineString.call(operations, indent_level: 0)
       end
 
       def operations
-        OperationalSequencers::Array.call(expected, actual)
+        OperationalSequencers::Array.call(expected: expected, actual: actual)
       end
     end
   end

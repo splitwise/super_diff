@@ -1,15 +1,8 @@
-require_relative "../helpers"
-
 module SuperDiff
   module DiffFormatters
-    class MultiLineString
-      def self.call(operations, indent:)
-        new(operations, indent: indent).call
-      end
-
-      def initialize(operations, indent:)
-        @operations = operations
-        @indent = indent
+    class MultiLineString < Base
+      def self.applies_to?(operations)
+        operations.is_a?(OperationSequences::MultiLineString)
       end
 
       def call
@@ -18,19 +11,18 @@ module SuperDiff
 
       private
 
-      attr_reader :operations, :indent
-
       def lines
-        operations.map do |op|
-          text = op.collection[op.index]
-
+        operations.inject([]) do |array, op|
           case op.name
-          when :noop
-            Helpers.style(:normal, "  #{text}")
-          when :insert
-            Helpers.style(:inserted, "+ #{text}")
+          when :change
+            array << Helpers.style(:deleted, "- #{op.left_value}")
+            array << Helpers.style(:inserted, "+ #{op.right_value}")
           when :delete
-            Helpers.style(:deleted, "- #{text}")
+            array << Helpers.style(:deleted, "- #{op.value}")
+          when :insert
+            array << Helpers.style(:inserted, "+ #{op.value}")
+          else
+            array << Helpers.style(:normal, "  #{op.value}")
           end
         end
       end

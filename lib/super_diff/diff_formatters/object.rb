@@ -1,26 +1,26 @@
 module SuperDiff
   module DiffFormatters
-    class Hash < Base
+    class Object < Base
       def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::Hash)
+        operations.is_a?(OperationSequences::Object)
       end
 
       def call
         Collection.call(
-          open_token: "{",
-          close_token: "}",
+          open_token: "#<#{value_class} {",
+          close_token: "}>",
           collection_prefix: collection_prefix,
-          build_item_prefix: -> (op) {
-            if op.key.is_a?(Symbol)
-              "#{op.key}: "
-            else
-              "#{op.key.inspect} => "
-            end
-          },
+          build_item_prefix: -> (op) { "#{op.key}: " },
           operations: operations,
           indent_level: indent_level,
           add_comma: add_comma?
         )
+      end
+
+      protected
+
+      def value_class
+        raise NotImplementedError
       end
     end
   end

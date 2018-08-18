@@ -12,7 +12,11 @@ module SuperDiff
       end
 
       def inspect
-        "#<Person name=#{name.inspect}>"
+        "#<#{self.class} name: #{name.inspect}>"
+      end
+
+      def attributes_for_super_diff
+        { name: name }
       end
     end
   end

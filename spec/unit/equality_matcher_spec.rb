@@ -311,6 +311,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
             SuperDiff::Test::Person.new(name: "Marty"),
             SuperDiff::Test::Person.new(name: "Doc")
           ],
+          extra_operational_sequencer_classes: [
+            SuperDiff::Test::PersonOperationalSequencer
+          ],
+          extra_diff_formatter_classes: [
+            SuperDiff::Test::PersonDiffFormatter
+          ]
         )
 
         expected_output = <<~STR.strip
@@ -318,8 +324,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [#<Person name="Marty">, #<Person name="Jennifer">])
-              green_line %(  Actual: [#<Person name="Marty">, #<Person name="Doc">])
+              red_line   %(Expected: [#<SuperDiff::Test::Person name: "Marty">, #<SuperDiff::Test::Person name: "Jennifer">])
+              green_line %(  Actual: [#<SuperDiff::Test::Person name: "Marty">, #<SuperDiff::Test::Person name: "Doc">])
             end
           }
 
@@ -328,15 +334,13 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  [)
-              plain_line %(    #<Person {)
-              plain_line %(      name="Marty")
+              plain_line %(    #<SuperDiff::Test::Person {)
+              plain_line %(      name: "Marty")
               plain_line %(    }>,)
-              red_line   %(-   #<Person {)
-              red_line   %(-     name="Jennifer")
-              red_line   %(-   }>)
-              green_line %(+   #<Person {)
-              green_line %(+     name="Doc")
-              green_line %(+   }>)
+              plain_line %(    #<SuperDiff::Test::Person {)
+              red_line   %(-     name: "Jennifer")
+              green_line %(+     name: "Doc")
+              plain_line %(    }>)
               plain_line %(  ])
             end
           }
@@ -473,6 +477,129 @@ RSpec.describe SuperDiff::EqualityMatcher do
               red_line   %(-   "bread",)
               red_line   %(-   "eggs",)
               plain_line %(    "milk")
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two arrays containing an array with differing values" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: [1, 2, [:a, :b, :c], 4],
+          actual: [1, 2, [:a, :x, :c], 4]
+        )
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: [1, 2, [:a, :b, :c], 4])
+              green_line %(  Actual: [1, 2, [:a, :x, :c], 4])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    1,)
+              plain_line %(    2,)
+              plain_line %(    [)
+              plain_line %(      :a,)
+              red_line   %(-     :b,)
+              green_line %(+     :x,)
+              plain_line %(      :c)
+              plain_line %(    ],)
+              plain_line %(    4)
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two arrays containing a hash with differing values" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: [1, 2, { foo: "bar", baz: "qux" }, 4],
+          actual: [1, 2, { foo: "bar", baz: "qox" }, 4]
+        )
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: [1, 2, { foo: "bar", baz: "qux" }, 4])
+              green_line %(  Actual: [1, 2, { foo: "bar", baz: "qox" }, 4])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    1,)
+              plain_line %(    2,)
+              plain_line %(    {)
+              plain_line %(      foo: "bar",)
+              red_line   %(-     baz: "qux")
+              green_line %(+     baz: "qox")
+              plain_line %(    },)
+              plain_line %(    4)
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two arrays containing a hash with differing objects" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty"), 4],
+          actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc"), 4],
+          extra_operational_sequencer_classes: [
+            SuperDiff::Test::PersonOperationalSequencer
+          ],
+          extra_diff_formatter_classes: [
+            SuperDiff::Test::PersonDiffFormatter
+          ]
+        )
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty">, 4])
+              green_line %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc">, 4])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    1,)
+              plain_line %(    2,)
+              plain_line %(    #<SuperDiff::Test::Person {)
+              red_line   %(-     name: "Marty")
+              green_line %(+     name: "Doc")
+              plain_line %(    }>,)
+              plain_line %(    4)
               plain_line %(  ])
             end
           }
@@ -643,17 +770,22 @@ RSpec.describe SuperDiff::EqualityMatcher do
           actual: {
             steve: SuperDiff::Test::Person.new(name: "Wozniak"),
             susan: SuperDiff::Test::Person.new(name: "Kare")
-          }
+          },
+          extra_operational_sequencer_classes: [
+            SuperDiff::Test::PersonOperationalSequencer
+          ],
+          extra_diff_formatter_classes: [
+            SuperDiff::Test::PersonDiffFormatter
+          ]
         )
 
-        # TODO: This should look inside each object and diff it
         expected_output = <<~STR.strip
           Differing hashes.
 
           #{
             colored do
-              red_line   %(Expected: { steve: #<Person name="Jobs">, susan: #<Person name="Kare"> })
-              green_line %(  Actual: { steve: #<Person name="Wozniak">, susan: #<Person name="Kare"> })
+              red_line   %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs">, susan: #<SuperDiff::Test::Person name: "Kare"> })
+              green_line %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak">, susan: #<SuperDiff::Test::Person name: "Kare"> })
             end
           }
 
@@ -662,14 +794,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  {)
-              red_line   %(-   steve: #<Person {)
-              red_line   %(-     name="Jobs")
-              red_line   %(-   }>,)
-              green_line %(+   steve: #<Person {)
-              green_line %(+     name="Wozniak")
-              green_line %(+   }>,)
-              plain_line %(    susan: #<Person {)
-              plain_line %(      name="Kare")
+              plain_line %(    steve: #<SuperDiff::Test::Person {)
+              red_line   %(-     name: "Jobs")
+              green_line %(+     name: "Wozniak")
+              plain_line %(    }>,)
+              plain_line %(    susan: #<SuperDiff::Test::Person {)
+              plain_line %(      name: "Kare")
               plain_line %(    }>)
               plain_line %(  })
             end
@@ -771,8 +901,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: #<Person name="Marty">)
-              green_line %(  Actual: #<Person name="Doc">)
+              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty">)
+              green_line %(  Actual: #<SuperDiff::Test::Person name: "Doc">)
             end
           }
         STR
