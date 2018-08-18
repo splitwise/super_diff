@@ -1,3 +1,32 @@
+GIT
+  remote: https://github.com/rspec/rspec-core
+  revision: 96450f8468baf601b9e5c00c08bcac18013426ff
+  specs:
+    rspec-core (3.9.0.pre)
+      rspec-support (= 3.9.0.pre)
+
+GIT
+  remote: https://github.com/rspec/rspec-expectations
+  revision: 31f108eae68e31ee65f0622c9ef4a488a1602943
+  specs:
+    rspec-expectations (3.9.0.pre)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (= 3.9.0.pre)
+
+GIT
+  remote: https://github.com/rspec/rspec-mocks
+  revision: 8ee8d692885ea2d4713c01d0ee6ba3ef2a3251c9
+  specs:
+    rspec-mocks (3.9.0.pre)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (= 3.9.0.pre)
+
+GIT
+  remote: https://github.com/rspec/rspec-support
+  revision: 9940a8656071655b807f772f36101b4d27f1b67d
+  specs:
+    rspec-support (3.9.0.pre)
+
 PATH
   remote: .
   specs:
@@ -26,19 +55,6 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     rainbow (3.0.0)
-    rspec (3.8.0)
-      rspec-core (~> 3.8.0)
-      rspec-expectations (~> 3.8.0)
-      rspec-mocks (~> 3.8.0)
-    rspec-core (3.8.0)
-      rspec-support (~> 3.8.0)
-    rspec-expectations (3.8.1)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.8.0)
-    rspec-mocks (3.8.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.8.0)
-    rspec-support (3.8.0)
     rubocop (0.58.2)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -56,7 +72,10 @@ PLATFORMS
 
 DEPENDENCIES
   pry-byebug
-  rspec
+  rspec-core!
+  rspec-expectations!
+  rspec-mocks!
+  rspec-support!
   rubocop
   super_diff!
 

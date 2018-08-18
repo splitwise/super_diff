@@ -1,5 +1,6 @@
 require "patience_diff"
-require_relative "./csi"
+require_relative "csi"
+require_relative "pretty_printers/array"
 
 module SuperDiff
   class Differ
@@ -8,6 +9,9 @@ module SuperDiff
     RED = Csi::TwentyFourBitColor.new(r: 116, g: 78, b: 84)
     LIGHT_GREEN = Csi::TwentyFourBitColor.new(r: 51, g: 81, b: 81)
     GREEN = Csi::TwentyFourBitColor.new(r: 81, g: 115, b: 105)
+    ICONS = { deleted: "-", inserted: "+" }
+    STYLES = { inserted: :inserted, deleted: :deleted, equal: :normal }
+    COLORS = { normal: :plain, inserted: :green, deleted: :red }
 
     def self.call(expected:, actual:)
       new(expected: expected, actual: actual).call
@@ -55,22 +59,22 @@ module SuperDiff
           end
         end.join("\n")
 
-        <<~OUTPUT
+        <<~OUTPUT.strip
           Differing strings.
 
-          Expected: #{expected.inspect}
-            Actual: #{actual.inspect}
+          #{deleted  "Expected: #{inspect(expected)}"}
+          #{inserted "  Actual: #{inspect(actual)}"}
 
           Diff:
 
           #{diff}
         OUTPUT
       else
-        <<~OUTPUT
+        <<~OUTPUT.strip
           Differing strings.
 
-          Expected: #{expected.inspect}
-            Actual: #{actual.inspect}
+          #{deleted  "Expected: #{inspect(expected)}"}
+          #{inserted "  Actual: #{inspect(actual)}"}
         OUTPUT
       end
     end
@@ -78,99 +82,160 @@ module SuperDiff
     def diff_arrays
       a, b = expected, actual
       opcodes = sequence_matcher.diff_opcodes(a, b)
+      larger_collection =
+        if actual.length > expected.length
+          actual
+        else
+          expected
+        end
 
-      normalized_opcodes = opcodes.flat_map do |code, a_start, a_end, b_start, b_end|
+      events = opcodes.flat_map do |code, a_start, a_end, b_start, b_end|
         if code == :delete
-          { state: :deleted, index_range: (a_start..a_end), collection: expected }
-        elsif code == :insert
-          { state: :inserted, index_range: (b_start..b_end), collection: actual }
-        else
-          { state: :equal, index_range: (b_start..b_end), collection: actual }
-        end
-      end
-
-      i = 0
-      details = []
-      while i < normalized_opcodes.length
-        first_event = normalized_opcodes[i]
-        second_event = normalized_opcodes[i + 1]
-        if (
-            first_event[:state] == :deleted &&
-            first_event[:index_range].size == 1 &&
-            second_event &&
-            second_event[:state] == :inserted &&
-            second_event[:index_range].size == 1
-        )
-          index = first_event[:index_range].first
-          details << "- *[#{index}]: Differing #{plural_type_for(actual[index])}.\n" +
-            "  Expected: #{expected[index].inspect}\n" +
-            "    Actual: #{actual[index].inspect}"
-          i += 2
-        else
-          if first_event[:state] == :inserted
-            first_event[:index_range].each do |index|
-              details << "- *[? -> #{index}]: " +
-                "Actual has extra element #{actual[index].inspect}."
-            end
-          elsif first_event[:state] == :deleted
-            first_event[:index_range].each do |index|
-              details << "- *[#{index} -> ?]: " +
-                "Actual is missing element #{expected[index].inspect}."
-            end
+          (a_start..a_end).map do |index|
+            {
+              state: :deleted,
+              index: index,
+              collection: expected,
+              larger_collection: larger_collection
+            }
           end
-          i += 1
+        elsif code == :insert
+          (b_start..b_end).map do |index|
+            {
+              state: :inserted,
+              index: index,
+              collection: actual,
+              larger_collection: larger_collection
+            }
+          end
+        else
+          (b_start..b_end).map do |index|
+            {
+              state: :equal,
+              index: index,
+              collection: actual,
+              larger_collection: larger_collection
+            }
+          end
         end
       end
 
-      <<~OUTPUT
+      contents = events.map do |event|
+        index = event[:index]
+        collection = event[:collection]
+        # larger_collection = event[:larger_collection]
+
+        icon = ICONS.fetch(event[:state], " ")
+        style_name = STYLES.fetch(event[:state], :normal)
+        chunk = build_chunk(
+          inspect(collection[index]),
+          indent: 4,
+          icon: icon
+        )
+
+        if index < collection.length - 1
+          chunk << ","
+        end
+
+        style_chunk(style_name, chunk)
+      end
+
+      diff = ["  [", *contents, "  ]"].join("\n")
+
+      <<~OUTPUT.strip
         Differing arrays.
 
-        Expected: #{expected.inspect}
-          Actual: #{actual.inspect}
+        #{deleted  "Expected: #{expected.inspect}"}
+        #{inserted "  Actual: #{actual.inspect}"}
 
-        Details:
+        Diff:
 
-        #{details.join("\n")}
+        #{diff}
       OUTPUT
     end
 
     def diff_hashes
       all_keys = (expected.keys | actual.keys)
 
-      details = all_keys.inject([]) do |array, key|
+      events = all_keys.inject([]) do |array, key|
         if expected.include?(key)
           if actual.include?(key)
             if expected[key] == actual[key]
-              array
+              array << {
+                state: :equal,
+                key: key,
+                collection: actual
+              }
             else
-              array << "*[#{key.inspect}]: " +
-                "Differing #{plural_type_for(actual[key])}.\n" +
-                "  Expected: #{expected[key].inspect}\n" +
-                "    Actual: #{actual[key].inspect}"
+              array << {
+                state: :deleted,
+                key: key,
+                collection: expected
+              }
+              array << {
+                state: :inserted,
+                key: key,
+                collection: actual
+              }
             end
           else
-            array << "*[#{key.inspect} -> ?]: Actual is missing key."
+            array << {
+              state: :deleted,
+              key: key,
+              collection: expected
+            }
           end
-        else
-          if actual.include?(key)
-            array << "*[? -> #{key.inspect}]: " +
-              "Actual has extra key (with value of #{actual[key].inspect})."
-          else
-            array
-          end
+        elsif actual.include?(key)
+          array << {
+            state: :inserted,
+            key: key,
+            collection: actual
+          }
         end
+
+        array
       end
 
-      if details.any?
-        <<~OUTPUT
+      if events.any? { |event| event != :equal }
+        contents = events.map do |event|
+          key = event[:key]
+          collection = event[:collection]
+          index = collection.keys.index(key)
+          # larger_collection = event[:larger_collection]
+
+          icon = ICONS.fetch(event[:state], " ")
+          style_name = STYLES.fetch(event[:state], :normal)
+          entry =
+            if key.is_a?(Symbol)
+              "#{key}: #{inspect(collection[key])}"
+            else
+              "#{key.inspect} => #{inspect(collection[key])}"
+            end
+
+          chunk = build_chunk(
+            entry,
+            indent: 4,
+            icon: icon
+          )
+
+          if index < collection.size - 1
+            chunk << ","
+          end
+
+          style_chunk(style_name, chunk)
+        end
+
+        diff = ["  {", *contents, "  }"].join("\n")
+
+        <<~OUTPUT.strip
           Differing hashes.
 
-          Expected: #{inspect(expected)}
-            Actual: #{inspect(actual)}
+          #{deleted  "Expected: #{inspect(expected)}"}
+          #{inserted "  Actual: #{inspect(actual)}"}
 
-          Details:
+          Diff:
 
-          #{details.map { |detail| "- #{detail}"}.join("\n")}
+          #{diff}
         OUTPUT
       else
         ""
@@ -178,12 +243,20 @@ module SuperDiff
     end
 
     def diff_objects
-      <<~OUTPUT
+      <<~OUTPUT.strip
         Differing #{plural_type_for(actual)}.
 
-        Expected: #{expected.inspect}
-          Actual: #{actual.inspect}
+        #{deleted  "Expected: #{expected.inspect}"}
+        #{inserted "  Actual: #{actual.inspect}"}
       OUTPUT
+    end
+
+    def style_chunk(style_name, chunk)
+      chunk.split("\n").map { |line| style(style_name, line) }.join("\n")
+    end
+
+    def style(style_name, text)
+      Csi::ColorHelper.public_send(COLORS.fetch(style_name), text)
     end
 
     def normal(text)
@@ -191,11 +264,15 @@ module SuperDiff
     end
 
     def inserted(text)
-      Csi::ColorHelper.light_green_bg(text)
+      Csi::ColorHelper.green(text)
     end
 
     def deleted(text)
-      Csi::ColorHelper.light_red_bg(text)
+      Csi::ColorHelper.red(text)
+    end
+
+    def faded(text)
+      Csi::ColorHelper.dark_grey(text)
     end
 
     def plural_type_for(value)
@@ -207,14 +284,36 @@ module SuperDiff
       end
     end
 
+    def build_chunk(text, indent:, icon:)
+      text
+        .split("\n")
+        .map { |line| icon + (" " * (indent - 1)) + line }
+        .join("\n")
+    end
+
     def inspect(value)
-      if value.is_a?(Hash)
+      case value
+      when Hash
         value.inspect.
           gsub(/([^,]+)=>([^,]+)/, '\1 => \2').
           gsub(/:(\w+) => /, '\1: ').
           gsub(/\{([^{}]+)\}/, '{ \1 }')
+      when String
+        newline = "⏎"
+        value.gsub(/\r\n/, newline).gsub(/\n/, newline).inspect
       else
-        value.inspect
+        inspected_value = value.inspect
+        match = inspected_value.match(/\A#<([^ ]+)(.*)>\Z/)
+
+        if match
+          [
+            "#<#{match.captures[0]} {",
+            *match.captures[1].split(" ").map { |line| "  " + line },
+            "}>"
+          ].join("\n")
+        else
+          inspected_value
+        end
       end
     end
   end

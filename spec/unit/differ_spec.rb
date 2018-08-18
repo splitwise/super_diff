@@ -22,11 +22,15 @@ RSpec.describe SuperDiff::Differ do
       it "returns a message along with a comparison" do
         actual_output = described_class.call(expected: 42, actual: 1)
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing numbers.
 
-          Expected: 42
-            Actual: 1
+          #{
+            colored do
+              red_line   %(Expected: 42)
+              green_line %(  Actual: 1)
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -45,11 +49,15 @@ RSpec.describe SuperDiff::Differ do
       it "returns a message along with a comparison" do
         actual_output = described_class.call(expected: :foo, actual: :bar)
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing symbols.
 
-          Expected: :foo
-            Actual: :bar
+          #{
+            colored do
+              red_line   %(Expected: :foo)
+              green_line %(  Actual: :bar)
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -71,11 +79,15 @@ RSpec.describe SuperDiff::Differ do
           actual: "Jennifer"
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing strings.
 
-          Expected: "Marty"
-            Actual: "Jennifer"
+          #{
+            colored do
+              red_line   %(Expected: "Marty")
+              green_line %(  Actual: "Jennifer")
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -89,11 +101,15 @@ RSpec.describe SuperDiff::Differ do
           actual: "Marty McFly"
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing strings.
 
-          Expected: "Marty"
-            Actual: "Marty McFly"
+          #{
+            colored do
+              red_line   %(Expected: "Marty")
+              green_line %(  Actual: "Marty McFly")
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -107,33 +123,27 @@ RSpec.describe SuperDiff::Differ do
           actual: "Something completely different\nAnd something else too\n"
         )
 
-        expected_output = colored do |str, color|
-          str << color.plain(<<~STR)
-            Differing strings.
+        expected_output = <<~STR.strip
+          Differing strings.
 
-            Expected: "This is a line\\nAnd that's a line\\n"
-              Actual: "Something completely different\\nAnd something else too\\n"
+          #{
+            colored do
+              red_line   %(Expected: "This is a line⏎And that's a line⏎")
+              green_line %(  Actual: "Something completely different⏎And something else too⏎")
+            end
+          }
 
-            Diff:
+          Diff:
 
-          STR
-
-          str << color.line do |line|
-            line << color.light_red_bg("- This is a line⏎")
-          end
-
-          str << color.line do |line|
-            line << color.light_red_bg("- And that's a line⏎")
-          end
-
-          str << color.line do |line|
-            line << color.light_green_bg("+ Something completely different⏎")
-          end
-
-          str << color.line do |line|
-            line << color.light_green_bg("+ And something else too⏎")
-          end
-        end
+          #{
+            colored do
+              red_line   %(- This is a line⏎)
+              red_line   %(- And that's a line⏎)
+              green_line %(+ Something completely different⏎)
+              green_line %(+ And something else too⏎)
+            end
+          }
+        STR
 
         expect(actual_output).to eq(expected_output)
       end
@@ -157,17 +167,29 @@ RSpec.describe SuperDiff::Differ do
           actual: [1, 2, 99, 4]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: [1, 2, 3, 4]
-            Actual: [1, 2, 99, 4]
+          #{
+            colored do
+              red_line   %(Expected: [1, 2, 3, 4])
+              green_line %(  Actual: [1, 2, 99, 4])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[2]: Differing numbers.
-            Expected: 3
-              Actual: 99
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    1,)
+              plain_line %(    2,)
+              red_line   %(-   3,)
+              green_line %(+   99,)
+              plain_line %(    4)
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -181,17 +203,29 @@ RSpec.describe SuperDiff::Differ do
           actual: [:one, :FISH, :two, :fish]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: [:one, :fish, :two, :fish]
-            Actual: [:one, :FISH, :two, :fish]
+          #{
+            colored do
+              red_line   %(Expected: [:one, :fish, :two, :fish])
+              green_line %(  Actual: [:one, :FISH, :two, :fish])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[1]: Differing symbols.
-            Expected: :fish
-              Actual: :FISH
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    :one,)
+              red_line   %(-   :fish,)
+              green_line %(+   :FISH,)
+              plain_line %(    :two,)
+              plain_line %(    :fish)
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -205,17 +239,28 @@ RSpec.describe SuperDiff::Differ do
           actual: ["bacon", "egg", "cheese"]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: ["sausage", "egg", "cheese"]
-            Actual: ["bacon", "egg", "cheese"]
+          #{
+            colored do
+              red_line   %(Expected: ["sausage", "egg", "cheese"])
+              green_line %(  Actual: ["bacon", "egg", "cheese"])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[0]: Differing strings.
-            Expected: "sausage"
-              Actual: "bacon"
+          #{
+            colored do
+              plain_line %(  [)
+              red_line   %(-   "sausage",)
+              green_line %(+   "bacon",)
+              plain_line %(    "egg",)
+              plain_line %(    "cheese")
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -235,17 +280,33 @@ RSpec.describe SuperDiff::Differ do
           ],
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: [#<Person name="Marty">, #<Person name="Jennifer">]
-            Actual: [#<Person name="Marty">, #<Person name="Doc">]
+          #{
+            colored do
+              red_line   %(Expected: [#<Person name="Marty">, #<Person name="Jennifer">])
+              green_line %(  Actual: [#<Person name="Marty">, #<Person name="Doc">])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[1]: Differing objects.
-            Expected: #<Person name="Jennifer">
-              Actual: #<Person name="Doc">
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    #<Person {)
+              plain_line %(      name="Marty")
+              plain_line %(    }>,)
+              red_line   %(-   #<Person {)
+              red_line   %(-     name="Jennifer")
+              red_line   %(-   }>)
+              green_line %(+   #<Person {)
+              green_line %(+     name="Doc")
+              green_line %(+   }>)
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -259,16 +320,27 @@ RSpec.describe SuperDiff::Differ do
           actual: ["bread", "eggs", "milk"]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: ["bread"]
-            Actual: ["bread", "eggs", "milk"]
+          #{
+            colored do
+              red_line   %(Expected: ["bread"])
+              green_line %(  Actual: ["bread", "eggs", "milk"])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[? -> 1]: Actual has extra element "eggs".
-          - *[? -> 2]: Actual has extra element "milk".
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    "bread",)
+              green_line %(+   "eggs",)
+              green_line %(+   "milk")
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -282,16 +354,27 @@ RSpec.describe SuperDiff::Differ do
           actual: ["bread"]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: ["bread", "eggs", "milk"]
-            Actual: ["bread"]
+          #{
+            colored do
+              red_line   %(Expected: ["bread", "eggs", "milk"])
+              green_line %(  Actual: ["bread"])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[1 -> ?]: Actual is missing element "eggs".
-          - *[2 -> ?]: Actual is missing element "milk".
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    "bread")
+              red_line   %(-   "eggs",)
+              red_line   %(-   "milk")
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -305,16 +388,27 @@ RSpec.describe SuperDiff::Differ do
           actual: ["bread", "eggs", "milk"]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: ["milk"]
-            Actual: ["bread", "eggs", "milk"]
+          #{
+            colored do
+              red_line   %(Expected: ["milk"])
+              green_line %(  Actual: ["bread", "eggs", "milk"])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[? -> 0]: Actual has extra element "bread".
-          - *[? -> 1]: Actual has extra element "eggs".
+          #{
+            colored do
+              plain_line %(  [)
+              green_line %(+   "bread",)
+              green_line %(+   "eggs",)
+              plain_line %(    "milk")
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -328,16 +422,27 @@ RSpec.describe SuperDiff::Differ do
           actual: ["milk"]
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing arrays.
 
-          Expected: ["bread", "eggs", "milk"]
-            Actual: ["milk"]
+          #{
+            colored do
+              red_line   %(Expected: ["bread", "eggs", "milk"])
+              green_line %(  Actual: ["milk"])
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[0 -> ?]: Actual is missing element "bread".
-          - *[1 -> ?]: Actual is missing element "eggs".
+          #{
+            colored do
+              plain_line %(  [)
+              red_line   %(-   "bread",)
+              red_line   %(-   "eggs",)
+              plain_line %(    "milk")
+              plain_line %(  ])
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -362,17 +467,63 @@ RSpec.describe SuperDiff::Differ do
           actual: { tall: 12, grande: 16, venti: 20 }
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { tall: 12, grande: 19, venti: 20 }
-            Actual: { tall: 12, grande: 16, venti: 20 }
+          #{
+            colored do
+              red_line   %(Expected: { tall: 12, grande: 19, venti: 20 })
+              green_line %(  Actual: { tall: 12, grande: 16, venti: 20 })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[:grande]: Differing numbers.
-            Expected: 19
-              Actual: 16
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    tall: 12,)
+              red_line   %(-   grande: 19,)
+              green_line %(+   grande: 16,)
+              plain_line %(    venti: 20)
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two equal-size, one-dimensional hashes where keys are strings and the same key has differing numbers" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: { "tall" => 12, "grande" => 19, "venti" => 20 },
+          actual: { "tall" => 12, "grande" => 16, "venti" => 20 }
+        )
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { "tall" => 12, "grande" => 19, "venti" => 20 })
+              green_line %(  Actual: { "tall" => 12, "grande" => 16, "venti" => 20 })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    "tall" => 12,)
+              red_line   %(-   "grande" => 19,)
+              green_line %(+   "grande" => 16,)
+              plain_line %(    "venti" => 20)
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -386,17 +537,28 @@ RSpec.describe SuperDiff::Differ do
           actual: { tall: :small, grande: :medium, venti: :large },
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { tall: :small, grande: :grand, venti: :large }
-            Actual: { tall: :small, grande: :medium, venti: :large }
+          #{
+            colored do
+              red_line   %(Expected: { tall: :small, grande: :grand, venti: :large })
+              green_line %(  Actual: { tall: :small, grande: :medium, venti: :large })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[:grande]: Differing symbols.
-            Expected: :grand
-              Actual: :medium
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    tall: :small,)
+              red_line   %(-   grande: :grand,)
+              green_line %(+   grande: :medium,)
+              plain_line %(    venti: :large)
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -407,20 +569,31 @@ RSpec.describe SuperDiff::Differ do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { tall: "small", grande: "grand", venti: "large" },
-          actual: { tall: "small", grande: "medium", venti: "large" },
+          actual: { tall: "small", grande: "medium", venti: "large" }
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { tall: "small", grande: "grand", venti: "large" }
-            Actual: { tall: "small", grande: "medium", venti: "large" }
+          #{
+            colored do
+              red_line   %(Expected: { tall: "small", grande: "grand", venti: "large" })
+              green_line %(  Actual: { tall: "small", grande: "medium", venti: "large" })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[:grande]: Differing strings.
-            Expected: "grand"
-              Actual: "medium"
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    tall: "small",)
+              red_line   %(-   grande: "grand",)
+              green_line %(+   grande: "medium",)
+              plain_line %(    venti: "large")
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -440,17 +613,34 @@ RSpec.describe SuperDiff::Differ do
           }
         )
 
-        expected_output = <<~STR
+        # TODO: This should look inside each object and diff it
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { steve: #<Person name="Jobs">, susan: #<Person name="Kare"> }
-            Actual: { steve: #<Person name="Wozniak">, susan: #<Person name="Kare"> }
+          #{
+            colored do
+              red_line   %(Expected: { steve: #<Person name="Jobs">, susan: #<Person name="Kare"> })
+              green_line %(  Actual: { steve: #<Person name="Wozniak">, susan: #<Person name="Kare"> })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[:steve]: Differing objects.
-            Expected: #<Person name="Jobs">
-              Actual: #<Person name="Wozniak">
+          #{
+            colored do
+              plain_line %(  {)
+              red_line   %(-   steve: #<Person {)
+              red_line   %(-     name="Jobs")
+              red_line   %(-   }>,)
+              green_line %(+   steve: #<Person {)
+              green_line %(+     name="Wozniak")
+              green_line %(+   }>,)
+              plain_line %(    susan: #<Person {)
+              plain_line %(      name="Kare")
+              plain_line %(    }>)
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -464,16 +654,27 @@ RSpec.describe SuperDiff::Differ do
           actual: { latte: 4.5, mocha: 3.5, cortado: 3 }
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { latte: 4.5 }
-            Actual: { latte: 4.5, mocha: 3.5, cortado: 3 }
+          #{
+            colored do
+              red_line   %(Expected: { latte: 4.5 })
+              green_line %(  Actual: { latte: 4.5, mocha: 3.5, cortado: 3 })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[? -> :mocha]: Actual has extra key (with value of 3.5).
-          - *[? -> :cortado]: Actual has extra key (with value of 3).
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    latte: 4.5,)
+              green_line %(+   mocha: 3.5,)
+              green_line %(+   cortado: 3)
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -487,16 +688,27 @@ RSpec.describe SuperDiff::Differ do
           actual: { latte: 4.5 }
         )
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing hashes.
 
-          Expected: { latte: 4.5, mocha: 3.5, cortado: 3 }
-            Actual: { latte: 4.5 }
+          #{
+            colored do
+              red_line   %(Expected: { latte: 4.5, mocha: 3.5, cortado: 3 })
+              green_line %(  Actual: { latte: 4.5 })
+            end
+          }
 
-          Details:
+          Diff:
 
-          - *[:mocha -> ?]: Actual is missing key.
-          - *[:cortado -> ?]: Actual is missing key.
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    latte: 4.5)
+              red_line   %(-   mocha: 3.5,)
+              red_line   %(-   cortado: 3)
+              plain_line %(  })
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -521,11 +733,15 @@ RSpec.describe SuperDiff::Differ do
 
         actual_output = described_class.call(expected: expected, actual: actual)
 
-        expected_output = <<~STR
+        expected_output = <<~STR.strip
           Differing objects.
 
-          Expected: #<Person name="Marty">
-            Actual: #<Person name="Doc">
+          #{
+            colored do
+              red_line   %(Expected: #<Person name="Marty">)
+              green_line %(  Actual: #<Person name="Doc">)
+            end
+          }
         STR
 
         expect(actual_output).to eq(expected_output)
@@ -534,8 +750,6 @@ RSpec.describe SuperDiff::Differ do
   end
 
   def colored(&block)
-    string = ""
-    block.call(string, SuperDiff::Csi::ColorHelper)
-    string
+    SuperDiff::Tests::Colorizer.call(&block).chomp
   end
 end
