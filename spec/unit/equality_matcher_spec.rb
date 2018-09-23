@@ -486,7 +486,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two arrays containing an array with differing values" do
+    context "given two arrays containing arrays with differing values" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, [:a, :b, :c], 4],
@@ -526,7 +526,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two arrays containing a hash with differing values" do
+    context "given two arrays containing hashes with differing values" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, { foo: "bar", baz: "qux" }, 4],
@@ -565,7 +565,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two arrays containing a hash with differing objects" do
+    context "given two arrays containing custom objects with differing attributes" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty"), 4],
@@ -869,6 +869,159 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    latte: 4.5)
               red_line   %(-   mocha: 3.5,)
               red_line   %(-   cortado: 3)
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two hashes containing arrays with differing values" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: {
+            name: "Elliot",
+            interests: ["music", "football", "programming"],
+            age: 30
+          },
+          actual: {
+            name: "Elliot",
+            interests: ["music", "travel", "programming"],
+            age: 30
+          }
+        )
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { name: "Elliot", interests: ["music", "football", "programming"], age: 30 })
+              green_line %(  Actual: { name: "Elliot", interests: ["music", "travel", "programming"], age: 30 })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    name: "Elliot",)
+              plain_line %(    interests: [)
+              plain_line %(      "music",)
+              red_line   %(-     "football",)
+              green_line %(+     "travel",)
+              plain_line %(      "programming")
+              plain_line %(    ],)
+              plain_line %(    age: 30)
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two hashes containing hashes with differing values" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: {
+            check_spelling: true,
+            substitutions: {
+              "YOLO" => "You only live once",
+              "BRB" => "Buns, ribs, and bacon",
+              "YMMV" => "Your mileage may vary"
+            },
+            check_grammar: false
+          },
+          actual: {
+            check_spelling: true,
+            substitutions: {
+              "YOLO" => "You only live once",
+              "BRB" => "Be right back",
+              "YMMV" => "Your mileage may vary"
+            },
+            check_grammar: false
+          }
+        )
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Buns, ribs, and bacon", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+              green_line %(  Actual: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Be right back", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    check_spelling: true,)
+              plain_line %(    substitutions: {)
+              plain_line %(      "YOLO" => "You only live once",)
+              red_line   %(-     "BRB" => "Buns, ribs, and bacon",)
+              green_line %(+     "BRB" => "Be right back",)
+              plain_line %(      "YMMV" => "Your mileage may vary")
+              plain_line %(    },)
+              plain_line %(    check_grammar: false)
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two hashes containing custom objects with differing attributes" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: {
+            order_id: 1234,
+            person: SuperDiff::Test::Person.new(name: "Marty"),
+            amount: 350_00
+          },
+          actual: {
+            order_id: 1234,
+            person: SuperDiff::Test::Person.new(name: "Doc"),
+            amount: 350_00
+          },
+          extra_operational_sequencer_classes: [
+            SuperDiff::Test::PersonOperationalSequencer
+          ],
+          extra_diff_formatter_classes: [
+            SuperDiff::Test::PersonDiffFormatter
+          ]
+        )
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty">, amount: 35000 })
+              green_line %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc">, amount: 35000 })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    order_id: 1234,)
+              plain_line %(    person: #<SuperDiff::Test::Person {)
+              red_line   %(-     name: "Marty")
+              green_line %(+     name: "Doc")
+              plain_line %(    }>,)
+              plain_line %(    amount: 35000)
               plain_line %(  })
             end
           }
