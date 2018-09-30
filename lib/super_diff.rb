@@ -1,4 +1,5 @@
 require "patience_diff"
+require "diff-lcs"
 require "pry-byebug"
 
 require_relative "super_diff/csi"
@@ -15,6 +16,9 @@ require_relative "super_diff/equality_matchers/object"
 require_relative "super_diff/equality_matchers"
 require_relative "super_diff/equality_matcher"
 
+require_relative "super_diff/operations/unary_operation"
+require_relative "super_diff/operations/binary_operation"
+
 require_relative "super_diff/operation_sequences/base"
 require_relative "super_diff/operation_sequences/array"
 require_relative "super_diff/operation_sequences/hash"
@@ -23,6 +27,7 @@ require_relative "super_diff/operation_sequences/object"
 require_relative "super_diff/operational_sequencers/base"
 require_relative "super_diff/operational_sequencers/array"
 require_relative "super_diff/operational_sequencers/hash"
+require_relative "super_diff/operational_sequencers/multi_line_string"
 require_relative "super_diff/operational_sequencers/object"
 require_relative "super_diff/operational_sequencers"
 require_relative "super_diff/operational_sequencer"

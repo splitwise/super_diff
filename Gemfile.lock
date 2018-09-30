@@ -31,6 +31,7 @@ PATH
   remote: .
   specs:
     super_diff (0.0.1)
+      diff-lcs
       patience_diff
 
 GEM
@@ -80,4 +81,4 @@ DEPENDENCIES
   super_diff!
 
 BUNDLED WITH
-   1.16.2
+   1.16.4

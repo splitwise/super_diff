@@ -18,5 +18,6 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["spec/**/*"]
   s.executables   = Dir["exe/**/*"].map { |f| File.basename(f) }
 
+  s.add_dependency "diff-lcs"
   s.add_dependency "patience_diff"
 end

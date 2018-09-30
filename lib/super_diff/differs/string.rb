@@ -39,7 +39,7 @@ module SuperDiff
       end
 
       def unstyled_line_for(icon, collection)
-        value = collection[op.index]
+        value = collection[operation.index]
         line = "#{icon} #{indentation}#{value.inspect}"
 
         if index_in_collection < collection.length - 1

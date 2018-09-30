@@ -10,7 +10,7 @@ module SuperDiff
           open_token: "#<#{value_class} {",
           close_token: "}>",
           collection_prefix: collection_prefix,
-          build_item_prefix: -> (op) { "#{op.key}: " },
+          build_item_prefix: -> (operation) { "#{operation.key}: " },
           operations: operations,
           indent_level: indent_level,
           add_comma: add_comma?

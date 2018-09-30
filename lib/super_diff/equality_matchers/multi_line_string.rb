@@ -2,20 +2,7 @@ module SuperDiff
   module EqualityMatchers
     class MultiLineString < Base
       def self.applies_to?(value)
-        value.class == ::String && value.include?("\n")
-      end
-
-      def initialize(
-        expected:,
-        actual:,
-        extra_operational_sequencer_classes:,
-        extra_diff_formatter_classes:
-      )
-        @expected = split_into_lines(expected)
-        @actual = split_into_lines(actual)
-
-        @original_expected = @expected.join
-        @original_actual = @actual.join
+        value.is_a?(::String) && value.include?("\n")
       end
 
       def fail
@@ -25,13 +12,13 @@ module SuperDiff
           #{
             Helpers.style(
               :deleted,
-              "Expected: #{Helpers.inspect_object(original_expected)}"
+              "Expected: #{Helpers.inspect_object(expected)}"
             )
           }
           #{
             Helpers.style(
               :inserted,
-              "  Actual: #{Helpers.inspect_object(original_actual)}"
+              "  Actual: #{Helpers.inspect_object(actual)}"
             )
           }
 
@@ -43,18 +30,15 @@ module SuperDiff
 
       private
 
-      attr_reader :original_expected, :original_actual
-
-      def split_into_lines(str)
-        str.split(/(\n)/).map { |v| v.tr("\n", "⏎") }.each_slice(2).map(&:join)
-      end
-
       def diff
         DiffFormatters::MultiLineString.call(operations, indent_level: 0)
       end
 
       def operations
-        OperationalSequencers::Array.call(expected: expected, actual: actual)
+        OperationalSequencers::MultiLineString.call(
+          expected: expected,
+          actual: actual
+        )
       end
     end
   end

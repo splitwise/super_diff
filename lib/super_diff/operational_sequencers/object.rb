@@ -22,7 +22,7 @@ module SuperDiff
             actual_attributes.include?(name) &&
             expected_attributes[name] == actual_attributes[name]
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :noop,
               collection: actual_attributes,
               key: name,
@@ -38,7 +38,7 @@ module SuperDiff
               expected_attributes[name] != actual_attributes[name]
             )
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :delete,
               collection: expected_attributes,
               key: name,
@@ -54,7 +54,7 @@ module SuperDiff
               expected_attributes[name] != actual_attributes[name]
             )
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :insert,
               collection: actual_attributes,
               key: name,

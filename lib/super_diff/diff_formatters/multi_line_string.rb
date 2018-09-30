@@ -12,17 +12,17 @@ module SuperDiff
       private
 
       def lines
-        operations.inject([]) do |array, op|
-          case op.name
+        operations.inject([]) do |array, operation|
+          case operation.name
           when :change
-            array << Helpers.style(:deleted, "- #{op.left_value}")
-            array << Helpers.style(:inserted, "+ #{op.right_value}")
+            array << Helpers.style(:deleted, "- #{operation.left_value}")
+            array << Helpers.style(:inserted, "+ #{operation.right_value}")
           when :delete
-            array << Helpers.style(:deleted, "- #{op.value}")
+            array << Helpers.style(:deleted, "- #{operation.value}")
           when :insert
-            array << Helpers.style(:inserted, "+ #{op.value}")
+            array << Helpers.style(:inserted, "+ #{operation.value}")
           else
-            array << Helpers.style(:normal, "  #{op.value}")
+            array << Helpers.style(:normal, "  #{operation.value}")
           end
         end
       end

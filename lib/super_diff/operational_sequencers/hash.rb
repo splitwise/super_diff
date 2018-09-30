@@ -14,7 +14,7 @@ module SuperDiff
             actual.include?(key) &&
             expected[key] == actual[key]
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :noop,
               collection: actual,
               key: key,
@@ -27,7 +27,7 @@ module SuperDiff
             expected.include?(key) &&
             (!actual.include?(key) || expected[key] != actual[key])
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :delete,
               collection: expected,
               key: key,
@@ -40,7 +40,7 @@ module SuperDiff
             !expected.include?(key) ||
             (actual.include?(key) && expected[key] != actual[key])
           )
-            operations << UnaryOperation.new(
+            operations << Operations::UnaryOperation.new(
               name: :insert,
               collection: actual,
               key: key,

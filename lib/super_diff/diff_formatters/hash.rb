@@ -10,11 +10,18 @@ module SuperDiff
           open_token: "{",
           close_token: "}",
           collection_prefix: collection_prefix,
-          build_item_prefix: -> (op) {
-            if op.key.is_a?(Symbol)
-              "#{op.key}: "
+          build_item_prefix: -> (operation) {
+            key =
+              if operation.respond_to?(:left_key)
+                operation.left_key
+              else
+                operation.key
+              end
+
+            if key.is_a?(Symbol)
+              "#{key}: "
             else
-              "#{op.key.inspect} => "
+              "#{key.inspect} => "
             end
           },
           operations: operations,

@@ -37,14 +37,16 @@ module SuperDiff
             next_operation.index == operation.index &&
             child_operations = sequence(operation, next_operation)
           )
-            operations << BinaryOperation.new(
+            operations << Operations::BinaryOperation.new(
               name: :change,
               left_collection: operation.collection,
-              left_value: operation.collection[operation.key],
               right_collection: next_operation.collection,
+              left_key: operation.key,
+              right_key: operation.key,
+              left_value: operation.collection[operation.key],
               right_value: next_operation.collection[operation.key],
-              key: operation.key,
-              index: operation.index,
+              left_index: operation.index,
+              right_index: operation.index,
               child_operations: child_operations
             )
             i += 2
@@ -81,57 +83,6 @@ module SuperDiff
         )
       rescue NoOperationalSequencerAvailableError
         nil
-      end
-
-      class UnaryOperation
-        attr_reader(
-          :name,
-          :collection,
-          :key,
-          :value,
-          :index
-        )
-
-        def initialize(name:, collection:, key:, value:, index:)
-          @name = name
-          @collection = collection
-          @key = key
-          @value = value
-          @index = index
-        end
-      end
-
-      class BinaryOperation
-        attr_reader(
-          :name,
-          :left_collection,
-          :right_collection,
-          :key,
-          :left_value,
-          :right_value,
-          :index,
-          :child_operations
-        )
-
-        def initialize(
-          name:,
-          left_collection:,
-          left_value:,
-          right_collection:,
-          right_value:,
-          key:,
-          index:,
-          child_operations:
-        )
-          @name = name
-          @left_collection = left_collection
-          @left_value = left_value
-          @right_collection = right_collection
-          @right_value = right_value
-          @key = key
-          @index = index
-          @child_operations = child_operations
-        end
       end
     end
   end

@@ -609,6 +609,79 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
+    context "given two arrays which contain all different kinds of values, some which differ" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: [
+            [
+              :h1,
+              [:span, [:text, "Hello world"]],
+              {
+                class: "header",
+                data: { "sticky" => true }
+              }
+            ],
+          ],
+          actual: [
+            [
+              :h2,
+              [:span, [:text, "Goodbye world"]],
+              {
+                id: "hero",
+                class: "header",
+                data: { "sticky" => false, role: "deprecated" }
+              }
+            ],
+            :br
+          ],
+        )
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
+              green_line %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, role: "deprecated" } }], :br])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    [)
+              red_line   %(-     :h1,)
+              green_line %(+     :h2,)
+              plain_line %(      [)
+              plain_line %(        :span,)
+              plain_line %(        [)
+              plain_line %(          :text,)
+              red_line   %(-         "Hello world")
+              green_line %(+         "Goodbye world")
+              plain_line %(        ])
+              plain_line %(      ],)
+              plain_line %(      {)
+              plain_line %(        class: "header",)
+              plain_line %(        data: {)
+              red_line   %(-         "sticky" => true)
+              green_line %(+         "sticky" => false,)
+              green_line %(+         role: "deprecated")
+              plain_line %(        },)
+              green_line %(+       id: "hero")
+              plain_line %(      })
+              plain_line %(    ],)
+              green_line %(+   :br)
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
     context "given the same hash" do
       it "returns an empty string" do
         output = described_class.call(

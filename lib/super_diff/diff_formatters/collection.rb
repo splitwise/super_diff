@@ -44,26 +44,23 @@ module SuperDiff
       end
 
       def contents
-        operations.map do |op|
-          if op.name == :change
-            max_size = [op.left_collection.size, op.right_collection.size].max
-            add_comma = op.index < max_size - 1
-            op.child_operations.to_diff(
+        operations.map do |operation|
+          if operation.name == :change
+            operation.child_operations.to_diff(
               indent_level: indent_level + 1,
-              collection_prefix: build_item_prefix.call(op),
-              add_comma: add_comma
+              collection_prefix: build_item_prefix.call(operation),
+              add_comma: operation.should_add_comma_after_displaying?
             )
           else
-            collection = op.collection
-            icon = ICONS.fetch(op.name, " ")
-            style_name = STYLES.fetch(op.name, :normal)
+            icon = ICONS.fetch(operation.name, " ")
+            style_name = STYLES.fetch(operation.name, :normal)
             chunk = build_chunk(
-              Helpers.inspect_object(op.value, single_line: false),
-              prefix: build_item_prefix.call(op),
+              Helpers.inspect_object(operation.value, single_line: false),
+              prefix: build_item_prefix.call(operation),
               icon: icon
             )
 
-            if op.index < collection.size - 1
+            if operation.should_add_comma_after_displaying?
               chunk << ","
             end
 
