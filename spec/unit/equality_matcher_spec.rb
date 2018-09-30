@@ -1104,6 +1104,95 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
+    context "given two hashes which contain all different kinds of values, some which differ" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: {
+            customer: {
+              name: "Marty McFly",
+              shipping_address: {
+                line_1: "123 Main St.",
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382"
+              }
+            },
+            items: [
+              {
+                name: "Fender Stratocaster",
+                cost: 100_000,
+                options: ["red", "blue", "green"]
+              },
+              { name: "Chevy 4x4" }
+            ]
+          },
+          actual: {
+            customer: {
+              name: "Marty McFly, Jr.",
+              shipping_address: {
+                line_1: "456 Ponderosa Ct.",
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382"
+              }
+            },
+            items: [
+              {
+                name: "Fender Stratocaster",
+                cost: 100_000,
+                options: ["red", "blue", "green"]
+              },
+              { name: "Mattel Hoverboard" }
+            ]
+          }
+        )
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { customer: { name: "Marty McFly", shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] })
+              green_line %(  Actual: { customer: { name: "Marty McFly, Jr.", shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    customer: {)
+              red_line   %(-     name: "Marty McFly",)
+              green_line %(+     name: "Marty McFly, Jr.",)
+              plain_line %(      shipping_address: {)
+              red_line   %(-       line_1: "123 Main St.",)
+              green_line %(+       line_1: "456 Ponderosa Ct.",)
+              plain_line %(        city: "Hill Valley",)
+              plain_line %(        state: "CA",)
+              plain_line %(        zip: "90382")
+              plain_line %(      })
+              plain_line %(    },)
+              plain_line %(    items: [)
+              plain_line %(      {)
+              plain_line %(        name: "Fender Stratocaster",)
+              plain_line %(        cost: 100000,)
+              plain_line %(        options: ["red", "blue", "green"])
+              plain_line %(      },)
+              plain_line %(      {)
+              red_line   %(-       name: "Chevy 4x4")
+              green_line %(+       name: "Mattel Hoverboard")
+              plain_line %(      })
+              plain_line %(    ])
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
     context "given two objects which == each other" do
       it "returns an empty string" do
         expected = SuperDiff::Test::Person.new(name: "Marty")

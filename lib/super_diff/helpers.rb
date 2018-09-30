@@ -33,7 +33,21 @@ module SuperDiff
           end
         end
 
-        ["{", contents.join(", "), "}"].join(" ")
+        if single_line
+          ["{", contents.join(", "), "}"].join(" ")
+        else
+          ValueInspection.new(
+            beginning: "{",
+            middle: contents.map.with_index do |line, index|
+              if index < contents.size - 1
+                line + ","
+              else
+                line
+              end
+            end,
+            end: "}"
+          )
+        end
       when String
         string = value_to_inspect
         newline = "⏎"
