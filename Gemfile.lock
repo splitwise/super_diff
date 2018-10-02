@@ -56,6 +56,7 @@ GEM
       byebug (~> 10.0)
       pry (~> 0.10)
     rainbow (3.0.0)
+    rake (12.3.1)
     rubocop (0.58.2)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
@@ -73,6 +74,7 @@ PLATFORMS
 
 DEPENDENCIES
   pry-byebug
+  rake
   rspec-core!
   rspec-expectations!
   rspec-mocks!
