@@ -1,3 +1,5 @@
+require "childprocess"
+
 require "English"
 require "shellwords"
 require "timeout"
@@ -109,11 +111,14 @@ Output:
     @args = args
     @options = options.merge(
       err: [:child, :out],
-      out: writer
+      out: @writer
     )
     @env = extract_env_from(@options)
 
-    @wrapper = ->(block) { block.call }
+    @process = ChildProcess.build(*command)
+    @process.io.stdout = @process.io.stderr = @writer
+
+    @wrapper = -> (block) { block.call }
     self.directory = Dir.pwd
     @run_quickly = false
     @run_successfully = false
@@ -203,7 +208,7 @@ Output:
 
   protected
 
-  attr_reader :args, :reader, :writer, :wrapper
+  attr_reader :args, :reader, :writer, :wrapper, :process
 
   private
 
@@ -222,9 +227,8 @@ Output:
   end
 
   def run_freely
-    pid = spawn(env, *command, options)
-    Process.waitpid(pid)
-    @status = $CHILD_STATUS
+    process.start
+    process.wait
   end
 
   def run_with_wrapper

@@ -1,6 +1,16 @@
 require_relative "../lib/super_diff"
 require_relative "../lib/super_diff/rspec"
 
+begin
+  require "pry-byebug"
+rescue LoadError
+end
+
+begin
+  require "pry-nav"
+rescue LoadError
+end
+
 Dir.glob(File.expand_path("../support/**/*.rb", __FILE__)).each do |file|
   require file
 end

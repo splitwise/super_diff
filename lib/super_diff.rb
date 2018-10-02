@@ -1,6 +1,5 @@
 require "patience_diff"
 require "diff-lcs"
-require "pry-byebug"
 
 require_relative "super_diff/csi"
 require_relative "super_diff/errors"
