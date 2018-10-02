@@ -1,5 +1,5 @@
 module SuperDiff
   module Differs
-    DEFAULTS = [Array, Hash, String, Object]
+    DEFAULTS = [Array, Hash, MultiLineString, Object, Empty]
   end
 end

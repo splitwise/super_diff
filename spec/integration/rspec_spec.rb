@@ -1,0 +1,261 @@
+require "spec_helper"
+
+RSpec.describe "Integration with RSpec", type: :integration do
+  context "comparing two different integers" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expect(1).to eq(42)
+      TEST
+
+      expected_output = <<~OUTPUT
+        expected: 42
+             got: 1
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two different symbols" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expect(:bar).to eq(:foo)
+      TEST
+
+      expected_output = <<~OUTPUT
+        expected: :foo
+             got: :bar
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two different single-line strings" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expect("Jennifer").to eq("Marty")
+      TEST
+
+      expected_output = <<~OUTPUT
+        expected: "Marty"
+             got: "Jennifer"
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two closely different multi-line strings" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = "This is a line\nAnd that's a line\nAnd there's a line too"
+        actual = "This is a line\nSomething completely different\nAnd there's a line too"
+        expect(actual).to eq(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  This is a line⏎)
+            red_line   %(- And that's a line⏎)
+            green_line %(+ Something completely different⏎)
+            plain_line %(  And there's a line too)
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two completely different multi-line strings" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = "This is a line\nAnd that's a line\n"
+        actual = "Something completely different\nAnd something else too\n"
+        expect(actual).to eq(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            red_line   %(- This is a line⏎)
+            red_line   %(- And that's a line⏎)
+            green_line %(+ Something completely different⏎)
+            green_line %(+ And something else too⏎)
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two arrays with other data structures inside" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = [
+          [
+            :h1,
+            [:span, [:text, "Hello world"]],
+            {
+              class: "header",
+              data: {
+                "sticky" => true,
+                person: SuperDiff::Test::Person.new(name: "Marty")
+              }
+            }
+          ]
+        ]
+        actual = [
+          [
+            :h2,
+            [:span, [:text, "Goodbye world"]],
+            {
+              id: "hero",
+              class: "header",
+              data: {
+                "sticky" => false,
+                role: "deprecated",
+                person: SuperDiff::Test::Person.new(name: "Doc")
+              }
+            }
+          ],
+          :br
+        ]
+        expect(actual).to eq(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  [)
+            plain_line %(    [)
+            red_line   %(-     :h1,)
+            green_line %(+     :h2,)
+            plain_line %(      [)
+            plain_line %(        :span,)
+            plain_line %(        [)
+            plain_line %(          :text,)
+            red_line   %(-         "Hello world")
+            green_line %(+         "Goodbye world")
+            plain_line %(        ])
+            plain_line %(      ],)
+            plain_line %(      {)
+            plain_line %(        class: "header",)
+            plain_line %(        data: {)
+            red_line   %(-         "sticky" => true,)
+            green_line %(+         "sticky" => false,)
+            plain_line %(          person: #<SuperDiff::Test::Person {)
+            red_line   %(-           name: "Marty")
+            green_line %(+           name: "Doc")
+            plain_line %(          }>,)
+            green_line %(+         role: "deprecated")
+            plain_line %(        },)
+            green_line %(+       id: "hero")
+            plain_line %(      })
+            plain_line %(    ],)
+            green_line %(+   :br)
+            plain_line %(  ])
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "comparing two hashes with other data structures inside" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = {
+          customer: {
+            person: SuperDiff::Test::Person.new(name: "Marty McFly"),
+            shipping_address: {
+              line_1: "123 Main St.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382"
+            }
+          },
+          items: [
+            {
+              name: "Fender Stratocaster",
+              cost: 100_000,
+              options: ["red", "blue", "green"]
+            },
+            { name: "Chevy 4x4" }
+          ]
+        }
+        actual = {
+          customer: {
+            person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr."),
+            shipping_address: {
+              line_1: "456 Ponderosa Ct.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382"
+            }
+          },
+          items: [
+            {
+              name: "Fender Stratocaster",
+              cost: 100_000,
+              options: ["red", "blue", "green"]
+            },
+            { name: "Mattel Hoverboard" }
+          ]
+        }
+        expect(actual).to eq(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  {)
+            plain_line %(    customer: {)
+            plain_line %(      person: #<SuperDiff::Test::Person {)
+            red_line   %(-       name: "Marty McFly")
+            green_line %(+       name: "Marty McFly, Jr.")
+            plain_line %(      }>,)
+            plain_line %(      shipping_address: {)
+            red_line   %(-       line_1: "123 Main St.",)
+            green_line %(+       line_1: "456 Ponderosa Ct.",)
+            plain_line %(        city: "Hill Valley",)
+            plain_line %(        state: "CA",)
+            plain_line %(        zip: "90382")
+            plain_line %(      })
+            plain_line %(    },)
+            plain_line %(    items: [)
+            plain_line %(      {)
+            plain_line %(        name: "Fender Stratocaster",)
+            plain_line %(        cost: 100000,)
+            plain_line %(        options: ["red", "blue", "green"])
+            plain_line %(      },)
+            plain_line %(      {)
+            red_line   %(-       name: "Chevy 4x4")
+            green_line %(+       name: "Mattel Hoverboard")
+            plain_line %(      })
+            plain_line %(    ])
+            plain_line %(  })
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  def colored(&block)
+    SuperDiff::Tests::Colorizer.call(&block).chomp
+  end
+end

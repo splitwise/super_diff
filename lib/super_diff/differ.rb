@@ -7,7 +7,7 @@ module SuperDiff
     def initialize(
       expected,
       actual,
-      indent_level:,
+      indent_level: 0,
       index_in_collection: nil,
       extra_classes: [],
       extra_operational_sequencer_classes: [],
@@ -34,6 +34,10 @@ module SuperDiff
     end
 
     private
+
+    attr_reader :expected, :actual, :indent_level, :index_in_collection,
+      :extra_classes, :extra_operational_sequencer_classes,
+      :extra_diff_formatter_classes
 
     def resolved_class
       (Differs::DEFAULTS + extra_classes).detect do |klass|

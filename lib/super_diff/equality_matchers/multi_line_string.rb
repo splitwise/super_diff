@@ -31,13 +31,12 @@ module SuperDiff
       private
 
       def diff
-        DiffFormatters::MultiLineString.call(operations, indent_level: 0)
-      end
-
-      def operations
-        OperationalSequencers::MultiLineString.call(
-          expected: expected,
-          actual: actual
+        Differs::MultiLineString.call(
+          expected,
+          actual,
+          indent_level: 0,
+          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
+          extra_diff_formatter_classes: extra_diff_formatter_classes
         )
       end
     end

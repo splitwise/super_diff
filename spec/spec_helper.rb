@@ -1,4 +1,13 @@
+require_relative "../lib/super_diff"
+require_relative "../lib/super_diff/rspec"
+
+Dir.glob(File.expand_path("../support/**/*.rb", __FILE__)).each do |file|
+  require file
+end
+
 RSpec.configure do |config|
+  config.include(SuperDiff::IntegrationTests, type: :integration)
+
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
     expectations.max_formatted_output_length = nil
@@ -20,12 +29,6 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
-end
-
-require_relative "../lib/super_diff"
-
-Dir.glob(File.expand_path("../support/**/*.rb", __FILE__)).each do |file|
-  require file
 end
 
 require "pp"
