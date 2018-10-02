@@ -1,6 +1,6 @@
 module SuperDiff
   module Helpers
-    COLORS = { normal: :plain, inserted: :green, deleted: :red }
+    COLORS = { normal: :plain, inserted: :green, deleted: :red }.freeze
 
     def self.style(style_name, text)
       Csi::ColorHelper.public_send(COLORS.fetch(style_name), text)
@@ -18,83 +18,79 @@ module SuperDiff
     def self.inspect_object(value_to_inspect, single_line: true)
       case value_to_inspect
       when ::Hash
-        # value.inspect.
-          # gsub(/([^,]+)=>([^,]+)/, '\1 => \2').
-          # gsub(/:(\w+) => /, '\1: ').
-          # gsub(/\{([^{}]+)\}/, '{ \1 }')
-
-        hash = value_to_inspect
-
-        contents = hash.map do |key, value|
-          if key.is_a?(Symbol)
-            "#{key}: #{inspect_object(value)}"
-          else
-            "#{inspect_object(key)} => #{inspect_object(value)}"
-          end
-        end
-
-        if single_line
-          ["{", contents.join(", "), "}"].join(" ")
-        else
-          ValueInspection.new(
-            beginning: "{",
-            middle: contents.map.with_index do |line, index|
-              if index < contents.size - 1
-                line + ","
-              else
-                line
-              end
-            end,
-            end: "}"
-          )
-        end
+        inspect_hash(value_to_inspect, single_line: single_line)
       when String
-        string = value_to_inspect
-        newline = "⏎"
-        string.gsub(/\r\n/, newline).gsub(/\n/, newline).inspect
+        inspect_string(value_to_inspect)
       when ::Array
-        array = value_to_inspect
-        "[" + array.map { |element| inspect_object(element) }.join(", ") + "]"
+        inspect_array(value_to_inspect)
       else
-        object = value_to_inspect
-
-        if object.respond_to?(:attributes_for_super_diff)
-          attributes = object.attributes_for_super_diff
-          inspected_attributes =
-            attributes.map.with_index do |(key, value), index|
-              "#{key}: #{value.inspect}".tap do |line|
-                if index < attributes.size - 1
-                  line << ","
-                end
-              end
-            end
-
-          if single_line
-            "#<#{object.class} #{inspected_attributes.join(" ")}>"
-          else
-            ValueInspection.new(
-              beginning: "#<#{object.class} {",
-              middle: inspected_attributes,
-              end: "}>"
-            )
-          end
-        else
-          object.inspect
-          # inspected_value = value.inspect
-          # match = inspected_value.match(/\A#<([^ ]+)(.*)>\Z/)
-
-          # if match
-            # [
-              # "#<#{match.captures[0]} {",
-              # *match.captures[1].split(" ").map { |line| "  " + line },
-              # "}>"
-            # ].join("\n")
-          # else
-            # inspected_value
-          # end
-        end
+        inspect_unclassified_object(value_to_inspect, single_line: single_line)
       end
     end
 
+    def self.inspect_hash(hash, single_line: true)
+      contents = hash.map do |key, value|
+        if key.is_a?(Symbol)
+          "#{key}: #{inspect_object(value)}"
+        else
+          "#{inspect_object(key)} => #{inspect_object(value)}"
+        end
+      end
+
+      if single_line
+        ["{", contents.join(", "), "}"].join(" ")
+      else
+        ValueInspection.new(
+          beginning: "{",
+          middle: contents.map.with_index do |line, index|
+            if index < contents.size - 1
+              line + ","
+            else
+              line
+            end
+          end,
+          end: "}",
+        )
+      end
+    end
+    private_class_method :inspect_hash
+
+    def self.inspect_string(string)
+      newline = "⏎"
+      string.gsub(/\r\n/, newline).gsub(/\n/, newline).inspect
+    end
+    private_class_method :inspect_string
+
+    def self.inspect_array(array)
+      "[" + array.map { |element| inspect_object(element) }.join(", ") + "]"
+    end
+    private_class_method :inspect_array
+
+    def self.inspect_unclassified_object(object, single_line: true)
+      if object.respond_to?(:attributes_for_super_diff)
+        attributes = object.attributes_for_super_diff
+        inspected_attributes =
+          attributes.map.with_index do |(key, value), index|
+            "#{key}: #{value.inspect}".tap do |line|
+              if index < attributes.size - 1
+                line << ","
+              end
+            end
+          end
+
+        if single_line
+          "#<#{object.class} #{inspected_attributes.join(" ")}>"
+        else
+          ValueInspection.new(
+            beginning: "#<#{object.class} {",
+            middle: inspected_attributes,
+            end: "}>",
+          )
+        end
+      else
+        object.inspect
+      end
+    end
+    private_class_method :inspect_unclassified_object
   end
 end

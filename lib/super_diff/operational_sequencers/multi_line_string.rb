@@ -20,35 +20,11 @@ module SuperDiff
       def unary_operations
         opcodes.flat_map do |code, a_start, a_end, b_start, b_end|
           if code == :delete
-            (a_start..a_end).map do |index|
-              Operations::UnaryOperation.new(
-                name: :delete,
-                collection: expected,
-                key: index,
-                index: index,
-                value: expected[index]
-              )
-            end
+            add_delete_operations(a_start..a_end)
           elsif code == :insert
-            (b_start..b_end).map do |index|
-              Operations::UnaryOperation.new(
-                name: :insert,
-                collection: actual,
-                key: index,
-                index: index,
-                value: actual[index]
-              )
-            end
+            add_insert_operations(b_start..b_end)
           else
-            (b_start..b_end).map do |index|
-              Operations::UnaryOperation.new(
-                name: :noop,
-                collection: actual,
-                key: index,
-                index: index,
-                value: actual[index]
-              )
-            end
+            add_noop_operations(b_start..b_end)
           end
         end
       end
@@ -67,6 +43,42 @@ module SuperDiff
 
       def opcodes
         sequence_matcher.diff_opcodes(expected, actual)
+      end
+
+      def add_delete_operations(indices)
+        indices.map do |index|
+          Operations::UnaryOperation.new(
+            name: :delete,
+            collection: expected,
+            key: index,
+            index: index,
+            value: expected[index],
+          )
+        end
+      end
+
+      def add_insert_operations(indices)
+        indices.map do |index|
+          Operations::UnaryOperation.new(
+            name: :insert,
+            collection: actual,
+            key: index,
+            index: index,
+            value: actual[index],
+          )
+        end
+      end
+
+      def add_noop_operations(indices)
+        indices.map do |index|
+          Operations::UnaryOperation.new(
+            name: :noop,
+            collection: actual,
+            key: index,
+            index: index,
+            value: actual[index],
+          )
+        end
       end
     end
   end

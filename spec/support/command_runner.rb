@@ -25,7 +25,7 @@ class CommandRunner
         error.command = command
         error.exit_status = exit_status
         error.output = output
-        error.send(:initialize, message)
+        error.__send__(:initialize, message)
       end
     end
 
@@ -45,7 +45,7 @@ Command #{command.inspect} failed, exiting with status #{exit_status}.
       if output
         message << <<-MESSAGE
 Output:
-#{OutputHelpers.divider('START') + output + OutputHelpers.divider('END')}
+#{OutputHelpers.divider("START") + output + OutputHelpers.divider("END")}
         MESSAGE
       end
 
@@ -59,7 +59,7 @@ Output:
         error.command = command
         error.timeout = timeout
         error.output = output
-        error.send(:initialize, message)
+        error.__send__(:initialize, message)
       end
     end
 
@@ -79,7 +79,7 @@ Command #{formatted_command.inspect} timed out after #{timeout} seconds.
       if output
         message << <<-MESSAGE
 Output:
-#{OutputHelpers.divider('START') + output + OutputHelpers.divider('END')}
+#{OutputHelpers.divider("START") + output + OutputHelpers.divider("END")}
         MESSAGE
       end
 
@@ -111,7 +111,7 @@ Output:
     @args = args
     @options = options.merge(
       err: [:child, :out],
-      out: @writer
+      out: @writer,
     )
     @env = extract_env_from(@options)
 
@@ -141,8 +141,8 @@ Output:
 
   def formatted_command
     [formatted_env, Shellwords.join(command)].
-      select { |value| !value.empty? }.
-      join(' ')
+      reject(&:empty?).
+      join(" ")
   end
 
   def run
@@ -213,7 +213,7 @@ Output:
   private
 
   def extract_env_from(options)
-    options.delete(:env) { {} }.inject({}) do |hash, (key, value)|
+    options.delete(:env) { {} }.reduce({}) do |hash, (key, value)|
       hash.merge(key.to_s => value)
     end
   end

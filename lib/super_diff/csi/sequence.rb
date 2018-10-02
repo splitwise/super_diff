@@ -13,7 +13,7 @@ module SuperDiff
           Csi::TwentyFourBitSequence.new(color)
         else
           raise ArgumentError.new(
-            "Don't know how to interpret color: #{color.inspect}"
+            "Don't know how to interpret color: #{color.inspect}",
           )
         end
       end

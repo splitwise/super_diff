@@ -14,15 +14,31 @@ module SuperDiff
 
         if match
           real_name = match.captures[0]
-        end
 
-        addition = Csi::ColorHelper.public_send(real_name, *args)
+          if Csi::ColorHelper.respond_to?(real_name)
+            addition = Csi::ColorHelper.public_send(real_name, *args)
+
+            if match
+              addition << "\n"
+            end
+
+            @string << addition
+          else
+            super
+          end
+        else
+          super
+        end
+      end
+
+      def respond_to_missing?(name, include_private = false)
+        match = name.match(/\A(.+)_line\Z/)
 
         if match
-          addition << "\n"
+          Csi::ColorHelper.respond_to?(match.captures[0]) || super
+        else
+          super
         end
-
-        @string << addition
       end
 
       def to_s

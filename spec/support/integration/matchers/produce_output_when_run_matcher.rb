@@ -11,10 +11,10 @@ module SuperDiff
       def initialize(expected_output)
         @expected_output =
           expected_output.
-          strip.
-          split(/(\n+)/).
-          map { |line| line =~ /\n+/ ? line : (" " * 7) + line }.
-          join
+            strip.
+            split(/(\n+)/).
+            map { |line| line.match?(/\n+/) ? line : (" " * 7) + line }.
+            join
       end
 
       def matches?(test)
@@ -26,14 +26,14 @@ module SuperDiff
       def failure_message
         "Expected test to produce output, but it did not.\n\n" +
           "Expected output:\n\n" +
-          CommandRunner::OutputHelpers.divider('START') +
+          CommandRunner::OutputHelpers.divider("START") +
           expected_output + "\n" +
-          CommandRunner::OutputHelpers.divider('END') +
+          CommandRunner::OutputHelpers.divider("END") +
           "\n" +
           "Actual output:\n\n" +
-          CommandRunner::OutputHelpers.divider('START') +
+          CommandRunner::OutputHelpers.divider("START") +
           actual_output + "\n" +
-          CommandRunner::OutputHelpers.divider('END')
+          CommandRunner::OutputHelpers.divider("END")
       end
 
       private
@@ -48,7 +48,7 @@ module SuperDiff
       def tempfile
         @_tempfile =
           TEMP_DIRECTORY.join("acceptance_spec.rb").
-          tap { |tempfile| tempfile.write(program) }
+            tap { |tempfile| tempfile.write(program) }
       end
 
       def program

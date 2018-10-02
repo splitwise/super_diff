@@ -12,13 +12,13 @@ module SuperDiff
           #{
             Helpers.style(
               :deleted,
-              "Expected: #{Helpers.inspect_object(expected)}"
+              "Expected: #{Helpers.inspect_object(expected)}",
             )
           }
           #{
             Helpers.style(
               :inserted,
-              "  Actual: #{Helpers.inspect_object(actual)}"
+              "  Actual: #{Helpers.inspect_object(actual)}",
             )
           }
 
@@ -36,7 +36,7 @@ module SuperDiff
           actual,
           indent_level: 0,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end
     end

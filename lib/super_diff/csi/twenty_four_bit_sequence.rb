@@ -1,7 +1,7 @@
 module SuperDiff
   module Csi
     class TwentyFourBitSequence
-      LEADING_CODES = { fg: 38, bg: 48 }
+      LEADING_CODES = { fg: 38, bg: 48 }.freeze
       SERIAL_CODE = 2
 
       def initialize(fg: nil, bg: nil)

@@ -1,7 +1,7 @@
 module SuperDiff
   module Csi
     class FourBitColor
-      VALID_TYPES = [:fg, :bg]
+      VALID_TYPES = [:fg, :bg].freeze
       VALID_CODES_BY_NAME = {
         black: { fg: 30, bg: 40 },
         red: { fg: 31, bg: 41 },
@@ -18,20 +18,21 @@ module SuperDiff
         bright_blue: { fg: 94, bg: 104 },
         bright_magenta: { fg: 95, bg: 105 },
         bright_cyan: { fg: 96, bg: 106 },
-        bright_white: { fg: 97, bg: 107 }
-      }
-      NAMES_BY_CODE = VALID_CODES_BY_NAME.inject({}) do |hash, (key, value)|
+        bright_white: { fg: 97, bg: 107 },
+      }.freeze
+      NAMES_BY_CODE = VALID_CODES_BY_NAME.reduce({}) do |hash, (key, value)|
         hash.merge(value[:fg] => key, value[:bg] => key)
       end
       VALID_NAMES = VALID_CODES_BY_NAME.keys
-      VALID_CODE_RANGES = [30..37, 40..47, 90..97, 100..107]
+      VALID_CODE_RANGES = [30..37, 40..47, 90..97, 100..107].freeze
 
       def initialize(value)
-        if value.is_a?(Symbol)
-          @name = interpret_name!(value)
-        else
-          @name = interpret_code!(value)
-        end
+        @name =
+          if value.is_a?(Symbol)
+            interpret_name!(value)
+          else
+            interpret_code!(value)
+          end
       end
 
       def sequence_for(layer)
@@ -60,7 +61,7 @@ module SuperDiff
       end
 
       def interpret_code!(code)
-        if !VALID_CODE_RANGES.any? { |range| !range.cover?(code) }
+        if VALID_CODE_RANGES.none? { |range| range.cover?(code) }
           message =
             "#{code.inspect} is not a valid color code.\n" +
             "Valid codes are:\n"

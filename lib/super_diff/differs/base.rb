@@ -1,7 +1,7 @@
 module SuperDiff
   module Differs
     class Base
-      def self.applies_to?(value)
+      def self.applies_to?(_value)
         raise NotImplementedError
       end
 

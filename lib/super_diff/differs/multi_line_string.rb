@@ -8,7 +8,7 @@ module SuperDiff
       def call
         DiffFormatters::MultiLineString.call(
           operations,
-          indent_level: indent_level
+          indent_level: indent_level,
         )
       end
 
@@ -19,7 +19,7 @@ module SuperDiff
           expected: expected,
           actual: actual,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end
     end

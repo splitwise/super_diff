@@ -4,7 +4,7 @@ module SuperDiff
       allocate.tap do |error|
         error.expected = expected
         error.actual = actual
-        error.send(:initialize)
+        error.__send__(:initialize)
       end
     end
 

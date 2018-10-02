@@ -6,7 +6,7 @@ module SuperDiff
         :collection,
         :key,
         :value,
-        :index
+        :index,
       )
 
       def initialize(name:, collection:, key:, value:, index:)

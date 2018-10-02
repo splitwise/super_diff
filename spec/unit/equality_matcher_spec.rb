@@ -76,7 +76,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: "Marty",
-          actual: "Jennifer"
+          actual: "Jennifer",
         )
 
         expected_output = <<~STR.strip
@@ -98,7 +98,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: "Marty",
-          actual: "Marty McFly"
+          actual: "Marty McFly",
         )
 
         expected_output = <<~STR.strip
@@ -120,7 +120,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: "This is a line\nAnd that's a line\nAnd there's a line too",
-          actual: "This is a line\nSomething completely different\nAnd there's a line too"
+          actual: "This is a line\nSomething completely different\nAnd there's a line too",
         )
 
         expected_output = <<~STR.strip
@@ -153,7 +153,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: "This is a line\nAnd that's a line\n",
-          actual: "Something completely different\nAnd something else too\n"
+          actual: "Something completely different\nAnd something else too\n",
         )
 
         expected_output = <<~STR.strip
@@ -186,7 +186,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns an empty string" do
         output = described_class.call(
           expected: ["sausage", "egg", "cheese"],
-          actual: ["sausage", "egg", "cheese"]
+          actual: ["sausage", "egg", "cheese"],
         )
 
         expect(output).to eq("")
@@ -197,7 +197,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, 3, 4],
-          actual: [1, 2, 99, 4]
+          actual: [1, 2, 99, 4],
         )
 
         expected_output = <<~STR.strip
@@ -233,7 +233,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [:one, :fish, :two, :fish],
-          actual: [:one, :FISH, :two, :fish]
+          actual: [:one, :FISH, :two, :fish],
         )
 
         expected_output = <<~STR.strip
@@ -269,7 +269,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["sausage", "egg", "cheese"],
-          actual: ["bacon", "egg", "cheese"]
+          actual: ["bacon", "egg", "cheese"],
         )
 
         expected_output = <<~STR.strip
@@ -305,18 +305,18 @@ RSpec.describe SuperDiff::EqualityMatcher do
         actual_output = described_class.call(
           expected: [
             SuperDiff::Test::Person.new(name: "Marty"),
-            SuperDiff::Test::Person.new(name: "Jennifer")
+            SuperDiff::Test::Person.new(name: "Jennifer"),
           ],
           actual: [
             SuperDiff::Test::Person.new(name: "Marty"),
-            SuperDiff::Test::Person.new(name: "Doc")
+            SuperDiff::Test::Person.new(name: "Doc"),
           ],
           extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer
+            SuperDiff::Test::PersonOperationalSequencer,
           ],
           extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter
-          ]
+            SuperDiff::Test::PersonDiffFormatter,
+          ],
         )
 
         expected_output = <<~STR.strip
@@ -354,7 +354,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["bread"],
-          actual: ["bread", "eggs", "milk"]
+          actual: ["bread", "eggs", "milk"],
         )
 
         expected_output = <<~STR.strip
@@ -388,7 +388,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["bread", "eggs", "milk"],
-          actual: ["bread"]
+          actual: ["bread"],
         )
 
         expected_output = <<~STR.strip
@@ -422,7 +422,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["milk"],
-          actual: ["bread", "eggs", "milk"]
+          actual: ["bread", "eggs", "milk"],
         )
 
         expected_output = <<~STR.strip
@@ -456,7 +456,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: ["bread", "eggs", "milk"],
-          actual: ["milk"]
+          actual: ["milk"],
         )
 
         expected_output = <<~STR.strip
@@ -490,7 +490,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, [:a, :b, :c], 4],
-          actual: [1, 2, [:a, :x, :c], 4]
+          actual: [1, 2, [:a, :x, :c], 4],
         )
 
         expected_output = <<~STR.strip
@@ -530,7 +530,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [1, 2, { foo: "bar", baz: "qux" }, 4],
-          actual: [1, 2, { foo: "bar", baz: "qox" }, 4]
+          actual: [1, 2, { foo: "bar", baz: "qox" }, 4],
         )
 
         expected_output = <<~STR.strip
@@ -571,11 +571,11 @@ RSpec.describe SuperDiff::EqualityMatcher do
           expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty"), 4],
           actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc"), 4],
           extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer
+            SuperDiff::Test::PersonOperationalSequencer,
           ],
           extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter
-          ]
+            SuperDiff::Test::PersonDiffFormatter,
+          ],
         )
 
         expected_output = <<~STR.strip
@@ -618,8 +618,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               [:span, [:text, "Hello world"]],
               {
                 class: "header",
-                data: { "sticky" => true }
-              }
+                data: { "sticky" => true },
+              },
             ],
           ],
           actual: [
@@ -629,10 +629,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               {
                 id: "hero",
                 class: "header",
-                data: { "sticky" => false, role: "deprecated" }
-              }
+                data: { "sticky" => false, role: "deprecated" },
+              },
             ],
-            :br
+            :br,
           ],
         )
 
@@ -686,7 +686,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns an empty string" do
         output = described_class.call(
           expected: { name: "Marty" },
-          actual: { name: "Marty" }
+          actual: { name: "Marty" },
         )
 
         expect(output).to eq("")
@@ -697,7 +697,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { tall: 12, grande: 19, venti: 20 },
-          actual: { tall: 12, grande: 16, venti: 20 }
+          actual: { tall: 12, grande: 16, venti: 20 },
         )
 
         expected_output = <<~STR.strip
@@ -732,7 +732,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { "tall" => 12, "grande" => 19, "venti" => 20 },
-          actual: { "tall" => 12, "grande" => 16, "venti" => 20 }
+          actual: { "tall" => 12, "grande" => 16, "venti" => 20 },
         )
 
         expected_output = <<~STR.strip
@@ -802,7 +802,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { tall: "small", grande: "grand", venti: "large" },
-          actual: { tall: "small", grande: "medium", venti: "large" }
+          actual: { tall: "small", grande: "medium", venti: "large" },
         )
 
         expected_output = <<~STR.strip
@@ -838,18 +838,18 @@ RSpec.describe SuperDiff::EqualityMatcher do
         actual_output = described_class.call(
           expected: {
             steve: SuperDiff::Test::Person.new(name: "Jobs"),
-            susan: SuperDiff::Test::Person.new(name: "Kare")
+            susan: SuperDiff::Test::Person.new(name: "Kare"),
           },
           actual: {
             steve: SuperDiff::Test::Person.new(name: "Wozniak"),
-            susan: SuperDiff::Test::Person.new(name: "Kare")
+            susan: SuperDiff::Test::Person.new(name: "Kare"),
           },
           extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer
+            SuperDiff::Test::PersonOperationalSequencer,
           ],
           extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter
-          ]
+            SuperDiff::Test::PersonDiffFormatter,
+          ],
         )
 
         expected_output = <<~STR.strip
@@ -887,7 +887,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { latte: 4.5 },
-          actual: { latte: 4.5, mocha: 3.5, cortado: 3 }
+          actual: { latte: 4.5, mocha: 3.5, cortado: 3 },
         )
 
         expected_output = <<~STR.strip
@@ -921,7 +921,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: { latte: 4.5, mocha: 3.5, cortado: 3 },
-          actual: { latte: 4.5 }
+          actual: { latte: 4.5 },
         )
 
         expected_output = <<~STR.strip
@@ -957,13 +957,13 @@ RSpec.describe SuperDiff::EqualityMatcher do
           expected: {
             name: "Elliot",
             interests: ["music", "football", "programming"],
-            age: 30
+            age: 30,
           },
           actual: {
             name: "Elliot",
             interests: ["music", "travel", "programming"],
-            age: 30
-          }
+            age: 30,
+          },
         )
 
         expected_output = <<~STR.strip
@@ -1006,19 +1006,19 @@ RSpec.describe SuperDiff::EqualityMatcher do
             substitutions: {
               "YOLO" => "You only live once",
               "BRB" => "Buns, ribs, and bacon",
-              "YMMV" => "Your mileage may vary"
+              "YMMV" => "Your mileage may vary",
             },
-            check_grammar: false
+            check_grammar: false,
           },
           actual: {
             check_spelling: true,
             substitutions: {
               "YOLO" => "You only live once",
               "BRB" => "Be right back",
-              "YMMV" => "Your mileage may vary"
+              "YMMV" => "Your mileage may vary",
             },
-            check_grammar: false
-          }
+            check_grammar: false,
+          },
         )
 
         expected_output = <<~STR.strip
@@ -1059,19 +1059,19 @@ RSpec.describe SuperDiff::EqualityMatcher do
           expected: {
             order_id: 1234,
             person: SuperDiff::Test::Person.new(name: "Marty"),
-            amount: 350_00
+            amount: 350_00,
           },
           actual: {
             order_id: 1234,
             person: SuperDiff::Test::Person.new(name: "Doc"),
-            amount: 350_00
+            amount: 350_00,
           },
           extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer
+            SuperDiff::Test::PersonOperationalSequencer,
           ],
           extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter
-          ]
+            SuperDiff::Test::PersonDiffFormatter,
+          ],
         )
 
         expected_output = <<~STR.strip
@@ -1114,17 +1114,17 @@ RSpec.describe SuperDiff::EqualityMatcher do
                 line_1: "123 Main St.",
                 city: "Hill Valley",
                 state: "CA",
-                zip: "90382"
-              }
+                zip: "90382",
+              },
             },
             items: [
               {
                 name: "Fender Stratocaster",
                 cost: 100_000,
-                options: ["red", "blue", "green"]
+                options: ["red", "blue", "green"],
               },
-              { name: "Chevy 4x4" }
-            ]
+              { name: "Chevy 4x4" },
+            ],
           },
           actual: {
             customer: {
@@ -1133,18 +1133,18 @@ RSpec.describe SuperDiff::EqualityMatcher do
                 line_1: "456 Ponderosa Ct.",
                 city: "Hill Valley",
                 state: "CA",
-                zip: "90382"
-              }
+                zip: "90382",
+              },
             },
             items: [
               {
                 name: "Fender Stratocaster",
                 cost: 100_000,
-                options: ["red", "blue", "green"]
+                options: ["red", "blue", "green"],
               },
-              { name: "Mattel Hoverboard" }
-            ]
-          }
+              { name: "Mattel Hoverboard" },
+            ],
+          },
         )
 
         expected_output = <<~STR.strip

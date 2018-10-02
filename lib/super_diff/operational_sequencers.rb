@@ -1,5 +1,5 @@
 module SuperDiff
   module OperationalSequencers
-    DEFAULTS = [Array, Hash]
+    DEFAULTS = [Array, Hash].freeze
   end
 end

@@ -4,6 +4,7 @@ RSpec::Expectations.instance_eval do
   end
 end
 
+# rubocop:disable all
 RSpec::Core::Formatters::ConsoleCodes.instance_eval do
   # UPDATE: Patch so it returns nothing if code_or_symbol is nil
   def console_code_for(code_or_symbol)
@@ -74,7 +75,8 @@ RSpec::Core::Formatters::ExceptionPresenter.class_eval do
         failure_slash_error +
         RSpec::Core::Formatters::ConsoleCodes.wrap(lines[0].strip, :white)
     else
-      least_indentation = SnippetExtractor.least_indentation_from(lines)
+      least_indentation =
+        RSpec::Core::Formatters::SnippetExtractor.least_indentation_from(lines)
       lines = lines.map do |line|
         RSpec::Core::Formatters::ConsoleCodes.wrap(
           line.sub(/^#{least_indentation}/, '  '),
@@ -117,3 +119,4 @@ RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
     RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
   end
 end
+# rubocop:enable all

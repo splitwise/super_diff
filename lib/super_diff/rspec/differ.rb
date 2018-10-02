@@ -6,7 +6,7 @@ module SuperDiff
           expected,
           actual,
           extra_operational_sequencer_classes: RSpec.extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes
+          extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes,
         )
         "\n\n" + diff
       end

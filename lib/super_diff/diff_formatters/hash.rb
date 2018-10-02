@@ -26,7 +26,7 @@ module SuperDiff
           },
           operations: operations,
           indent_level: indent_level,
-          add_comma: add_comma?
+          add_comma: add_comma?,
         )
       end
     end

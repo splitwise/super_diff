@@ -1,7 +1,7 @@
 module SuperDiff
   module DiffFormatters
     class Base
-      def self.applies_to?(operations)
+      def self.applies_to?(_operations)
         raise NotImplementedError
       end
 

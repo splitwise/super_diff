@@ -11,7 +11,7 @@ module SuperDiff
         :right_value,
         :left_index,
         :right_index,
-        :child_operations
+        :child_operations,
       )
 
       def initialize(

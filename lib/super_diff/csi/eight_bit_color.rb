@@ -19,33 +19,34 @@ module SuperDiff
         bright_blue: 12,
         bright_magenta: 13,
         bright_cyan: 14,
-        bright_white: 15
-      }
+        bright_white: 15,
+      }.freeze
       STARTING_INDICES = {
         standard: 0,
         high_intensity: 8,
-        grayscale: 232
-      }
+        grayscale: 232,
+      }.freeze
       VALID_PAIR_TYPES = STARTING_INDICES.keys
       VALID_PAIR_INDEX_RANGES = {
         standard: 0..7,
         high_intensity: 0..7,
-        grayscale: 0..23
-      }
-      LEADING_CODES_BY_LAYER = { fg: 38, bg: 48 }
+        grayscale: 0..23,
+      }.freeze
+      LEADING_CODES_BY_LAYER = { fg: 38, bg: 48 }.freeze
       SERIAL_CODE = 5
 
       def initialize(value)
-        case value
-        when Hash
-          @code = interpret_triplet!(value)
-        when Symbol
-          @code = interpret_color_name!(value)
-        when Array
-          @code = interpret_pair!(value)
-        else
-          @code = interpret_code!(value)
-        end
+        @code =
+          case value
+          when Hash
+            interpret_triplet!(value)
+          when Symbol
+            interpret_color_name!(value)
+          when Array
+            interpret_pair!(value)
+          else
+            interpret_code!(value)
+          end
       end
 
       def sequence_for(layer)
@@ -58,18 +59,18 @@ module SuperDiff
       attr_reader :code
 
       def interpret_triplet!(spec)
-        if !spec.include?(:r) || !spec.include?(:g) || !spec.include?(:b)
+        unless spec.include?(:r) && spec.include?(:g) && spec.include?(:b)
           raise ArgumentError.new(
             "#{spec.inspect} is not a valid color specification. " +
-            "Please provide a hash with :r, :g, and :b keys."
+            "Please provide a hash with :r, :g, and :b keys.",
           )
         end
 
-        if spec.values.any? { |component| !VALID_COMPONENT_RANGE.cover?(component) }
+        if spec.values.none? { |component| VALID_COMPONENT_RANGE.cover?(component) }
           raise ArgumentError.new(
             "(#{spec[:r]},#{spec[:g]},#{spec[:b]}) is not a valid color " +
             "specification. All components must be between " +
-            "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}."
+            "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}.",
           )
         end
 
@@ -98,7 +99,7 @@ module SuperDiff
         if !VALID_PAIR_TYPES.include?(type)
           raise ArgumentError.new(
             "Given pair did not have a valid type. " +
-            "Type must be one of: #{VALID_PAIR_TYPES}"
+            "Type must be one of: #{VALID_PAIR_TYPES}",
           )
         end
 
@@ -108,7 +109,7 @@ module SuperDiff
           raise ArgumentError.new(
             "Given pair did not have a valid index. " +
             "For #{type}, index must be between #{valid_range.begin} and " +
-            "#{valid_range.end}."
+            "#{valid_range.end}.",
           )
         end
 
@@ -119,7 +120,7 @@ module SuperDiff
         if !VALID_CODE_RANGE.cover?(code)
           raise ArgumentError.new(
             "#{code.inspect} is not a valid color code " +
-            "(must be between 0 and 255)."
+            "(must be between 0 and 255).",
           )
         end
 

@@ -10,10 +10,10 @@ module SuperDiff
           open_token: "[",
           close_token: "]",
           collection_prefix: collection_prefix,
-          build_item_prefix: -> (operation) { "" },
+          build_item_prefix: proc { "" },
           operations: operations,
           indent_level: indent_level,
-          add_comma: add_comma?
+          add_comma: add_comma?,
         )
       end
     end

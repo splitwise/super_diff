@@ -29,7 +29,7 @@ module SuperDiff
           [
             "#<#{match.captures[0]} {",
             *match.captures[1].split(" ").map { |line| "  " + line },
-            "}>"
+            "}>",
           ]
         else
           [inspected_value]
@@ -47,7 +47,7 @@ module SuperDiff
       def lines
         [
           styled_lines_for("-", :deleted, expected),
-          styled_lines_for("+", :inserted, actual)
+          styled_lines_for("+", :inserted, actual),
         ]
       end
 
@@ -58,12 +58,8 @@ module SuperDiff
       end
 
       def unstyled_lines_for(icon, value)
-        lines = self.class.inspection_lines_for(value)
-          .map { |inspection_line| "#{icon} #{indentation}#{inspection_line}" }
-
-        # if index_in_collection < collection.length - 1
-          # lines.last << ","
-        # end
+        lines = self.class.inspection_lines_for(value).
+          map { |inspection_line| "#{icon} #{indentation}#{inspection_line}" }
 
         lines
       end

@@ -1,8 +1,8 @@
 module SuperDiff
   module DiffFormatters
     class Collection
-      ICONS = { delete: "-", insert: "+" }
-      STYLES = { insert: :inserted, delete: :deleted, noop: :normal }
+      ICONS = { delete: "-", insert: "+" }.freeze
+      STYLES = { insert: :inserted, delete: :deleted, noop: :normal }.freeze
 
       def self.call(*args, &block)
         new(*args, &block).call
@@ -33,13 +33,13 @@ module SuperDiff
       private
 
       attr_reader :open_token, :close_token, :operations, :indent_level,
-        :add_comma, :collection_prefix, :build_item_prefix#, :diff_line_for
+        :add_comma, :collection_prefix, :build_item_prefix
 
       def lines
         [
           "  #{indentation}#{collection_prefix}#{open_token}",
           *contents,
-          "  #{indentation}#{close_token}#{comma}"
+          "  #{indentation}#{close_token}#{comma}",
         ]
       end
 
@@ -49,7 +49,7 @@ module SuperDiff
             operation.child_operations.to_diff(
               indent_level: indent_level + 1,
               collection_prefix: build_item_prefix.call(operation),
-              add_comma: operation.should_add_comma_after_displaying?
+              add_comma: operation.should_add_comma_after_displaying?,
             )
           else
             icon = ICONS.fetch(operation.name, " ")
@@ -57,7 +57,7 @@ module SuperDiff
             chunk = build_chunk(
               Helpers.inspect_object(operation.value, single_line: false),
               prefix: build_item_prefix.call(operation),
-              icon: icon
+              icon: icon,
             )
 
             if operation.should_add_comma_after_displaying?
@@ -75,7 +75,7 @@ module SuperDiff
             [
               indentation(offset: 1) + prefix + content.beginning,
               *content.middle.map { |line| indentation(offset: 2) + line },
-              indentation(offset: 1) + content.end
+              indentation(offset: 1) + content.end,
             ]
           else
             [indentation(offset: 1) + prefix + content]
@@ -85,10 +85,10 @@ module SuperDiff
       end
 
       def style_chunk(style_name, chunk)
-        chunk
-          .split("\n")
-          .map { |line| Helpers.style(style_name, line) }
-          .join("\n")
+        chunk.
+          split("\n").
+          map { |line| Helpers.style(style_name, line) }.
+          join("\n")
       end
 
       def indentation(offset: 0)

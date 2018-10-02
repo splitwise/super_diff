@@ -12,7 +12,7 @@ module SuperDiff
           expected: expected,
           actual: actual,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end
 
@@ -48,7 +48,7 @@ module SuperDiff
             collection: actual,
             key: event.new_position,
             value: event.new_element,
-            index: event.new_position
+            index: event.new_position,
           )
         end
 
@@ -58,7 +58,7 @@ module SuperDiff
             collection: expected,
             key: event.old_position,
             value: event.old_element,
-            index: event.old_position
+            index: event.old_position,
           )
         end
 
@@ -68,7 +68,7 @@ module SuperDiff
             collection: actual,
             key: event.new_position,
             value: event.new_element,
-            index: event.new_position
+            index: event.new_position,
           )
         end
 
@@ -86,7 +86,7 @@ module SuperDiff
               right_value: event.new_element,
               left_index: event.old_position,
               right_index: event.new_position,
-              child_operations: child_operations
+              child_operations: child_operations,
             )
           else
             operations << Operations::UnaryOperation.new(
@@ -94,14 +94,14 @@ module SuperDiff
               collection: expected,
               key: event.old_position,
               value: event.old_element,
-              index: event.old_position
+              index: event.old_position,
             )
             operations << Operations::UnaryOperation.new(
               name: :insert,
               collection: actual,
               key: event.new_position,
               value: event.new_element,
-              index: event.new_position
+              index: event.new_position,
             )
           end
         end
@@ -116,7 +116,7 @@ module SuperDiff
             expected: expected,
             actual: actual,
             extra_classes: extra_operational_sequencer_classes,
-            extra_diff_formatter_classes: extra_diff_formatter_classes
+            extra_diff_formatter_classes: extra_diff_formatter_classes,
           )
         rescue NoOperationalSequencerAvailableError
           nil

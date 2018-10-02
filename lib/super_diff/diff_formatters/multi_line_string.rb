@@ -12,7 +12,7 @@ module SuperDiff
       private
 
       def lines
-        operations.inject([]) do |array, operation|
+        operations.reduce([]) do |array, operation|
           case operation.name
           when :change
             array << Helpers.style(:deleted, "- #{operation.left_value}")
