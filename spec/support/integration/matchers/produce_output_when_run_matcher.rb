@@ -13,7 +13,7 @@ module SuperDiff
           expected_output.
             strip.
             split(/(\n+)/).
-            map { |line| line.match?(/\n+/) ? line : (" " * 7) + line }.
+            map { |line| line =~ /\n+/ ? line : (" " * 7) + line }.
             join
       end
 

@@ -10,7 +10,7 @@ module SuperDiff
       end
 
       def method_missing(name, *args, &block)
-        match = name.match(/\A(.+)_line\Z/)
+        match = name.to_s.match(/\A(.+)_line\Z/)
 
         if match
           real_name = match.captures[0]
@@ -32,7 +32,7 @@ module SuperDiff
       end
 
       def respond_to_missing?(name, include_private = false)
-        match = name.match(/\A(.+)_line\Z/)
+        match = name.to_s.match(/\A(.+)_line\Z/)
 
         if match
           Csi::ColorHelper.respond_to?(match.captures[0]) || super
