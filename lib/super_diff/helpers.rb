@@ -28,6 +28,10 @@ module SuperDiff
       end
     end
 
+    def self.values_equal?(expected, actual)
+      expected == actual
+    end
+
     def self.inspect_hash(hash, single_line: true)
       contents = hash.map do |key, value|
         if key.is_a?(Symbol)

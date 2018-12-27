@@ -51,7 +51,10 @@ module SuperDiff
       def should_add_noop_operation?(attribute_name)
         expected_attributes.include?(attribute_name) &&
           actual_attributes.include?(attribute_name) &&
-          expected_attributes[attribute_name] == actual_attributes[attribute_name]
+          SuperDiff::Helpers.values_equal?(
+            expected_attributes[attribute_name],
+            actual_attributes[attribute_name]
+          )
       end
 
       def possibly_add_delete_operation_to(operations, attribute_name)
@@ -69,7 +72,10 @@ module SuperDiff
       def should_add_delete_operation?(attribute_name)
         expected_attributes.include?(attribute_name) && (
           !actual_attributes.include?(attribute_name) ||
-          expected_attributes[attribute_name] != actual_attributes[attribute_name]
+          !SuperDiff::Helpers.values_equal?(
+            expected_attributes[attribute_name],
+            actual_attributes[attribute_name]
+          )
         )
       end
 
@@ -88,7 +94,10 @@ module SuperDiff
       def should_add_insert_operation?(attribute_name)
         !expected_attributes.include?(attribute_name) || (
           actual_attributes.include?(attribute_name) &&
-          expected_attributes[attribute_name] != actual_attributes[attribute_name]
+          !SuperDiff::Helpers.values_equal?(
+            expected_attributes[attribute_name],
+            actual_attributes[attribute_name]
+          )
         )
       end
     end

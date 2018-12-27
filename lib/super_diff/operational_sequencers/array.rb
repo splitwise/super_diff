@@ -17,6 +17,7 @@ module SuperDiff
       end
 
       def call
+        # TODO: Fix this to use values_equal? rather than ==
         Diff::LCS.traverse_balanced(expected, actual, lcs_callbacks)
         lcs_callbacks.operations
       end

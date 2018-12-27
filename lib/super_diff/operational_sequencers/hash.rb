@@ -41,7 +41,7 @@ module SuperDiff
       def should_add_noop_operation?(key)
         expected.include?(key) &&
           actual.include?(key) &&
-          expected[key] == actual[key]
+          SuperDiff::Helpers.values_equal?(expected[key], actual[key])
       end
 
       def possibly_add_delete_to(operations, key)
@@ -57,8 +57,10 @@ module SuperDiff
       end
 
       def should_add_delete_operation?(key)
-        expected.include?(key) &&
-          (!actual.include?(key) || expected[key] != actual[key])
+        expected.include?(key) && (
+          !actual.include?(key) ||
+          !SuperDiff::Helpers.values_equal?(expected[key], actual[key])
+        )
       end
 
       def possibly_add_insert_to(operations, key)
@@ -74,8 +76,10 @@ module SuperDiff
       end
 
       def should_add_insert_operation?(key)
-        !expected.include?(key) ||
-          (actual.include?(key) && expected[key] != actual[key])
+        !expected.include?(key) || (
+          actual.include?(key) &&
+          !SuperDiff::Helpers.values_equal?(expected[key], actual[key])
+        )
       end
     end
   end

@@ -22,7 +22,7 @@ module SuperDiff
       end
 
       def call
-        if expected == actual
+        if Helpers.values_equal?(expected, actual)
           ""
         else
           fail

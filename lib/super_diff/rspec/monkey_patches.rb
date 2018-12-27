@@ -1,4 +1,24 @@
+SuperDiff::Helpers.module_eval do
+  # UPDATE: Replace the default implementation with one that makes use of
+  # #values_match? in RSpec::Matchers::Composable, which accounts for matcher
+  # objects
+  def self.values_equal?(expected, actual)
+    rspec_composable.values_match?(expected, actual)
+  end
+
+  def self.rspec_composable
+    @_rspec_composable ||= Object.new.tap do |object|
+      object.singleton_class.class_eval do
+        include RSpec::Matchers::Composable
+        public :values_match?
+      end
+    end
+  end
+  private_class_method :rspec_composable
+end
+
 RSpec::Expectations.instance_eval do
+  # UPDATE: Replace the default differ class with our own
   def differ
     SuperDiff::RSpec::Differ
   end
@@ -90,7 +110,32 @@ RSpec::Core::Formatters::ExceptionPresenter.class_eval do
   end
 end
 
+RSpec::Matchers::BuiltIn::BaseMatcher.class_eval do
+  # UPDATE: Colorize the 'actual' value
+  def failure_message
+    "expected %s to %s".dup % [
+      colorizer.wrap(description_of(@actual), :success),
+      description(colorize_value_with: :failure)
+    ]
+  end
+
+  # UPDATE: Colorize the 'actual' value
+  def failure_message_when_negated
+    "expected %s not to %s".dup % [
+      colorizer.wrap(description_of(@actual), :success),
+      description(colorize_value_with: :failure)
+    ]
+  end
+
+  private
+
+  def colorizer
+    RSpec::Core::Formatters::ConsoleCodes
+  end
+end
+
 RSpec::Matchers::BuiltIn::Eq.class_eval do
+  # UPDATE: Colorize the 'expected' and 'actual' values
   def failure_message
     "\n" +
       colorizer.wrap("expected: #{expected_formatted}\n", :failure) +
@@ -98,6 +143,7 @@ RSpec::Matchers::BuiltIn::Eq.class_eval do
       colorizer.wrap("(compared using ==)\n", :detail)
   end
 
+  # UPDATE: Colorize the 'expected' and 'actual' values
   def failure_message_when_negated
     "\n" +
       colorizer.wrap("expected: value != #{expected_formatted}\n", :failure) +
@@ -112,11 +158,92 @@ RSpec::Matchers::BuiltIn::Eq.class_eval do
   end
 end
 
+RSpec::Matchers::BuiltIn::HaveAttributes.class_eval do
+  # UPDATE: Colorize the 'expected' value
+  def description(colorize_value_with: nil)
+    described_items = surface_descriptions_in(expected)
+    message = "have attributes %s" % [
+      colorizer.wrap(
+        RSpec::Support::ObjectFormatter.format(described_items),
+        colorize_value_with
+      )
+    ]
+    improve_hash_formatting(message)
+  end
+
+  # UPDATE: Colorize the 'actual' value
+  def failure_message
+    respond_to_failure_message_or do
+      "expected %s to %s but had attributes %s" % [
+        colorizer.wrap(actual_formatted, :success),
+        description(colorize_value_with: :failure),
+        colorizer.wrap(formatted_values, :detail)
+      ]
+    end
+  end
+
+  # UPDATE: Colorize the 'actual' value
+  def failure_message_when_negated
+    respond_to_failure_message_or do
+      "expected %s not to %s" % [
+        colorizer.wrap(actual_formatted, :success),
+        description(colorize_value_with: :failure)
+      ]
+    end
+  end
+end
+
+RSpec::Matchers::BuiltIn::Match.class_eval do
+  # UPDATE: Colorize the 'expected' value
+  def description(colorize_value_with: nil)
+    if @expected_captures && @expected.match(actual)
+      "match %s with captures %s" % [
+        colorizer.wrap(
+          surface_descriptions_in(expected).inspect,
+          colorize_value_with
+        ),
+        colorizer.wrap(
+          surface_descriptions_in(@expected_captures).inspect,
+          :detail
+        )
+      ]
+    else
+      "match %s" % [
+        colorizer.wrap(
+          surface_descriptions_in(expected).inspect,
+          colorize_value_with
+        )
+      ]
+    end
+  end
+end
+
+# UPDATE: Don't syntax-highlight code snippets displayed in failure messages
 RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
   private
 
   def implementation
     RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
+  end
+end
+
+RSpec::Matchers::ExpectedsForMultipleDiffs.class_eval do
+  # UPDATE: Add an extra line break
+  def message_with_diff(message, differ, actual)
+    diff = diffs(differ, actual)
+    message = "#{message}\n\n#{diff}" unless diff.empty?
+    message
+  end
+
+  private
+
+  # UPDATE: Add extra line breaks in between diffs
+  def diffs(differ, actual)
+    @expected_list.map do |(expected, diff_label)|
+      diff = differ.diff(actual, expected)
+      next if diff.strip.empty?
+      RSpec::Core::Formatters::ConsoleCodes.wrap(diff_label, :white) + diff
+    end.compact.join("\n\n")
   end
 end
 # rubocop:enable all

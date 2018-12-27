@@ -23,6 +23,20 @@ module SuperDiff
     end
 
     def call
+      if Helpers.values_equal?(expected, actual)
+        ""
+      else
+        diff
+      end
+    end
+
+    private
+
+    attr_reader :expected, :actual, :indent_level, :index_in_collection,
+      :extra_classes, :extra_operational_sequencer_classes,
+      :extra_diff_formatter_classes
+
+    def diff
       resolved_class.call(
         expected,
         actual,
@@ -32,12 +46,6 @@ module SuperDiff
         extra_diff_formatter_classes: extra_diff_formatter_classes,
       )
     end
-
-    private
-
-    attr_reader :expected, :actual, :indent_level, :index_in_collection,
-      :extra_classes, :extra_operational_sequencer_classes,
-      :extra_diff_formatter_classes
 
     def resolved_class
       (Differs::DEFAULTS + extra_classes).find do |klass|
