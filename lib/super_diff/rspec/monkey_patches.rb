@@ -281,4 +281,56 @@ RSpec::Matchers::ExpectedsForMultipleDiffs.class_eval do
     end.compact.join("\n\n")
   end
 end
+
+RSpec::Expectations::ExpectationHelper.instance_eval do
+  # UPDATE: If a message_after_printing_diff is set on the matcher, send that
+  # to #fail_with
+  def handle_failure(matcher, message, failure_message_method)
+    message = message.call if message.respond_to?(:call)
+    message ||= matcher.__send__(failure_message_method)
+
+    if matcher.respond_to?(:diffable?) && matcher.diffable?
+      afterword =
+        if matcher.respond_to?(:message_after_printing_diff)
+          matcher.message_after_printing_diff
+        else
+          nil
+        end
+
+      ::RSpec::Expectations.fail_with(
+        message,
+        matcher.expected,
+        matcher.actual,
+        afterword
+      )
+    else
+      ::RSpec::Expectations.fail_with message
+    end
+  end
+end
+
+RSpec::Expectations.instance_eval do
+  # UPDATE: If an afterword is provided, print that after the diff
+  def fail_with(message, expected = nil, actual = nil, afterword = nil)
+    unless message
+      raise ArgumentError.new(
+        "Failure message is nil. Does your matcher define the " \
+        "appropriate failure_message[_when_negated] method to return a string?"
+      )
+    end
+
+    message =
+      ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(expected)
+      .message_with_diff(message, differ, actual)
+
+    if afterword
+      message << "\n\n#{afterword}"
+    end
+
+    RSpec::Support.notify_failure(
+      RSpec::Expectations::ExpectationNotMetError.new(message)
+    )
+  end
+end
+
 # rubocop:enable all
