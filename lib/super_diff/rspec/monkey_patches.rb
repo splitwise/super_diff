@@ -227,6 +227,41 @@ RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
   end
 end
 
+RSpec::Mocks::ErrorGenerator.class_eval do
+  def default_error_message(expectation, expected_args, actual_args)
+    [
+      colorizer.wrap(
+        "#{intro} received #{expectation.message.inspect}",
+        :detail
+      ),
+      " #{unexpected_arguments_message(expected_args, actual_args)}".dup,
+    ].join
+  end
+
+  private
+
+  def unexpected_arguments_message(expected_args_string, actual_args_string)
+    [
+      colorizer.wrap(
+        "with unexpected arguments\n  ",
+        :detail
+      ),
+      colorizer.wrap(
+        "expected: #{expected_args_string}\n       ",
+        :failure
+      ),
+      colorizer.wrap(
+        "got: #{actual_args_string}",
+        :success
+      )
+    ].join
+  end
+
+  def colorizer
+    RSpec::Core::Formatters::ConsoleCodes
+  end
+end
+
 RSpec::Matchers::ExpectedsForMultipleDiffs.class_eval do
   # UPDATE: Add an extra line break
   def message_with_diff(message, differ, actual)
