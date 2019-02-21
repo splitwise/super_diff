@@ -22,7 +22,7 @@ module SuperDiff
       when String
         inspect_string(value_to_inspect)
       when ::Array
-        inspect_array(value_to_inspect)
+        inspect_array(value_to_inspect, single_line: single_line)
       else
         inspect_unclassified_object(value_to_inspect, single_line: single_line)
       end
@@ -34,10 +34,14 @@ module SuperDiff
 
     def self.inspect_hash(hash, single_line: true)
       contents = hash.map do |key, value|
+        inspected_value = inspect_object(value, single_line: single_line)
+
         if key.is_a?(Symbol)
-          "#{key}: #{inspect_object(value)}"
+          "#{key}: #{inspected_value}"
+        elsif inspected_value.is_a?(ValueInspection)
+          ["#{inspect_object(key)} => ", inspected_value]
         else
-          "#{inspect_object(key)} => #{inspect_object(value)}"
+          "#{inspect_object(key)} => #{inspected_value}"
         end
       end
 
@@ -47,11 +51,11 @@ module SuperDiff
         ValueInspection.new(
           beginning: "{",
           middle: contents.map.with_index do |line, index|
-            if index < contents.size - 1
-              line + ","
-            else
+            # if index < contents.size - 1
+              # line + ","
+            # else
               line
-            end
+            # end
           end,
           end: "}",
         )
@@ -65,8 +69,26 @@ module SuperDiff
     end
     private_class_method :inspect_string
 
-    def self.inspect_array(array)
-      "[" + array.map { |element| inspect_object(element) }.join(", ") + "]"
+    def self.inspect_array(array, single_line: true)
+      contents = array.map do |value|
+        inspect_object(value, single_line: single_line)
+      end
+
+      if single_line
+        ["[", contents.join(", "), "]"].join
+      else
+        ValueInspection.new(
+          beginning: "[",
+          middle: contents.map.with_index do |line, index|
+            # if index < contents.size - 1
+              # line + ","
+            # else
+              line
+            # end
+          end,
+          end: "]",
+        )
+      end
     end
     private_class_method :inspect_array
 
@@ -75,11 +97,11 @@ module SuperDiff
         attributes = object.attributes_for_super_diff
         inspected_attributes =
           attributes.map.with_index do |(key, value), index|
-            "#{key}: #{value.inspect}".tap do |line|
-              if index < attributes.size - 1
-                line << ","
-              end
-            end
+            "#{key}: #{value.inspect}"#.tap do |line|
+              # if index < attributes.size - 1
+                # line << ","
+              # end
+            # end
           end
 
         if single_line

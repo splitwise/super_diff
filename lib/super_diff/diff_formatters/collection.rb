@@ -69,19 +69,37 @@ module SuperDiff
         end
       end
 
-      def build_chunk(content, prefix:, icon:)
+      def build_chunk(value, prefix:, icon:)
         lines =
-          if content.is_a?(ValueInspection)
-            [
-              indentation(offset: 1) + prefix + content.beginning,
-              *content.middle.map { |line| indentation(offset: 2) + line },
-              indentation(offset: 1) + content.end,
-            ]
+          if value.is_a?(ValueInspection)
+            flatten_tree(value.build_tree(level: 1), prefix: prefix)
           else
-            [indentation(offset: 1) + prefix + content]
+            [indentation(offset: 1) + prefix + value]
           end
 
         lines.map { |line| icon + " " + line }.join("\n")
+      end
+
+      def flatten_tree(tree, prefix:, root: true)
+        tree.flat_map.with_index do |node, i|
+          if node[:value].is_a?(::Array)
+            flatten_tree(node[:value], prefix: prefix, root: false)
+          else
+            value = indentation(offset: node[:level])
+
+            if root && prefix && node[:location] == "beginning"
+              value << prefix
+            end
+
+            value << node[:value]
+
+            if node[:location] == "middle" && !node[:last_item]
+              value << ","
+            end
+
+            value
+          end
+        end
       end
 
       def style_chunk(style_name, chunk)
