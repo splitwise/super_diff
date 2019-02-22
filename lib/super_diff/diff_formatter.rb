@@ -29,7 +29,7 @@ module SuperDiff
     attr_reader :operations, :indent_level, :add_comma, :extra_classes
 
     def resolved_class
-      (DiffFormatters::DEFAULTS + extra_classes).find do |klass|
+      (extra_classes + DiffFormatters::DEFAULTS).find do |klass|
         klass.applies_to?(operations)
       end
     end

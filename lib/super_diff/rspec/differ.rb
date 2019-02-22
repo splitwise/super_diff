@@ -1,3 +1,6 @@
+require_relative "operational_sequencers/partial_hash"
+require_relative "operational_sequencers/partial_array"
+
 module SuperDiff
   module RSpec
     module Differ
@@ -17,7 +20,11 @@ module SuperDiff
           diff = SuperDiff::Differ.call(
             expected,
             actual,
-            extra_operational_sequencer_classes: RSpec.extra_operational_sequencer_classes,
+            extra_operational_sequencer_classes: [
+              # OperationalSequencers::PartialArray,
+              OperationalSequencers::PartialHash,
+              *RSpec.extra_operational_sequencer_classes,
+            ],
             extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes,
           )
           "\n\n" + diff

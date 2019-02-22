@@ -17,6 +17,8 @@ module SuperDiff
     end
 
     def call
+      # binding.pry
+
       if resolved_class
         resolved_class.call(
           expected: expected,
@@ -35,8 +37,8 @@ module SuperDiff
       :extra_diff_formatter_classes
 
     def resolved_class
-      (OperationalSequencers::DEFAULTS + extra_classes).find do |klass|
-        klass.applies_to?(expected) && klass.applies_to?(actual)
+      (extra_classes + OperationalSequencers::DEFAULTS).find do |klass|
+        klass.applies_to?(expected, actual)
       end
     end
   end

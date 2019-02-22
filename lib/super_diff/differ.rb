@@ -48,7 +48,7 @@ module SuperDiff
     end
 
     def resolved_class
-      (Differs::DEFAULTS + extra_classes).find do |klass|
+      (extra_classes + Differs::DEFAULTS).find do |klass|
         klass.applies_to?(expected) && klass.applies_to?(actual)
       end
     end
