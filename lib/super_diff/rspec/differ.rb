@@ -1,23 +1,31 @@
+require_relative "differs/partial_hash"
+require_relative "operational_sequencers/partial_hash"
+
 module SuperDiff
   module RSpec
-    module Differ
+    class Differ
       def self.diff(actual, expected)
-        if (
-          expected != actual &&
-          expected.class == actual.class &&
-          !expected.is_a?(Symbol) &&
-          !expected.is_a?(Integer) &&
-          !(
-            expected.is_a?(String) &&
-            actual.is_a?(String) &&
-            !expected.include?("\n") &&
-            !actual.include?("\n")
-          )
-        )
+        new(actual, expected).diff
+      end
+
+      def initialize(actual, expected)
+        @actual = actual
+        @expected = expected
+      end
+
+      def diff
+        if worth_diffing?
           diff = SuperDiff::Differ.call(
             expected,
             actual,
-            extra_operational_sequencer_classes: RSpec.extra_operational_sequencer_classes,
+            extra_classes: [
+              *RSpec.extra_differ_classes,
+              Differs::PartialHash,
+            ],
+            extra_operational_sequencer_classes: [
+              *RSpec.extra_operational_sequencer_classes,
+              OperationalSequencers::PartialHash,
+            ],
             extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes,
           )
           "\n\n" + diff
@@ -25,6 +33,47 @@ module SuperDiff
           ""
         end
       end
+
+      private
+
+      def worth_diffing?
+        !comparing_equal_values? &&
+          comparing_values_of_a_similar_class? &&
+          !comparing_primitive_values? &&
+          !comparing_singleline_strings?
+      end
+
+      def comparing_equal_values?
+        expected == actual
+      end
+
+      def comparing_values_of_a_similar_class?
+        comparing_values_of_the_same_class? || comparing_with_a_partial_hash?
+      end
+
+      def comparing_values_of_the_same_class?
+        expected.class == actual.class
+      end
+
+      def comparing_with_a_partial_hash?
+        expected.is_a?(::RSpec::Matchers::AliasedMatcher) &&
+          expected.expecteds.one? &&
+          expected.expecteds.first.is_a?(::Hash) &&
+          actual.is_a?(::Hash)
+      end
+
+      def comparing_primitive_values?
+        expected.is_a?(Symbol) || expected.is_a?(Integer)
+      end
+
+      def comparing_singleline_strings?
+        expected.is_a?(String) &&
+          actual.is_a?(String) &&
+          !expected.include?("\n") &&
+          !actual.include?("\n")
+      end
+
+      attr_reader :actual, :expected
     end
   end
 end

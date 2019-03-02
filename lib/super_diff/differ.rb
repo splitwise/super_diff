@@ -40,8 +40,8 @@ module SuperDiff
       :extra_diff_formatter_classes
 
     def resolved_class
-      (Differs::DEFAULTS + extra_classes).find do |klass|
-        klass.applies_to?(expected) && klass.applies_to?(actual)
+      (extra_classes + Differs::DEFAULTS).find do |klass|
+        klass.applies_to?(expected, actual)
       end
     end
   end

@@ -1,8 +1,8 @@
 module SuperDiff
   module Differs
     class Array < Base
-      def self.applies_to?(value)
-        value.is_a?(::Array)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Array) && actual.is_a?(::Array)
       end
 
       def call

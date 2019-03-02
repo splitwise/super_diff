@@ -1,8 +1,10 @@
 module SuperDiff
   module Differs
     class MultiLineString < Base
-      def self.applies_to?(value)
-        value.is_a?(::String) && value.include?("\n")
+      def self.applies_to?(expected, actual)
+        [expected, actual].all? do |value|
+          value.is_a?(::String) && value.include?("\n")
+        end
       end
 
       def call

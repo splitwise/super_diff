@@ -1,8 +1,8 @@
 module SuperDiff
   module OperationalSequencers
     class Hash < Base
-      def self.applies_to?(value)
-        value.is_a?(::Hash)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Hash) && actual.is_a?(::Hash)
       end
 
       protected
@@ -23,7 +23,7 @@ module SuperDiff
       private
 
       def all_keys
-        (expected.keys | actual.keys)
+        actual.keys | expected.keys
       end
 
       def possibly_add_noop_to(operations, key)
@@ -33,6 +33,7 @@ module SuperDiff
             collection: actual,
             key: key,
             index: all_keys.index(key),
+            index_in_collection: actual.keys.index(key),
             value: actual[key],
           )
         end
@@ -51,6 +52,7 @@ module SuperDiff
             collection: expected,
             key: key,
             index: all_keys.index(key),
+            index_in_collection: expected.keys.index(key),
             value: expected[key],
           )
         end
@@ -68,6 +70,7 @@ module SuperDiff
             collection: actual,
             key: key,
             index: all_keys.index(key),
+            index_in_collection: actual.keys.index(key),
             value: actual[key],
           )
         end

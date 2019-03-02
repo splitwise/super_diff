@@ -1,8 +1,8 @@
 module SuperDiff
   module OperationalSequencers
     class Array < Base
-      def self.applies_to?(value)
-        value.is_a?(::Array)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Array) && actual.is_a?(::Array)
       end
 
       def initialize(*args)
@@ -49,6 +49,7 @@ module SuperDiff
             key: event.new_position,
             value: event.new_element,
             index: event.new_position,
+            index_in_collection: actual.index(event.new_element),
           )
         end
 
@@ -59,6 +60,7 @@ module SuperDiff
             key: event.old_position,
             value: event.old_element,
             index: event.old_position,
+            index_in_collection: expected.index(event.old_element),
           )
         end
 
@@ -69,6 +71,7 @@ module SuperDiff
             key: event.new_position,
             value: event.new_element,
             index: event.new_position,
+            index_in_collection: actual.index(event.new_element),
           )
         end
 
@@ -95,6 +98,7 @@ module SuperDiff
               key: event.old_position,
               value: event.old_element,
               index: event.old_position,
+              index_in_collection: expected.index(event.old_element),
             )
             operations << Operations::UnaryOperation.new(
               name: :insert,
@@ -102,6 +106,7 @@ module SuperDiff
               key: event.new_position,
               value: event.new_element,
               index: event.new_position,
+              index_in_collection: actual.index(event.new_element),
             )
           end
         end

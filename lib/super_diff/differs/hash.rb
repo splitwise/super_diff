@@ -1,8 +1,8 @@
 module SuperDiff
   module Differs
     class Hash < Base
-      def self.applies_to?(value)
-        value.is_a?(::Hash)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Hash) && actual.is_a?(::Hash)
       end
 
       def call

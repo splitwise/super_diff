@@ -149,17 +149,17 @@ RSpec.describe "Integration with RSpec", type: :integration do
             plain_line %(        ])
             plain_line %(      ],)
             plain_line %(      {)
+            green_line %(+       id: "hero",)
             plain_line %(        class: "header",)
             plain_line %(        data: {)
             red_line   %(-         "sticky" => true,)
             green_line %(+         "sticky" => false,)
+            green_line %(+         role: "deprecated",)
             plain_line %(          person: #<SuperDiff::Test::Person {)
             red_line   %(-           name: "Marty")
             green_line %(+           name: "Doc")
-            plain_line %(          }>,)
-            green_line %(+         role: "deprecated")
-            plain_line %(        },)
-            green_line %(+       id: "hero")
+            plain_line %(          }>)
+            plain_line %(        })
             plain_line %(      })
             plain_line %(    ],)
             green_line %(+   :br)
@@ -246,6 +246,43 @@ RSpec.describe "Integration with RSpec", type: :integration do
             green_line %(+       name: "Mattel Hoverboard")
             plain_line %(      })
             plain_line %(    ])
+            plain_line %(  })
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
+  context "when using the include matcher with a hash" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = {
+          city: "Hill Valley",
+          zip: "90382"
+        }
+        actual = {
+          line_1: "123 Main St.",
+          city: "Burbank",
+          state: "CA",
+          zip: "90210"
+        }
+        expect(actual).to include(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  {)
+            plain_line %(    line_1: "123 Main St.",)
+            red_line   %(-   city: "Hill Valley",)
+            green_line %(+   city: "Burbank",)
+            plain_line %(    state: "CA",)
+            red_line   %(-   zip: "90382")
+            green_line %(+   zip: "90210")
             plain_line %(  })
           end
         }

@@ -53,11 +53,14 @@ module SuperDiff
 
       def program
         <<~PROGRAM
-          require "#{PROJECT_DIRECTORY.join("lib/super_diff/rspec.rb")}"
-          require "#{PROJECT_DIRECTORY.join("spec/support/person.rb")}"
-          require "#{PROJECT_DIRECTORY.join("spec/support/person_diff_formatter.rb")}"
-          require "#{PROJECT_DIRECTORY.join("spec/support/person_operation_sequence.rb")}"
-          require "#{PROJECT_DIRECTORY.join("spec/support/person_operational_sequencer.rb")}"
+          $LOAD_PATH.unshift("#{PROJECT_DIRECTORY.join("lib")}")
+          $LOAD_PATH.unshift("#{PROJECT_DIRECTORY}")
+          require "super_diff/rspec"
+          require "pry-byebug"
+          require "spec/support/person"
+          require "spec/support/person_diff_formatter"
+          require "spec/support/person_operation_sequence"
+          require "spec/support/person_operational_sequencer"
 
           SuperDiff::RSpec.configure do |config|
             config.extra_operational_sequencer_classes << SuperDiff::Test::PersonOperationalSequencer

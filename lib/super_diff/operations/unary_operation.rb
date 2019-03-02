@@ -7,18 +7,27 @@ module SuperDiff
         :key,
         :value,
         :index,
+        :index_in_collection,
       )
 
-      def initialize(name:, collection:, key:, value:, index:)
+      def initialize(
+        name:,
+        collection:,
+        key:,
+        value:,
+        index:,
+        index_in_collection: index
+      )
         @name = name
         @collection = collection
         @key = key
         @value = value
         @index = index
+        @index_in_collection = index_in_collection
       end
 
       def should_add_comma_after_displaying?
-        index < collection.size - 1
+        index_in_collection < collection.size - 1
       end
     end
   end

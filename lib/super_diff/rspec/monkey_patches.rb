@@ -1,10 +1,10 @@
+# rubocop:disable all
 RSpec::Expectations.instance_eval do
   def differ
     SuperDiff::RSpec::Differ
   end
 end
 
-# rubocop:disable all
 RSpec::Core::Formatters::ConsoleCodes.instance_eval do
   # UPDATE: Patch so it returns nothing if code_or_symbol is nil
   def console_code_for(code_or_symbol)
@@ -90,6 +90,14 @@ RSpec::Core::Formatters::ExceptionPresenter.class_eval do
   end
 end
 
+RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
+  private
+
+  def implementation
+    RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
+  end
+end
+
 RSpec::Matchers::BuiltIn::Eq.class_eval do
   def failure_message
     "\n" +
@@ -112,11 +120,27 @@ RSpec::Matchers::BuiltIn::Eq.class_eval do
   end
 end
 
-RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
+RSpec::Matchers::BuiltIn::Include.class_eval do
+  def expected
+    if expecteds.one? && expecteds.first.is_a?(Hash)
+      matchers.a_hash_including(expecteds.first)
+    else
+      expecteds
+    end
+  end
+
+  def diffable?
+    true
+  end
+
   private
 
-  def implementation
-    RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
+  def matchers
+    Object.new.tap do |object|
+      object.singleton_class.class_eval do
+        include RSpec::Matchers
+      end
+    end
   end
 end
 # rubocop:enable all

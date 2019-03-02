@@ -1,8 +1,8 @@
 module SuperDiff
   module Test
     class PersonOperationalSequencer < ::SuperDiff::OperationalSequencers::Object
-      def self.applies_to?(value)
-        value.is_a?(Person)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(Person) && actual.is_a?(Person)
       end
 
       protected
