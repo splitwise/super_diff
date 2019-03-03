@@ -172,6 +172,33 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
+  context "when using the include matcher with an array" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = ["Marty", "Einie"]
+        actual = ["Marty", "Jennifer", "Doc"]
+        expect(actual).to include(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  [)
+            plain_line %(    "Marty",)
+            plain_line %(    "Jennifer",)
+            plain_line %(    "Doc")
+            red_line   %(-   "Einie")
+            plain_line %(  ])
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
   context "comparing two hashes with other data structures inside" do
     it "produces the correct output" do
       test = <<~TEST

@@ -1,4 +1,6 @@
+require_relative "differs/partial_array"
 require_relative "differs/partial_hash"
+require_relative "operational_sequencers/partial_array"
 require_relative "operational_sequencers/partial_hash"
 
 module SuperDiff
@@ -20,10 +22,12 @@ module SuperDiff
             actual,
             extra_classes: [
               *RSpec.extra_differ_classes,
+              Differs::PartialArray,
               Differs::PartialHash,
             ],
             extra_operational_sequencer_classes: [
               *RSpec.extra_operational_sequencer_classes,
+              OperationalSequencers::PartialArray,
               OperationalSequencers::PartialHash,
             ],
             extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes,
@@ -48,7 +52,9 @@ module SuperDiff
       end
 
       def comparing_values_of_a_similar_class?
-        comparing_values_of_the_same_class? || comparing_with_a_partial_hash?
+        comparing_values_of_the_same_class? ||
+          comparing_with_a_partial_hash? ||
+          comparing_with_a_partial_array?
       end
 
       def comparing_values_of_the_same_class?
@@ -60,6 +66,13 @@ module SuperDiff
           expected.expecteds.one? &&
           expected.expecteds.first.is_a?(::Hash) &&
           actual.is_a?(::Hash)
+      end
+
+      def comparing_with_a_partial_array?
+        expected.is_a?(::RSpec::Matchers::AliasedMatcher) &&
+          expected.expecteds.one? &&
+          expected.expecteds.first.is_a?(::Array) &&
+          actual.is_a?(::Array)
       end
 
       def comparing_primitive_values?

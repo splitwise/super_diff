@@ -122,8 +122,11 @@ end
 
 RSpec::Matchers::BuiltIn::Include.class_eval do
   def expected
-    if expecteds.one? && expecteds.first.is_a?(Hash)
-      matchers.a_hash_including(expecteds.first)
+    if (
+      expecteds.one? &&
+      (expecteds.first.is_a?(Hash) || expecteds.first.is_a?(Array))
+    )
+      matchers.a_collection_including(expecteds.first)
     else
       expecteds
     end

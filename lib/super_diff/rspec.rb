@@ -20,6 +20,12 @@ module SuperDiff
         value.expecteds.first.is_a?(::Hash)
     end
 
+    def self.partial_array?(value)
+      value.is_a?(::RSpec::Matchers::AliasedMatcher) &&
+        value.expecteds.one? &&
+        value.expecteds.first.is_a?(::Array)
+    end
+
     self.extra_differ_classes = []
     self.extra_operational_sequencer_classes = []
     self.extra_diff_formatter_classes = []
