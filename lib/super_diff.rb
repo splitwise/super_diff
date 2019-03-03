@@ -48,3 +48,13 @@ require_relative "super_diff/differs/multi_line_string"
 require_relative "super_diff/differs/object"
 require_relative "super_diff/differs"
 require_relative "super_diff/differ"
+
+module SuperDiff
+  class << self
+    attr_accessor :values_equal
+  end
+
+  self.values_equal = -> (expected, actual) do
+    expected == actual
+  end
+end

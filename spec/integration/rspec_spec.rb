@@ -96,7 +96,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
-  context "comparing two arrays with other data structures inside" do
+  context "comparing two arrays with other data structures inside (excluding partial objects)" do
     it "produces the correct output" do
       test = <<~TEST
         expected = [
@@ -172,6 +172,94 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
+  context "comparing two arrays with partial objects inside" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = [
+          [
+            :h1,
+            a_collection_including(
+              :span,
+              [:text, "Hello world"],
+            ),
+            a_hash_including(
+              class: "header",
+              data: {
+                "sticky" => true,
+                person: SuperDiff::Test::Person.new(name: "Marty")
+              }
+            ),
+            a_hash_including(foo: "bar"),
+            a_collection_including("one", "two")
+          ]
+        ]
+        actual = [
+          [
+            :h2,
+            [:span, [:text, "Goodbye world"]],
+            {
+              id: "hero",
+              class: "header",
+              data: {
+                "sticky" => false,
+                role: "deprecated",
+                person: SuperDiff::Test::Person.new(name: "Doc")
+              }
+            }
+          ],
+          :br
+        ]
+        expect(actual).to match(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  [)
+            plain_line %(    [)
+            red_line   %(-     :h1,)
+            green_line %(+     :h2,)
+            plain_line %(      [)
+            plain_line %(        :span,)
+            plain_line %(        [)
+            plain_line %(          :text,)
+            green_line %(          "Goodbye world")
+            red_line   %(-         "Hello world")
+            plain_line %(        ])
+            plain_line %(      ],)
+            plain_line %(      {)
+            green_line %(+       id: "hero",)
+            plain_line %(        class: "header",)
+            plain_line %(        data: {)
+            red_line   %(-         "sticky" => true,)
+            green_line %(+         "sticky" => false,)
+            green_line %(+         role: "deprecated",)
+            plain_line %(          person: #<SuperDiff::Test::Person {)
+            red_line   %(-           name: "Marty")
+            green_line %(+           name: "Doc")
+            plain_line %(          }>)
+            plain_line %(        })
+            plain_line %(      },)
+            red_line   %(-     \(a hash including {)
+            red_line   %(-       foo: "bar")
+            red_line   %(-     }\),)
+            red_line   %(-     \(a collection including {)
+            red_line   %(-       "one",)
+            red_line   %(-       "two")
+            red_line   %(-     }\))
+            plain_line %(    ],)
+            green_line %(+   :br)
+            plain_line %(  ])
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
+  end
+
   context "when using the include matcher with an array" do
     it "produces the correct output" do
       test = <<~TEST
@@ -199,7 +287,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
-  context "comparing two hashes with other data structures inside" do
+  context "comparing two hashes with other data structures inside (excluding partial objects)" do
     it "produces the correct output" do
       test = <<~TEST
         expected = {

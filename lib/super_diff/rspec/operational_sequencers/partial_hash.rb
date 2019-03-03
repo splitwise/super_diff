@@ -17,14 +17,14 @@ module SuperDiff
         def should_add_noop_operation?(key)
           !expected.include?(key) || (
             actual.include?(key) &&
-            expected[key] == actual[key]
+            Helpers.values_equal?(expected[key], actual[key])
           )
         end
 
         def should_add_insert_operation?(key)
           expected.include?(key) &&
             actual.include?(key) &&
-            expected[key] != actual[key]
+            !Helpers.values_equal?(expected[key], actual[key])
         end
       end
     end

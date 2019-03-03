@@ -92,5 +92,9 @@ module SuperDiff
       end
     end
     private_class_method :inspect_unclassified_object
+
+    def self.values_equal?(expected, actual)
+      SuperDiff.values_equal.call(expected, actual)
+    end
   end
 end
