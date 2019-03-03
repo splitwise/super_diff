@@ -12,8 +12,6 @@ module SuperDiff
 
       private
 
-      attr_reader :lcs_callbacks
-
       def lcs_callbacks
         @_lcs_callbacks ||= LcsCallbacks.new(
           expected: expected,
