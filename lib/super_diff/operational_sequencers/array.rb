@@ -5,17 +5,6 @@ module SuperDiff
         expected.is_a?(::Array) && actual.is_a?(::Array)
       end
 
-      def initialize(*args)
-        super(*args)
-
-        @lcs_callbacks = LcsCallbacks.new(
-          expected: expected,
-          actual: actual,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
-      end
-
       def call
         Diff::LCS.traverse_balanced(expected, actual, lcs_callbacks)
         lcs_callbacks.operations
@@ -23,7 +12,14 @@ module SuperDiff
 
       private
 
-      attr_reader :lcs_callbacks
+      def lcs_callbacks
+        @_lcs_callbacks ||= LcsCallbacks.new(
+          expected: expected,
+          actual: actual,
+          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
+        )
+      end
 
       class LcsCallbacks
         attr_reader :operations
