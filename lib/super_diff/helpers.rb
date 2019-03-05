@@ -15,25 +15,25 @@ module SuperDiff
       end
     end
 
-    def self.inspect_object(value_to_inspect, single_line: true)
+    def self.inspect_object(value_to_inspect, single_line: true, level: 0)
       case value_to_inspect
       when ::Hash
-        inspect_hash(value_to_inspect, single_line: single_line)
+        inspect_hash(value_to_inspect, single_line: single_line, level: level)
       when String
         inspect_string(value_to_inspect)
       when ::Array
-        inspect_array(value_to_inspect)
+        inspect_array(value_to_inspect, single_line: single_line, level: level)
       else
         inspect_unclassified_object(value_to_inspect, single_line: single_line)
       end
     end
 
-    def self.inspect_hash(hash, single_line: true)
+    def self.inspect_hash(hash, single_line: true, level: 0)
       contents = hash.map do |key, value|
         if key.is_a?(Symbol)
-          "#{key}: #{inspect_object(value)}"
+          "#{key}: #{inspect_object(value, level: level + 1)}"
         else
-          "#{inspect_object(key)} => #{inspect_object(value)}"
+          "#{inspect_object(key)} => #{inspect_object(value, level: level + 1)}"
         end
       end
 
@@ -61,8 +61,21 @@ module SuperDiff
     end
     private_class_method :inspect_string
 
-    def self.inspect_array(array)
-      "[" + array.map { |element| inspect_object(element) }.join(", ") + "]"
+    def self.inspect_array(array, single_line: true, level: 0)
+      contents = array.map do |value|
+        inspect_object(value, single_line: single_line, level: level + 1)
+      end
+
+      if single_line
+        ["[", contents.join(", "), "]"].join
+      else
+        BuildInspectionTree.call(
+          opening: "[",
+          middle: contents,
+          closing: "]",
+          level: level,
+        )
+      end
     end
     private_class_method :inspect_array
 
