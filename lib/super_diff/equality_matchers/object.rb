@@ -7,11 +7,37 @@ module SuperDiff
 
       def fail
         <<~OUTPUT.strip
-          Differing #{Helpers.plural_type_for(actual)}.
+          Differing objects.
 
-          #{Helpers.style :deleted,  "Expected: #{expected.inspect}"}
-          #{Helpers.style :inserted, "  Actual: #{actual.inspect}"}
+          #{
+            Helpers.style(
+              :deleted,
+              "Expected: #{Helpers.inspect_object(expected)}",
+            )
+          }
+          #{
+            Helpers.style(
+              :inserted,
+              "  Actual: #{Helpers.inspect_object(actual)}",
+            )
+          }
+
+          Diff:
+
+          #{diff}
         OUTPUT
+      end
+
+      protected
+
+      def diff
+        Differs::Object.call(
+          expected,
+          actual,
+          indent_level: 0,
+          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
+        )
       end
     end
   end

@@ -5,6 +5,12 @@ module SuperDiff
         operations.is_a?(OperationSequences::Object)
       end
 
+      def initialize(operations, value_class:, **rest)
+        super(operations, **rest)
+
+        @value_class = value_class
+      end
+
       def call
         Collection.call(
           open_token: "#<#{value_class} {",
@@ -19,9 +25,7 @@ module SuperDiff
 
       protected
 
-      def value_class
-        raise NotImplementedError
-      end
+      attr_reader :value_class
     end
   end
 end

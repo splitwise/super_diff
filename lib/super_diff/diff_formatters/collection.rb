@@ -94,17 +94,17 @@ module SuperDiff
       def flatten_inspection_tree(tree, prefix:, root: true)
         tree.flat_map.with_index do |node, i|
           # if node.value.is_a?(::Array)
-            # flatten_tree(node[:value], prefix: prefix, root: false)
+            # flatten_inspection_tree(node[:value], prefix: prefix, root: false)
           # else
             value = indentation(offset: node.level)
 
-            if root && prefix && node.location == "opening"
+            if root && prefix && node.opening?
               value << prefix
             end
 
             value << node.value
 
-            if node.location == "middle" && !node.last_item?
+            if node.middle? && !node.last_item?
               value << ","
             end
 
