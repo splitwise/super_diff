@@ -9,6 +9,8 @@ Layout/ClassStructure:
   Enabled: true
 Layout/DotPosition:
   EnforcedStyle: trailing
+Layout/CommentIndentation:
+  Enabled: false
 Layout/InitialIndentation:
   Enabled: false
 Layout/IndentArray:
@@ -41,6 +43,8 @@ Metrics/BlockLength:
     - colored
 Metrics/ClassLength:
   Enabled: false
+Metrics/CyclomaticComplexity:
+  Max: 15
 Metrics/LineLength:
   Max: 80
   IgnoredPatterns:
@@ -53,6 +57,8 @@ Metrics/ModuleLength:
   Enabled: false
 Metrics/ParameterLists:
   CountKeywordArgs: false
+Metrics/PerceivedComplexity:
+  Max: 15
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 Naming/PredicateName:
@@ -70,8 +76,6 @@ Rails/TimeZone:
   EnforcedStyle: strict
 Style/Alias:
   Enabled: false
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
 Style/CollectionMethods:
   Enabled: true
 Style/Documentation:
