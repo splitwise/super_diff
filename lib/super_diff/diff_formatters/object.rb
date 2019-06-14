@@ -16,7 +16,16 @@ module SuperDiff
           open_token: "#<#{value_class} {",
           close_token: "}>",
           collection_prefix: collection_prefix,
-          build_item_prefix: -> (operation) { "#{operation.key}: " },
+          build_item_prefix: -> (operation) {
+            key =
+              if operation.respond_to?(:left_key)
+                operation.left_key
+              else
+                operation.key
+              end
+
+            "#{key}: "
+          },
           operations: operations,
           indent_level: indent_level,
           add_comma: add_comma?,

@@ -69,19 +69,29 @@ module SuperDiff
         end
       end
 
-      def build_chunk(content, prefix:, icon:)
-        lines =
-          if content.is_a?(ValueInspection)
-            [
-              indentation(offset: 1) + prefix + content.beginning,
-              *content.middle.map { |line| indentation(offset: 2) + line },
-              indentation(offset: 1) + content.end,
-            ]
-          else
-            [indentation(offset: 1) + prefix + content]
-          end
+      def build_chunk(tree, prefix:, icon:)
+        if tree.respond_to?(:to_lines)
+          tree.
+            to_lines(indent_level: indent_level, prefix: prefix).
+            map { |line| "#{icon} #{line}" }.
+            join("\n")
+        else
+          # TODO: Not been converted to a tree yet!
+          tree.to_s
+        end
 
-        lines.map { |line| icon + " " + line }.join("\n")
+        # lines =
+          # if content.is_a?(ValueInspection)
+            # [
+              # indentation(offset: 1) + prefix + content.beginning,
+              # *content.middle.map { |line| indentation(offset: 2) + line },
+              # indentation(offset: 1) + content.end,
+            # ]
+          # else
+            # [indentation(offset: 1) + prefix + content]
+          # end
+
+        # lines.map { |line| icon + " " + line }.join("\n")
       end
 
       def style_chunk(style_name, chunk)
@@ -89,28 +99,6 @@ module SuperDiff
           split("\n").
           map { |line| Helpers.style(style_name, line) }.
           join("\n")
-      end
-
-      def flatten_inspection_tree(tree, prefix:, root: true)
-        tree.flat_map.with_index do |node, i|
-          # if node.value.is_a?(::Array)
-            # flatten_inspection_tree(node[:value], prefix: prefix, root: false)
-          # else
-            value = indentation(offset: node.level)
-
-            if root && prefix && node.opening?
-              value << prefix
-            end
-
-            value << node.value
-
-            if node.middle? && !node.last_item?
-              value << ","
-            end
-
-            value
-          # end
-        end
       end
 
       def indentation(offset: 0)
