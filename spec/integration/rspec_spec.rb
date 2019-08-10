@@ -107,7 +107,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
               class: "header",
               data: {
                 "sticky" => true,
-                person: SuperDiff::Test::Person.new(name: "Marty")
+                person: SuperDiff::Test::Person.new(name: "Marty", age: 60)
               }
             }
           ]
@@ -122,7 +122,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
               data: {
                 "sticky" => false,
                 role: "deprecated",
-                person: SuperDiff::Test::Person.new(name: "Doc")
+                person: SuperDiff::Test::Person.new(name: "Doc", age: 60)
               }
             }
           ],
@@ -156,8 +156,9 @@ RSpec.describe "Integration with RSpec", type: :integration do
             green_line %(+         "sticky" => false,)
             green_line %(+         role: "deprecated",)
             plain_line %(          person: #<SuperDiff::Test::Person {)
-            red_line   %(-           name: "Marty")
-            green_line %(+           name: "Doc")
+            red_line   %(-           name: "Marty",)
+            green_line %(+           name: "Doc",)
+            plain_line %(            age: 60)
             plain_line %(          }>)
             plain_line %(        })
             plain_line %(      })
@@ -204,7 +205,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
       test = <<~TEST
         expected = {
           customer: {
-            person: SuperDiff::Test::Person.new(name: "Marty McFly"),
+            person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
             shipping_address: {
               line_1: "123 Main St.",
               city: "Hill Valley",
@@ -223,7 +224,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
         }
         actual = {
           customer: {
-            person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr."),
+            person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr.", age: 17),
             shipping_address: {
               line_1: "456 Ponderosa Ct.",
               city: "Hill Valley",
@@ -251,8 +252,9 @@ RSpec.describe "Integration with RSpec", type: :integration do
             plain_line %(  {)
             plain_line %(    customer: {)
             plain_line %(      person: #<SuperDiff::Test::Person {)
-            red_line   %(-       name: "Marty McFly")
-            green_line %(+       name: "Marty McFly, Jr.")
+            red_line   %(-       name: "Marty McFly",)
+            green_line %(+       name: "Marty McFly, Jr.",)
+            plain_line %(        age: 17)
             plain_line %(      }>,)
             plain_line %(      shipping_address: {)
             red_line   %(-       line_1: "123 Main St.",)

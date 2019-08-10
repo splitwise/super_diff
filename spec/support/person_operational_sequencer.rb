@@ -12,7 +12,7 @@ module SuperDiff
       end
 
       def attribute_names
-        [:name]
+        [:name, :age]
       end
     end
   end

@@ -304,12 +304,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: [
-            SuperDiff::Test::Person.new(name: "Marty"),
-            SuperDiff::Test::Person.new(name: "Jennifer"),
+            SuperDiff::Test::Person.new(name: "Marty", age: 18),
+            SuperDiff::Test::Person.new(name: "Jennifer", age: 17),
           ],
           actual: [
-            SuperDiff::Test::Person.new(name: "Marty"),
-            SuperDiff::Test::Person.new(name: "Doc"),
+            SuperDiff::Test::Person.new(name: "Marty", age: 18),
+            SuperDiff::Test::Person.new(name: "Doc", age: 50),
           ],
           extra_operational_sequencer_classes: [
             SuperDiff::Test::PersonOperationalSequencer,
@@ -324,8 +324,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [#<SuperDiff::Test::Person name: "Marty">, #<SuperDiff::Test::Person name: "Jennifer">])
-              green_line %(  Actual: [#<SuperDiff::Test::Person name: "Marty">, #<SuperDiff::Test::Person name: "Doc">])
+              red_line   %(Expected: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Jennifer", age: 17>])
+              green_line %(  Actual: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Doc", age: 50>])
             end
           }
 
@@ -335,11 +335,14 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    #<SuperDiff::Test::Person {)
-              plain_line %(      name: "Marty")
+              plain_line %(      name: "Marty",)
+              plain_line %(      age: 18)
               plain_line %(    }>,)
               plain_line %(    #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Jennifer")
-              green_line %(+     name: "Doc")
+              red_line   %(-     name: "Jennifer",)
+              green_line %(+     name: "Doc",)
+              red_line   %(-     age: 17)
+              green_line %(+     age: 50)
               plain_line %(    }>)
               plain_line %(  ])
             end
@@ -568,8 +571,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
     context "given two arrays containing custom objects with differing attributes" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty"), 4],
-          actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc"), 4],
+          expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty", age: 18), 4],
+          actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc", age: 50), 4],
           extra_operational_sequencer_classes: [
             SuperDiff::Test::PersonOperationalSequencer,
           ],
@@ -583,8 +586,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty">, 4])
-              green_line %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc">, 4])
+              red_line   %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty", age: 18>, 4])
+              green_line %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc", age: 50>, 4])
             end
           }
 
@@ -596,8 +599,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    1,)
               plain_line %(    2,)
               plain_line %(    #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Marty")
-              green_line %(+     name: "Doc")
+              red_line   %(-     name: "Marty",)
+              green_line %(+     name: "Doc",)
+              red_line   %(-     age: 18)
+              green_line %(+     age: 50)
               plain_line %(    }>,)
               plain_line %(    4)
               plain_line %(  ])
@@ -837,12 +842,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
           expected: {
-            steve: SuperDiff::Test::Person.new(name: "Jobs"),
-            susan: SuperDiff::Test::Person.new(name: "Kare"),
+            steve: SuperDiff::Test::Person.new(name: "Jobs", age: 30),
+            susan: SuperDiff::Test::Person.new(name: "Kare", age: 27),
           },
           actual: {
-            steve: SuperDiff::Test::Person.new(name: "Wozniak"),
-            susan: SuperDiff::Test::Person.new(name: "Kare"),
+            steve: SuperDiff::Test::Person.new(name: "Wozniak", age: 33),
+            susan: SuperDiff::Test::Person.new(name: "Kare", age: 27),
           },
           extra_operational_sequencer_classes: [
             SuperDiff::Test::PersonOperationalSequencer,
@@ -857,8 +862,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs">, susan: #<SuperDiff::Test::Person name: "Kare"> })
-              green_line %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak">, susan: #<SuperDiff::Test::Person name: "Kare"> })
+              red_line   %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs", age: 30>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
+              green_line %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak", age: 33>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
             end
           }
 
@@ -868,11 +873,14 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    steve: #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Jobs")
-              green_line %(+     name: "Wozniak")
+              red_line   %(-     name: "Jobs",)
+              green_line %(+     name: "Wozniak",)
+              red_line   %(-     age: 30)
+              green_line %(+     age: 33)
               plain_line %(    }>,)
               plain_line %(    susan: #<SuperDiff::Test::Person {)
-              plain_line %(      name: "Kare")
+              plain_line %(      name: "Kare",)
+              plain_line %(      age: 27)
               plain_line %(    }>)
               plain_line %(  })
             end
@@ -1058,12 +1066,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
         actual_output = described_class.call(
           expected: {
             order_id: 1234,
-            person: SuperDiff::Test::Person.new(name: "Marty"),
+            person: SuperDiff::Test::Person.new(name: "Marty", age: 18),
             amount: 350_00,
           },
           actual: {
             order_id: 1234,
-            person: SuperDiff::Test::Person.new(name: "Doc"),
+            person: SuperDiff::Test::Person.new(name: "Doc", age: 50),
             amount: 350_00,
           },
           extra_operational_sequencer_classes: [
@@ -1079,8 +1087,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty">, amount: 35000 })
-              green_line %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc">, amount: 35000 })
+              red_line   %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty", age: 18>, amount: 35000 })
+              green_line %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc", age: 50>, amount: 35000 })
             end
           }
 
@@ -1091,8 +1099,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(  {)
               plain_line %(    order_id: 1234,)
               plain_line %(    person: #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Marty")
-              green_line %(+     name: "Doc")
+              red_line   %(-     name: "Marty",)
+              green_line %(+     name: "Doc",)
+              red_line   %(-     age: 18)
+              green_line %(+     age: 50)
               plain_line %(    }>,)
               plain_line %(    amount: 35000)
               plain_line %(  })
@@ -1195,8 +1205,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
     context "given two objects which == each other" do
       it "returns an empty string" do
-        expected = SuperDiff::Test::Person.new(name: "Marty")
-        actual = SuperDiff::Test::Person.new(name: "Marty")
+        expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
+        actual = SuperDiff::Test::Person.new(name: "Marty", age: 18)
 
         output = described_class.call(expected: expected, actual: actual)
 
@@ -1206,23 +1216,27 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
     context "given two objects which do not == each other" do
       it "returns a message along with a comparison" do
-        expected = SuperDiff::Test::Person.new(name: "Marty")
-        actual = SuperDiff::Test::Person.new(name: "Doc")
+        expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
+        actual = SuperDiff::Test::Person.new(name: "Doc", age: 50)
 
         actual_output = described_class.call(expected: expected, actual: actual)
 
-        expected_output = <<~STR.strip
+        regexp_content = <<~STR.strip
           Differing objects.
 
           #{
             colored do
-              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty">)
-              green_line %(  Actual: #<SuperDiff::Test::Person name: "Doc">)
+              red_line   %(Expected: #<::person_identifier:: @name="Marty", @age=18>)
+              green_line %(  Actual: #<::person_identifier:: @name="Doc", @age=50>)
             end
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        regexp_content = Regexp.
+          escape(regexp_content).
+          gsub(/::person_identifier::/, "SuperDiff::Test::Person:0x[0-9a-z]+")
+
+        expect(actual_output).to match(/\A#{regexp_content}\Z/)
       end
     end
   end
