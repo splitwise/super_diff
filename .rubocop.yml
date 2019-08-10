@@ -9,6 +9,8 @@ Layout/ClassStructure:
   Enabled: true
 Layout/DotPosition:
   EnforcedStyle: trailing
+Layout/CommentIndentation:
+  Enabled: false
 Layout/InitialIndentation:
   Enabled: false
 Layout/IndentArray:
@@ -35,24 +37,30 @@ Metrics/AbcSize:
   Max: 32
 Metrics/BlockLength:
   ExcludedMethods:
+    - define
     - describe
     - context
     - it
     - colored
 Metrics/ClassLength:
   Enabled: false
+Metrics/CyclomaticComplexity:
+  Max: 15
 Metrics/LineLength:
   Max: 80
   IgnoredPatterns:
     - "^\\s*describe"
     - "^\\s*context"
     - "^\\s*it"
+    - "^\\s*class [\\w:]+ < [\\w:]+"
 Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:
   Enabled: false
 Metrics/ParameterLists:
   CountKeywordArgs: false
+Metrics/PerceivedComplexity:
+  Max: 15
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 Naming/PredicateName:
@@ -70,8 +78,6 @@ Rails/TimeZone:
   EnforcedStyle: strict
 Style/Alias:
   Enabled: false
-Style/BracesAroundHashParameters:
-  EnforcedStyle: context_dependent
 Style/CollectionMethods:
   Enabled: true
 Style/Documentation:
@@ -99,6 +105,8 @@ Style/MultilineBlockChain:
 Style/NegatedIf:
   Enabled: false
 Style/NegatedWhile:
+  Enabled: false
+Style/NumericPredicate:
   Enabled: false
 Style/OneLineConditional:
   Enabled: false
