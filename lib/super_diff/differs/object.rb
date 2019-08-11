@@ -1,8 +1,8 @@
 module SuperDiff
   module Differs
     class Object < Base
-      def self.applies_to?(value)
-        value.is_a?(::Object)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Object) && actual.is_a?(::Object)
       end
 
       def self.call(
