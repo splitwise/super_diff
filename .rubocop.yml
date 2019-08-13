@@ -13,9 +13,9 @@ Layout/CommentIndentation:
   Enabled: false
 Layout/InitialIndentation:
   Enabled: false
-Layout/IndentArray:
+Layout/IndentFirstArrayElement:
   EnforcedStyle: "consistent"
-Layout/IndentHash:
+Layout/IndentFirstHashElement:
   EnforcedStyle: "consistent"
 Layout/IndentHeredoc:
   Enabled: false
@@ -70,12 +70,6 @@ Naming/PredicateName:
     - spec/**/*
 Naming/UncommunicativeMethodParamName:
   Enabled: false
-Rails:
-  Enabled: true
-Rails/SaveBang:
-  Enabled: true
-Rails/TimeZone:
-  EnforcedStyle: strict
 Style/Alias:
   Enabled: false
 Style/CollectionMethods:
