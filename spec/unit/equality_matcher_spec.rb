@@ -647,7 +647,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               red_line   %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
-              green_line %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, role: "deprecated" } }], :br])
+              green_line %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated" } }], :br])
             end
           }
 
@@ -1187,7 +1187,11 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(      {)
               plain_line %(        name: "Fender Stratocaster",)
               plain_line %(        cost: 100000,)
-              plain_line %(        options: ["red", "blue", "green"])
+              plain_line %(        options: [)
+              plain_line %(          "red",)
+              plain_line %(          "blue",)
+              plain_line %(          "green")
+              plain_line %(        ])
               plain_line %(      },)
               plain_line %(      {)
               red_line   %(-       name: "Chevy 4x4")

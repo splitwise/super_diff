@@ -6,7 +6,7 @@ module SuperDiff
           if single_line
             immediate_value.to_s
           else
-            "\n#{tree.line_prefix}#{"  " * indent_level}"
+            "\n#{"  " * indent_level}"
           end
         end
       end

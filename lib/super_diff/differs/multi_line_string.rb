@@ -7,6 +7,12 @@ module SuperDiff
         end
       end
 
+      def initialize(expected, actual, **rest)
+        super
+        @expected = Csi.decolorize(expected)
+        @actual = Csi.decolorize(actual)
+      end
+
       def call
         DiffFormatters::MultiLineString.call(
           operations,

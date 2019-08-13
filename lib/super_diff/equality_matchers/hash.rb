@@ -12,13 +12,15 @@ module SuperDiff
           #{
             Helpers.style(
               :deleted,
-              "Expected: #{Helpers.inspect_object(expected)}",
+              "Expected: " +
+              ObjectInspection.inspect(expected, single_line: true),
             )
           }
           #{
             Helpers.style(
               :inserted,
-              "  Actual: #{Helpers.inspect_object(actual)}",
+              "  Actual: " +
+              ObjectInspection.inspect(actual, single_line: true),
             )
           }
 

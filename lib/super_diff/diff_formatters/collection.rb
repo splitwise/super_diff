@@ -55,9 +55,9 @@ module SuperDiff
             icon = ICONS.fetch(operation.name, " ")
             style_name = STYLES.fetch(operation.name, :normal)
             chunk = build_chunk(
-              Helpers.inspect_object(operation.value, single_line: false),
+              operation.value,
               prefix: build_item_prefix.call(operation),
-              icon: icon,
+              icon: icon
             )
 
             if operation.should_add_comma_after_displaying?
@@ -69,19 +69,23 @@ module SuperDiff
         end
       end
 
-      def build_chunk(content, prefix:, icon:)
-        lines =
-          if content.is_a?(ValueInspection)
-            [
-              indentation(offset: 1) + prefix + content.beginning,
-              *content.middle.map { |line| indentation(offset: 2) + line },
-              indentation(offset: 1) + content.end,
-            ]
-          else
-            [indentation(offset: 1) + prefix + content]
-          end
+      def build_chunk(value, prefix:, icon:)
+        inspection = ObjectInspection.inspect(
+          value,
+          single_line: false,
+        )
 
-        lines.map { |line| icon + " " + line }.join("\n")
+        inspection.split("\n").
+          map.with_index { |line, index|
+            [
+              icon,
+              " ",
+              indentation(offset: 1),
+              (index == 0 ? prefix : ""),
+              line
+            ].join
+          }.
+          join("\n")
       end
 
       def style_chunk(style_name, chunk)
@@ -92,7 +96,7 @@ module SuperDiff
       end
 
       def indentation(offset: 0)
-        " " * ((indent_level + offset) * 2)
+        "  " * (indent_level + offset)
       end
 
       def comma

@@ -20,6 +20,10 @@ module SuperDiff
 
       (parts + [text, reset_sequence]).join
     end
+
+    def self.decolorize(text)
+      text.gsub(/\e\[\d+m(.+?)\e\[0m/, '\1')
+    end
   end
 end
 

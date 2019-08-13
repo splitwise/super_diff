@@ -3,16 +3,7 @@ module SuperDiff
     class InspectionTree
       include Enumerable
 
-      attr_reader :line_prefix
-
       def initialize(parent_tree: nil, &block)
-        @line_prefix =
-          if parent_tree
-            parent_tree.line_prefix
-          else
-            ""
-          end
-
         @nodes = []
 
         if block
@@ -22,10 +13,6 @@ module SuperDiff
 
       def each(&block)
         nodes.each(&block)
-      end
-
-      def will_prepend_each_line_with(line_prefix)
-        @line_prefix = line_prefix
       end
 
       def before_each_callbacks
