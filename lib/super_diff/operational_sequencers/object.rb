@@ -5,11 +5,11 @@ module SuperDiff
         super(*args)
 
         @expected_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => expected.public_send(name))
+          hash.merge(name => read_attribute_from(expected, name))
         end
 
         @actual_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => actual.public_send(name))
+          hash.merge(name => read_attribute_from(actual, name))
         end
       end
 
@@ -29,7 +29,12 @@ module SuperDiff
       end
 
       def attribute_names
-        raise NotImplementedError
+        (expected.instance_variables & actual.instance_variables).
+          map { |variable_name| variable_name[1..-1] }
+      end
+
+      def read_attribute_from(value, attribute_name)
+        value.instance_variable_get("@#{attribute_name}")
       end
 
       private

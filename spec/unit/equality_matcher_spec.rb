@@ -1219,24 +1219,42 @@ RSpec.describe SuperDiff::EqualityMatcher do
         expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
         actual = SuperDiff::Test::Person.new(name: "Doc", age: 50)
 
-        actual_output = described_class.call(expected: expected, actual: actual)
+        actual_output = described_class.call(
+          expected: expected,
+          actual: actual,
+          extra_operational_sequencer_classes: [
+            SuperDiff::Test::PersonOperationalSequencer,
+          ],
+          extra_diff_formatter_classes: [
+            SuperDiff::Test::PersonDiffFormatter,
+          ],
+        )
 
-        regexp_content = <<~STR.strip
+        expected_output = <<~STR.strip
           Differing objects.
 
           #{
             colored do
-              red_line   %(Expected: #<::person_identifier:: @name="Marty", @age=18>)
-              green_line %(  Actual: #<::person_identifier:: @name="Doc", @age=50>)
+              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 18>)
+              green_line %(  Actual: #<SuperDiff::Test::Person name: "Doc", age: 50>)
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  #<SuperDiff::Test::Person {)
+              red_line   %(-   name: "Marty",)
+              green_line %(+   name: "Doc",)
+              red_line   %(-   age: 18)
+              green_line %(+   age: 50)
+              plain_line %(  }>)
             end
           }
         STR
 
-        regexp_content = Regexp.
-          escape(regexp_content).
-          gsub(/::person_identifier::/, "SuperDiff::Test::Person:0x[0-9a-z]+")
-
-        expect(actual_output).to match(/\A#{regexp_content}\Z/)
+        expect(actual_output).to eq(expected_output)
       end
     end
   end

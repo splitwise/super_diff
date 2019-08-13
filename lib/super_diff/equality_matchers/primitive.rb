@@ -1,13 +1,17 @@
 module SuperDiff
   module EqualityMatchers
-    class Object < Base
+    class Primitive < Base
       def self.applies_to?(value)
-        value.class == ::Object
+        value.is_a?(Symbol) ||
+          value.is_a?(Numeric) ||
+          # TODO: Test this
+          value == true ||
+          value == false
       end
 
       def fail
         <<~OUTPUT.strip
-          Differing objects.
+          Differing #{Helpers.plural_type_for(actual)}.
 
           #{
             Helpers.style(
@@ -21,23 +25,7 @@ module SuperDiff
               "  Actual: #{Helpers.inspect_object(actual)}",
             )
           }
-
-          Diff:
-
-          #{diff}
         OUTPUT
-      end
-
-      protected
-
-      def diff
-        Differs::Object.call(
-          expected,
-          actual,
-          indent_level: 0,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
       end
     end
   end
