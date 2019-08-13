@@ -1,8 +1,7 @@
 #!/bin/sh
 
-if ! type bundle &>/dev/null; then
-  echo "You don't seem to have Bundler installed. Install it first and then re-run this"
-  echo "script."
+if ! bundle -v &>/dev/null; then
+  echo "You don't seem to have Bundler installed. Install it first and then re-run this script."
   exit 1
 fi
 
