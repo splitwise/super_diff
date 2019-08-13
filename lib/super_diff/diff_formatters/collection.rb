@@ -57,7 +57,7 @@ module SuperDiff
             chunk = build_chunk(
               operation.value,
               prefix: build_item_prefix.call(operation),
-              icon: icon
+              icon: icon,
             )
 
             if operation.should_add_comma_after_displaying?

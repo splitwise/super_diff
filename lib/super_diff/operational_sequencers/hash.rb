@@ -16,8 +16,8 @@ module SuperDiff
         end
       end
 
-      def operation_sequence_class
-        OperationSequences::Hash
+      def build_operation_sequencer
+        OperationSequences::Hash.new([])
       end
 
       private

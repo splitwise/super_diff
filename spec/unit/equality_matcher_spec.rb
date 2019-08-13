@@ -1207,7 +1207,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two objects which == each other" do
+    context "given two custom objects which == each other" do
       it "returns an empty string" do
         expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
         actual = SuperDiff::Test::Person.new(name: "Marty", age: 18)
@@ -1218,7 +1218,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two objects which do not == each other" do
+    context "given two custom objects which do not == each other" do
       it "returns a message along with a comparison" do
         expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
         actual = SuperDiff::Test::Person.new(name: "Doc", age: 50)
@@ -1253,6 +1253,64 @@ RSpec.describe SuperDiff::EqualityMatcher do
               green_line %(+   name: "Doc",)
               red_line   %(-   age: 18)
               green_line %(+   age: 50)
+              plain_line %(  }>)
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two non-custom objects which do not == each other" do
+      it "returns a message along with the diff" do
+        expected = SuperDiff::Test::Player.new(
+          handle: "martymcfly",
+          character: "mirage",
+          inventory: ["flatline", "purple body shield"],
+          shields: 0.6,
+          health: 0.3,
+          ultimate: 0.8,
+        )
+        actual = SuperDiff::Test::Player.new(
+          handle: "docbrown",
+          character: "lifeline",
+          inventory: ["wingman", "mastiff"],
+          shields: 0.6,
+          health: 0.3,
+          ultimate: 0.8,
+        )
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing objects.
+
+          #{
+            colored do
+              red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % (expected.object_id * 2)} @handle="martymcfly" @character="mirage" @inventory=["flatline", "purple body shield"] @shields=0.6 @health=0.3 @ultimate=0.8>)
+              green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % (actual.object_id * 2)} @handle="docbrown" @character="lifeline" @inventory=["wingman", "mastiff"] @shields=0.6 @health=0.3 @ultimate=0.8>)
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  #<SuperDiff::Test::Player {)
+              red_line   %(-   handle: "martymcfly",)
+              green_line %(+   handle: "docbrown",)
+              red_line   %(-   character: "mirage",)
+              green_line %(+   character: "lifeline",)
+              plain_line %(    inventory: [)
+              red_line   %(-     "flatline",)
+              green_line %(+     "wingman",)
+              red_line   %(-     "purple body shield")
+              green_line %(+     "mastiff")
+              plain_line %(    ],)
+              plain_line %(    shields: 0.6,)
+              plain_line %(    health: 0.3,)
+              plain_line %(    ultimate: 0.8)
               plain_line %(  }>)
             end
           }

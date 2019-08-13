@@ -24,8 +24,9 @@ module SuperDiff
         end
       end
 
-      def operation_sequence_class
-        OperationSequences::Object
+      def build_operation_sequencer
+        # XXX This assumes that `expected` and `actual` are the same
+        OperationSequences::Object.new([], value_class: expected.class)
       end
 
       def attribute_names

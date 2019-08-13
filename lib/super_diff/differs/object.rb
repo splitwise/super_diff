@@ -1,8 +1,8 @@
 module SuperDiff
   module Differs
     class Object < Base
-      def self.applies_to?(value)
-        value.is_a?(::Object)
+      def self.applies_to?(expected, actual)
+        expected.is_a?(::Object) && actual.is_a?(::Object)
       end
 
       def call
@@ -12,10 +12,10 @@ module SuperDiff
       private
 
       def operations
-        OperationalSequencer.call(
+        OperationalSequencers::Object.call(
           expected: expected,
           actual: actual,
-          extra_classes: extra_operational_sequencer_classes,
+          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end

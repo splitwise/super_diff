@@ -31,8 +31,8 @@ module SuperDiff
         end
       end
 
-      def operation_sequence_class
-        OperationSequences::Array
+      def build_operation_sequencer
+        OperationSequences::Array.new([])
       end
 
       private

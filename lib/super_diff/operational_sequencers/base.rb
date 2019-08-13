@@ -1,7 +1,7 @@
 module SuperDiff
   module OperationalSequencers
     class Base
-      def self.applies_to?(_value)
+      def self.applies_to?(_expected, _actual)
         raise NotImplementedError
       end
 
@@ -24,7 +24,7 @@ module SuperDiff
 
       def call
         i = 0
-        operations = operation_sequence_class.new([])
+        operations = build_operation_sequencer
 
         while i < unary_operations.length
           operation = unary_operations[i]
@@ -60,7 +60,7 @@ module SuperDiff
         raise NotImplementedError
       end
 
-      def operation_sequence_class
+      def build_operation_sequencer
         raise NotImplementedError
       end
 
