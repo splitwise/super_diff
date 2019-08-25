@@ -3,6 +3,7 @@ require_relative "../super_diff"
 require_relative "rspec/differ"
 require_relative "rspec/object_inspection/inspector_registry"
 require_relative "rspec/object_inspection/inspectors"
+require_relative "rspec/object_inspection/inspectors/partial_array"
 require_relative "rspec/object_inspection/inspectors/partial_hash"
 require_relative "rspec/monkey_patches"
 
@@ -26,8 +27,7 @@ module SuperDiff
 
     def self.partial_array?(value)
       value.is_a?(::RSpec::Matchers::AliasedMatcher) &&
-        value.expecteds.one? &&
-        value.expecteds.first.is_a?(::Array)
+        !(value.expecteds.one? && value.expecteds.first.is_a?(::Hash))
     end
 
     self.extra_differ_classes = []

@@ -5,11 +5,7 @@ module SuperDiff
         add_text "["
 
         nested do |array|
-          add_break
-
-          insert_separated_list(array) do |value|
-            add_inspection_of value
-          end
+          insert_array_inspection_of(array)
         end
 
         add_break

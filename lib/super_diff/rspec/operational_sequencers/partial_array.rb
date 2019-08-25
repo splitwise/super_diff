@@ -15,7 +15,7 @@ module SuperDiff
         private
 
         def actual_with_extra_items_in_expected_at_end
-          actual + (expected.expecteds.first - actual)
+          actual + (expected.expecteds - actual)
         end
       end
     end

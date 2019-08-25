@@ -173,12 +173,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
-  context "when using the include matcher with an array" do
+  context "when using the include matcher with a list" do
     it "produces the correct output" do
       test = <<~TEST
         expected = ["Marty", "Einie"]
         actual = ["Marty", "Jennifer", "Doc"]
-        expect(actual).to include(expected)
+        expect(actual).to include(*expected)
       TEST
 
       expected_output = <<~OUTPUT
@@ -188,9 +188,9 @@ RSpec.describe "Integration with RSpec", type: :integration do
           colored do
             plain_line %(  [)
             plain_line %(    "Marty",)
-            plain_line %(    "Jennifer",)
-            plain_line %(    "Doc")
             red_line   %(-   "Einie")
+            green_line %(+   "Jennifer",)
+            green_line %(+   "Doc")
             plain_line %(  ])
           end
         }
@@ -439,6 +439,108 @@ RSpec.describe "Integration with RSpec", type: :integration do
                 red_line   %!-     zip: "90382"!
                 red_line   %!-   )>!
                 green_line %!+   address: nil!
+                plain_line %!  }!
+              end
+            }
+          OUTPUT
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "and the expected value is a partial array" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expected = a_collection_including("milk", "bread")
+          actual = ["milk", "toast", "eggs"]
+          expect(actual).to match(expected)
+        TEST
+
+        expected_output = <<~OUTPUT
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    "milk",)
+              plain_line %(    "toast",)
+              # plain_line %(   "eggs",)     # FIXME
+              plain_line %(    "eggs")
+              red_line   %(-   "bread")
+              plain_line %(  ])
+            end
+          }
+        OUTPUT
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "and the expected value includes a partial array" do
+      context "when the corresponding actual value is an array" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "shopping list",
+              contents: a_collection_including("milk", "bread")
+            }
+            actual = {
+              name: "shopping list",
+              contents: ["milk", "toast", "eggs"]
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = <<~OUTPUT
+            Diff:
+
+            #{
+              colored do
+                plain_line %(  {)
+                plain_line %(    name: "shopping list",)
+                plain_line %(    contents: [)
+                plain_line %(      "milk",)
+                plain_line %(      "toast",)
+                # plain_line %(      "eggs",)     # FIXME
+                plain_line %(      "eggs")
+                red_line   %(-     "bread")
+                plain_line %(    ])
+                plain_line %(  })
+              end
+            }
+          OUTPUT
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when the corresponding actual value is not an array" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "shopping list",
+              contents: a_collection_including("milk", "bread")
+            }
+            actual = {
+              name: "shopping list",
+              contents: nil
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = <<~OUTPUT
+            Diff:
+
+            #{
+              colored do
+                plain_line %!  {!
+                plain_line %!    name: "shopping list",!
+                red_line   %!-   contents: #<a collection including (!
+                red_line   %!-     "milk",!
+                red_line   %!-     "bread"!
+                red_line   %!-   )>!
+                green_line %!+   contents: nil!
                 plain_line %!  }!
               end
             }

@@ -45,8 +45,18 @@ module SuperDiff
         add_node :nesting, &block
       end
 
-      def insert_hash_inspection_of(hash)
-        add_break " "
+      def insert_array_inspection_of(array)
+        # FIXME: why must this be inside the `nested`?
+        add_break
+
+        insert_separated_list(array) do |value|
+          add_inspection_of value
+        end
+      end
+
+      def insert_hash_inspection_of(hash, initial_break: " ")
+        # FIXME: why must this be inside the `nested`?
+        add_break initial_break
 
         format_keys_as_kwargs = hash.keys.all? do |key|
           key.is_a?(Symbol)

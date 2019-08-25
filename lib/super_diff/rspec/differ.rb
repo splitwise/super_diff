@@ -40,6 +40,8 @@ module SuperDiff
 
       private
 
+      attr_reader :actual, :expected
+
       def worth_diffing?
         !comparing_equal_values? &&
           comparing_values_of_a_similar_class? &&
@@ -66,10 +68,7 @@ module SuperDiff
       end
 
       def comparing_with_a_partial_array?
-        expected.is_a?(::RSpec::Matchers::AliasedMatcher) &&
-          expected.expecteds.one? &&
-          expected.expecteds.first.is_a?(::Array) &&
-          actual.is_a?(::Array)
+        SuperDiff::RSpec.partial_array?(expected) && actual.is_a?(::Array)
       end
 
       def comparing_primitive_values?
@@ -82,8 +81,6 @@ module SuperDiff
           !expected.include?("\n") &&
           !actual.include?("\n")
       end
-
-      attr_reader :actual, :expected
     end
   end
 end

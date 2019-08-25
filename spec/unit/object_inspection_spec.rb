@@ -506,6 +506,38 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given a partial array" do
+      context "given single_line: true" do
+        it "returns a representation of the partial hash on a single line" do
+          inspection = described_class.inspect(
+            a_collection_including(1, 2, 3),
+            single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<a collection including (1, 2, 3)>),
+          )
+        end
+      end
+
+      context "given single_line: false" do
+        it "returns a representation of the partial hash across multiple lines" do
+          inspection = described_class.inspect(
+            a_collection_including(1, 2, 3),
+            single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<a collection including (
+              1,
+              2,
+              3
+            )>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a combination of all kinds of values" do
       context "given single_line: true" do
         it "returns a representation of the object on a single line" do
