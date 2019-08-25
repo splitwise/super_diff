@@ -5,6 +5,7 @@ require_relative "super_diff/csi"
 require_relative "super_diff/errors"
 require_relative "super_diff/helpers"
 
+require_relative "super_diff/object_inspection/inspector_registry"
 require_relative "super_diff/object_inspection"
 require_relative "super_diff/object_inspection/nodes"
 require_relative "super_diff/object_inspection/nodes/base"

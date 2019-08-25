@@ -1,5 +1,8 @@
 require_relative "../super_diff"
+
 require_relative "rspec/differ"
+require_relative "rspec/object_inspection/inspector_registry"
+require_relative "rspec/object_inspection/inspectors"
 require_relative "rspec/monkey_patches"
 
 module SuperDiff
@@ -31,3 +34,8 @@ module SuperDiff
     self.extra_diff_formatter_classes = []
   end
 end
+
+SuperDiff::ObjectInspection.inspector_registry =
+  SuperDiff::RSpec::ObjectInspection::InspectorRegistry.new(
+    SuperDiff::ObjectInspection.inspector_registry.to_h,
+  )
