@@ -30,7 +30,7 @@ module SuperDiff
       end
 
       def attribute_names
-        (expected.instance_variables & actual.instance_variables).
+        (expected.instance_variables.sort & actual.instance_variables.sort).
           map { |variable_name| variable_name[1..-1] }
       end
 

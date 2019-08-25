@@ -12,6 +12,13 @@ module SuperDiff
       private
 
       def operations
+        OperationalSequencer.call(
+          expected: expected,
+          actual: actual,
+          extra_classes: extra_operational_sequencer_classes,
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
+        )
+      rescue SuperDiff::NoOperationalSequencerAvailableError
         OperationalSequencers::Object.call(
           expected: expected,
           actual: actual,

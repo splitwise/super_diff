@@ -17,7 +17,7 @@ module SuperDiff
           add_break " "
 
           insert_separated_list(
-            object.instance_variables,
+            object.instance_variables.sort,
             separator: build_node(:when_multiline, ","),
           ) do |name|
             add_text name.to_s

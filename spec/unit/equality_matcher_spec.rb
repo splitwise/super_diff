@@ -1288,8 +1288,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % (expected.object_id * 2)} @handle="martymcfly" @character="mirage" @inventory=["flatline", "purple body shield"] @shields=0.6 @health=0.3 @ultimate=0.8>)
-              green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % (actual.object_id * 2)} @handle="docbrown" @character="lifeline" @inventory=["wingman", "mastiff"] @shields=0.6 @health=0.3 @ultimate=0.8>)
+              red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % (expected.object_id * 2)} @character="mirage" @handle="martymcfly" @health=0.3 @inventory=["flatline", "purple body shield"] @shields=0.6 @ultimate=0.8>)
+              green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % (actual.object_id * 2)} @character="lifeline" @handle="docbrown" @health=0.3 @inventory=["wingman", "mastiff"] @shields=0.6 @ultimate=0.8>)
             end
           }
 
@@ -1298,10 +1298,11 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  #<SuperDiff::Test::Player {)
-              red_line   %(-   handle: "martymcfly",)
-              green_line %(+   handle: "docbrown",)
               red_line   %(-   character: "mirage",)
               green_line %(+   character: "lifeline",)
+              red_line   %(-   handle: "martymcfly",)
+              green_line %(+   handle: "docbrown",)
+              plain_line %(    health: 0.3,)
               plain_line %(    inventory: [)
               red_line   %(-     "flatline",)
               green_line %(+     "wingman",)
@@ -1309,7 +1310,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
               green_line %(+     "mastiff")
               plain_line %(    ],)
               plain_line %(    shields: 0.6,)
-              plain_line %(    health: 0.3,)
               plain_line %(    ultimate: 0.8)
               plain_line %(  }>)
             end
