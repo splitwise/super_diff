@@ -3,6 +3,7 @@ require_relative "../super_diff"
 require_relative "rspec/differ"
 require_relative "rspec/object_inspection/inspector_registry"
 require_relative "rspec/object_inspection/inspectors"
+require_relative "rspec/object_inspection/inspectors/partial_hash"
 require_relative "rspec/monkey_patches"
 
 module SuperDiff

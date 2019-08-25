@@ -62,10 +62,7 @@ module SuperDiff
       end
 
       def comparing_with_a_partial_hash?
-        expected.is_a?(::RSpec::Matchers::AliasedMatcher) &&
-          expected.expecteds.one? &&
-          expected.expecteds.first.is_a?(::Hash) &&
-          actual.is_a?(::Hash)
+        SuperDiff::RSpec.partial_hash?(expected) && actual.is_a?(::Hash)
       end
 
       def comparing_with_a_partial_array?

@@ -325,6 +325,131 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
+  context "when using the match matcher" do
+    context "and the expected value is a partial hash" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expected = a_hash_including(
+            city: "Hill Valley",
+            zip: "90382"
+          )
+          actual = {
+            line_1: "123 Main St.",
+            city: "Burbank",
+            state: "CA",
+            zip: "90210"
+          }
+          expect(actual).to match(expected)
+        TEST
+
+        expected_output = <<~OUTPUT
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    line_1: "123 Main St.",)
+              red_line   %(-   city: "Hill Valley",)
+              green_line %(+   city: "Burbank",)
+              plain_line %(    state: "CA",)
+              red_line   %(-   zip: "90382")
+              green_line %(+   zip: "90210")
+              plain_line %(  })
+            end
+          }
+        OUTPUT
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "and the expected value includes a partial hash" do
+      context "when the corresponding actual value is a hash" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "Marty McFly",
+              address: a_hash_including(
+                city: "Hill Valley",
+                zip: "90382"
+              )
+            }
+            actual = {
+              name: "Marty McFly",
+              address: {
+                line_1: "123 Main St.",
+                city: "Burbank",
+                state: "CA",
+                zip: "90210"
+              }
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = <<~OUTPUT
+            Diff:
+
+            #{
+              colored do
+                plain_line %(  {)
+                plain_line %(    name: "Marty McFly",)
+                plain_line %(    address: {)
+                plain_line %(      line_1: "123 Main St.",)
+                red_line   %(-     city: "Hill Valley",)
+                green_line %(+     city: "Burbank",)
+                plain_line %(      state: "CA",)
+                red_line   %(-     zip: "90382")
+                green_line %(+     zip: "90210")
+                plain_line %(    })
+                plain_line %(  })
+              end
+            }
+          OUTPUT
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when the corresponding actual value is not a hash" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "Marty McFly",
+              address: a_hash_including(
+                city: "Hill Valley",
+                zip: "90382"
+              )
+            }
+            actual = {
+              name: "Marty McFly",
+              address: nil
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = <<~OUTPUT
+            Diff:
+
+            #{
+              colored do
+                plain_line %!  {!
+                plain_line %!    name: "Marty McFly",!
+                red_line   %!-   address: #<a hash including (!
+                red_line   %!-     city: "Hill Valley",!
+                red_line   %!-     zip: "90382"!
+                red_line   %!-   )>!
+                green_line %!+   address: nil!
+                plain_line %!  }!
+              end
+            }
+          OUTPUT
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+  end
+
   def colored(&block)
     SuperDiff::Tests::Colorizer.call(&block).chomp
   end
