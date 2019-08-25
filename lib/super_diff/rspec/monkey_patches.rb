@@ -132,6 +132,7 @@ RSpec::Matchers::BuiltIn::Include.class_eval do
     end
   end
 
+  # Always be diffable
   def diffable?
     true
   end
@@ -142,6 +143,34 @@ RSpec::Matchers::BuiltIn::Include.class_eval do
     Object.new.tap do |object|
       object.singleton_class.class_eval do
         include RSpec::Matchers
+      end
+    end
+  end
+end
+
+RSpec::Matchers::BuiltIn::HaveAttributes.class_eval do
+  # Always be diffable
+  def diffable?
+    true
+  end
+
+  private
+
+  # Override to force @values to get populated so that we can show a proper diff
+  def respond_to_attributes?
+    cache_all_values
+    matches = respond_to_matcher.matches?(@actual)
+    @respond_to_failed = !matches
+    matches
+  end
+
+  # Override this method to skip non-existent attributes, and to use public_send
+  def cache_all_values
+    @values = {}
+    expected.each do |attribute_key, _attribute_value|
+      if @actual.respond_to?(attribute_key)
+        actual_value = @actual.public_send(attribute_key)
+        @values[attribute_key] = actual_value
       end
     end
   end

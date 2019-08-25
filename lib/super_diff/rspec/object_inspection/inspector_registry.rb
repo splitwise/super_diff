@@ -9,6 +9,8 @@ module SuperDiff
             :partial_hash
           elsif SuperDiff::RSpec.partial_array?(object)
             :partial_array
+          elsif SuperDiff::RSpec.partial_object?(object)
+            :partial_object
           else
             super
           end

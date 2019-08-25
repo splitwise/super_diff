@@ -550,6 +550,144 @@ RSpec.describe "Integration with RSpec", type: :integration do
         end
       end
     end
+
+    context "and the expected value is a partial object" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expected = an_object_having_attributes(
+            line_1: "123 Main St.",
+            city: "Oakland",
+            zip: "91234",
+            state: "CA",
+            something_else: "blah"
+          )
+          actual = SuperDiff::Test::ShippingAddress.new(
+            line_1: "456 Ponderosa Ct.",
+            line_2: nil,
+            city: "Hill Valley",
+            state: "CA",
+            zip: "90382"
+          )
+          expect(actual).to match(expected)
+        TEST
+
+        expected_output = <<~OUTPUT
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  #<SuperDiff::Test::ShippingAddress {)
+              red_line   %(-   line_1: "123 Main St.",)
+              green_line %(+   line_1: "456 Ponderosa Ct.",)
+              red_line   %(-   city: "Oakland",)
+              green_line %(+   city: "Hill Valley",)
+              red_line   %(-   zip: "91234",)
+              green_line %(+   zip: "90382",)
+              plain_line %(    state: "CA")
+              # plain_line %(    state: "CA", )  # FIXME
+              red_line   %(-   something_else: "blah")
+              plain_line %(  }>)
+            end
+          }
+        OUTPUT
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "and the expected value includes a partial object" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expected = {
+            name: "Marty McFly",
+            shipping_address: an_object_having_attributes(
+              line_1: "123 Main St.",
+              city: "Oakland",
+              state: "CA",
+              zip: "91234",
+            )
+          }
+          actual = {
+            name: "Marty McFly",
+            shipping_address: SuperDiff::Test::ShippingAddress.new(
+              line_1: "456 Ponderosa Ct.",
+              line_2: nil,
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382"
+            )
+          }
+          expect(actual).to match(expected)
+        TEST
+
+        expected_output = <<~OUTPUT
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    name: "Marty McFly",)
+              plain_line %(    shipping_address: #<SuperDiff::Test::ShippingAddress {)
+              red_line   %(-     line_1: "123 Main St.",)
+              green_line %(+     line_1: "456 Ponderosa Ct.",)
+              red_line   %(-     city: "Oakland",)
+              green_line %(+     city: "Hill Valley",)
+              plain_line %(      state: "CA",)
+              red_line   %(-     zip: "91234")
+              green_line %(+     zip: "90382")
+              plain_line %(    }>)
+              plain_line %(  })
+            end
+          }
+        OUTPUT
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  context "when using the have_attributes matcher" do
+    it "produces the correct output" do
+      test = <<~TEST
+        expected = {
+          line_1: "123 Main St.",
+          city: "Oakland",
+          zip: "91234",
+          state: "CA",
+          something_else: "blah"
+        }
+        actual = SuperDiff::Test::ShippingAddress.new(
+          line_1: "456 Ponderosa Ct.",
+          line_2: nil,
+          city: "Hill Valley",
+          state: "CA",
+          zip: "90382"
+        )
+        expect(actual).to have_attributes(expected)
+      TEST
+
+      expected_output = <<~OUTPUT
+        Diff:
+
+        #{
+          colored do
+            plain_line %(  {)
+            red_line   %(-   line_1: "123 Main St.",)
+            green_line %(+   line_1: "456 Ponderosa Ct.",)
+            red_line   %(-   city: "Oakland",)
+            green_line %(+   city: "Hill Valley",)
+            red_line   %(-   zip: "91234",)
+            green_line %(+   zip: "90382",)
+            plain_line %(    state: "CA")
+            # plain_line %(    state: "CA", )  # FIXME
+            red_line   %(-   something_else: "blah")
+            plain_line %(  })
+          end
+        }
+      OUTPUT
+
+      expect(test).to produce_output_when_run(expected_output)
+    end
   end
 
   def colored(&block)

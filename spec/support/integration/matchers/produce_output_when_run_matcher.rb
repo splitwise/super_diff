@@ -55,16 +55,17 @@ module SuperDiff
         <<~PROGRAM
           $LOAD_PATH.unshift("#{PROJECT_DIRECTORY.join("lib")}")
           $LOAD_PATH.unshift("#{PROJECT_DIRECTORY}")
-          require "super_diff/rspec"
           begin
             require "pry-byebug"
           rescue LoadError
             require "pry-nav"
           end
+          require "super_diff/rspec"
           require "spec/support/person"
           require "spec/support/person_diff_formatter"
           require "spec/support/person_operation_sequence"
           require "spec/support/person_operational_sequencer"
+          require "spec/support/shipping_address"
 
           SuperDiff::RSpec.configure do |config|
             config.extra_operational_sequencer_classes << SuperDiff::Test::PersonOperationalSequencer

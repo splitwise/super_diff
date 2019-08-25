@@ -4,13 +4,7 @@ module SuperDiff
       def initialize(*args)
         super(*args)
 
-        @expected_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => read_attribute_from(expected, name))
-        end
-
-        @actual_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => read_attribute_from(actual, name))
-        end
+        establish_expected_and_actual_attributes
       end
 
       protected
@@ -34,13 +28,19 @@ module SuperDiff
           map { |variable_name| variable_name[1..-1] }
       end
 
-      def read_attribute_from(value, attribute_name)
-        value.instance_variable_get("@#{attribute_name}")
-      end
-
       private
 
       attr_reader :expected_attributes, :actual_attributes
+
+      def establish_expected_and_actual_attributes
+        @expected_attributes = attribute_names.reduce({}) do |hash, name|
+          hash.merge(name => expected.instance_variable_get("@#{name}"))
+        end
+
+        @actual_attributes = attribute_names.reduce({}) do |hash, name|
+          hash.merge(name => actual.instance_variable_get("@#{name}"))
+        end
+      end
 
       def possibly_add_noop_operation_to(operations, attribute_name)
         if should_add_noop_operation?(attribute_name)

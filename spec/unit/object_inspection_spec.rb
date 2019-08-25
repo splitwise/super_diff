@@ -538,6 +538,37 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given a partial object" do
+      context "given single_line: true" do
+        it "returns a representation of the partial object on a single line" do
+          inspection = described_class.inspect(
+            an_object_having_attributes(foo: "bar", baz: "qux"),
+            single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<an object having attributes (foo: "bar", baz: "qux")>),
+          )
+        end
+      end
+
+      context "given single_line: false" do
+        it "returns a representation of the partial object across multiple lines" do
+          inspection = described_class.inspect(
+            an_object_having_attributes(foo: "bar", baz: "qux"),
+            single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<an object having attributes (
+              foo: "bar",
+              baz: "qux"
+            )>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a combination of all kinds of values" do
       context "given single_line: true" do
         it "returns a representation of the object on a single line" do

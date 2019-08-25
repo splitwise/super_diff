@@ -1,10 +1,21 @@
 require_relative "../super_diff"
 
 require_relative "rspec/differ"
+
+require_relative "rspec/differs/partial_array"
+require_relative "rspec/differs/partial_hash"
+require_relative "rspec/differs/partial_object"
+
+require_relative "rspec/operational_sequencers/partial_array"
+require_relative "rspec/operational_sequencers/partial_hash"
+require_relative "rspec/operational_sequencers/partial_object"
+
 require_relative "rspec/object_inspection/inspector_registry"
 require_relative "rspec/object_inspection/inspectors"
 require_relative "rspec/object_inspection/inspectors/partial_array"
 require_relative "rspec/object_inspection/inspectors/partial_hash"
+require_relative "rspec/object_inspection/inspectors/partial_object"
+
 require_relative "rspec/monkey_patches"
 
 module SuperDiff
@@ -20,14 +31,25 @@ module SuperDiff
     end
 
     def self.partial_hash?(value)
-      value.is_a?(::RSpec::Matchers::AliasedMatcher) &&
+      partial_placeholder?(value) &&
+        value.respond_to?(:expecteds) &&
         value.expecteds.one? &&
         value.expecteds.first.is_a?(::Hash)
     end
 
     def self.partial_array?(value)
-      value.is_a?(::RSpec::Matchers::AliasedMatcher) &&
+      partial_placeholder?(value) &&
+        value.respond_to?(:expecteds) &&
         !(value.expecteds.one? && value.expecteds.first.is_a?(::Hash))
+    end
+
+    def self.partial_object?(value)
+      partial_placeholder?(value) &&
+        value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::HaveAttributes)
+    end
+
+    def self.partial_placeholder?(value)
+      value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end
 
     self.extra_differ_classes = []
