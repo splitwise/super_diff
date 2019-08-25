@@ -49,8 +49,8 @@ RSpec.describe "Integration with RSpec", type: :integration do
   context "comparing two closely different multi-line strings" do
     it "produces the correct output" do
       test = <<~TEST
-        expected = "This is a line\nAnd that's a line\nAnd there's a line too"
-        actual = "This is a line\nSomething completely different\nAnd there's a line too"
+        expected = "This is a line\\nAnd that's a line\\nAnd there's a line too"
+        actual = "This is a line\\nSomething completely different\\nAnd there's a line too"
         expect(actual).to eq(expected)
       TEST
 
@@ -74,8 +74,8 @@ RSpec.describe "Integration with RSpec", type: :integration do
   context "comparing two completely different multi-line strings" do
     it "produces the correct output" do
       test = <<~TEST
-        expected = "This is a line\nAnd that's a line\n"
-        actual = "Something completely different\nAnd something else too\n"
+        expected = "This is a line\\nAnd that's a line\\n"
+        actual = "Something completely different\\nAnd something else too\\n"
         expect(actual).to eq(expected)
       TEST
 
