@@ -73,10 +73,14 @@ module SuperDiff
 
           RSpec.describe "test" do
             it "passes" do
-              #{test}
+          #{reindent(test, level: 2)}
             end
           end
         PROGRAM
+      end
+
+      def reindent(code, level: 0)
+        code.strip.split("\n").map { |line| ("  " * level) + line }.join("\n")
       end
     end
   end
