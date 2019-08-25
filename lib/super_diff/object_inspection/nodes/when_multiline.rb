@@ -6,7 +6,7 @@ module SuperDiff
           if single_line
             ""
           elsif block
-            subtree = InspectionTree.new(parent_tree: tree)
+            subtree = InspectionTree.new
             subtree.instance_exec(object, &block)
             subtree.evaluate(
               object,

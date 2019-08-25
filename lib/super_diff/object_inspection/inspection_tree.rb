@@ -3,7 +3,7 @@ module SuperDiff
     class InspectionTree
       include Enumerable
 
-      def initialize(parent_tree: nil, &block)
+      def initialize(&block)
         @nodes = []
 
         if block

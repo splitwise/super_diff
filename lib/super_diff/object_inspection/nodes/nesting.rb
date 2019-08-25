@@ -3,7 +3,7 @@ module SuperDiff
     module Nodes
       class Nesting < Base
         def evaluate(object, indent_level:, single_line:)
-          subtree = InspectionTree.new(parent_tree: tree)
+          subtree = InspectionTree.new
           subtree.instance_exec(object, &block)
           subtree.evaluate(
             object,
