@@ -128,8 +128,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "This is a line⏎And that's a line⏎And there's a line too")
-              green_line %(  Actual: "This is a line⏎Something completely different⏎And there's a line too")
+              red_line   %(Expected: "This is a line\\nAnd that's a line\\nAnd there's a line too")
+              green_line %(  Actual: "This is a line\\nSomething completely different\\nAnd there's a line too")
             end
           }
 
@@ -137,9 +137,9 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              plain_line %(  This is a line⏎)
-              red_line   %(- And that's a line⏎)
-              green_line %(+ Something completely different⏎)
+              plain_line %(  This is a line\\n)
+              red_line   %(- And that's a line\\n)
+              green_line %(+ Something completely different\\n)
               plain_line %(  And there's a line too)
             end
           }
@@ -161,8 +161,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "This is a line⏎And that's a line⏎")
-              green_line %(  Actual: "Something completely different⏎And something else too⏎")
+              red_line   %(Expected: "This is a line\\nAnd that's a line\\n")
+              green_line %(  Actual: "Something completely different\\nAnd something else too\\n")
             end
           }
 
@@ -170,10 +170,76 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(- This is a line⏎)
-              red_line   %(- And that's a line⏎)
-              green_line %(+ Something completely different⏎)
-              green_line %(+ And something else too⏎)
+              red_line   %(- This is a line\\n)
+              red_line   %(- And that's a line\\n)
+              green_line %(+ Something completely different\\n)
+              green_line %(+ And something else too\\n)
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given multi-line strings that contain color codes" do
+      it "escapes the color codes" do
+        colors = [
+          SuperDiff::Csi::FourBitColor.new(:blue, layer: :foreground),
+          SuperDiff::Csi::EightBitColor.new(
+            red: 3,
+            green: 8,
+            blue: 4,
+            layer: :foreground,
+          ),
+          SuperDiff::Csi::TwentyFourBitColor.new(
+            red: 47,
+            green: 164,
+            blue: 59,
+            layer: :foreground,
+          ),
+        ]
+
+        expected =
+          colored("This is a line", colors[0]) + "\n" +
+          colored("And that's a line", colors[1]) + "\n" +
+          colored("And there's a line too", colors[2]) + "\n"
+
+        actual =
+          colored("This is a line", colors[0])  + "\n" +
+          colored("Something completely different", colors[1]) + "\n" +
+          colored("And there's a line too", colors[2]) + "\n"
+
+        actual_output = described_class.call(
+          expected: expected,
+          actual: actual,
+        )
+
+        expected_output = <<~STR.strip
+          Differing strings.
+
+          #{
+            colored do
+              deleted_line do
+                text "Expected: "
+                text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mAnd that's a line\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
+              end
+
+              inserted_line do
+                text "  Actual: "
+                text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mSomething completely different\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
+              end
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  \\e[34mThis is a line\\e[0m\\n)
+              red_line   %(- \\e[38;5;176mAnd that's a line\\e[0m\\n)
+              green_line %(+ \\e[38;5;176mSomething completely different\\e[0m\\n)
+              plain_line %(  \\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n)
             end
           }
         STR
@@ -571,7 +637,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
     context "given two arrays containing custom objects with differing attributes" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
-          expected: [1, 2, SuperDiff::Test::Person.new(name: "Marty", age: 18), 4],
+          expected: [
+            1,
+            2,
+            SuperDiff::Test::Person.new(name: "Marty", age: 18),
+            4,
+          ],
           actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc", age: 50), 4],
           extra_operational_sequencer_classes: [
             SuperDiff::Test::PersonOperationalSequencer,
@@ -1321,7 +1392,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
     end
   end
 
-  def colored(&block)
-    SuperDiff::Tests::Colorizer.call(&block).to_s.chomp
+  def colored(*args, **opts, &block)
+    SuperDiff::Tests::Colorizer.call(*args, **opts, &block).to_s.chomp
   end
 end

@@ -1,178 +1,290 @@
 # rubocop:disable all
-RSpec::Expectations.instance_eval do
-  def differ
-    SuperDiff::RSpec::Differ
-  end
-end
+require "rspec/matchers"
+require "rspec/expectations/fail_with"
+require "rspec/expectations/handler"
+require "rspec/support/object_formatter"
+require "rspec/matchers/built_in/eq"
+require "rspec/matchers/built_in/include"
+require "rspec/matchers/built_in/match"
 
-RSpec::Core::Formatters::ConsoleCodes.instance_eval do
-  # UPDATE: Patch so it returns nothing if code_or_symbol is nil
-  def console_code_for(code_or_symbol)
-    if code_or_symbol
-      if (config_method = config_colors_to_methods[code_or_symbol])
-        console_code_for RSpec.configuration.__send__(config_method)
-      elsif RSpec::Core::Formatters::ConsoleCodes::VT100_CODE_VALUES.key?(code_or_symbol)
-        code_or_symbol
-      else
-        RSpec::Core::Formatters::ConsoleCodes::VT100_CODES.fetch(code_or_symbol) do
-          console_code_for(:white)
+module RSpec
+  module Expectations
+    def self.differ
+      SuperDiff::RSpec::Differ
+    end
+
+    module ExpectationHelper
+      def self.handle_failure(matcher, message, failure_message_method)
+        message = message.call if message.respond_to?(:call)
+        message ||= matcher.__send__(failure_message_method)
+
+        if matcher.respond_to?(:diffable?) && matcher.diffable?
+          # Look for expected_for_diff and actual_for_diff if possible
+          expected =
+            if matcher.respond_to?(:expected_for_diff)
+              matcher.expected_for_diff
+            else
+              matcher.expected
+            end
+
+          actual =
+            if matcher.respond_to?(:actual_for_diff)
+              matcher.actual_for_diff
+            else
+              matcher.actual
+            end
+
+          ::RSpec::Expectations.fail_with(message, expected, actual)
+        else
+          ::RSpec::Expectations.fail_with(message)
         end
       end
     end
   end
 
-  # UPDATE: Patch so it does not apply a color if code_or_symbol is nil
-  def wrap(text, code_or_symbol)
-    if RSpec.configuration.color_enabled? && code = console_code_for(code_or_symbol)
-      "\e[#{code}m#{text}\e[0m"
-    else
-      text
-    end
-  end
-end
+  module Core
+    module Formatters
+      module ConsoleCodes
+        # Patch so it returns nothing if code_or_symbol is nil, and that it uses
+        # code_or_symbol if it can't be found in VT100_CODE_VALUES to allow for
+        # customization
+        def self.console_code_for(code_or_symbol)
+          if code_or_symbol
+            if (config_method = config_colors_to_methods[code_or_symbol])
+              console_code_for RSpec.configuration.__send__(config_method)
+            elsif RSpec::Core::Formatters::ConsoleCodes::VT100_CODE_VALUES.key?(code_or_symbol)
+              code_or_symbol
+            else
+              RSpec::Core::Formatters::ConsoleCodes::VT100_CODES.fetch(code_or_symbol) do
+                code_or_symbol
+              end
+            end
+          end
+        end
 
-RSpec::Core::Formatters::ExceptionPresenter.class_eval do
-  # UPDATE: Copy from SyntaxHighlighter::CodeRayImplementation
-  RESET_CODE = "\e[0m"
-
-  def initialize(exception, example, options={})
-    @exception               = exception
-    @example                 = example
-    # UPDATE: Use no color by default
-    @message_color           = options[:message_color]
-    @description             = options.fetch(:description)            { example.full_description }
-    @detail_formatter        = options.fetch(:detail_formatter)       { Proc.new {} }
-    @extra_detail_formatter  = options.fetch(:extra_detail_formatter) { Proc.new {} }
-    @backtrace_formatter     = options.fetch(:backtrace_formatter)    { RSpec.configuration.backtrace_formatter }
-    @indentation             = options.fetch(:indentation, 2)
-    @skip_shared_group_trace = options.fetch(:skip_shared_group_trace, false)
-    @failure_lines           = options[:failure_lines]
-  end
-
-  def add_shared_group_lines(lines, colorizer)
-    return lines if @skip_shared_group_trace
-
-    example.metadata[:shared_group_inclusion_backtrace].each do |frame|
-      # Update: Use red instead of the default color
-      lines << colorizer.wrap(frame.description, :failure)
-    end
-
-    lines
-  end
-
-  # UPDATE: Style the first part in blue and the snippet of the line that failed
-  # in white
-  def failure_slash_error_lines
-    lines = read_failed_lines
-
-    failure_slash_error = RSpec::Core::Formatters::ConsoleCodes.wrap(
-      "Failure/Error: ",
-      :detail
-    )
-
-    if lines.count == 1
-      lines[0] =
-        failure_slash_error +
-        RSpec::Core::Formatters::ConsoleCodes.wrap(lines[0].strip, :white)
-    else
-      least_indentation =
-        RSpec::Core::Formatters::SnippetExtractor.least_indentation_from(lines)
-      lines = lines.map do |line|
-        RSpec::Core::Formatters::ConsoleCodes.wrap(
-          line.sub(/^#{least_indentation}/, '  '),
-          :white
-        )
+        # Patch so it does not apply a color if code_or_symbol is nil
+        def self.wrap(text, code_or_symbol)
+          if RSpec.configuration.color_enabled? && code = console_code_for(code_or_symbol)
+            "\e[#{code}m#{text}\e[0m"
+          else
+            text
+          end
+        end
       end
-      lines.unshift(failure_slash_error)
-    end
 
-    lines
-  end
-end
+      class ExceptionPresenter
+        # UPDATE: Copy from SyntaxHighlighter::CodeRayImplementation
+        RESET_CODE = "\e[0m"
 
-RSpec::Core::Formatters::SyntaxHighlighter.class_eval do
-  private
+        def initialize(exception, example, options={})
+          @exception               = exception
+          @example                 = example
+          # Patch to use no color by default
+          @message_color           = options[:message_color]
+          @description             = options.fetch(:description)            { example.full_description }
+          @detail_formatter        = options.fetch(:detail_formatter)       { Proc.new {} }
+          @extra_detail_formatter  = options.fetch(:extra_detail_formatter) { Proc.new {} }
+          @backtrace_formatter     = options.fetch(:backtrace_formatter)    { RSpec.configuration.backtrace_formatter }
+          @indentation             = options.fetch(:indentation, 2)
+          @skip_shared_group_trace = options.fetch(:skip_shared_group_trace, false)
+          @failure_lines           = options[:failure_lines]
+        end
 
-  def implementation
-    RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
-  end
-end
+        private
 
-RSpec::Matchers::BuiltIn::Eq.class_eval do
-  def failure_message
-    "\n" +
-      colorizer.wrap("expected: #{expected_formatted}\n", :failure) +
-      colorizer.wrap("     got: #{actual_formatted}\n\n", :success) +
-      colorizer.wrap("(compared using ==)\n", :detail)
-  end
+        def add_shared_group_lines(lines, colorizer)
+          return lines if @skip_shared_group_trace
 
-  def failure_message_when_negated
-    "\n" +
-      colorizer.wrap("expected: value != #{expected_formatted}\n", :failure) +
-      colorizer.wrap("     got: #{actual_formatted}\n\n", :success) +
-      colorizer.wrap("(compared using ==)\n", :detail)
-  end
+          example.metadata[:shared_group_inclusion_backtrace].each do |frame|
+            # Use red instead of the default color
+            lines << colorizer.wrap(frame.description, :failure)
+          end
 
-  private
+          lines
+        end
 
-  def colorizer
-    RSpec::Core::Formatters::ConsoleCodes
-  end
-end
+        # Style the first part in white and don't style the snippet of the line
+        def failure_slash_error_lines
+          lines = read_failed_lines
 
-RSpec::Matchers::BuiltIn::Include.class_eval do
-  def expected
-    if (
-      expecteds.one? &&
-      (expecteds.first.is_a?(Hash) || expecteds.first.is_a?(Array))
-    )
-      matchers.a_collection_including(expecteds.first)
-    else
-      expecteds
-    end
-  end
+          failure_slash_error = ConsoleCodes.wrap(
+            "Failure/Error: ",
+            :white
+          )
 
-  # Always be diffable
-  def diffable?
-    true
-  end
+          if lines.count == 1
+            lines[0] = failure_slash_error + lines[0].strip
+          else
+            least_indentation = SnippetExtractor.least_indentation_from(lines)
+            lines = lines.map do |line|
+              line.sub(/^#{least_indentation}/, '  ')
+            end
+            lines.unshift(failure_slash_error)
+          end
 
-  private
+          lines
+        end
 
-  def matchers
-    Object.new.tap do |object|
-      object.singleton_class.class_eval do
-        include RSpec::Matchers
+        # Exclude this file from being included in backtraces, so that the
+        # SnippetExtractor prints the right thing
+        def find_failed_line
+          line_regex = RSpec.configuration.in_project_source_dir_regex
+          loaded_spec_files = RSpec.configuration.loaded_spec_files
+
+          exception_backtrace.find do |line|
+            next unless (line_path = line[/(.+?):(\d+)(|:\d+)/, 1])
+            path = File.expand_path(line_path)
+            path != __FILE__ && (loaded_spec_files.include?(path) || path =~ line_regex)
+          end || exception_backtrace.first
+        end
+      end
+
+      class SyntaxHighlighter
+        private
+
+        def implementation
+          RSpec::Core::Formatters::SyntaxHighlighter::NoSyntaxHighlightingImplementation
+        end
       end
     end
   end
-end
 
-RSpec::Matchers::BuiltIn::HaveAttributes.class_eval do
-  # Always be diffable
-  def diffable?
-    true
+  module Support
+    class ObjectFormatter
+      # Override to use our formatting algorithm
+      def format(value)
+        SuperDiff::ObjectInspection.inspect(value, single_line: true)
+      end
+    end
   end
 
-  private
+  module Matchers
+    class ExpectedsForMultipleDiffs
+      # Add a key for different sides
+      def self.from(expected)
+        return expected if self === expected
 
-  # Override to force @values to get populated so that we can show a proper diff
-  def respond_to_attributes?
-    cache_all_values
-    matches = respond_to_matcher.matches?(@actual)
-    @respond_to_failed = !matches
-    matches
-  end
+        text =
+          colorizer.wrap("Diff:", :white) +
+          "\n\n" +
+          colorizer.wrap("┌ (Key) ──────────────────────────┐", :blue) +
+          "\n" +
+          colorizer.wrap("│ ", :blue) +
+          colorizer.wrap("‹-› in expected, not in actual", :failure) +
+          colorizer.wrap("  │", :blue) +
+          "\n" +
+          colorizer.wrap("│ ", :blue) +
+          colorizer.wrap("‹+› in actual, not in expected", :success) +
+          colorizer.wrap("  │", :blue) +
+          "\n" +
+          colorizer.wrap("│ ", :blue) +
+          "‹ › in both expected and actual" +
+          colorizer.wrap(" │", :blue) +
+          "\n" +
+          colorizer.wrap("└─────────────────────────────────┘", :blue)
 
-  # Override this method to skip non-existent attributes, and to use public_send
-  def cache_all_values
-    @values = {}
-    expected.each do |attribute_key, _attribute_value|
-      if @actual.respond_to?(attribute_key)
-        actual_value = @actual.public_send(attribute_key)
-        @values[attribute_key] = actual_value
+        new([[expected, text]])
+      end
+
+      def self.colorizer
+        RSpec::Core::Formatters::ConsoleCodes
+      end
+
+      # Add an extra line break
+      def message_with_diff(message, differ, actual)
+        diff = diffs(differ, actual)
+
+        if diff.empty?
+          message
+        else
+          "#{message.rstrip}\n\n#{diff}"
+        end
+      end
+
+      private
+
+      # Add extra line breaks in between diffs, and colorize the word "Diff"
+      def diffs(differ, actual)
+        @expected_list.map do |(expected, diff_label)|
+          diff = differ.diff(actual, expected)
+          next if diff.strip.empty?
+          diff_label + diff
+        end.compact.join("\n\n")
+      end
+    end
+
+    module BuiltIn
+      class Eq
+        prepend SuperDiff::RSpec::AugmentedMatcher
+      end
+
+      class Include
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          # Override this method so that the differ knows that this is a partial
+          # array or hash
+          def expected_for_diff
+            if expecteds.all? { |item| item.is_a?(Hash) }
+              matchers.a_collection_including(expecteds.first)
+            else
+              matchers.a_collection_including(*expecteds)
+            end
+          end
+
+          private
+
+          # Override to capitalize message and add period at end
+          def build_failure_message(negated:)
+            message = super
+
+            if actual.respond_to?(:include?)
+              message
+            elsif message.end_with?(".")
+              message.sub("\.$", ", ") + "but it does not respond to `include?`."
+            else
+              message + "\n\nBut it does not respond to `include?`."
+            end
+          end
+
+          # Override to use readable_list_of
+          def expected_for_description
+            readable_list_of(expecteds).lstrip
+          end
+
+          # Override to use readable_list_of
+          def expected_for_failure_message
+            readable_list_of(@divergent_items).lstrip
+          end
+
+          # Update to use (...) as delimiter instead of {...}
+          def readable_list_of(items)
+            if items.all? { |item| item.is_a?(Hash) }
+              description_of(items.inject(:merge)).
+                sub(/^\{ /, '(').
+                sub(/ \}$/, ')')
+            else
+              super
+            end
+          end
+        end)
+      end
+
+      class Match
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def failure_message_template_builder
+            @_failure_message_template_builder ||=
+              SuperDiff::RSpec::FailureMessageBuilders::Match.new(
+                actual: actual_for_failure_message,
+                expected: expected_for_failure_message,
+                description_as_phrase: description_as_phrase,
+                expected_captures: @expected_captures
+              )
+          end
+        end)
       end
     end
   end
 end
-# rubocop:enable all

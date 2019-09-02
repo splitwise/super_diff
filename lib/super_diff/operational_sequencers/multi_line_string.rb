@@ -40,7 +40,11 @@ module SuperDiff
       attr_reader :sequence_matcher, :original_expected, :original_actual
 
       def split_into_lines(str)
-        str.split(/(\n)/).map { |v| v.tr("\n", "⏎") }.each_slice(2).map(&:join)
+        str.
+          split(/(\r?\n)/).
+          each_slice(2).
+          map(&:join).
+          map { |line| line.inspect[1..-2] }
       end
 
       def opcodes

@@ -16,6 +16,12 @@ require_relative "rspec/object_inspection/inspectors/partial_array"
 require_relative "rspec/object_inspection/inspectors/partial_hash"
 require_relative "rspec/object_inspection/inspectors/partial_object"
 
+require_relative "rspec/failure_message_template"
+require_relative "rspec/failure_message_builders/base"
+require_relative "rspec/failure_message_builders/match"
+
+require_relative "rspec/augmented_matcher"
+
 require_relative "rspec/monkey_patches"
 
 module SuperDiff

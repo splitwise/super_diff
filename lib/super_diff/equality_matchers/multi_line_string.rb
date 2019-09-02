@@ -10,6 +10,7 @@ module SuperDiff
           Differing strings.
 
           #{
+            # TODO: This whole thing should not be red or green, just the values
             Helpers.style(
               :deleted,
               "Expected: " +

@@ -90,14 +90,51 @@ RSpec.describe SuperDiff::ObjectInspection do
     end
 
     context "given a multi-line string" do
-      it "returns the string surrounded by quotes, with newline characters replaced for display purposes" do
-        inspection = described_class.inspect(
-          "This is a line\nAnd that's a line\nAnd there's a line too",
-          single_line: true,
-        )
-        expect(inspection).to eq(
-          %("This is a line⏎And that's a line⏎And there's a line too"),
-        )
+      context "that does not contain color codes" do
+        it "returns the string surrounded by quotes, with newline characters escaped" do
+          inspection = described_class.inspect(
+            "This is a line\nAnd that's a line\nAnd there's a line too",
+            single_line: true,
+          )
+          expect(inspection).to eq(
+            %("This is a line\\nAnd that's a line\\nAnd there's a line too"),
+          )
+        end
+      end
+
+      context "that contains color codes" do
+        it "escapes the color codes" do
+          colors = [
+            SuperDiff::Csi::FourBitColor.new(:blue, layer: :foreground),
+            SuperDiff::Csi::EightBitColor.new(
+              red: 3,
+              green: 8,
+              blue: 4,
+              layer: :foreground,
+            ),
+            SuperDiff::Csi::TwentyFourBitColor.new(
+              red: 47,
+              green: 164,
+              blue: 59,
+              layer: :foreground,
+            ),
+          ]
+          string_to_inspect = [
+            colorize("This is a line", colors[0]),
+            colorize("And that's a line", colors[1]),
+            colorize("And there's a line too", colors[2]),
+          ].join("\n")
+
+          inspection = described_class.inspect(
+            string_to_inspect,
+            single_line: true,
+          )
+          # TODO: Figure out how to represent a colorized string inside of an
+          # already colorized string
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            "\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mAnd that's a line\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m"
+          INSPECTION
+        end
       end
     end
 
@@ -728,5 +765,9 @@ RSpec.describe SuperDiff::ObjectInspection do
         end
       end
     end
+  end
+
+  def colorize(*args, **opts, &block)
+    SuperDiff::Tests::Colorizer.call(*args, **opts, &block)
   end
 end

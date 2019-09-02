@@ -61,12 +61,16 @@ module SuperDiff
         <<~PROGRAM
           $LOAD_PATH.unshift("#{PROJECT_DIRECTORY.join("lib")}")
           $LOAD_PATH.unshift("#{PROJECT_DIRECTORY}")
+
           begin
             require "pry-byebug"
           rescue LoadError
             require "pry-nav"
           end
+
           require "super_diff/rspec"
+
+          require "spec/support/a"
           require "spec/support/person"
           require "spec/support/person_diff_formatter"
           require "spec/support/person_operation_sequence"
