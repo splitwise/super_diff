@@ -1,9 +1,7 @@
 module SuperDiff
   module Helpers
-    COLORS = { normal: :plain, inserted: :green, deleted: :red }.freeze
-
-    def self.style(style_name, text)
-      Csi::ColorHelper.public_send(COLORS.fetch(style_name), text)
+    def self.style(*args, **opts, &block)
+      SuperDiff::ColorizedDocument.colorize(*args, **opts, &block)
     end
 
     def self.plural_type_for(value)

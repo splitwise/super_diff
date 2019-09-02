@@ -2,6 +2,8 @@ require "patience_diff"
 require "diff-lcs"
 
 require_relative "super_diff/csi"
+require_relative "super_diff/colorized_document"
+
 require_relative "super_diff/errors"
 require_relative "super_diff/helpers"
 

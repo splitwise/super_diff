@@ -1322,6 +1322,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
   end
 
   def colored(&block)
-    SuperDiff::Tests::Colorizer.call(&block).chomp
+    SuperDiff::Tests::Colorizer.call(&block).to_s.chomp
   end
 end

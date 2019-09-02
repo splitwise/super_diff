@@ -1,43 +1,67 @@
 module SuperDiff
   module Csi
-    class FourBitColor
-      VALID_TYPES = [:fg, :bg].freeze
+    class FourBitColor < Color
+      VALID_TYPES = [:foreground, :background].freeze
       VALID_CODES_BY_NAME = {
-        black: { fg: 30, bg: 40 },
-        red: { fg: 31, bg: 41 },
-        green: { fg: 32, bg: 42 },
-        yellow: { fg: 33, bg: 43 },
-        blue: { fg: 34, bg: 44 },
-        magenta: { fg: 35, bg: 45 },
-        cyan: { fg: 36, bg: 46 },
-        white: { fg: 37, bg: 47 },
-        bright_black: { fg: 90, bg: 100 },
-        bright_red: { fg: 91, bg: 101 },
-        bright_green: { fg: 92, bg: 102 },
-        bright_yellow: { fg: 93, bg: 103 },
-        bright_blue: { fg: 94, bg: 104 },
-        bright_magenta: { fg: 95, bg: 105 },
-        bright_cyan: { fg: 96, bg: 106 },
-        bright_white: { fg: 97, bg: 107 },
+        black: { foreground: 30, background: 40 },
+        red: { foreground: 31, background: 41 },
+        green: { foreground: 32, background: 42 },
+        yellow: { foreground: 33, background: 43 },
+        blue: { foreground: 34, background: 44 },
+        magenta: { foreground: 35, background: 45 },
+        cyan: { foreground: 36, background: 46 },
+        white: { foreground: 37, background: 47 },
+        bright_black: { foreground: 90, background: 100 },
+        bright_red: { foreground: 91, background: 101 },
+        bright_green: { foreground: 92, background: 102 },
+        bright_yellow: { foreground: 93, background: 103 },
+        bright_blue: { foreground: 94, background: 104 },
+        bright_magenta: { foreground: 95, background: 105 },
+        bright_cyan: { foreground: 96, background: 106 },
+        bright_white: { foreground: 97, background: 107 },
       }.freeze
-      NAMES_BY_CODE = VALID_CODES_BY_NAME.reduce({}) do |hash, (key, value)|
-        hash.merge(value[:fg] => key, value[:bg] => key)
+      COLORS_BY_CODE = VALID_CODES_BY_NAME.reduce({}) do |hash, (name, value)|
+        hash.merge(
+          value[:foreground] => { name: name, layer: :foreground },
+          value[:background] => { name: name, layer: :background },
+        )
       end
       VALID_NAMES = VALID_CODES_BY_NAME.keys
       VALID_CODE_RANGES = [30..37, 40..47, 90..97, 100..107].freeze
+      OPENING_REGEX = /\e\[(\d+)m/.freeze
 
-      def initialize(value)
-        @name =
-          if value.is_a?(Symbol)
-            interpret_name!(value)
-          else
-            interpret_code!(value)
-          end
+      def self.exists?(name)
+        VALID_CODES_BY_NAME.has_key?(name)
       end
 
-      def sequence_for(layer)
+      def self.opening_regex
+        OPENING_REGEX
+      end
+
+      def initialize(value, layer: nil)
+        if value.is_a?(Symbol)
+          @name = interpret_name!(value)
+          @layer = interpret_layer!(layer)
+        else
+          pair =
+            if value.start_with?("\e[")
+              interpret_sequence!(value)
+            else
+              interpret_code!(value)
+            end
+
+          @name = pair.fetch(:name)
+          @layer = pair.fetch(:layer)
+        end
+      end
+
+      def to_s
         code = VALID_CODES_BY_NAME.fetch(name).fetch(layer)
         "\e[#{code}m"
+      end
+
+      def to_foreground
+        self.class.new(name, layer: :foreground)
       end
 
       private
@@ -60,6 +84,16 @@ module SuperDiff
         name
       end
 
+      def interpret_sequence!(sequence)
+        match = sequence.match(OPENING_REGEX)
+
+        # binding.pry
+
+        if match
+          interpret_code!(match[1].to_i)
+        end
+      end
+
       def interpret_code!(code)
         if VALID_CODE_RANGES.none? { |range| range.cover?(code) }
           message =
@@ -73,7 +107,7 @@ module SuperDiff
           raise ArgumentError.new(message)
         end
 
-        NAMES_BY_CODE.fetch(code)
+        COLORS_BY_CODE.fetch(code)
       end
     end
   end

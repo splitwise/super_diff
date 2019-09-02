@@ -7,27 +7,40 @@ module SuperDiff
       ResetSequence.new
     end
 
-    def self.colorize(text, fg: nil, bg: nil)
-      parts = []
-
-      if fg
-        parts << fg.sequence_for(:fg)
+    def self.colorize(*args, **opts, &block)
+      if block
+        ColorizedDocument.new(&block)
+      else
+        ColorizedDocument.new { colorize(*args, **opts) }
       end
-
-      if bg
-        parts << bg.sequence_for(:bg)
-      end
-
-      (parts + [text, reset_sequence]).join
     end
 
     def self.decolorize(text)
-      text.gsub(/\e\[\d+m(.+?)\e\[0m/, '\1')
+      text.gsub(/\e\[\d+(?:;\d+)*m(.+?)\e\[0m/, '\1')
+    end
+
+    def self.inspect_colors_in(text)
+      [FourBitColor, EightBitColor, TwentyFourBitColor].
+        reduce(text) do |str, klass|
+          klass.sub_colorized_areas_in(str) do |area, color|
+            color_block = colorize("◼︎", color.to_foreground)
+
+            layer_indicator =
+              if color.foreground?
+                "(fg)"
+              else
+                "(bg)"
+              end
+
+            "#{color_block} #{layer_indicator} ❮#{area}❯"
+          end
+        end
     end
   end
 end
 
-require_relative "csi/four_bit_color"
+require_relative "csi/color"
 require_relative "csi/eight_bit_color"
+require_relative "csi/four_bit_color"
 require_relative "csi/twenty_four_bit_color"
-require_relative "csi/color_helper"
+require_relative "csi/colorized_document"
