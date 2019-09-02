@@ -19,6 +19,7 @@ require_relative "rspec/object_inspection/inspectors/partial_object"
 require_relative "rspec/failure_message_template"
 require_relative "rspec/failure_message_builders/base"
 require_relative "rspec/failure_message_builders/match"
+require_relative "rspec/failure_message_builders/respond_to"
 
 require_relative "rspec/augmented_matcher"
 

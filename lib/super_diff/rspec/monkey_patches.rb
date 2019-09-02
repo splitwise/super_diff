@@ -6,6 +6,7 @@ require "rspec/support/object_formatter"
 require "rspec/matchers/built_in/eq"
 require "rspec/matchers/built_in/include"
 require "rspec/matchers/built_in/match"
+require "rspec/matchers/built_in/have_attributes"
 
 module RSpec
   module Expectations
@@ -282,6 +283,106 @@ module RSpec
                 description_as_phrase: description_as_phrase,
                 expected_captures: @expected_captures
               )
+          end
+        end)
+      end
+
+      class HaveAttributes
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          # Use the message in the base matcher
+          def failure_message
+            respond_to_failure_message_or { super }
+          end
+
+          # Use the message in the base matcher
+          def failure_message_when_negated
+            respond_to_failure_message_or { super }
+          end
+
+          # Override to use the whole object, not just part of it
+          def actual_for_failure_message
+            description_of(@actual)
+          end
+
+          # Override to use (...) as delimiters rather than {...}
+          def expected_for_failure_message
+            super.sub(/^\{ /, '(').gsub(/ \}$/, ')')
+          end
+          alias_method :expected_for_description, :expected_for_failure_message
+
+          # Override so that the differ knows that this is a partial object
+          def actual_for_diff
+            @actual
+          end
+
+          # Override so that the differ knows that this is a partial object
+          def expected_for_diff
+            if respond_to_failed
+              matchers.an_object_having_attributes(
+                @expected.select { |k, v| !@actual.respond_to?(k) }
+              )
+            else
+              matchers.an_object_having_attributes(@expected)
+            end
+          end
+        end)
+
+        # Override to force @values to get populated so that we can show a
+        # proper diff
+        def respond_to_attributes?
+          cache_all_values
+          matches = respond_to_matcher.matches?(@actual)
+          @respond_to_failed = !matches
+          matches
+        end
+
+        # Override this method to skip non-existent attributes, and to use
+        # public_send
+        def cache_all_values
+          @values = @expected.keys.inject({}) do |hash, attribute_key|
+            if @actual.respond_to?(attribute_key)
+              actual_value = @actual.public_send(attribute_key)
+              hash.merge(attribute_key => actual_value)
+            else
+              hash
+            end
+          end
+        end
+
+        def actual_has_attribute?(attribute_key, attribute_value)
+          values_match?(attribute_value, @values.fetch(attribute_key))
+        end
+
+        # Override to not improve_hash_formatting
+        def respond_to_failure_message_or
+          if respond_to_failed
+            respond_to_matcher.failure_message
+          else
+            yield
+          end
+        end
+      end
+
+      class RespondTo
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          # Override to use a custom template builder
+          def failure_message_template_builder
+            @_failure_message_template_builder ||=
+              SuperDiff::RSpec::FailureMessageBuilders::RespondTo.new(
+                actual: actual_for_failure_message,
+                expected: expected_for_failure_message,
+                description_as_phrase: description_as_phrase,
+                extra: with_arity
+              )
+          end
+
+          # Override to use this
+          def expected_for_failure_message
+            @failing_method_names
           end
         end)
       end

@@ -13,14 +13,23 @@ module SuperDiff
         end
 
         def attribute_names
-          expected.expected.keys# & actual.methods
+          # TODO: Test this
+          if actual.respond_to?(:attributes_for_super_diff)
+            actual.attributes_for_super_diff.keys | expected.expected.keys
+          else
+            expected.expected.keys
+          end
         end
 
         private
 
         def establish_expected_and_actual_attributes
           @expected_attributes = attribute_names.reduce({}) do |hash, name|
-            hash.merge(name => expected.expected[name])
+            if expected.expected.include?(name)
+              hash.merge(name => expected.expected[name])
+            else
+              hash
+            end
           end
 
           @actual_attributes = attribute_names.reduce({}) do |hash, name|
@@ -32,7 +41,6 @@ module SuperDiff
           end
         end
 
-=begin
         def should_add_noop_operation?(attribute_name)
           !expected_attributes.include?(attribute_name) || (
             actual_attributes.include?(attribute_name) &&
@@ -45,7 +53,6 @@ module SuperDiff
             actual_attributes.include?(attribute_name) &&
             expected_attributes[attribute_name] != actual_attributes[attribute_name]
         end
-=end
       end
     end
   end
