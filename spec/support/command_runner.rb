@@ -6,6 +6,10 @@ require "timeout"
 
 class CommandRunner
   module OutputHelpers
+    def self.bookended(text)
+      divider("START") + text + "\n" + divider("END")
+    end
+
     def self.divider(title = "")
       total_length = 72
       start_length = 3

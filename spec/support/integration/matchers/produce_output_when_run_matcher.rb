@@ -9,12 +9,7 @@ module SuperDiff
       TEMP_DIRECTORY = PROJECT_DIRECTORY.join("tmp")
 
       def initialize(expected_output)
-        @expected_output =
-          expected_output.
-            strip.
-            split(/(\n+)/).
-            map { |line| line =~ /\n+/ ? line : (" " * 7) + line }.
-            join
+        @expected_output = expected_output.to_s.strip
       end
 
       def matches?(test)
@@ -24,16 +19,20 @@ module SuperDiff
       end
 
       def failure_message
-        "Expected test to produce output, but it did not.\n\n" +
-          "Expected output:\n\n" +
-          CommandRunner::OutputHelpers.divider("START") +
-          expected_output + "\n" +
-          CommandRunner::OutputHelpers.divider("END") +
+        message = "Expected test to produce output, but it did not.\n\n" +
+          "Expected output to contain:\n\n" +
+          CommandRunner::OutputHelpers.bookended(expected_output) +
           "\n" +
           "Actual output:\n\n" +
-          CommandRunner::OutputHelpers.divider("START") +
-          actual_output + "\n" +
-          CommandRunner::OutputHelpers.divider("END")
+          CommandRunner::OutputHelpers.bookended(actual_output)
+
+        ::RSpec::Matchers::ExpectedsForMultipleDiffs.
+          from(expected_output).
+          message_with_diff(
+            message,
+            ::RSpec::Expectations.differ,
+            actual_output,
+          )
       end
 
       private
@@ -41,8 +40,15 @@ module SuperDiff
       attr_reader :expected_output, :test
 
       def actual_output
-        @_actual_output ||=
-          CommandRunner.run("rspec", tempfile.to_s).output.strip
+        @_actual_output ||= run_command.output.strip
+      end
+
+      def run_command
+        CommandRunner.run(
+          "rspec",
+          tempfile.to_s,
+          env: { "DISABLE_PRY" => true },
+        )
       end
 
       def tempfile
@@ -66,6 +72,10 @@ module SuperDiff
           require "spec/support/person_operation_sequence"
           require "spec/support/person_operational_sequencer"
           require "spec/support/shipping_address"
+
+          RSpec.configure do |config|
+            config.color_mode = :on
+          end
 
           SuperDiff::RSpec.configure do |config|
             config.extra_operational_sequencer_classes << SuperDiff::Test::PersonOperationalSequencer
