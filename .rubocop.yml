@@ -37,11 +37,14 @@ Metrics/AbcSize:
   Max: 32
 Metrics/BlockLength:
   ExcludedMethods:
+    - build_expected_output
+    - colored
+    - colorize
+    - context
     - define
     - describe
-    - context
+    - indent
     - it
-    - colored
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
