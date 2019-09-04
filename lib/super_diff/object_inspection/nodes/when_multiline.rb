@@ -6,12 +6,11 @@ module SuperDiff
           if single_line
             ""
           elsif block
-            subtree = InspectionTree.new
-            subtree.instance_exec(object, &block)
-            subtree.evaluate(
+            evaluate_in_subtree(
               object,
               indent_level: indent_level,
               single_line: single_line,
+              &block
             )
           else
             immediate_value

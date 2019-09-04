@@ -433,7 +433,7 @@ RSpec.describe SuperDiff::ObjectInspection do
             )
             expect(inspection).to match(
               # rubocop:disable Metrics/LineLength
-              /\A#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="mac and cheese" @quantity=2>\Z/,
+              /\A#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="mac and cheese", @quantity=2>\Z/,
               # rubocop:enable Metrics/LineLength
             )
           end
@@ -472,7 +472,7 @@ RSpec.describe SuperDiff::ObjectInspection do
             )
             expect(inspection).to match(
               # rubocop:disable Metrics/LineLength
-              /\A#<SuperDiff::Test::Order:0x[a-z0-9]+ @items=\[#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="ham" @quantity=1>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="eggs" @quantity=2>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="cheese" @quantity=1>\]>\Z/,
+              /\A#<SuperDiff::Test::Order:0x[a-z0-9]+ @items=\[#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="ham", @quantity=1>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="eggs", @quantity=2>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="cheese", @quantity=1>\]>\Z/,
               # rubocop:enable Metrics/LineLength
             )
           end
@@ -655,7 +655,7 @@ RSpec.describe SuperDiff::ObjectInspection do
           )
           expect(inspection).to match(
             # rubocop:disable Metrics/LineLength
-            /\A{ state: :down, errors: \["Container A-234 is partially damaged", "Vessel B042 was attacked by raccoons", "Product FDK-3429 is out of stock"\], mission_critical: true, serviceable: false, outstanding_orders: \[#<SuperDiff::Test::Order:0x[a-z0-9]+ @items=\[#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="ham" @quantity=1>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="eggs" @quantity=2>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="cheese" @quantity=1>\]>\], customers: \[#<SuperDiff::Test::Customer name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Baltic Ave.", line_2: "", city: "Hill Valley", state: "CA", zip: "90382">, phone: "111-111-1111">, #<SuperDiff::Test::Customer name: "Doc Brown", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Park Place", line_2: "", city: "Beverly Hills", state: "CA", zip: "90210">, phone: "222-222-2222">\] }\Z/,
+            /\A\{ state: :down, errors: \["Container A-234 is partially damaged", "Vessel B042 was attacked by raccoons", "Product FDK-3429 is out of stock"\], mission_critical: true, serviceable: false, outstanding_orders: \[#<SuperDiff::Test::Order:0x[a-z0-9]+ @items=\[#<SuperDiff::Test::Item:0x[a-z0-9]+ @name="ham", @quantity=1>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="eggs", @quantity=2>, #<SuperDiff::Test::Item:0x[a-z0-9]+ @name="cheese", @quantity=1>\]>\], customers: \[#<SuperDiff::Test::Customer name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Baltic Ave.", line_2: "", city: "Hill Valley", state: "CA", zip: "90382">, phone: "111-111-1111">, #<SuperDiff::Test::Customer name: "Doc Brown", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Park Place", line_2: "", city: "Beverly Hills", state: "CA", zip: "90210">, phone: "222-222-2222">\] \}\Z/,
             # rubocop:enable Metrics/LineLength
           )
         end

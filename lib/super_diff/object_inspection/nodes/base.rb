@@ -70,6 +70,16 @@ module SuperDiff
             [:"@immediate_value"]
           end
         end
+
+        def evaluate_in_subtree(object, indent_level:, single_line:)
+          subtree = InspectionTree.new
+          subtree.evaluate_block(object, &block)
+          subtree.evaluate(
+            object,
+            indent_level: indent_level,
+            single_line: single_line,
+          )
+        end
       end
     end
   end

@@ -4,7 +4,7 @@ module SuperDiff
       class Text < Base
         def evaluate(object, **)
           if block
-            tree.instance_exec(object, &block).to_s
+            tree.evaluate_block(object, &block).to_s
           else
             immediate_value.to_s
           end

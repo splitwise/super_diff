@@ -29,12 +29,20 @@ module SuperDiff
         end
       end
 
+      def evaluate_block(object, &block)
+        instance_exec(object, &block)
+      end
+
       def add_text(*args, &block)
         add_node :text, *args, &block
       end
 
       def when_multiline(&block)
         add_node :when_multiline, &block
+      end
+
+      def when_singleline(&block)
+        add_node :when_singleline, &block
       end
 
       def add_break(*args, &block)
@@ -115,6 +123,19 @@ module SuperDiff
 
       def build_node(type, *args, &block)
         Nodes.fetch(type).new(self, *args, &block)
+      end
+
+      class BlockArgument
+        attr_reader :object
+
+        def initialize(object:, single_line:)
+          @object = object
+          @single_line = single_line
+        end
+
+        def single_line?
+          @single_line
+        end
       end
     end
   end

@@ -1358,9 +1358,17 @@ RSpec.describe SuperDiff::EqualityMatcher do
           Differing objects.
 
           #{
-            colored do
-              red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % (expected.object_id * 2)} @character="mirage" @handle="martymcfly" @health=0.3 @inventory=["flatline", "purple body shield"] @shields=0.6 @ultimate=0.8>)
-              green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % (actual.object_id * 2)} @character="lifeline" @handle="docbrown" @health=0.3 @inventory=["wingman", "mastiff"] @shields=0.6 @ultimate=0.8>)
+            if SuperDiff::Test.jruby?
+              # Source: https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java
+              colored do
+                red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % expected.hash} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
+                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
+              end
+            else
+              colored do
+                red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%016x" % (expected.object_id * 2)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+              end
             end
           }
 
