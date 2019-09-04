@@ -36,12 +36,7 @@ module SuperDiff
 
         private
 
-        attr_reader(
-          :expected,
-          :actual,
-          :description_as_phrase,
-          :template,
-        )
+        attr_reader :expected, :actual, :description_as_phrase, :template
 
         def negated?
           @negated
@@ -58,7 +53,7 @@ module SuperDiff
         def add_actual_section
           template.add_text_in_singleline_mode actual_phrase
           template.add_text_in_multiline_mode do
-            actual_phrase.rjust(phrase_width)# + ":"
+            actual_phrase.rjust(phrase_width)
           end
           template.add_text " "
           add_actual_value
@@ -78,7 +73,6 @@ module SuperDiff
                 expected_phrase
               end
             end
-            # t.add_text_in_multiline_mode ":"
             t.add_text " "
             add_expected_value_to(t)
           end
@@ -93,12 +87,6 @@ module SuperDiff
         end
 
         def expected_phrase
-          # FailureMessageTemplate.new do |t|
-            # t.add_text "#{to_or_not_to} "
-            # t.add_text description_as_phrase
-            # # t.add_text_in_color(:blue, description_as_phrase)
-          # end
-
           "#{to_or_not_to} #{description_as_phrase}"
         end
 

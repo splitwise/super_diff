@@ -2,6 +2,7 @@ module SuperDiff
   module RSpec
     module AugmentedMatcher
       # Update to use expected_for_description instead of @expected
+      # TODO: Test
       def description
         failure_message_builder.matcher_description
       end
