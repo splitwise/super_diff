@@ -59,6 +59,10 @@ module SuperDiff
           add_actual_value
         end
 
+        def actual_phrase
+          "Expected"
+        end
+
         def add_actual_value
           template.add_text_in_color(actual_color) { actual }
         end
@@ -78,16 +82,12 @@ module SuperDiff
           end
         end
 
-        def add_expected_value_to(template)
-          template.add_text_in_color(expected_color) { expected }
-        end
-
-        def actual_phrase
-          "Expected"
-        end
-
         def expected_phrase
           "#{to_or_not_to} #{description_as_phrase}"
+        end
+
+        def add_expected_value_to(template)
+          template.add_text_in_color(expected_color) { expected }
         end
 
         def to_or_not_to

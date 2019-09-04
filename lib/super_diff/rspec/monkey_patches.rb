@@ -386,6 +386,53 @@ module RSpec
           end
         end)
       end
+
+      class RaiseError
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def actual_for_failure_message
+            "#<#{@actual_error.class.name} #{@actual_error.message.inspect}>"
+          end
+
+          def actual_for_diff
+            @actual_error.message
+          end
+
+          def expected_for_failure_message
+            if @expected_message
+              "#<#{@expected_error.name} #{@expected_message.inspect}>"
+            else
+              "#<#{@expected_error.name}>"
+            end
+          end
+
+          def expected_for_diff
+            @expected_message
+          end
+
+          def diffable?
+            !@expected_message.to_s.empty?
+          end
+
+          def description_as_phrase
+            "match"
+          end
+
+          def failure_message_template_builder
+            @_failure_message_template_builder ||=
+              SuperDiff::RSpec::FailureMessageBuilders::RaiseError.new(
+                actual: actual_for_failure_message,
+                expected: expected_for_failure_message,
+                description_as_phrase: description_as_phrase,
+              )
+          end
+        end)
+
+        def self.matcher_name
+          'raise error'
+        end
+      end
     end
   end
 end
