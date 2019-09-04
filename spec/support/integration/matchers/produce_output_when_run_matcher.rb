@@ -47,7 +47,7 @@ module SuperDiff
         CommandRunner.run(
           "rspec",
           tempfile.to_s,
-          env: { "DISABLE_PRY" => true },
+          env: { "DISABLE_PRY" => "true" },
         )
       end
 
