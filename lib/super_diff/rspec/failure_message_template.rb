@@ -135,7 +135,7 @@ module SuperDiff
 
       class PlainText < Text
         def to_s
-          evaluate
+          evaluate.to_s
         end
       end
 
@@ -147,11 +147,11 @@ module SuperDiff
         end
 
         def to_s
-          colorizer.wrap(evaluate, color)
+          colorizer.wrap(evaluate.to_s, color)
         end
 
         def length
-          evaluate.length
+          evaluate.to_s.length
         end
 
         private
@@ -194,7 +194,7 @@ module SuperDiff
 
       class PlainTextInSinglelineMode < Text
         def to_string_in_singleline_mode
-          evaluate
+          evaluate.to_s
         end
 
         def to_string_in_multiline_mode
@@ -208,7 +208,7 @@ module SuperDiff
         end
 
         def to_string_in_multiline_mode
-          evaluate
+          evaluate.to_s
         end
       end
 

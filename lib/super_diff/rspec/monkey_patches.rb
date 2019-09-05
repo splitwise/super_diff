@@ -376,7 +376,10 @@ module RSpec
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
                 description_as_phrase: description_as_phrase,
-                extra: with_arity
+                expected_arity: @expected_arity,
+                arbitrary_keywords: @arbitrary_keywords,
+                expected_keywords: @expected_keywords,
+                unlimited_arguments: @unlimited_arguments
               )
           end
 
