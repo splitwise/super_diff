@@ -34,7 +34,7 @@ module SuperDiff
           when Array then :array
           when Hash then :hash
           when String then :string
-          when Symbol, Numeric, true, false, nil then :primitive
+          when true, false, nil, Symbol, Numeric, Regexp then :primitive
           else :default_object
           end
         end

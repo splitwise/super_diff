@@ -82,6 +82,22 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given a regex" do
+      context "given single_line: true" do
+        it "returns the regex, inspected" do
+          inspection = described_class.inspect(/foo/, single_line: true)
+          expect(inspection).to eq("/foo/")
+        end
+      end
+
+      context "given single_line: false" do
+        it "returns the regex, inspected" do
+          inspection = described_class.inspect(/foo/, single_line: false)
+          expect(inspection).to eq("/foo/")
+        end
+      end
+    end
+
     context "given a single-line string" do
       it "returns the string surrounded by quotes" do
         inspection = described_class.inspect("Marty", single_line: true)
