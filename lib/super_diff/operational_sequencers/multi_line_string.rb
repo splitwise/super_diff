@@ -2,9 +2,8 @@ module SuperDiff
   module OperationalSequencers
     class MultiLineString < Base
       def self.applies_to?(expected, actual)
-        [expected, actual].all? do |value|
-          value.is_a?(::String) && value.include?("\n")
-        end
+        expected.is_a?(::String) && actual.is_a?(::String) &&
+          (expected.include?("\n") || actual.include?("\n"))
       end
 
       def initialize(*args)

@@ -71,6 +71,66 @@ RSpec.describe "Integration with RSpec", type: :integration do
       end
     end
 
+    context "when comparing a single-line string with a multi-line string" do
+      it "produces the correct output" do
+        test = <<~TEST.strip
+          expected = "Something entirely different"
+          actual = "This is a line\\nAnd that's another line\\n"
+          expect(actual).to eq(expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(actual).to eq(expected)",
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|"This is a line\\nAnd that's another line\\n"|
+              plain " to eq "
+              red   %|"Something entirely different"|
+              plain "."
+            end
+          },
+          diff: proc {
+            red_line   %|- Something entirely different|
+            green_line %|+ This is a line\\n|
+            green_line %|+ And that's another line\\n|
+          },
+        )
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "when comparing a multi-line string with a single-line string" do
+      it "produces the correct output" do
+        test = <<~TEST.strip
+          expected = "This is a line\\nAnd that's another line\\n"
+          actual = "Something entirely different"
+          expect(actual).to eq(expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(actual).to eq(expected)",
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|"Something entirely different"|
+              plain " to eq "
+              red %|"This is a line\\nAnd that's another line\\n"|
+              plain "."
+            end
+          },
+          diff: proc {
+            red_line   %|- This is a line\\n|
+            red_line   %|- And that's another line\\n|
+            green_line %|+ Something entirely different|
+          },
+        )
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
     context "when comparing two closely different multi-line strings" do
       it "produces the correct output" do
         test = <<~TEST.strip

@@ -116,6 +116,50 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
+    context "given a single-line string and a multi-line string" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: "Something entirely different",
+          actual: "This is a line\nAnd that's another line\n",
+        )
+
+        expected_output = <<~STR.strip
+          Differing strings.
+
+          #{
+            colored do
+              red_line   %(Expected: "Something entirely different")
+              green_line %(  Actual: "This is a line\\nAnd that's another line\\n")
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given a multi-line string and a single-line string" do
+      it "returns a message along with the diff" do
+        actual_output = described_class.call(
+          expected: "This is a line\nAnd that's another line\n",
+          actual: "Something entirely different",
+        )
+
+        expected_output = <<~STR.strip
+          Differing strings.
+
+          #{
+            colored do
+              red_line   %(Expected: "This is a line\\nAnd that's another line\\n")
+              green_line %(  Actual: "Something entirely different")
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
     context "given closely different multi-line strings" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(
