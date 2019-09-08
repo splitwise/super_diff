@@ -17,12 +17,14 @@ module SuperDiff
             actual,
             extra_classes: [
               *RSpec.extra_differ_classes,
+              Differs::CollectionContainingExactly,
               Differs::PartialArray,
               Differs::PartialHash,
               Differs::PartialObject,
             ],
             extra_operational_sequencer_classes: [
               *RSpec.extra_operational_sequencer_classes,
+              OperationalSequencers::CollectionContainingExactly,
               OperationalSequencers::PartialArray,
               OperationalSequencers::PartialHash,
               OperationalSequencers::PartialObject,
@@ -54,7 +56,8 @@ module SuperDiff
         comparing_values_of_the_same_class? ||
           comparing_with_a_partial_hash? ||
           comparing_with_a_partial_array? ||
-          comparing_with_a_partial_object?
+          comparing_with_a_partial_object? ||
+          comparing_with_a_collection_containing_exactly?
       end
 
       def comparing_values_of_the_same_class?
@@ -71,6 +74,10 @@ module SuperDiff
 
       def comparing_with_a_partial_object?
         SuperDiff::RSpec.partial_object?(expected)
+      end
+
+      def comparing_with_a_collection_containing_exactly?
+        SuperDiff::RSpec.collection_containing_exactly?(expected)
       end
 
       def comparing_primitive_values?

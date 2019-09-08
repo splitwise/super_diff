@@ -128,6 +128,7 @@ module SuperDiff
           when 1
             values[0]
           else
+            # TODO: Use Oxford comma
             values[0..-2].join(", ") + " and #{values[-1]}"
           end
         end

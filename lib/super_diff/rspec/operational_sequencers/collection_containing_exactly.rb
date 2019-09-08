@@ -1,0 +1,97 @@
+module SuperDiff
+  module RSpec
+    module OperationalSequencers
+      class CollectionContainingExactly < SuperDiff::OperationalSequencers::Base
+        def self.applies_to?(expected, actual)
+          SuperDiff::RSpec.collection_containing_exactly?(expected) &&
+            actual.is_a?(::Array)
+        end
+
+        def initialize(actual:, **rest)
+          super
+          populate_pairings_maximizer_in_expected_with(actual)
+        end
+
+        protected
+
+        def unary_operations
+          operations = []
+
+          (0...actual.length).each do |index|
+            add_noop_to(operations, index)
+          end
+
+          indexes_in_expected_but_not_in_actual.each do |index|
+            add_delete_to(operations, index)
+          end
+
+          operations
+        end
+
+        def build_operation_sequencer
+          OperationSequences::Array.new([])
+        end
+
+        private
+
+        def populate_pairings_maximizer_in_expected_with(actual)
+          expected.matches?(actual)
+        end
+
+        def add_noop_to(operations, index)
+          value = actual[index]
+          operations << ::SuperDiff::Operations::UnaryOperation.new(
+            name: :noop,
+            collection: collection,
+            key: index,
+            value: value,
+            index: index,
+            index_in_collection: collection.index(value),
+          )
+        end
+
+        def add_delete_to(operations, index)
+          value = expected.expected[index]
+          operations << ::SuperDiff::Operations::UnaryOperation.new(
+            name: :delete,
+            collection: collection,
+            key: index,
+            value: value,
+            index: index,
+            index_in_collection: collection.index(value),
+          )
+        end
+
+        def add_insert_to(operations, index)
+          value = actual[index]
+          operations << ::SuperDiff::Operations::UnaryOperation.new(
+            name: :insert,
+            collection: collection,
+            key: index,
+            value: value,
+            index: index,
+            index_in_collection: collection.index(value),
+          )
+        end
+
+        def collection
+          actual + values_in_expected_but_not_in_actual
+        end
+
+        def values_in_expected_but_not_in_actual
+          indexes_in_expected_but_not_in_actual.map do |index|
+            expected.expected[index]
+          end
+        end
+
+        def indexes_in_expected_but_not_in_actual
+          pairings_maximizer_best_solution.unmatched_expected_indexes
+        end
+
+        def pairings_maximizer_best_solution
+          expected.__send__(:best_solution)
+        end
+      end
+    end
+  end
+end

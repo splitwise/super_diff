@@ -622,6 +622,38 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given a fuzzy object matching a collection containing exactly <something>" do
+      context "given single_line: true" do
+        it "returns a representation of the partial object on a single line" do
+          inspection = described_class.inspect(
+            a_collection_containing_exactly("foo", "bar", "baz"),
+            single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<a collection containing exactly ("foo", "bar", "baz")>),
+          )
+        end
+      end
+
+      context "given single_line: false" do
+        it "returns a representation of the partial object across multiple lines" do
+          inspection = described_class.inspect(
+            a_collection_containing_exactly("foo", "bar", "baz"),
+            single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<a collection containing exactly (
+              "foo",
+              "bar",
+              "baz"
+            )>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a Double" do
       context "that is anonymous" do
         context "given single_line: true" do

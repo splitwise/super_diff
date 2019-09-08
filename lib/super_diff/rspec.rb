@@ -2,22 +2,26 @@ require_relative "../super_diff"
 
 require_relative "rspec/differ"
 
+require_relative "rspec/differs/collection_containing_exactly"
 require_relative "rspec/differs/partial_array"
 require_relative "rspec/differs/partial_hash"
 require_relative "rspec/differs/partial_object"
 
+require_relative "rspec/operational_sequencers/collection_containing_exactly"
 require_relative "rspec/operational_sequencers/partial_array"
 require_relative "rspec/operational_sequencers/partial_hash"
 require_relative "rspec/operational_sequencers/partial_object"
 
 require_relative "rspec/object_inspection/inspector_registry"
 require_relative "rspec/object_inspection/inspectors"
+require_relative "rspec/object_inspection/inspectors/collection_containing_exactly"
 require_relative "rspec/object_inspection/inspectors/partial_array"
 require_relative "rspec/object_inspection/inspectors/partial_hash"
 require_relative "rspec/object_inspection/inspectors/partial_object"
 
 require_relative "rspec/failure_message_template"
 require_relative "rspec/failure_message_builders/base"
+require_relative "rspec/failure_message_builders/contain_exactly"
 require_relative "rspec/failure_message_builders/match"
 require_relative "rspec/failure_message_builders/raise_error"
 require_relative "rspec/failure_message_builders/respond_to"
@@ -54,6 +58,11 @@ module SuperDiff
     def self.partial_object?(value)
       partial_placeholder?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::HaveAttributes)
+    end
+
+    def self.collection_containing_exactly?(value)
+      partial_placeholder?(value) &&
+        value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::ContainExactly)
     end
 
     def self.partial_placeholder?(value)

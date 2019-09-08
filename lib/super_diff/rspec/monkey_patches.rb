@@ -3,10 +3,11 @@ require "rspec/matchers"
 require "rspec/expectations/fail_with"
 require "rspec/expectations/handler"
 require "rspec/support/object_formatter"
+require "rspec/matchers/built_in/contain_exactly"
 require "rspec/matchers/built_in/eq"
+require "rspec/matchers/built_in/have_attributes"
 require "rspec/matchers/built_in/include"
 require "rspec/matchers/built_in/match"
-require "rspec/matchers/built_in/have_attributes"
 
 module RSpec
   module Expectations
@@ -217,6 +218,39 @@ module RSpec
     module BuiltIn
       class Eq
         prepend SuperDiff::RSpec::AugmentedMatcher
+      end
+
+      class ContainExactly
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          # Override this method so that the differ knows that this is a partial
+          # collection
+          def expected_for_diff
+            matchers.a_collection_containing_exactly(*expected)
+          end
+
+          private
+
+          # Override to use readable_list_of
+          def expected_for_description
+            readable_list_of(expected).lstrip
+          end
+
+          # Override to use raw expected value
+          def expected_for_failure_message
+            expected
+          end
+
+          def failure_message_template_builder
+            @_failure_message_template_builder ||=
+              SuperDiff::RSpec::FailureMessageBuilders::ContainExactly.new(
+                actual: actual_for_failure_message,
+                expected: expected_for_failure_message,
+                description_as_phrase: description_as_phrase,
+              )
+          end
+        end)
       end
 
       class Include

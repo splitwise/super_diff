@@ -547,6 +547,211 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
+  describe "the #contain_exactly matcher" do
+    context "when a few number of values are given" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expected = ["Einie", "Marty"]
+          actual = ["Marty", "Jennifer", "Doc"]
+          expect(actual).to contain_exactly(*expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(actual).to contain_exactly(*expected)",
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|["Marty", "Jennifer", "Doc"]|
+              plain " to contain exactly "
+              red   %|"Einie"|
+              plain " and "
+              red   %|"Marty"|
+              plain "."
+            end
+          },
+          diff: proc {
+            plain_line %|  [|
+            plain_line %|    "Marty",|
+            plain_line %|    "Jennifer",|
+            plain_line %|    "Doc",|
+            red_line   %|-   "Einie"|
+            plain_line %|  ]|
+          },
+        )
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "when a large number of values are given" do
+      context "and they are only simple strings" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = [
+              "Doc Brown",
+              "Marty McFly",
+              "Biff Tannen",
+              "George McFly",
+              "Lorraine McFly"
+            ]
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
+            expect(actual).to contain_exactly(*expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to contain_exactly(*expected)",
+            expectation: proc {
+              line do
+                plain "          Expected "
+                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+              end
+
+              line do
+                plain "to contain exactly "
+                red %|"Doc Brown"|
+                plain ", "
+                red %|"Marty McFly"|
+                plain ", "
+                red %|"Biff Tannen"|
+                plain ", "
+                red %|"George McFly"|
+                plain " and "
+                red %|"Lorraine McFly"|
+              end
+            },
+            diff: proc {
+              plain_line %|  [|
+              plain_line %|    "Marty McFly",|
+              plain_line %|    "Doc Brown",|
+              plain_line %|    "Einie",|
+              plain_line %|    "Lorraine McFly",|
+              red_line   %|-   "Biff Tannen",|
+              red_line   %|-   "George McFly"|
+              plain_line %|  ]|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "and some of them are regexen" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = [
+              / Brown$/,
+              "Marty McFly",
+              "Biff Tannen",
+              /Georg McFly/,
+              /Lorrain McFly/
+            ]
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
+            expect(actual).to contain_exactly(*expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to contain_exactly(*expected)",
+            expectation: proc {
+              line do
+                plain "          Expected "
+                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+              end
+
+              line do
+                plain "to contain exactly "
+                red %|/ Brown$/|
+                plain ", "
+                red %|"Marty McFly"|
+                plain ", "
+                red %|"Biff Tannen"|
+                plain ", "
+                red %|/Georg McFly/|
+                plain " and "
+                red %|/Lorrain McFly/|
+              end
+            },
+            diff: proc {
+              plain_line %|  [|
+              plain_line %|    "Marty McFly",|
+              plain_line %|    "Doc Brown",|
+              plain_line %|    "Einie",|
+              plain_line %|    "Lorraine McFly",|
+              red_line   %|-   "Biff Tannen",|
+              red_line   %|-   /Georg McFly/,|
+              red_line   %|-   /Lorrain McFly/|
+              plain_line %|  ]|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "and some of them are fuzzy objects" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = [
+              a_hash_including(foo: "bar"),
+              a_collection_containing_exactly("zing"),
+              an_object_having_attributes(baz: "qux"),
+            ]
+            actual = [
+              { foo: "bar" },
+              double(baz: "qux"),
+              { blargh: "riddle" }
+            ]
+            expect(actual).to contain_exactly(*expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to contain_exactly(*expected)",
+            expectation: proc {
+              line do
+                plain "          Expected "
+                green %|[{ foo: "bar" }, #<Double (anonymous)>, { blargh: "riddle" }]|
+              end
+
+              line do
+                plain "to contain exactly "
+                red %|#<a hash including (foo: "bar")>|
+                plain ", "
+                red %|#<a collection containing exactly ("zing")>|
+                plain " and "
+                red %|#<an object having attributes (baz: "qux")>|
+              end
+            },
+            diff: proc {
+              plain_line %|  [|
+              plain_line %|    {|
+              plain_line %|      foo: "bar"|
+              plain_line %|    },|
+              plain_line %|    #<Double (anonymous)>,|
+              plain_line %|    {|
+              plain_line %|      blargh: "riddle"|
+              plain_line %|    },|
+              red_line   %|-   #<a collection containing exactly (|
+              red_line   %|-     "zing"|
+              red_line   %|-   )>|
+              plain_line %|  ]|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+  end
+
   describe "the #match matcher" do
     context "when the expected value is a partial hash" do
       context "that is small" do
@@ -1041,6 +1246,165 @@ RSpec.describe "Integration with RSpec", type: :integration do
         expect(test).to produce_output_when_run(expected_output)
       end
     end
+
+    context "when the expected value is an order-independent array" do
+      context "that is small" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = a_collection_containing_exactly("a")
+            actual = ["b"]
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to match(expected)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|["b"]|
+                plain " to match "
+                red   %|#<a collection containing exactly ("a")>|
+                plain "."
+              end
+            },
+            diff: proc {
+              plain_line %|  [|
+              plain_line %|    "b",|
+              red_line   %|-   "a"|
+              plain_line %|  ]|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "that is large" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = a_collection_containing_exactly("milk", "bread")
+            actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to match(expected)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+              end
+
+              line do
+                plain "to match "
+                red   %|#<a collection containing exactly ("milk", "bread")>|
+              end
+            },
+            diff: proc {
+              plain_line %|  [|
+              plain_line %|    "milk",|
+              plain_line %|    "toast",|
+              plain_line %|    "eggs",|
+              plain_line %|    "cheese",|
+              plain_line %|    "English muffins",|
+              red_line   %|-   "bread"|
+              plain_line %|  ]|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "when the expected value includes an order-independent array" do
+      context "and the corresponding actual value is an array" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "shopping list",
+              contents: a_collection_containing_exactly("milk", "bread")
+            }
+            actual = {
+              name: "shopping list",
+              contents: ["milk", "toast", "eggs"]
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to match(expected)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+              end
+
+              line do
+                plain "to match "
+                red   %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+              end
+            },
+            diff: proc {
+              plain_line %|  {|
+              plain_line %|    name: "shopping list",|
+              plain_line %|    contents: [|
+              plain_line %|      "milk",|
+              plain_line %|      "toast",|
+              plain_line %|      "eggs",|
+              red_line   %|-     "bread"|
+              plain_line %|    ]|
+              plain_line %|  }|
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when the corresponding actual value is not an array" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expected = {
+              name: "shopping list",
+              contents: a_collection_containing_exactly("milk", "bread")
+            }
+            actual = {
+              name: "shopping list",
+              contents: nil
+            }
+            expect(actual).to match(expected)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(actual).to match(expected)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|{ name: "shopping list", contents: nil }|
+              end
+
+              line do
+                plain "to match "
+                red   %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+              end
+            },
+            diff: proc {
+              plain_line %!  {!
+              plain_line %!    name: "shopping list",!
+              red_line   %!-   contents: #<a collection containing exactly (!
+              red_line   %!-     "milk",!
+              red_line   %!-     "bread"!
+              red_line   %!-   )>!
+              green_line %!+   contents: nil!
+              plain_line %!  }!
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
   end
 
   describe "the #have_attributes matcher" do
@@ -1370,314 +1734,95 @@ RSpec.describe "Integration with RSpec", type: :integration do
   end
 
   describe "the #respond_to matcher" do
-    context "when used on a custom object" do
-    end
-
-    context "when used on a non-custom object" do
-      context "without any qualifiers" do
-        context "when a few number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double).to respond_to(:foo)
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double).to respond_to(:foo)",
-              expectation: proc {
-                line do
-                  plain "Expected "
-                  green %|#<Double (anonymous)>|
-                  plain " to respond to "
-                  red %|:foo|
-                  plain "."
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-
-        context "when a large number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)",
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain "     Expected "
-                  green %|#<Double :something_really_long>|
-                end
-
-                line do
-                  plain "to respond to "
-                  red %|:foo|
-                  plain ", "
-                  red %|:bar|
-                  plain " and "
-                  red %|:baz|
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-      end
-
-      context "qualified with #with + #arguments" do
-        context "when a few number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double).to respond_to(:foo).with(3).arguments
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double).to respond_to(:foo).with(3).arguments",
-              expectation: proc {
-                line do
-                  plain "Expected "
-                  green %|#<Double (anonymous)>|
-                  plain " to respond to "
-                  red %|:foo|
-                  plain " with "
-                  red %|3|
-                  plain " arguments."
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-
-        context "when a large number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments",
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain "     Expected "
-                  green %|#<Double :something_really_long>|
-                end
-
-                line do
-                  plain "to respond to "
-                  red %|:foo|
-                  plain ", "
-                  red %|:bar|
-                  plain " and "
-                  red %|:baz|
-                  plain " with "
-                  red %|3|
-                  plain " arguments"
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-      end
-
-      context "qualified with #with_keywords" do
-        context "when a few number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double).to respond_to(:foo).with_keywords(:bar)
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double).to respond_to(:foo).with_keywords(:bar)",
-              expectation: proc {
-                line do
-                  plain "Expected "
-                  green %|#<Double (anonymous)>|
-                  plain " to respond to "
-                  red %|:foo|
-                  plain " with keyword "
-                  red %|:bar|
-                  plain "."
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-
-        context "when a large number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)",
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain "     Expected "
-                  green %|#<Double :something_really_long>|
-                end
-
-                line do
-                  plain "to respond to "
-                  red %|:foo|
-                  plain ", "
-                  red %|:bar|
-                  plain " and "
-                  red %|:baz|
-                  plain " with keywords "
-                  red %|:qux|
-                  plain " and "
-                  red %|:blargh|
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-      end
-
-      context "qualified with #with_any_keywords" do
-        context "when a few number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double).to respond_to(:foo).with_any_keywords
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double).to respond_to(:foo).with_any_keywords",
-              expectation: proc {
-                line do
-                  plain "Expected "
-                  green %|#<Double (anonymous)>|
-                  plain " to respond to "
-                  red %|:foo|
-                  plain " with "
-                  red %|any|
-                  plain " keywords."
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-
-        context "when a large number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords",
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain "     Expected "
-                  green %|#<Double :something_really_long>|
-                end
-
-                line do
-                  plain "to respond to "
-                  red %|:foo|
-                  plain ", "
-                  red %|:bar|
-                  plain " and "
-                  red %|:baz|
-                  plain " with "
-                  red %|any|
-                  plain " keywords "
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-      end
-
-      context "qualified with #with_unlimited_arguments" do
-        context "when a few number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double).to respond_to(:foo).with_unlimited_arguments
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double).to respond_to(:foo).with_unlimited_arguments",
-              expectation: proc {
-                line do
-                  plain "Expected "
-                  green %|#<Double (anonymous)>|
-                  plain " to respond to "
-                  red %|:foo|
-                  plain " with "
-                  red %|unlimited|
-                  plain " arguments."
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-
-        context "when a large number of methods are specified" do
-          it "produces the correct output" do
-            test = <<~TEST
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments
-            TEST
-
-            expected_output = build_expected_output(
-              snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments",
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain "     Expected "
-                  green %|#<Double :something_really_long>|
-                end
-
-                line do
-                  plain "to respond to "
-                  red %|:foo|
-                  plain ", "
-                  red %|:bar|
-                  plain " and "
-                  red %|:baz|
-                  plain " with "
-                  red %|unlimited|
-                  plain " arguments"
-                end
-              },
-            )
-
-            expect(test).to produce_output_when_run(expected_output)
-          end
-        end
-      end
-
-      context "qualified with #with_arbitrary_keywords + #with_unlimited_arguments" do
+    context "without any qualifiers" do
+      context "when a few number of methods are specified" do
         it "produces the correct output" do
           test = <<~TEST
-            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments
+            expect(double).to respond_to(:foo)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments",
+            snippet: "expect(double).to respond_to(:foo)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<Double (anonymous)>|
+                plain " to respond to "
+                red %|:foo|
+                plain "."
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when a large number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)",
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "     Expected "
+                green %|#<Double :something_really_long>|
+              end
+
+              line do
+                plain "to respond to "
+                red %|:foo|
+                plain ", "
+                red %|:bar|
+                plain " and "
+                red %|:baz|
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "qualified with #with + #arguments" do
+      context "when a few number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double).to respond_to(:foo).with(3).arguments
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double).to respond_to(:foo).with(3).arguments",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<Double (anonymous)>|
+                plain " to respond to "
+                red %|:foo|
+                plain " with "
+                red %|3|
+                plain " arguments."
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when a large number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments",
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1693,9 +1838,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
                 plain " and "
                 red %|:baz|
                 plain " with "
-                red %|any|
-                plain " keywords and "
-                red %|unlimited|
+                red %|3|
                 plain " arguments"
               end
             },
@@ -1704,15 +1847,42 @@ RSpec.describe "Integration with RSpec", type: :integration do
           expect(test).to produce_output_when_run(expected_output)
         end
       end
+    end
 
-      context "qualified with #with_keywords + #with_unlimited_arguments" do
+    context "qualified with #with_keywords" do
+      context "when a few number of methods are specified" do
         it "produces the correct output" do
           test = <<~TEST
-            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments
+            expect(double).to respond_to(:foo).with_keywords(:bar)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments",
+            snippet: "expect(double).to respond_to(:foo).with_keywords(:bar)",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<Double (anonymous)>|
+                plain " to respond to "
+                red %|:foo|
+                plain " with keyword "
+                red %|:bar|
+                plain "."
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when a large number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)",
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1731,7 +1901,124 @@ RSpec.describe "Integration with RSpec", type: :integration do
                 red %|:qux|
                 plain " and "
                 red %|:blargh|
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "qualified with #with_any_keywords" do
+      context "when a few number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double).to respond_to(:foo).with_any_keywords
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double).to respond_to(:foo).with_any_keywords",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<Double (anonymous)>|
+                plain " to respond to "
+                red %|:foo|
+                plain " with "
+                red %|any|
+                plain " keywords."
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when a large number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords",
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "     Expected "
+                green %|#<Double :something_really_long>|
+              end
+
+              line do
+                plain "to respond to "
+                red %|:foo|
+                plain ", "
+                red %|:bar|
                 plain " and "
+                red %|:baz|
+                plain " with "
+                red %|any|
+                plain " keywords "
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "qualified with #with_unlimited_arguments" do
+      context "when a few number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double).to respond_to(:foo).with_unlimited_arguments
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double).to respond_to(:foo).with_unlimited_arguments",
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<Double (anonymous)>|
+                plain " to respond to "
+                red %|:foo|
+                plain " with "
+                red %|unlimited|
+                plain " arguments."
+              end
+            },
+          )
+
+          expect(test).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when a large number of methods are specified" do
+        it "produces the correct output" do
+          test = <<~TEST
+            expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments
+          TEST
+
+          expected_output = build_expected_output(
+            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments",
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "     Expected "
+                green %|#<Double :something_really_long>|
+              end
+
+              line do
+                plain "to respond to "
+                red %|:foo|
+                plain ", "
+                red %|:bar|
+                plain " and "
+                red %|:baz|
+                plain " with "
                 red %|unlimited|
                 plain " arguments"
               end
@@ -1740,6 +2027,78 @@ RSpec.describe "Integration with RSpec", type: :integration do
 
           expect(test).to produce_output_when_run(expected_output)
         end
+      end
+    end
+
+    context "qualified with #with_arbitrary_keywords + #with_unlimited_arguments" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments",
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "     Expected "
+              green %|#<Double :something_really_long>|
+            end
+
+            line do
+              plain "to respond to "
+              red %|:foo|
+              plain ", "
+              red %|:bar|
+              plain " and "
+              red %|:baz|
+              plain " with "
+              red %|any|
+              plain " keywords and "
+              red %|unlimited|
+              plain " arguments"
+            end
+          },
+        )
+
+        expect(test).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "qualified with #with_keywords + #with_unlimited_arguments" do
+      it "produces the correct output" do
+        test = <<~TEST
+          expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments",
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "     Expected "
+              green %|#<Double :something_really_long>|
+            end
+
+            line do
+              plain "to respond to "
+              red %|:foo|
+              plain ", "
+              red %|:bar|
+              plain " and "
+              red %|:baz|
+              plain " with keywords "
+              red %|:qux|
+              plain " and "
+              red %|:blargh|
+              plain " and "
+              red %|unlimited|
+              plain " arguments"
+            end
+          },
+        )
+
+        expect(test).to produce_output_when_run(expected_output)
       end
     end
   end
