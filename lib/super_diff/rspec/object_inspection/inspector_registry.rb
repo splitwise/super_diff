@@ -11,6 +11,10 @@ module SuperDiff
             :partial_array
           elsif SuperDiff::RSpec.partial_object?(object)
             :partial_object
+          elsif SuperDiff::RSpec.collection_containing_exactly?(object)
+            :collection_containing_exactly
+          elsif object.is_a?(::RSpec::Mocks::Double)
+            :primitive
           else
             super
           end
