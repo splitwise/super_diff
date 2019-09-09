@@ -19,8 +19,6 @@ module SuperDiff
           end
         end
       end
-
-      register :when_singleline, WhenSingleline
     end
   end
 end

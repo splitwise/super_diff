@@ -1,7 +1,7 @@
 module SuperDiff
   module ObjectInspection
     module Inspectors
-      define :custom_object do
+      CustomObject = InspectionTree.new do
         add_text do |object|
           "#<#{object.class}"
         end

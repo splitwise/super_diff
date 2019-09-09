@@ -1,20 +1,18 @@
 module SuperDiff
   module RSpec
     module ObjectInspection
-      class InspectorRegistry < SuperDiff::ObjectInspection::InspectorRegistry
-        private
-
-        def type_for(object)
+      class InspectorFinder < SuperDiff::ObjectInspection::InspectorFinder
+        def self.call(object)
           if SuperDiff::RSpec.partial_hash?(object)
-            :partial_hash
+            Inspectors::PartialHash
           elsif SuperDiff::RSpec.partial_array?(object)
-            :partial_array
+            Inspectors::PartialArray
           elsif SuperDiff::RSpec.partial_object?(object)
-            :partial_object
+            Inspectors::PartialObject
           elsif SuperDiff::RSpec.collection_containing_exactly?(object)
-            :collection_containing_exactly
+            Inspectors::CollectionContainingExactly
           elsif object.is_a?(::RSpec::Mocks::Double)
-            :primitive
+            SuperDiff::ObjectInspection::Inspectors::Primitive
           else
             super
           end

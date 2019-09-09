@@ -2,7 +2,7 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        define :collection_containing_exactly do
+        CollectionContainingExactly = SuperDiff::ObjectInspection::InspectionTree.new do
           add_text "#<a collection containing exactly ("
 
           nested do |aliased_matcher|

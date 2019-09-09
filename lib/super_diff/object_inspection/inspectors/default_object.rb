@@ -1,7 +1,7 @@
 module SuperDiff
   module ObjectInspection
     module Inspectors
-      define :default_object do
+      DefaultObject = InspectionTree.new do
         when_singleline do
           add_text do |object|
             object.inspect

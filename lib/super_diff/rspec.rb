@@ -1,37 +1,21 @@
-require_relative "../super_diff"
-
-require_relative "rspec/differ"
-
-require_relative "rspec/differs/collection_containing_exactly"
-require_relative "rspec/differs/partial_array"
-require_relative "rspec/differs/partial_hash"
-require_relative "rspec/differs/partial_object"
-
-require_relative "rspec/operational_sequencers/collection_containing_exactly"
-require_relative "rspec/operational_sequencers/partial_array"
-require_relative "rspec/operational_sequencers/partial_hash"
-require_relative "rspec/operational_sequencers/partial_object"
-
-require_relative "rspec/object_inspection/inspector_registry"
-require_relative "rspec/object_inspection/inspectors"
-require_relative "rspec/object_inspection/inspectors/collection_containing_exactly"
-require_relative "rspec/object_inspection/inspectors/partial_array"
-require_relative "rspec/object_inspection/inspectors/partial_hash"
-require_relative "rspec/object_inspection/inspectors/partial_object"
-
-require_relative "rspec/failure_message_template"
-require_relative "rspec/failure_message_builders/base"
-require_relative "rspec/failure_message_builders/contain_exactly"
-require_relative "rspec/failure_message_builders/match"
-require_relative "rspec/failure_message_builders/raise_error"
-require_relative "rspec/failure_message_builders/respond_to"
-
-require_relative "rspec/augmented_matcher"
-
-require_relative "rspec/monkey_patches"
+require "super_diff"
 
 module SuperDiff
   module RSpec
+    autoload :AugmentedMatcher, "super_diff/rspec/augmented_matcher"
+    autoload :Differ, "super_diff/rspec/differ"
+    autoload :Differs, "super_diff/rspec/differs"
+    autoload(
+      :FailureMessageBuilders,
+      "super_diff/rspec/failure_message_builders",
+    )
+    autoload(
+      :FailureMessageTemplate,
+      "super_diff/rspec/failure_message_template",
+    )
+    autoload :ObjectInspection, "super_diff/rspec/object_inspection"
+    autoload :OperationalSequencers, "super_diff/rspec/operational_sequencers"
+
     class << self
       attr_accessor :extra_differ_classes
       attr_accessor :extra_operational_sequencer_classes
@@ -75,7 +59,7 @@ module SuperDiff
   end
 end
 
-SuperDiff::ObjectInspection.inspector_registry =
-  SuperDiff::RSpec::ObjectInspection::InspectorRegistry.new(
-    SuperDiff::ObjectInspection.inspector_registry.to_h,
-  )
+require_relative "rspec/monkey_patches"
+
+SuperDiff::ObjectInspection.inspector_finder =
+  SuperDiff::RSpec::ObjectInspection::InspectorFinder

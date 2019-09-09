@@ -1,7 +1,7 @@
 module SuperDiff
   module ObjectInspection
     module Inspectors
-      define :hash do
+      Hash = InspectionTree.new do
         add_text "{"
 
         nested do |hash|

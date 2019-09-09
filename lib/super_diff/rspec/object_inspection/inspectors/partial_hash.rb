@@ -2,7 +2,7 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        define :partial_hash do
+        PartialHash = SuperDiff::ObjectInspection::InspectionTree.new do
           add_text "#<a hash including ("
 
           nested do |aliased_matcher|

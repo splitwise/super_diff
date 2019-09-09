@@ -10,8 +10,6 @@ module SuperDiff
           )
         end
       end
-
-      register :inspection, Inspection
     end
   end
 end

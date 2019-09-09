@@ -17,8 +17,6 @@ module SuperDiff
           end
         end
       end
-
-      register :when_multiline, WhenMultiline
     end
   end
 end

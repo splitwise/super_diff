@@ -11,8 +11,6 @@ module SuperDiff
           )
         end
       end
-
-      register :nesting, Nesting
     end
   end
 end

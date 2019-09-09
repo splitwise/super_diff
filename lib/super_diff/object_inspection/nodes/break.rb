@@ -10,8 +10,6 @@ module SuperDiff
           end
         end
       end
-
-      register :break, Break
     end
   end
 end

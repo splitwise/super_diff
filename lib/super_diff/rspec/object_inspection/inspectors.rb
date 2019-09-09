@@ -2,9 +2,22 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        def self.define(name, &definition)
-          SuperDiff::ObjectInspection::Inspectors.define(name, &definition)
-        end
+        autoload(
+          :CollectionContainingExactly,
+          "super_diff/rspec/object_inspection/inspectors/collection_containing_exactly",
+        )
+        autoload(
+          :PartialArray,
+          "super_diff/rspec/object_inspection/inspectors/partial_array",
+        )
+        autoload(
+          :PartialHash,
+          "super_diff/rspec/object_inspection/inspectors/partial_hash",
+        )
+        autoload(
+          :PartialObject,
+          "super_diff/rspec/object_inspection/inspectors/partial_object",
+        )
       end
     end
   end

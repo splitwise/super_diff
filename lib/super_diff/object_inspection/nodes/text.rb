@@ -10,8 +10,6 @@ module SuperDiff
           end
         end
       end
-
-      register :text, Text
     end
   end
 end

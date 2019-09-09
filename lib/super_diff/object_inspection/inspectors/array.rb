@@ -1,7 +1,7 @@
 module SuperDiff
   module ObjectInspection
     module Inspectors
-      define :array do
+      Array = InspectionTree.new do
         add_text "["
 
         nested do |array|

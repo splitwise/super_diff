@@ -1,5 +1,5 @@
-require_relative "../lib/super_diff"
-require_relative "../lib/super_diff/rspec"
+$:.unshift(File.expand_path("../lib", __dir__))
+require "super_diff/rspec"
 
 begin
   require "pry-byebug"

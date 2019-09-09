@@ -1,8 +1,13 @@
-require_relative "csi/reset_sequence"
-
 # Source: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 module SuperDiff
   module Csi
+    autoload :Color, "super_diff/csi/color"
+    autoload :ColorizedDocument, "super_diff/csi/colorized_document"
+    autoload :EightBitColor, "super_diff/csi/eight_bit_color"
+    autoload :FourBitColor, "super_diff/csi/four_bit_color"
+    autoload :ResetSequence, "super_diff/csi/reset_sequence"
+    autoload :TwentyFourBitColor, "super_diff/csi/twenty_four_bit_color"
+
     def self.reset_sequence
       ResetSequence.new
     end
@@ -38,9 +43,3 @@ module SuperDiff
     end
   end
 end
-
-require_relative "csi/color"
-require_relative "csi/eight_bit_color"
-require_relative "csi/four_bit_color"
-require_relative "csi/twenty_four_bit_color"
-require_relative "csi/colorized_document"

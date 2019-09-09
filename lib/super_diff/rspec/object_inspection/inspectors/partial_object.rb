@@ -2,7 +2,7 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        define :partial_object do
+        PartialObject = SuperDiff::ObjectInspection::InspectionTree.new do
           add_text "#<an object having attributes ("
 
           nested do |aliased_matcher|
