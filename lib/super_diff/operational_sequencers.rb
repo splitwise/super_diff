@@ -4,8 +4,8 @@ module SuperDiff
     autoload :Base, "super_diff/operational_sequencers/base"
     autoload :Hash, "super_diff/operational_sequencers/hash"
     autoload(
-      :MultiLineString,
-      "super_diff/operational_sequencers/multi_line_string",
+      :MultilineString,
+      "super_diff/operational_sequencers/multiline_string",
     )
     autoload :Object, "super_diff/operational_sequencers/object"
 

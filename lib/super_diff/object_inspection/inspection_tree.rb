@@ -19,11 +19,11 @@ module SuperDiff
         @_before_each_callbacks ||= Hash.new { |h, k| h[k] = [] }
       end
 
-      def evaluate(object, single_line:, indent_level:)
+      def evaluate(object, as_single_line:, indent_level:)
         nodes.reduce("") do |str, node|
           str << node.evaluate(
             object,
-            single_line: single_line,
+            as_single_line: as_single_line,
             indent_level: indent_level,
           )
         end
@@ -128,13 +128,13 @@ module SuperDiff
       class BlockArgument
         attr_reader :object
 
-        def initialize(object:, single_line:)
+        def initialize(object:, as_single_line:)
           @object = object
-          @single_line = single_line
+          @as_single_line = as_single_line
         end
 
-        def single_line?
-          @single_line
+        def as_single_line?
+          @as_single_line
         end
       end
     end

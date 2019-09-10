@@ -1,8 +1,8 @@
 module SuperDiff
   module DiffFormatters
-    class MultiLineString < Base
+    class MultilineString < Base
       def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::MultiLineString)
+        operations.is_a?(OperationSequences::MultilineString)
       end
 
       def call

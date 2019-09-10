@@ -63,7 +63,7 @@ module SuperDiff
       def build_chunk(value, prefix:, icon:)
         inspection = ObjectInspection.inspect(
           value,
-          single_line: false,
+          as_single_line: false,
         )
 
         inspection.split("\n").

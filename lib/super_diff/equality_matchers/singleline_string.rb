@@ -1,6 +1,6 @@
 module SuperDiff
   module EqualityMatchers
-    class SingleLineString < Base
+    class SinglelineString < Base
       def self.applies_to?(value)
         value.class == ::String
       end
@@ -13,14 +13,14 @@ module SuperDiff
             Helpers.style(
               :deleted,
               "Expected: " +
-              ObjectInspection.inspect(expected, single_line: true),
+              ObjectInspection.inspect(expected, as_single_line: true),
             )
           }
           #{
             Helpers.style(
               :inserted,
               "  Actual: " +
-              ObjectInspection.inspect(actual, single_line: true),
+              ObjectInspection.inspect(actual, as_single_line: true),
             )
           }
         OUTPUT

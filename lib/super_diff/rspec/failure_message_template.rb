@@ -47,10 +47,10 @@ module SuperDiff
         tokens.sum(&:length)
       end
 
-      def to_s(singleline: nil)
-        if length > MAX_LINE_LENGTH || singleline == false
+      def to_s(as_single_line: nil)
+        if length > MAX_LINE_LENGTH || as_single_line == false
           to_string_in_multiline_mode
-        elsif length <= MAX_LINE_LENGTH || singleline == true
+        elsif length <= MAX_LINE_LENGTH || as_single_line == true
           to_string_in_singleline_mode
         end
       end

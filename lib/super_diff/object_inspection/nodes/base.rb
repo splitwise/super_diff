@@ -36,7 +36,7 @@ module SuperDiff
         end
 
         # rubocop:disable Lint/UnusedMethodArgument
-        def evaluate(object, indent_level:, single_line:)
+        def evaluate(object, indent_level:, as_single_line:)
         # rubocop:enable Lint/UnusedMethodArgument
           raise NotImplementedError.new(
             "Your node must provide an #evaluate method. " +
@@ -71,13 +71,13 @@ module SuperDiff
           end
         end
 
-        def evaluate_in_subtree(object, indent_level:, single_line:)
+        def evaluate_in_subtree(object, indent_level:, as_single_line:)
           subtree = InspectionTree.new
           subtree.evaluate_block(object, &block)
           subtree.evaluate(
             object,
             indent_level: indent_level,
-            single_line: single_line,
+            as_single_line: as_single_line,
           )
         end
       end

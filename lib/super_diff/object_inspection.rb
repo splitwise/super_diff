@@ -12,10 +12,10 @@ module SuperDiff
       attr_accessor :inspector_finder
     end
 
-    def self.inspect(object, single_line:, indent_level: 0)
+    def self.inspect(object, as_single_line:, indent_level: 0)
       inspector_finder.call(object).evaluate(
         object,
-        single_line: single_line,
+        as_single_line: as_single_line,
         indent_level: indent_level,
       )
     end

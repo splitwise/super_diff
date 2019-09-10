@@ -18,7 +18,7 @@ module SuperDiff
         end
 
         def matcher_description
-          Csi.decolorize(expected_section.to_s(singleline: true))
+          Csi.decolorize(expected_section.to_s(as_single_line: true))
         end
 
         protected

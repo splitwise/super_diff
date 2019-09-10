@@ -1,6 +1,6 @@
 module SuperDiff
   module EqualityMatchers
-    class MultiLineString < Base
+    class MultilineString < Base
       def self.applies_to?(value)
         value.is_a?(::String) && value.include?("\n")
       end
@@ -14,14 +14,14 @@ module SuperDiff
             Helpers.style(
               :deleted,
               "Expected: " +
-              ObjectInspection.inspect(expected, single_line: true),
+              ObjectInspection.inspect(expected, as_single_line: true),
             )
           }
           #{
             Helpers.style(
               :inserted,
               "  Actual: " +
-              ObjectInspection.inspect(actual, single_line: true),
+              ObjectInspection.inspect(actual, as_single_line: true),
             )
           }
 
@@ -34,7 +34,7 @@ module SuperDiff
       private
 
       def diff
-        Differs::MultiLineString.call(
+        Differs::MultilineString.call(
           expected,
           actual,
           indent_level: 0,
