@@ -1,10 +1,10 @@
 module SuperDiff
   module DiffFormatters
     class Collection
+      extend AttrExtras.mixin
+
       ICONS = { delete: "-", insert: "+" }.freeze
       STYLES = { insert: :inserted, delete: :deleted, noop: :normal }.freeze
-
-      extend AttrExtras.mixin
 
       method_object(
         [

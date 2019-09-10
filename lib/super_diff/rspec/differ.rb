@@ -1,14 +1,9 @@
 module SuperDiff
   module RSpec
     class Differ
-      def self.diff(actual, expected)
-        new(actual, expected).diff
-      end
+      extend AttrExtras.mixin
 
-      def initialize(actual, expected)
-        @actual = actual
-        @expected = expected
-      end
+      static_facade :diff, :actual, :expected
 
       def diff
         if worth_diffing?
@@ -38,8 +33,6 @@ module SuperDiff
       end
 
       private
-
-      attr_reader :actual, :expected
 
       def worth_diffing?
         !comparing_equal_values? &&

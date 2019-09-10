@@ -126,16 +126,10 @@ module SuperDiff
       end
 
       class BlockArgument
-        attr_reader :object
+        extend AttrExtras.mixin
 
-        def initialize(object:, as_single_line:)
-          @object = object
-          @as_single_line = as_single_line
-        end
-
-        def as_single_line?
-          @as_single_line
-        end
+        rattr_initialize [:object!, :as_single_line!]
+        attr_query :as_single_line?
       end
     end
   end
