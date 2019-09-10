@@ -32,10 +32,11 @@ module SuperDiff
         )
           @expected = expected
           @actual = actual
-          @operations = OperationSequences::Array.new([])
           @extra_operational_sequencer_classes =
             extra_operational_sequencer_classes
           @extra_diff_formatter_classes = extra_diff_formatter_classes
+
+          @operations = OperationSequences::Array.new([])
         end
 
         def match(event)
