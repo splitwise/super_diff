@@ -15,7 +15,7 @@ module SuperDiff
           :add_comma!,
           :collection_prefix!,
           :build_item_prefix!,
-        ]
+        ],
       )
 
       def call
@@ -73,7 +73,7 @@ module SuperDiff
               " ",
               indentation(offset: 1),
               (index == 0 ? prefix : ""),
-              line
+              line,
             ].join
           }.
           join("\n")
