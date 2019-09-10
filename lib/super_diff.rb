@@ -2,10 +2,9 @@ require "attr_extras/explicit"
 require "diff-lcs"
 require "patience_diff"
 
-require_relative "super_diff/csi"
-
 module SuperDiff
   autoload :ColorizedDocument, "super_diff/colorized_document"
+  autoload :Csi, "super_diff/csi"
   autoload :DiffFormatter, "super_diff/diff_formatter"
   autoload :DiffFormatters, "super_diff/diff_formatters"
   autoload :Differ, "super_diff/differ"
