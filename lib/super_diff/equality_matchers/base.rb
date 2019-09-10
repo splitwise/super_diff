@@ -5,21 +5,16 @@ module SuperDiff
         raise NotImplementedError
       end
 
-      def self.call(*args)
-        new(*args).call
-      end
+      extend AttrExtras.mixin
 
-      def initialize(
-        expected:,
-        actual:,
-        extra_operational_sequencer_classes: [],
-        extra_diff_formatter_classes: []
+      method_object(
+        [
+          :expected!,
+          :actual!,
+          extra_operational_sequencer_classes: [],
+          extra_diff_formatter_classes: [],
+        ]
       )
-        @expected = expected
-        @actual = actual
-        @extra_operational_sequencer_classes = extra_operational_sequencer_classes
-        @extra_diff_formatter_classes = extra_diff_formatter_classes
-      end
 
       def call
         if expected == actual
@@ -30,9 +25,6 @@ module SuperDiff
       end
 
       protected
-
-      attr_reader :expected, :actual, :extra_operational_sequencer_classes,
-        :extra_diff_formatter_classes
 
       def fail
         raise NotImplementedError

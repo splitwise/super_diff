@@ -1,5 +1,6 @@
-require "patience_diff"
+require "attr_extras/explicit"
 require "diff-lcs"
+require "patience_diff"
 
 require_relative "super_diff/csi"
 

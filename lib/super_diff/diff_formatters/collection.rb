@@ -4,27 +4,19 @@ module SuperDiff
       ICONS = { delete: "-", insert: "+" }.freeze
       STYLES = { insert: :inserted, delete: :deleted, noop: :normal }.freeze
 
-      def self.call(*args, &block)
-        new(*args, &block).call
-      end
+      extend AttrExtras.mixin
 
-      def initialize(
-        open_token:,
-        close_token:,
-        operations:,
-        indent_level:,
-        add_comma:,
-        collection_prefix:,
-        build_item_prefix:
+      method_object(
+        [
+          :open_token!,
+          :close_token!,
+          :operations!,
+          :indent_level!,
+          :add_comma!,
+          :collection_prefix!,
+          :build_item_prefix!,
+        ]
       )
-        @open_token = open_token
-        @close_token = close_token
-        @operations = operations
-        @indent_level = indent_level
-        @add_comma = add_comma
-        @collection_prefix = collection_prefix
-        @build_item_prefix = build_item_prefix
-      end
 
       def call
         lines.join("\n")
@@ -32,8 +24,7 @@ module SuperDiff
 
       private
 
-      attr_reader :open_token, :close_token, :operations, :indent_level,
-        :add_comma, :collection_prefix, :build_item_prefix
+      attr_query :add_comma?
 
       def lines
         [
@@ -100,7 +91,7 @@ module SuperDiff
       end
 
       def comma
-        if add_comma
+        if add_comma?
           ","
         else
           ""

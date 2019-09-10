@@ -5,33 +5,28 @@ module SuperDiff
         raise NotImplementedError
       end
 
-      def self.call(*args)
-        new(*args).call
-      end
+      extend AttrExtras.mixin
 
-      def initialize(
-        operations,
-        indent_level:,
-        collection_prefix: "",
-        add_comma: false
+      method_object(
+        :operations,
+        [
+          :indent_level!,
+          collection_prefix: "",
+          add_comma: false,
+        ],
       )
-        @operations = operations
-        @indent_level = indent_level
-        @collection_prefix = collection_prefix
-        @add_comma = add_comma
-      end
 
       def call
         raise NotImplementedError
       end
 
+      # rubocop:disable Lint/UselessAccessModifier
+
       private
 
-      attr_reader :operations, :indent_level, :collection_prefix
+      # rubocop:enable Lint/UselessAccessModifier
 
-      def add_comma?
-        @add_comma
-      end
+      attr_query :add_comma?
     end
   end
 end

@@ -1,22 +1,16 @@
 module SuperDiff
   class EqualityMatcher
-    def self.call(*args)
-      new(*args).call
-    end
+    extend AttrExtras.mixin
 
-    def initialize(
-      expected:,
-      actual:,
-      extra_classes: [],
-      extra_operational_sequencer_classes: [],
-      extra_diff_formatter_classes: []
+    method_object(
+      [
+        :expected!,
+        :actual!,
+        extra_classes: [],
+        extra_operational_sequencer_classes: [],
+        extra_diff_formatter_classes: [],
+      ]
     )
-      @expected = expected
-      @actual = actual
-      @extra_classes = extra_classes
-      @extra_operational_sequencer_classes = extra_operational_sequencer_classes
-      @extra_diff_formatter_classes = extra_diff_formatter_classes
-    end
 
     def call
       resolved_class.call(
@@ -28,9 +22,6 @@ module SuperDiff
     end
 
     private
-
-    attr_reader :expected, :actual, :extra_classes,
-      :extra_operational_sequencer_classes, :extra_diff_formatter_classes
 
     def resolved_class
       matching_class || EqualityMatchers::Object

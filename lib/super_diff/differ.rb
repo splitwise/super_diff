@@ -1,26 +1,18 @@
 module SuperDiff
   class Differ
-    def self.call(*args)
-      new(*args).call
-    end
+    extend AttrExtras.mixin
 
-    def initialize(
-      expected,
-      actual,
-      indent_level: 0,
-      index_in_collection: nil,
-      extra_classes: [],
-      extra_operational_sequencer_classes: [],
-      extra_diff_formatter_classes: []
+    method_object(
+      :expected,
+      :actual,
+      [
+        indent_level: 0,
+        index_in_collection: nil,
+        extra_classes: [],
+        extra_operational_sequencer_classes: [],
+        extra_diff_formatter_classes: [],
+      ],
     )
-      @expected = expected
-      @actual = actual
-      @indent_level = indent_level
-      @index_in_collection = index_in_collection
-      @extra_classes = extra_classes
-      @extra_operational_sequencer_classes = extra_operational_sequencer_classes
-      @extra_diff_formatter_classes = extra_diff_formatter_classes
-    end
 
     def call
       resolved_class.call(
@@ -34,10 +26,6 @@ module SuperDiff
     end
 
     private
-
-    attr_reader :expected, :actual, :indent_level, :index_in_collection,
-      :extra_classes, :extra_operational_sequencer_classes,
-      :extra_diff_formatter_classes
 
     def resolved_class
       (extra_classes + Differs::DEFAULTS).find do |klass|
