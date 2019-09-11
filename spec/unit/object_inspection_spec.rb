@@ -680,6 +680,44 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given an ActiveRecord object" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            SuperDiff::Test::Models::ActiveRecord::Person.new(
+              name: "Elliot",
+              age: 31,
+            ),
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">)
+          )
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object across multiple lines" do
+          inspection = described_class.inspect(
+            SuperDiff::Test::Models::ActiveRecord::Person.new(
+              name: "Elliot",
+              age: 31,
+            ),
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<SuperDiff::Test::Models::ActiveRecord::Person {
+              id: nil,
+              age: 31,
+              name: "Elliot"
+            }>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a combination of all kinds of values" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
