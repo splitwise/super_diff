@@ -1,25 +1,22 @@
 module SuperDiff
   module ObjectInspection
     autoload :InspectionTree, "super_diff/object_inspection/inspection_tree"
-    autoload(
-      :InspectorFinder,
-      "super_diff/object_inspection/inspector_finder",
-    )
     autoload :Inspectors, "super_diff/object_inspection/inspectors"
+    autoload :Map, "super_diff/object_inspection/map"
     autoload :Nodes, "super_diff/object_inspection/nodes"
 
     class << self
-      attr_accessor :inspector_finder
+      attr_accessor :map
     end
 
     def self.inspect(object, as_single_line:, indent_level: 0)
-      inspector_finder.call(object).evaluate(
+      map.call(object).evaluate(
         object,
         as_single_line: as_single_line,
         indent_level: indent_level,
       )
     end
 
-    self.inspector_finder = InspectorFinder
+    self.map = Map.new
   end
 end

@@ -1,11 +1,8 @@
 module SuperDiff
   module RSpec
     module ObjectInspection
-      autoload(
-        :InspectorFinder,
-        "super_diff/rspec/object_inspection/inspector_finder",
-      )
       autoload :Inspectors, "super_diff/rspec/object_inspection/inspectors"
+      autoload :MapExtension, "super_diff/rspec/object_inspection/map_extension"
     end
   end
 end

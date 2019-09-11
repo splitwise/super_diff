@@ -101,7 +101,7 @@ gem "super_diff"
 After running `bundle install`, add the following to your `rails_helper`:
 
 ``` ruby
-require "super_diff/rspec"
+require "super_diff/rspec-rails"
 ```
 
 You're done!

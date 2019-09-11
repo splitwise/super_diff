@@ -3,6 +3,7 @@ require "super_diff"
 module SuperDiff
   module RSpec
     autoload :AugmentedMatcher, "super_diff/rspec/augmented_matcher"
+    autoload :Configuration, "super_diff/rspec/configuration"
     autoload :Differ, "super_diff/rspec/differ"
     autoload :Differs, "super_diff/rspec/differs"
     autoload(
@@ -23,7 +24,11 @@ module SuperDiff
     end
 
     def self.configure
-      yield self
+      yield configuration
+    end
+
+    def self.configuration
+      @_configuration ||= Configuration.new
     end
 
     def self.partial_hash?(value)
@@ -52,14 +57,11 @@ module SuperDiff
     def self.partial_placeholder?(value)
       value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end
-
-    self.extra_differ_classes = []
-    self.extra_operational_sequencer_classes = []
-    self.extra_diff_formatter_classes = []
   end
 end
 
 require_relative "rspec/monkey_patches"
 
-SuperDiff::ObjectInspection.inspector_finder =
-  SuperDiff::RSpec::ObjectInspection::InspectorFinder
+SuperDiff::ObjectInspection.map.prepend(
+  SuperDiff::RSpec::ObjectInspection::MapExtension,
+)

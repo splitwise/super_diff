@@ -13,3 +13,7 @@ module SuperDiff
     end
   end
 end
+
+SuperDiff::RSpec.configure do |config|
+  config.add_extra_diff_formatter_class(SuperDiff::Test::PersonDiffFormatter)
+end

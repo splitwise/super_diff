@@ -1,4 +1,4 @@
-require File.expand_path("../lib/super_diff/version", __FILE__)
+require File.expand_path("lib/super_diff/version", __dir__)
 
 Gem::Specification.new do |s|
   s.name        = "super_diff"
@@ -12,12 +12,13 @@ Gem::Specification.new do |s|
     Ruby, and gives you helpful output to show you exactly how the two data
     structures differ.
   DESC
-  s.required_ruby_version = "~> 2.3"
+  s.required_ruby_version = "~> 2.4"
 
   s.files         = ["README.md", "super_diff.gemspec"] + Dir["lib/**/*"]
   s.test_files    = Dir["spec/**/*"]
   s.executables   = Dir["exe/**/*"].map { |f| File.basename(f) }
 
+  s.add_dependency "activerecord", "> 4.2", "< 7.0"
   s.add_dependency "attr_extras"
   s.add_dependency "diff-lcs"
   s.add_dependency "patience_diff"

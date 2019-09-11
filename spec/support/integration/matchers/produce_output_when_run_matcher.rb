@@ -12,8 +12,8 @@ module SuperDiff
         @expected_output = expected_output.to_s.strip
       end
 
-      def matches?(test)
-        @test = test.strip
+      def matches?(program)
+        @program = program.strip
         TEMP_DIRECTORY.mkpath
         actual_output.include?(expected_output)
       end
@@ -37,7 +37,7 @@ module SuperDiff
 
       private
 
-      attr_reader :expected_output, :test
+      attr_reader :expected_output, :program
 
       def actual_output
         @_actual_output ||= run_command.output.strip
@@ -53,49 +53,8 @@ module SuperDiff
 
       def tempfile
         @_tempfile =
-          TEMP_DIRECTORY.join("acceptance_spec.rb").
+          TEMP_DIRECTORY.join("integration_spec.rb").
             tap { |tempfile| tempfile.write(program) }
-      end
-
-      def program
-        <<~PROGRAM
-          $LOAD_PATH.unshift("#{PROJECT_DIRECTORY.join("lib")}")
-          $LOAD_PATH.unshift("#{PROJECT_DIRECTORY}")
-
-          begin
-            require "pry-byebug"
-          rescue LoadError
-            require "pry-nav"
-          end
-
-          require "super_diff/rspec"
-
-          require "spec/support/a"
-          require "spec/support/person"
-          require "spec/support/person_diff_formatter"
-          require "spec/support/person_operation_sequence"
-          require "spec/support/person_operational_sequencer"
-          require "spec/support/shipping_address"
-
-          RSpec.configure do |config|
-            config.color_mode = :on
-          end
-
-          SuperDiff::RSpec.configure do |config|
-            config.extra_operational_sequencer_classes << SuperDiff::Test::PersonOperationalSequencer
-            config.extra_diff_formatter_classes << SuperDiff::Test::PersonDiffFormatter
-          end
-
-          RSpec.describe "test" do
-            it "passes" do
-          #{reindent(test, level: 2)}
-            end
-          end
-        PROGRAM
-      end
-
-      def reindent(code, level: 0)
-        code.strip.split("\n").map { |line| ("  " * level) + line }.join("\n")
       end
     end
   end

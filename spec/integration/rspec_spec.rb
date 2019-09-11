@@ -4,12 +4,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
   describe "the #eq matcher" do
     context "when comparing two different integers" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expect(1).to eq(42)
         TEST
 
         expected_output = build_expected_output(
-          snippet: test,
+          snippet: %|expect(1).to eq(42)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -21,18 +21,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two different symbols" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expect(:bar).to eq(:foo)
         TEST
 
         expected_output = build_expected_output(
-          snippet: test,
+          snippet: %|expect(:bar).to eq(:foo)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -44,18 +44,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
           }
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two different single-line strings" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expect("Jennifer").to eq("Marty")
         TEST
 
         expected_output = build_expected_output(
-          snippet: test,
+          snippet: %|expect("Jennifer").to eq("Marty")|,
           expectation: proc {
             line do
               plain "Expected "
@@ -67,20 +67,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
           }
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing a single-line string with a multi-line string" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expected = "Something entirely different"
           actual = "This is a line\\nAnd that's another line\\n"
           expect(actual).to eq(expected)
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -97,20 +97,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing a multi-line string with a single-line string" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expected = "This is a line\\nAnd that's another line\\n"
           actual = "Something entirely different"
           expect(actual).to eq(expected)
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -127,20 +127,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two closely different multi-line strings" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
           actual = "This is a line\\nSomething completely different\\nAnd there's a line too\\n"
           expect(actual).to eq(expected)
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -160,20 +160,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two completely different multi-line strings" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expected = "This is a line\\nAnd that's a line\\n"
           actual = "Something completely different\\nAnd something else too\\n"
           expect(actual).to eq(expected)
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -193,13 +193,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two arrays with other data structures inside" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expected = [
             [
               :h1,
@@ -233,7 +233,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -278,13 +278,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when comparing two hashes with other data structures inside" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expected = {
             customer: {
               person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
@@ -327,7 +327,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to eq(expected)",
+          snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -374,7 +374,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
   end
@@ -383,14 +383,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when used against an array" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = ["Marty", "Einie"]
             actual = ["Marty", "Jennifer", "Doc"]
             expect(actual).to include(*expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to include(*expected)",
+            snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -411,13 +411,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = [
               "Marty McFly",
               "Doc Brown",
@@ -436,7 +436,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to include(*expected)",
+            snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
                 plain "  Expected "
@@ -461,7 +461,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -469,14 +469,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when used against a hash" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = { city: "Hill Valley", state: "CA" }
             actual = { city: "Burbank", zip: "90210" }
             expect(actual).to include(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to include(expected)",
+            snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -498,13 +498,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               city: "Hill Valley",
               zip: "90382"
@@ -518,7 +518,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to include(expected)",
+            snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
                 plain "  Expected "
@@ -541,7 +541,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -550,14 +550,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
   describe "the #contain_exactly matcher" do
     context "when a few number of values are given" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expected = ["Einie", "Marty"]
           actual = ["Marty", "Jennifer", "Doc"]
           expect(actual).to contain_exactly(*expected)
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to contain_exactly(*expected)",
+          snippet: %|expect(actual).to contain_exactly(*expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -579,14 +579,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when a large number of values are given" do
       context "and they are only simple strings" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = [
               "Doc Brown",
               "Marty McFly",
@@ -604,7 +604,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to contain_exactly(*expected)",
+            snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
                 plain "          Expected "
@@ -636,13 +636,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "and some of them are regexen" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = [
               / Brown$/,
               "Marty McFly",
@@ -660,7 +660,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to contain_exactly(*expected)",
+            snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
                 plain "          Expected "
@@ -693,13 +693,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "and some of them are fuzzy objects" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = [
               a_hash_including(foo: "bar"),
               a_collection_containing_exactly("zing"),
@@ -714,7 +714,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to contain_exactly(*expected)",
+            snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
                 plain "          Expected "
@@ -746,7 +746,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -756,14 +756,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value is a partial hash" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_hash_including(city: "Hill Valley")
             actual = { city: "Burbank" }
             expect(actual).to match(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -781,13 +781,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_hash_including(
               city: "Hill Valley",
               zip: "90382"
@@ -802,7 +802,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -826,7 +826,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -834,7 +834,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value includes a partial hash" do
       context "and the corresponding actual value is a hash" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "Marty McFly",
               address: a_hash_including(
@@ -855,7 +855,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -882,13 +882,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "and the corresponding actual value is not a hash" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "Marty McFly",
               address: a_hash_including(
@@ -904,7 +904,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -928,7 +928,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -936,14 +936,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value is a partial array" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_collection_including("a")
             actual = ["b"]
             expect(actual).to match(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -962,20 +962,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_collection_including("milk", "bread")
             actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1000,7 +1000,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1008,7 +1008,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value includes a partial array" do
       context "and the corresponding actual value is an array" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
@@ -1021,7 +1021,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1047,13 +1047,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when the corresponding actual value is not an array" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
@@ -1066,7 +1066,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1090,7 +1090,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1098,7 +1098,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value is a partial object" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = an_object_having_attributes(
               name: "b"
             )
@@ -1107,7 +1107,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1126,13 +1126,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = an_object_having_attributes(
               line_1: "123 Main St.",
               city: "Oakland",
@@ -1151,7 +1151,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1180,14 +1180,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
 
     context "when the expected value includes a partial object" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expected = {
             name: "Marty McFly",
             shipping_address: an_object_having_attributes(
@@ -1212,7 +1212,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(actual).to match(expected)",
+          snippet: %|expect(actual).to match(expected)|,
           expectation: proc {
             line do
               plain "Expected "
@@ -1243,21 +1243,21 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "when the expected value is an order-independent array" do
       context "that is small" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_collection_containing_exactly("a")
             actual = ["b"]
             expect(actual).to match(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1275,20 +1275,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "that is large" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = a_collection_containing_exactly("milk", "bread")
             actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1312,7 +1312,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1320,7 +1320,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when the expected value includes an order-independent array" do
       context "and the corresponding actual value is an array" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
@@ -1333,7 +1333,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1358,13 +1358,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when the corresponding actual value is not an array" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
@@ -1377,7 +1377,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to match(expected)",
+            snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1401,7 +1401,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1411,14 +1411,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when given a small set of attributes" do
       context "when all of the names are methods on the actual object" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = { name: "b" }
             actual = SuperDiff::Test::Person.new(name: "a", age: 9)
             expect(actual).to have_attributes(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to have_attributes(expected)",
+            snippet: %|expect(actual).to have_attributes(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1438,20 +1438,20 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when some of the names are not methods on the actual object" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = { name: "b", foo: "bar" }
             actual = SuperDiff::Test::Person.new(name: "a", age: 9)
             expect(actual).to have_attributes(expected)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to have_attributes(expected)",
+            snippet: %|expect(actual).to have_attributes(expected)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1474,7 +1474,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1482,7 +1482,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "when given a large set of attributes" do
       context "when all of the names are methods on the actual object" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               line_1: "123 Main St.",
               city: "Oakland",
@@ -1500,7 +1500,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to have_attributes(expected)",
+            snippet: %|expect(actual).to have_attributes(expected)|,
             expectation: proc {
               line do
                 plain "          Expected "
@@ -1527,13 +1527,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when some of the names are not methods on the actual object" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expected = {
               line_1: "123 Main St.",
               city: "Oakland",
@@ -1553,7 +1553,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(actual).to have_attributes(expected)",
+            snippet: %|expect(actual).to have_attributes(expected)|,
             expectation: proc {
               line do
                 plain "     Expected "
@@ -1585,7 +1585,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1594,12 +1594,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
   describe "the #raise_error matcher" do
     context "given only an exception class" do
       it "produces the correct output" do
-        test = <<~TEST.strip
+        program = make_plain_test_program(<<~TEST.strip)
           expect { raise StandardError.new('boo') }.to raise_error(RuntimeError)
         TEST
 
         expected_output = build_expected_output(
-          snippet: test,
+          snippet: %|expect { raise StandardError.new('boo') }.to raise_error(RuntimeError)|,
           expectation: proc {
             line do
               plain "Expected raised exception "
@@ -1611,19 +1611,19 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "with only a message (and assuming a RuntimeError)" do
       context "when the message is short" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect { raise 'boo' }.to raise_error('hell')
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect { raise 'boo' }.to raise_error('hell')",
+            snippet: %|expect { raise 'boo' }.to raise_error('hell')|,
             expectation: proc {
               line do
                 plain "Expected raised exception "
@@ -1635,21 +1635,21 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when the message is long" do
         context "but contains no line breaks" do
           it "produces the correct output" do
-            test = <<~TEST
+            program = make_plain_test_program(<<~TEST)
               actual_message = "some really really really long message"
               expected_message = "whatever"
               expect { raise(actual_message) }.to raise_error(expected_message)
             TEST
 
             expected_output = build_expected_output(
-              snippet: "expect { raise(actual_message) }.to raise_error(expected_message)",
+              snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
               newline_before_expectation: true,
               expectation: proc {
                 line do
@@ -1664,13 +1664,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
               },
             )
 
-            expect(test).to produce_output_when_run(expected_output)
+            expect(program).to produce_output_when_run(expected_output)
           end
         end
 
         context "but contains line breaks" do
           it "produces the correct output" do
-            test = <<~TEST
+            program = make_plain_test_program(<<~TEST)
               actual_message = <<~MESSAGE.rstrip
                 This is fun
                 So is this
@@ -1683,7 +1683,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             TEST
 
             expected_output = build_expected_output(
-              snippet: "expect { raise(actual_message) }.to raise_error(expected_message)",
+              snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
               expectation: proc {
                 line do
                   plain "Expected raised exception "
@@ -1702,7 +1702,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
               },
             )
 
-            expect(test).to produce_output_when_run(expected_output)
+            expect(program).to produce_output_when_run(expected_output)
           end
         end
       end
@@ -1710,13 +1710,13 @@ RSpec.describe "Integration with RSpec", type: :integration do
 
     context "with both an exception and a message" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           block = -> { raise StandardError.new('a') }
           expect(&block).to raise_error(RuntimeError, 'b')
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(&block).to raise_error(RuntimeError, 'b')",
+          snippet: %|expect(&block).to raise_error(RuntimeError, 'b')|,
           expectation: proc {
             line do
               plain "Expected raised exception "
@@ -1728,7 +1728,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
   end
@@ -1737,12 +1737,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "without any qualifiers" do
       context "when a few number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double).to respond_to(:foo)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double).to respond_to(:foo)",
+            snippet: %|expect(double).to respond_to(:foo)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1754,18 +1754,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when a large number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)",
+            snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)|,
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1784,7 +1784,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1792,12 +1792,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "qualified with #with + #arguments" do
       context "when a few number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double).to respond_to(:foo).with(3).arguments
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double).to respond_to(:foo).with(3).arguments",
+            snippet: %|expect(double).to respond_to(:foo).with(3).arguments|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1811,18 +1811,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when a large number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments",
+            snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments|,
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1844,7 +1844,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1852,12 +1852,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "qualified with #with_keywords" do
       context "when a few number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double).to respond_to(:foo).with_keywords(:bar)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double).to respond_to(:foo).with_keywords(:bar)",
+            snippet: %|expect(double).to respond_to(:foo).with_keywords(:bar)|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1871,18 +1871,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when a large number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)",
+            snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)|,
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1905,7 +1905,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1913,12 +1913,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "qualified with #with_any_keywords" do
       context "when a few number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double).to respond_to(:foo).with_any_keywords
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double).to respond_to(:foo).with_any_keywords",
+            snippet: %|expect(double).to respond_to(:foo).with_any_keywords|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1932,18 +1932,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when a large number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords",
+            snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords|,
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -1965,7 +1965,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
@@ -1973,12 +1973,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
     context "qualified with #with_unlimited_arguments" do
       context "when a few number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double).to respond_to(:foo).with_unlimited_arguments
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double).to respond_to(:foo).with_unlimited_arguments",
+            snippet: %|expect(double).to respond_to(:foo).with_unlimited_arguments|,
             expectation: proc {
               line do
                 plain "Expected "
@@ -1992,18 +1992,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
 
       context "when a large number of methods are specified" do
         it "produces the correct output" do
-          test = <<~TEST
+          program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments
           TEST
 
           expected_output = build_expected_output(
-            snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments",
+            snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_unlimited_arguments|,
             newline_before_expectation: true,
             expectation: proc {
               line do
@@ -2025,19 +2025,19 @@ RSpec.describe "Integration with RSpec", type: :integration do
             },
           )
 
-          expect(test).to produce_output_when_run(expected_output)
+          expect(program).to produce_output_when_run(expected_output)
         end
       end
     end
 
     context "qualified with #with_arbitrary_keywords + #with_unlimited_arguments" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments",
+          snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments|,
           newline_before_expectation: true,
           expectation: proc {
             line do
@@ -2061,18 +2061,18 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
 
     context "qualified with #with_keywords + #with_unlimited_arguments" do
       it "produces the correct output" do
-        test = <<~TEST
+        program = make_plain_test_program(<<~TEST)
           expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments
         TEST
 
         expected_output = build_expected_output(
-          snippet: "expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments",
+          snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh).with_unlimited_arguments|,
           newline_before_expectation: true,
           expectation: proc {
             line do
@@ -2098,78 +2098,8 @@ RSpec.describe "Integration with RSpec", type: :integration do
           },
         )
 
-        expect(test).to produce_output_when_run(expected_output)
+        expect(program).to produce_output_when_run(expected_output)
       end
     end
-  end
-
-  def build_expected_output(
-    snippet:,
-    expectation:,
-    newline_before_expectation: false,
-    diff: nil
-  )
-    colored do
-      line "Failures:\n"
-
-      line "1) test passes", indent_by: 2
-
-      line indent_by: 5 do
-        white "Failure/Error: "
-        plain snippet
-      end
-
-      if diff || newline_before_expectation
-        newline
-      end
-
-      indent by: 7 do
-        evaluate_block(&expectation)
-
-        if diff
-          newline
-
-          white_line "Diff:"
-
-          newline
-
-          line do
-            blue "┌ (Key) ──────────────────────────┐"
-          end
-
-          line do
-            blue "│ "
-            red "‹-› in expected, not in actual"
-            blue "  │"
-          end
-
-          line do
-            blue "│ "
-            green "‹+› in actual, not in expected"
-            blue "  │"
-          end
-
-          line do
-            blue "│ "
-            text "‹ › in both expected and actual"
-            blue " │"
-          end
-
-          line do
-            blue "└─────────────────────────────────┘"
-          end
-
-          newline
-
-          evaluate_block(&diff)
-
-          newline
-        end
-      end
-    end
-  end
-
-  def colored(&block)
-    SuperDiff::Tests::Colorizer.call(&block).to_s.chomp
   end
 end

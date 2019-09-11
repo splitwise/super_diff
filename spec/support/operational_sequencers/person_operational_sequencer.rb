@@ -14,12 +14,12 @@ module SuperDiff
       def attribute_names
         [:name, :age]
       end
-
-      if defined?(INSIDE_INTEGRATION_TEST)
-        SuperDiff::RSpec.configure do |config|
-          config.extra_operational_sequencer_classes << self
-        end
-      end
     end
   end
+end
+
+SuperDiff::RSpec.configure do |config|
+  config.add_extra_operational_sequencer_class(
+    SuperDiff::Test::PersonOperationalSequencer,
+  )
 end

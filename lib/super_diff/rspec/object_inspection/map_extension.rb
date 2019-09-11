@@ -1,8 +1,8 @@
 module SuperDiff
   module RSpec
     module ObjectInspection
-      class InspectorFinder < SuperDiff::ObjectInspection::InspectorFinder
-        def self.call(object)
+      module MapExtension
+        def call(object)
           if SuperDiff::RSpec.partial_hash?(object)
             Inspectors::PartialHash
           elsif SuperDiff::RSpec.partial_array?(object)

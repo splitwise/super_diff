@@ -1,7 +1,11 @@
 module SuperDiff
   module ObjectInspection
-    class InspectorFinder
-      def self.call(object)
+    class Map
+      def prepend(mod)
+        singleton_class.prepend(mod)
+      end
+
+      def call(object)
         if object.respond_to?(:attributes_for_super_diff)
           Inspectors::CustomObject
         else
@@ -13,8 +17,7 @@ module SuperDiff
           when String
             Inspectors::String
           when true, false, nil, Symbol, Numeric, Regexp
-            Inspectors::Primitive
-          else
+            Inspectors::Primitive else
             Inspectors::DefaultObject
           end
         end

@@ -11,20 +11,20 @@ module SuperDiff
             expected,
             actual,
             extra_classes: [
-              *RSpec.extra_differ_classes,
+              *RSpec.configuration.extra_differ_classes,
               Differs::CollectionContainingExactly,
               Differs::PartialArray,
               Differs::PartialHash,
               Differs::PartialObject,
             ],
             extra_operational_sequencer_classes: [
-              *RSpec.extra_operational_sequencer_classes,
+              *RSpec.configuration.extra_operational_sequencer_classes,
               OperationalSequencers::CollectionContainingExactly,
               OperationalSequencers::PartialArray,
               OperationalSequencers::PartialHash,
               OperationalSequencers::PartialObject,
             ],
-            extra_diff_formatter_classes: RSpec.extra_diff_formatter_classes,
+            extra_diff_formatter_classes: RSpec.configuration.extra_diff_formatter_classes,
           )
           "\n\n" + diff
         else
