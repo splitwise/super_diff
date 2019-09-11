@@ -2,7 +2,7 @@
 AllCops:
   Exclude:
     - db/schema.rb
-  TargetRubyVersion: 2.5
+  TargetRubyVersion: 2.4
 Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 Layout/ClassStructure:
