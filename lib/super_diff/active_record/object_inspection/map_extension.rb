@@ -3,8 +3,11 @@ module SuperDiff
     module ObjectInspection
       module MapExtension
         def call(object)
-          if object.is_a?(::ActiveRecord::Base)
-            Inspector
+          case object
+          when ::ActiveRecord::Base
+            Inspectors::ActiveRecordModel
+          when ::ActiveRecord::Relation
+            Inspectors::ActiveRecordRelation
           else
             super
           end

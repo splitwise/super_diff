@@ -9,13 +9,14 @@ module SuperDiff
   autoload :DiffFormatters, "super_diff/diff_formatters"
   autoload :Differ, "super_diff/differ"
   autoload :Differs, "super_diff/differs"
+  autoload :EqualityMatcher, "super_diff/equality_matcher"
+  autoload :EqualityMatchers, "super_diff/equality_matchers"
+  autoload :Helpers, "super_diff/helpers"
+  autoload :NoDifferAvailableError, "super_diff/no_differ_available_error"
   autoload(
     :NoOperationalSequencerAvailableError,
     "super_diff/no_operational_sequencer_available_error",
   )
-  autoload :EqualityMatcher, "super_diff/equality_matcher"
-  autoload :EqualityMatchers, "super_diff/equality_matchers"
-  autoload :Helpers, "super_diff/helpers"
   autoload :ObjectInspection, "super_diff/object_inspection"
   autoload :OperationalSequencer, "super_diff/operational_sequencer"
   autoload :OperationalSequencers, "super_diff/operational_sequencers"

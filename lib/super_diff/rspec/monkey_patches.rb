@@ -82,6 +82,7 @@ module RSpec
           @exception               = exception
           @example                 = example
           # Patch to use no color by default
+          # TODO: Only use color if no diff is being printed
           @message_color           = options[:message_color]
           @description             = options.fetch(:description)            { example.full_description }
           @detail_formatter        = options.fetch(:detail_formatter)       { Proc.new {} }

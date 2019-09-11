@@ -8,6 +8,7 @@ module SuperDiff
       [
         indent_level: 0,
         index_in_collection: nil,
+        omit_empty: false,
         extra_classes: [],
         extra_operational_sequencer_classes: [],
         extra_diff_formatter_classes: [],
@@ -15,21 +16,35 @@ module SuperDiff
     )
 
     def call
-      resolved_class.call(
-        expected,
-        actual,
-        indent_level: indent_level,
-        index_in_collection: index_in_collection,
-        extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-        extra_diff_formatter_classes: extra_diff_formatter_classes,
-      )
+      if resolved_class
+        resolved_class.call(
+          expected,
+          actual,
+          indent_level: indent_level,
+          index_in_collection: index_in_collection,
+          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
+          extra_diff_formatter_classes: extra_diff_formatter_classes,
+        )
+      else
+        raise NoDifferAvailableError.create(expected, actual)
+      end
     end
 
     private
 
+    attr_query :omit_empty?
+
     def resolved_class
-      (extra_classes + Differs::DEFAULTS).find do |klass|
-        klass.applies_to?(expected, actual)
+      available_classes.find { |klass| klass.applies_to?(expected, actual) }
+    end
+
+    def available_classes
+      classes = extra_classes + Differs::DEFAULTS
+
+      if omit_empty?
+        classes - [Differs::Empty]
+      else
+        classes
       end
     end
   end

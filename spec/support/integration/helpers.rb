@@ -40,6 +40,13 @@ module SuperDiff
           database: ":memory:"
         )
 
+        RSpec.configuration do |config|
+          config.before do
+            SuperDiff::Test::Models::ActiveRecord::Person.delete_all
+            SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
+          end
+        end
+
         #{block.call}
 
         Dir.glob(SUPPORT_DIR.join("models/active_record/*.rb")).each do |path|

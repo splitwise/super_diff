@@ -1,6 +1,3 @@
-$:.unshift(File.expand_path("../lib", __dir__))
-require "super_diff/rspec"
-
 begin
   require "pry-byebug"
 rescue LoadError
@@ -10,6 +7,16 @@ begin
   require "pry-nav"
 rescue LoadError
 end
+
+require "active_record"
+
+ActiveRecord::Base.establish_connection(
+  adapter: "sqlite3",
+  database: ":memory:",
+)
+
+$:.unshift(File.expand_path("../lib", __dir__))
+require "super_diff/rspec-rails"
 
 Dir.glob(File.expand_path("support/**/*.rb", __dir__)).each do |file|
   require file

@@ -718,6 +718,63 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given an ActiveRecord::Relation object" do
+      context "given as_single_line: true" do
+        it "returns a representation of the Relation on a single line" do
+          SuperDiff::Test::Models::ActiveRecord::Person.create!(
+            name: "Marty",
+            age: 19,
+          )
+          SuperDiff::Test::Models::ActiveRecord::Person.create!(
+            name: "Jennifer",
+            age: 17,
+          )
+
+          inspection = described_class.inspect(
+            SuperDiff::Test::Models::ActiveRecord::Person.all,
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>)
+          )
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the Relation across multiple lines" do
+          SuperDiff::Test::Models::ActiveRecord::Person.create!(
+            name: "Marty",
+            age: 19,
+          )
+          SuperDiff::Test::Models::ActiveRecord::Person.create!(
+            name: "Jennifer",
+            age: 17,
+          )
+
+          inspection = described_class.inspect(
+            SuperDiff::Test::Models::ActiveRecord::Person.all,
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<ActiveRecord::Relation [
+              #<SuperDiff::Test::Models::ActiveRecord::Person {
+                id: 1,
+                age: 19,
+                name: "Marty"
+              }>,
+              #<SuperDiff::Test::Models::ActiveRecord::Person {
+                id: 2,
+                age: 17,
+                name: "Jennifer"
+              }>
+            ]>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a combination of all kinds of values" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do

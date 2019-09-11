@@ -10,6 +10,7 @@ module SuperDiff
           diff = SuperDiff::Differ.call(
             expected,
             actual,
+            omit_empty: true,
             extra_classes: [
               *RSpec.configuration.extra_differ_classes,
               Differs::CollectionContainingExactly,
@@ -30,51 +31,26 @@ module SuperDiff
         else
           ""
         end
+      rescue NoDifferAvailableError
+        ""
       end
 
       private
 
       def worth_diffing?
-        !comparing_equal_values? &&
-          comparing_values_of_a_similar_class? &&
+        comparing_inequal_values? &&
           !comparing_primitive_values? &&
           !comparing_singleline_strings?
       end
 
-      def comparing_equal_values?
-        expected == actual
-      end
-
-      def comparing_values_of_a_similar_class?
-        comparing_values_of_the_same_class? ||
-          comparing_with_a_partial_hash? ||
-          comparing_with_a_partial_array? ||
-          comparing_with_a_partial_object? ||
-          comparing_with_a_collection_containing_exactly?
-      end
-
-      def comparing_values_of_the_same_class?
-        expected.class == actual.class
-      end
-
-      def comparing_with_a_partial_hash?
-        SuperDiff::RSpec.partial_hash?(expected) && actual.is_a?(::Hash)
-      end
-
-      def comparing_with_a_partial_array?
-        SuperDiff::RSpec.partial_array?(expected) && actual.is_a?(::Array)
-      end
-
-      def comparing_with_a_partial_object?
-        SuperDiff::RSpec.partial_object?(expected)
-      end
-
-      def comparing_with_a_collection_containing_exactly?
-        SuperDiff::RSpec.collection_containing_exactly?(expected)
+      def comparing_inequal_values?
+        expected != actual
       end
 
       def comparing_primitive_values?
-        expected.is_a?(Symbol) || expected.is_a?(Integer)
+        expected.is_a?(Symbol) ||
+          expected.is_a?(Integer) ||
+          [true, false, nil].include?(expected)
       end
 
       def comparing_singleline_strings?

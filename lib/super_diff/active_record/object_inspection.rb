@@ -2,8 +2,8 @@ module SuperDiff
   module ActiveRecord
     module ObjectInspection
       autoload(
-        :Inspector,
-        "super_diff/active_record/object_inspection/inspector",
+        :Inspectors,
+        "super_diff/active_record/object_inspection/inspectors",
       )
       autoload(
         :MapExtension,

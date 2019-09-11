@@ -236,5 +236,67 @@ shared_examples_for "integration with ActiveRecord" do
         expect(program).to produce_output_when_run(expected_output)
       end
     end
+
+    context "when comparing an ActiveRecord::Relation object with an array" do
+      it "produces the correct output" do
+        program = make_program(<<~TEST.strip)
+          SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
+          shipping_addresses = [
+            SuperDiff::Test::Models::ActiveRecord::ShippingAddress.create!(
+              line_1: "123 Main St.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382",
+            ),
+            SuperDiff::Test::Models::ActiveRecord::ShippingAddress.create!(
+              line_1: "456 Ponderosa Ct.",
+              city: "Oakland",
+              state: "CA",
+              zip: "91234",
+            )
+          ]
+          expected = [shipping_addresses.first]
+          actual = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.all
+          expect(actual).to eq(expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: "expect(actual).to eq(expected)",
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">, #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 2, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234">]>|
+            end
+
+            line do
+              plain "   to eq "
+              red   %|[#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">]|
+            end
+          },
+          diff: proc {
+            plain_line %|  #<ActiveRecord::Relation [|
+            plain_line %|    #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
+            plain_line %|      id: 1,|
+            plain_line %|      city: "Hill Valley",|
+            plain_line %|      line_1: "123 Main St.",|
+            plain_line %|      line_2: "",|
+            plain_line %|      state: "CA",|
+            plain_line %|      zip: "90382"|
+            plain_line %|    }>,|
+            green_line %|+   #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
+            green_line %|+     id: 2,|
+            green_line %|+     city: "Oakland",|
+            green_line %|+     line_1: "456 Ponderosa Ct.",|
+            green_line %|+     line_2: "",|
+            green_line %|+     state: "CA",|
+            green_line %|+     zip: "91234"|
+            green_line %|+   }>|
+            plain_line %|  ]>|
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
   end
 end
