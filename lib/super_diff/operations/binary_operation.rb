@@ -8,8 +8,6 @@ module SuperDiff
           :name!,
           :left_collection!,
           :right_collection!,
-          :left_index!,
-          :right_index!,
           :left_key!,
           :right_key!,
           :left_value!,
