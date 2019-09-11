@@ -76,6 +76,8 @@ Naming/PredicateName:
     - spec/**/*
 Naming/UncommunicativeMethodParamName:
   Enabled: false
+Style/AccessModifierDeclarations:
+  Enabled: false
 Style/Alias:
   Enabled: false
 Style/CollectionMethods:
