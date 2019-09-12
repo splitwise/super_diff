@@ -86,6 +86,8 @@ Style/Documentation:
   Enabled: false
 Style/EachWithObject:
   Enabled: false
+Style/EmptyElse:
+  Enabled: false
 Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/FormatString:
