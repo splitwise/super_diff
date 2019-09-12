@@ -16,7 +16,6 @@ module SuperDiff
               Differs::CollectionContainingExactly,
               Differs::PartialArray,
               Differs::PartialHash,
-              # Differs::PartialObject,
             ],
             extra_operational_sequencer_classes: [
               *RSpec.configuration.extra_operational_sequencer_classes,
