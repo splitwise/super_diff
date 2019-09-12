@@ -4,7 +4,7 @@ module SuperDiff
     autoload :Base, "super_diff/equality_matchers/base"
     autoload :Hash, "super_diff/equality_matchers/hash"
     autoload :MultilineString, "super_diff/equality_matchers/multiline_string"
-    autoload :Object, "super_diff/equality_matchers/object"
+    autoload :Default, "super_diff/equality_matchers/default"
     autoload :Primitive, "super_diff/equality_matchers/primitive"
     autoload(
       :SinglelineString,
@@ -12,12 +12,12 @@ module SuperDiff
     )
 
     DEFAULTS = [
+      Primitive,
       Array,
       Hash,
       MultilineString,
       SinglelineString,
-      Object,
-      Primitive,
+      Default,
     ].freeze
   end
 end

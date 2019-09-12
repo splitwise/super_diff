@@ -7,7 +7,7 @@ module SuperDiff
       )
       autoload :PartialArray, "super_diff/rspec/differs/partial_array"
       autoload :PartialHash, "super_diff/rspec/differs/partial_hash"
-      # autoload :PartialObject, "super_diff/rspec/differs/partial_object"
+      autoload :PartialObject, "super_diff/rspec/differs/partial_object"
     end
   end
 end

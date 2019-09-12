@@ -1309,7 +1309,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two custom objects which do not == each other" do
+    context "given two different versions of the same custom class" do
       it "returns a message along with a comparison" do
         expected = SuperDiff::Test::Person.new(name: "Marty", age: 18)
         actual = SuperDiff::Test::Person.new(name: "Doc", age: 50)
@@ -1347,7 +1347,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
-    context "given two non-custom objects which do not == each other" do
+    context "given two different versions of the same non-custom class" do
       it "returns a message along with the diff" do
         expected = SuperDiff::Test::Player.new(
           handle: "martymcfly",
@@ -1373,7 +1373,7 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             if SuperDiff::Test.jruby?
-              # Source: https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java
+              # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
               colored do
                 red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % expected.hash} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
                 green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
@@ -1412,7 +1412,84 @@ RSpec.describe SuperDiff::EqualityMatcher do
         expect(actual_output).to eq(expected_output)
       end
     end
+
+    context "given two completely different kinds of custom objects" do
+      it "returns a message along with the diff" do
+        expected = SuperDiff::Test::Person.new(
+          name: "Marty",
+          age: 31,
+        )
+        actual = SuperDiff::Test::Customer.new(
+          name: "Doc",
+          shipping_address: :some_shipping_address,
+          phone: "1234567890",
+        )
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing objects.
+
+          #{
+            colored do
+              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 31>)
+              green_line %(  Actual: #<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">)
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "given two completely different kinds of non-custom objects" do
+      it "returns a message along with the diff" do
+        expected = SuperDiff::Test::Item.new(
+          name: "camera",
+          quantity: 3,
+        )
+        actual = SuperDiff::Test::Player.new(
+          handle: "mcmire",
+          character: "Jon",
+          inventory: ["sword"],
+          shields: 11.4,
+          health: 4,
+          ultimate: true,
+        )
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing objects.
+
+          #{
+            if SuperDiff::Test.jruby?
+              # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
+              colored do
+                red_line   %(Expected: #<SuperDiff::Test::Item:#{"0x%x" % expected.hash} @name="camera", @quantity=3>)
+                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
+              end
+            else
+              colored do
+                red_line   %(Expected: #<SuperDiff::Test::Item:#{"0x%016x" % (expected.object_id * 2)} @name="camera", @quantity=3>)
+                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
+              end
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
   end
+
+  # def join_object_id_to(name, for:)
+    # if SuperDiff::Test.jruby?
+      # name + ("0x%x" % expected.hash)
+    # else
+      # name + ("0x%016x" % (expected.object_id * 2))
+    # end
+  # end
 
   def colored(*args, **opts, &block)
     SuperDiff::Tests::Colorizer.call(*args, **opts, &block).to_s.chomp

@@ -377,6 +377,84 @@ RSpec.describe "Integration with RSpec", type: :integration do
         expect(program).to produce_output_when_run(expected_output)
       end
     end
+
+    context "when comparing two different kinds of custom objects" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expected = SuperDiff::Test::Person.new(
+            name: "Marty",
+            age: 31,
+          )
+          actual = SuperDiff::Test::Customer.new(
+            name: "Doc",
+            shipping_address: :some_shipping_address,
+            phone: "1234567890",
+          )
+          expect(actual).to eq(expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: %|expect(actual).to eq(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|#<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">|
+            end
+
+            line do
+              plain "   to eq "
+              red %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "when comparing two different kinds of non-custom objects" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expected = SuperDiff::Test::Item.new(
+            name: "camera",
+            quantity: 3,
+          )
+          actual = SuperDiff::Test::Player.new(
+            handle: "mcmire",
+            character: "Jon",
+            inventory: ["sword"],
+            shields: 11.4,
+            health: 4,
+            ultimate: true,
+          )
+          expect(actual).to eq(expected)
+        TEST
+
+        expected_output = build_expected_output(
+          snippet: %|expect(actual).to eq(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            if SuperDiff::Test.jruby?
+            else
+              line do
+                plain "Expected "
+                green %|#<SuperDiff::Test::Player @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>|
+              end
+
+              line do
+                plain "   to eq "
+                red %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+              end
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          first_replacing(/#<([\w:]+):0x[a-z0-9]+ /, '#<\1 ')
+      end
+    end
   end
 
   describe "the #include matcher" do

@@ -2,7 +2,8 @@ module SuperDiff
   module OperationalSequencers
     class CustomObject < DefaultObject
       def self.applies_to?(expected, actual)
-        expected.respond_to?(:attributes_for_super_diff) &&
+        expected.class == actual.class &&
+          expected.respond_to?(:attributes_for_super_diff) &&
           actual.respond_to?(:attributes_for_super_diff)
       end
 

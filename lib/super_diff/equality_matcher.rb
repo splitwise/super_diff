@@ -24,10 +24,6 @@ module SuperDiff
     private
 
     def resolved_class
-      matching_class || EqualityMatchers::Object
-    end
-
-    def matching_class
       (EqualityMatchers::DEFAULTS + extra_classes).find do |klass|
         klass.applies_to?(expected) && klass.applies_to?(actual)
       end

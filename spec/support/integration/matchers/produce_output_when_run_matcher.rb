@@ -10,6 +10,12 @@ module SuperDiff
 
       def initialize(expected_output)
         @expected_output = expected_output.to_s.strip
+        @output_processor = nil
+      end
+
+      def first_replacing(pattern, replacement)
+        @output_processor = [pattern, replacement]
+        self
       end
 
       def matches?(program)
@@ -37,10 +43,18 @@ module SuperDiff
 
       private
 
-      attr_reader :expected_output, :program
+      attr_reader :expected_output, :program, :output_processor
 
       def actual_output
-        @_actual_output ||= run_command.output.strip
+        @_actual_output ||= begin
+          output = run_command.output.strip
+
+          if output_processor
+            output.gsub!(output_processor[0], output_processor[1])
+          end
+
+          output
+        end
       end
 
       def run_command
