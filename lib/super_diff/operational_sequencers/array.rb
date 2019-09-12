@@ -90,11 +90,10 @@ module SuperDiff
           OperationalSequencer.call(
             expected: expected,
             actual: actual,
+            all_or_nothing: false,
             extra_classes: extra_operational_sequencer_classes,
             extra_diff_formatter_classes: extra_diff_formatter_classes,
           )
-        rescue NoOperationalSequencerAvailableError
-          nil
         end
 
         def add_change_operation(event, child_operations)

@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module Differs
-      class PartialObject < SuperDiff::Differs::Object
+      class PartialObject < SuperDiff::Differs::DefaultObject
         def self.applies_to?(expected, _actual)
           SuperDiff::RSpec.partial_object?(expected)
         end

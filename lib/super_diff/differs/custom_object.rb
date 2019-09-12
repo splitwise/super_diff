@@ -1,8 +1,9 @@
 module SuperDiff
   module Differs
-    class Object < Base
+    class CustomObject < Base
       def self.applies_to?(expected, actual)
-        expected.is_a?(::Object) && actual.is_a?(::Object)
+        expected.respond_to?(:attributes_for_super_diff) &&
+          actual.respond_to?(:attributes_for_super_diff)
       end
 
       def call
@@ -12,14 +13,7 @@ module SuperDiff
       private
 
       def operations
-        OperationalSequencer.call(
-          expected: expected,
-          actual: actual,
-          extra_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
-      rescue SuperDiff::NoOperationalSequencerAvailableError
-        OperationalSequencers::Object.call(
+        OperationalSequencers::CustomObject.call(
           expected: expected,
           actual: actual,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,

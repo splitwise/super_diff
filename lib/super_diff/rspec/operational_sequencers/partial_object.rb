@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module OperationalSequencers
-      class PartialObject < SuperDiff::OperationalSequencers::Object
+      class PartialObject < SuperDiff::OperationalSequencers::DefaultObject
         def self.applies_to?(expected, _actual)
           SuperDiff::RSpec.partial_object?(expected)
         end
@@ -9,7 +9,12 @@ module SuperDiff
         protected
 
         def build_operation_sequencer
-          OperationSequences::Object.new([], value_class: actual.class)
+          # TODO: Test this
+          if actual.respond_to?(:attributes_for_super_diff)
+            OperationSequences::CustomObject.new([], value_class: actual.class)
+          else
+            OperationSequences::DefaultObject.new([], value_class: actual.class)
+          end
         end
 
         def attribute_names

@@ -33,7 +33,7 @@ module SuperDiff
       protected
 
       def diff
-        Differs::Object.call(
+        Differ.call(
           expected,
           actual,
           indent_level: 0,

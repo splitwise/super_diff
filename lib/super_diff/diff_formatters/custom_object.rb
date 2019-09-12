@@ -1,14 +1,8 @@
 module SuperDiff
   module DiffFormatters
-    class Object < Base
+    class CustomObject < DefaultObject
       def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::Object)
-      end
-
-      def initialize(operations, value_class: nil, **rest)
-        super(operations, **rest)
-
-        @value_class = value_class
+        operations.is_a?(OperationSequences::CustomObject)
       end
 
       def call
@@ -30,18 +24,6 @@ module SuperDiff
           indent_level: indent_level,
           add_comma: add_comma?,
         )
-      end
-
-      protected
-
-      def value_class
-        if @value_class
-          @value_class
-        else
-          raise NotImplementedError.new(
-            "You must override #value_class in your subclass.",
-          )
-        end
       end
     end
   end

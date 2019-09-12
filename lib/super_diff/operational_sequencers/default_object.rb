@@ -1,6 +1,10 @@
 module SuperDiff
   module OperationalSequencers
-    class Object < Base
+    class DefaultObject < Base
+      def self.applies_to?(_expected, _actual)
+        true
+      end
+
       def initialize(*args)
         super(*args)
 
@@ -20,7 +24,7 @@ module SuperDiff
 
       def build_operation_sequencer
         # XXX This assumes that `expected` and `actual` are the same
-        OperationSequences::Object.new([], value_class: expected.class)
+        OperationSequences::DefaultObject.new([], value_class: expected.class)
       end
 
       def attribute_names

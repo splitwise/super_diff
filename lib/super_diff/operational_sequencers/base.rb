@@ -77,11 +77,10 @@ module SuperDiff
         OperationalSequencer.call(
           expected: operation.value,
           actual: next_operation.value,
+          all_or_nothing: false,
           extra_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
-      rescue NoOperationalSequencerAvailableError
-        nil
       end
     end
   end

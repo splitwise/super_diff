@@ -6,6 +6,7 @@ module SuperDiff
       [
         :expected!,
         :actual!,
+        :all_or_nothing!,
         extra_classes: [],
         extra_diff_formatter_classes: [],
       ],
@@ -19,16 +20,28 @@ module SuperDiff
           extra_operational_sequencer_classes: extra_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
-      else
+      elsif all_or_nothing?
         raise NoOperationalSequencerAvailableError.create(expected, actual)
+      else
+        nil
       end
     end
 
     private
 
+    attr_query :all_or_nothing?
+
     def resolved_class
-      (extra_classes + OperationalSequencers::DEFAULTS).find do |klass|
-        klass.applies_to?(expected, actual)
+      available_classes.find { |klass| klass.applies_to?(expected, actual) }
+    end
+
+    def available_classes
+      classes = extra_classes + OperationalSequencers::DEFAULTS
+
+      if all_or_nothing?
+        classes + [OperationalSequencers::DefaultObject]
+      else
+        classes
       end
     end
   end

@@ -421,12 +421,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
             SuperDiff::Test::Person.new(name: "Marty", age: 18),
             SuperDiff::Test::Person.new(name: "Doc", age: 50),
           ],
-          extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer,
-          ],
-          extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter,
-          ],
         )
 
         expected_output = <<~STR.strip
@@ -688,12 +682,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
             4,
           ],
           actual: [1, 2, SuperDiff::Test::Person.new(name: "Doc", age: 50), 4],
-          extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer,
-          ],
-          extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter,
-          ],
         )
 
         expected_output = <<~STR.strip
@@ -964,12 +952,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
             steve: SuperDiff::Test::Person.new(name: "Wozniak", age: 33),
             susan: SuperDiff::Test::Person.new(name: "Kare", age: 27),
           },
-          extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer,
-          ],
-          extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter,
-          ],
         )
 
         expected_output = <<~STR.strip
@@ -1189,12 +1171,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
             person: SuperDiff::Test::Person.new(name: "Doc", age: 50),
             amount: 350_00,
           },
-          extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer,
-          ],
-          extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter,
-          ],
         )
 
         expected_output = <<~STR.strip
@@ -1341,12 +1317,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
         actual_output = described_class.call(
           expected: expected,
           actual: actual,
-          extra_operational_sequencer_classes: [
-            SuperDiff::Test::PersonOperationalSequencer,
-          ],
-          extra_diff_formatter_classes: [
-            SuperDiff::Test::PersonDiffFormatter,
-          ],
         )
 
         expected_output = <<~STR.strip
@@ -1421,19 +1391,19 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  #<SuperDiff::Test::Player {)
-              red_line   %(-   character: "mirage",)
-              green_line %(+   character: "lifeline",)
-              red_line   %(-   handle: "martymcfly",)
-              green_line %(+   handle: "docbrown",)
-              plain_line %(    health: 0.3,)
-              plain_line %(    inventory: [)
+              red_line   %(-   @character="mirage",)
+              green_line %(+   @character="lifeline",)
+              red_line   %(-   @handle="martymcfly",)
+              green_line %(+   @handle="docbrown",)
+              plain_line %(    @health=0.3,)
+              plain_line %(    @inventory=[)
               red_line   %(-     "flatline",)
               green_line %(+     "wingman",)
               red_line   %(-     "purple body shield")
               green_line %(+     "mastiff")
               plain_line %(    ],)
-              plain_line %(    shields: 0.6,)
-              plain_line %(    ultimate: 0.8)
+              plain_line %(    @shields=0.6,)
+              plain_line %(    @ultimate=0.8)
               plain_line %(  }>)
             end
           }
