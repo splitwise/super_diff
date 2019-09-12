@@ -775,6 +775,49 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
+    context "given a HashWithIndifferentAccess" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            HashWithIndifferentAccess.new({
+              line_1: "123 Main St.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382",
+            }),
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<HashWithIndifferentAccess { "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }>)
+          )
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object across multiple lines" do
+          inspection = described_class.inspect(
+            HashWithIndifferentAccess.new({
+              line_1: "123 Main St.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382",
+            }),
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<HashWithIndifferentAccess {
+              "line_1" => "123 Main St.",
+              "city" => "Hill Valley",
+              "state" => "CA",
+              "zip" => "90382"
+            }>
+          INSPECTION
+        end
+      end
+    end
+
     context "given a combination of all kinds of values" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
