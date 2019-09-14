@@ -37,36 +37,72 @@ module SuperDiff
       def contents
         operations.map do |operation|
           if operation.name == :change
+            handle_change_operation(operation)
+          else
+            handle_non_change_operation(operation)
+          end
+        end
+      end
+
+      def handle_change_operation(operation)
+        SuperDiff::RecursionGuard.guarding_recursion_of(
+          operation.left_collection,
+          operation.right_collection,
+        ) do |already_seen|
+          if already_seen
+            raise "Infinite recursion!"
+          else
             operation.child_operations.to_diff(
               indent_level: indent_level + 1,
               collection_prefix: build_item_prefix.call(operation),
               add_comma: operation.should_add_comma_after_displaying?,
             )
-          else
-            icon = ICONS.fetch(operation.name, " ")
-            style_name = STYLES.fetch(operation.name, :normal)
-            chunk = build_chunk(
-              operation.value,
-              prefix: build_item_prefix.call(operation),
-              icon: icon,
-            )
-
-            if operation.should_add_comma_after_displaying?
-              chunk << ","
-            end
-
-            style_chunk(style_name, chunk)
           end
         end
       end
 
-      def build_chunk(value, prefix:, icon:)
+      def handle_non_change_operation(operation)
+        icon = ICONS.fetch(operation.name, " ")
+        style_name = STYLES.fetch(operation.name, :normal)
+        chunk = build_chunk_for(
+          operation,
+          prefix: build_item_prefix.call(operation),
+          icon: icon,
+        )
+
+        if operation.should_add_comma_after_displaying?
+          chunk << ","
+        end
+
+        style_chunk(style_name, chunk)
+      end
+
+      def build_chunk_for(operation, prefix:, icon:)
+        if operation.value.equal?(operation.collection)
+          build_chunk_from_string(
+            SuperDiff::RecursionGuard::PLACEHOLDER,
+            prefix: build_item_prefix.call(operation),
+            icon: icon,
+          )
+        else
+          build_chunk_by_inspecting(
+            operation.value,
+            prefix: build_item_prefix.call(operation),
+            icon: icon,
+          )
+        end
+      end
+
+      def build_chunk_by_inspecting(value, prefix:, icon:)
         inspection = ObjectInspection.inspect(
           value,
           as_single_line: false,
         )
+        build_chunk_from_string(inspection, prefix: prefix, icon: icon)
+      end
 
-        inspection.split("\n").
+      def build_chunk_from_string(value, prefix:, icon:)
+        value.split("\n").
           map.with_index { |line, index|
             [
               icon,

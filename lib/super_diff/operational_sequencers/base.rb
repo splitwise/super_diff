@@ -62,7 +62,9 @@ module SuperDiff
 
       def possible_comparison_of(operation, next_operation)
         if should_compare?(operation, next_operation)
-          sequence(operation, next_operation)
+          sequence(operation.value, next_operation.value)
+        else
+          nil
         end
       end
 
@@ -73,10 +75,10 @@ module SuperDiff
           next_operation.index == operation.index
       end
 
-      def sequence(operation, next_operation)
+      def sequence(expected, actual)
         OperationalSequencer.call(
-          expected: operation.value,
-          actual: next_operation.value,
+          expected: expected,
+          actual: actual,
           all_or_nothing: false,
           extra_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,

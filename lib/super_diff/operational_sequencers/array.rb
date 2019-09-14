@@ -19,6 +19,7 @@ module SuperDiff
           actual: actual,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
+          sequence: method(:sequence),
         )
       end
 
@@ -36,6 +37,7 @@ module SuperDiff
             :actual!,
             :extra_operational_sequencer_classes!,
             :extra_diff_formatter_classes!,
+            :sequence!
           ],
         )
         public :operations
@@ -74,7 +76,7 @@ module SuperDiff
         end
 
         def change(event)
-          child_operations = sequence(event.old_element, event.new_element)
+          child_operations = sequence.call(event.old_element, event.new_element)
 
           if child_operations
             add_change_operation(event, child_operations)
@@ -85,16 +87,6 @@ module SuperDiff
         end
 
         private
-
-        def sequence(expected, actual)
-          OperationalSequencer.call(
-            expected: expected,
-            actual: actual,
-            all_or_nothing: false,
-            extra_classes: extra_operational_sequencer_classes,
-            extra_diff_formatter_classes: extra_diff_formatter_classes,
-          )
-        end
 
         def add_change_operation(event, child_operations)
           operations << ::SuperDiff::Operations::BinaryOperation.new(

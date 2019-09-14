@@ -22,4 +22,5 @@ module SuperDiff
   autoload :OperationalSequencers, "super_diff/operational_sequencers"
   autoload :OperationSequences, "super_diff/operation_sequences"
   autoload :Operations, "super_diff/operations"
+  autoload :RecursionGuard, "super_diff/recursion_guard"
 end

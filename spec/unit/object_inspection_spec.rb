@@ -979,6 +979,33 @@ RSpec.describe SuperDiff::ObjectInspection do
     end
   end
 
+  context "given a data structure that refers to itself somewhere inside of it" do
+    context "given as_single_line: true" do
+      it "replaces the reference with ∙∙∙" do
+        value = ["a", "b", "c"]
+        value.insert(1, value)
+        inspection = described_class.inspect(value, as_single_line: true)
+        expect(inspection).to eq(%(["a", ∙∙∙, "b", "c"]))
+      end
+    end
+
+    context "given as_single_line: false" do
+      it "replaces the reference with ∙∙∙" do
+        value = ["a", "b", "c"]
+        value.insert(1, value)
+        inspection = described_class.inspect(value, as_single_line: false)
+        expect(inspection).to eq(<<~INSPECTION.rstrip)
+          [
+            "a",
+            ∙∙∙,
+            "b",
+            "c"
+          ]
+        INSPECTION
+      end
+    end
+  end
+
   def colorize(*args, **opts, &block)
     SuperDiff::Tests::Colorizer.call(*args, **opts, &block)
   end

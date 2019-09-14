@@ -174,6 +174,24 @@ JRuby >= 9.2.x.
 
 [travis]: http://travis-ci.org/mcmire/super_diff
 
+## Inspiration/Thanks
+
+In developing this gem I made use of or was heavily inspired by these libraries:
+
+* [Diff::LCS][diff-lcs], the library I started with in the [original version of
+  this gem][original-version] (made in 2011!)
+* The pretty-printing algorithms and API within [PrettyPrinter][pretty-printer]
+  and [AwesomePrint][awesome-print], from which I borrowed ideas to develop
+  the [inspectors][inspection-tree].
+
+Thank you so much!
+
+[original-version]: https://github.com/mcmire/super_diff/tree/old-master
+[diff-lcs]: https://github.com/halostatue/diff-lcs
+[pretty-printer]: https://github.com/ruby/ruby/tree/master/lib
+[awesome-print]: https://github.com/awesome-print/awesome_print
+[inspection-tree]: https://github.com/mcmire/super_diff/blob/master/lib/super_diff/object_inspection/inspection_tree.rb
+
 ## Copyright/License
 
 © 2018-2019 Elliot Winkler, released under the [MIT license](LICENSE).

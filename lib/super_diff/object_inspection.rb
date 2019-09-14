@@ -1,6 +1,7 @@
 module SuperDiff
   module ObjectInspection
     autoload :InspectionTree, "super_diff/object_inspection/inspection_tree"
+    autoload :Inspector, "super_diff/object_inspection/inspector"
     autoload :Inspectors, "super_diff/object_inspection/inspectors"
     autoload :Map, "super_diff/object_inspection/map"
     autoload :Nodes, "super_diff/object_inspection/nodes"
@@ -10,7 +11,8 @@ module SuperDiff
     end
 
     def self.inspect(object, as_single_line:, indent_level: 0)
-      map.call(object).evaluate(
+      Inspector.call(
+        map,
         object,
         as_single_line: as_single_line,
         indent_level: indent_level,

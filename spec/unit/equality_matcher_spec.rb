@@ -1481,15 +1481,159 @@ RSpec.describe SuperDiff::EqualityMatcher do
         expect(actual_output).to eq(expected_output)
       end
     end
-  end
 
-  # def join_object_id_to(name, for:)
-    # if SuperDiff::Test.jruby?
-      # name + ("0x%x" % expected.hash)
-    # else
-      # name + ("0x%016x" % (expected.object_id * 2))
-    # end
-  # end
+    context "when the expected value is a data structure that refers to itself somewhere inside of it" do
+      it "replaces the reference with ∙∙∙" do
+        expected = ["a", "b", "c"]
+        expected.insert(1, expected)
+        actual = ["a", "x", "b", "c"]
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: ["a", ∙∙∙, "b", "c"])
+              green_line %(  Actual: ["a", "x", "b", "c"])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    "a",)
+              red_line   %(-   ∙∙∙,)
+              green_line %(+   "x",)
+              plain_line %(    "b",)
+              plain_line %(    "c")
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "when the actual value is a data structure that refers to itself somewhere inside of it" do
+      it "replaces the reference with ∙∙∙" do
+        expected = ["a", "x", "b", "c"]
+        actual = ["a", "b", "c"]
+        actual.insert(1, actual)
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing arrays.
+
+          #{
+            colored do
+              red_line   %(Expected: ["a", "x", "b", "c"])
+              green_line %(  Actual: ["a", ∙∙∙, "b", "c"])
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  [)
+              plain_line %(    "a",)
+              red_line   %(-   "x",)
+              green_line %(+   ∙∙∙,)
+              plain_line %(    "b",)
+              plain_line %(    "c")
+              plain_line %(  ])
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "when the data structure being different is present inside a secondary layer" do
+      it "replaces the reference with ∙∙∙" do
+        expected = { foo: ["a", "x", "b", "c"] }
+        actual = { foo: ["a", "b", "c"] }
+        actual[:foo].insert(1, actual)
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { foo: ["a", "x", "b", "c"] })
+              green_line %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    foo: [)
+              plain_line %(      "a",)
+              red_line   %(-     "x",)
+              green_line %(+     ∙∙∙,)
+              plain_line %(      "b",)
+              plain_line %(      "c")
+              plain_line %(    ])
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+
+    context "when a secondary layer of a data structure refers to itself" do
+      it "replaces the reference with ∙∙∙" do
+        expected = { foo: ["a", "x", "b", "c"] }
+        actual = { foo: ["a", "b", "c"] }
+        actual[:foo].insert(1, actual[:foo])
+
+        actual_output = described_class.call(expected: expected, actual: actual)
+
+        expected_output = <<~STR.strip
+          Differing hashes.
+
+          #{
+            colored do
+              red_line   %(Expected: { foo: ["a", "x", "b", "c"] })
+              green_line %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+            end
+          }
+
+          Diff:
+
+          #{
+            colored do
+              plain_line %(  {)
+              plain_line %(    foo: [)
+              plain_line %(      "a",)
+              red_line   %(-     "x",)
+              green_line %(+     ∙∙∙,)
+              plain_line %(      "b",)
+              plain_line %(      "c")
+              plain_line %(    ])
+              plain_line %(  })
+            end
+          }
+        STR
+
+        expect(actual_output).to eq(expected_output)
+      end
+    end
+  end
 
   def colored(*args, **opts, &block)
     SuperDiff::Tests::Colorizer.call(*args, **opts, &block).to_s.chomp
