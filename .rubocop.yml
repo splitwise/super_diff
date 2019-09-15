@@ -45,6 +45,7 @@ Metrics/BlockLength:
     - describe
     - indent
     - it
+    - uncolored
     - shared_context
     - shared_examples
     - shared_examples_for
@@ -67,6 +68,8 @@ Metrics/ParameterLists:
   CountKeywordArgs: false
 Metrics/PerceivedComplexity:
   Max: 15
+Naming/AccessorMethodName:
+  Enabled: false
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 Naming/PredicateName:
