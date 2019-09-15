@@ -1,7 +1,23 @@
 module SuperDiff
   module Helpers
-    def self.style(*args, **opts, &block)
-      SuperDiff::ColorizedDocument.colorize(*args, **opts, &block)
+    # TODO: Simplify this
+    def self.style(*args, color_enabled: true, **opts, &block)
+      klass =
+        if color_enabled && Csi.color_enabled?
+          Csi::ColorizedDocument
+        else
+          Csi::UncolorizedDocument
+        end
+
+      document = klass.new.extend(ColorizedDocumentExtensions)
+
+      if block
+        document.__send__(:evaluate_block, &block)
+      else
+        document.colorize(*args, **opts)
+      end
+
+      document
     end
 
     def self.plural_type_for(value)

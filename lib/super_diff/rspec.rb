@@ -65,3 +65,5 @@ require_relative "rspec/monkey_patches"
 SuperDiff::ObjectInspection.map.prepend(
   SuperDiff::RSpec::ObjectInspection::MapExtension,
 )
+
+SuperDiff::Csi.color_enabled = RSpec.configuration.color_enabled?

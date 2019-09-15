@@ -1636,6 +1636,6 @@ RSpec.describe SuperDiff::EqualityMatcher do
   end
 
   def colored(*args, **opts, &block)
-    SuperDiff::Tests::Colorizer.call(*args, **opts, &block).to_s.chomp
+    SuperDiff::Helpers.style(*args, **opts, &block).to_s.chomp
   end
 end

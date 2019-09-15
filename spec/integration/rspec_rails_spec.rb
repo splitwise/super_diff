@@ -22,7 +22,7 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do
@@ -70,7 +70,7 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do
@@ -120,7 +120,7 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
           expect(actual).to match(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to match(expected)",
           expectation: proc {
             line do
@@ -168,7 +168,7 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
           expect(actual).to match(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to match(expected)",
           expectation: proc {
             line do

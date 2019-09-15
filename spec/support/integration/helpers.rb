@@ -2,29 +2,32 @@ module SuperDiff
   module IntegrationTests
     PROJECT_DIRECTORY = Pathname.new("../../..").expand_path(__dir__)
 
-    def make_plain_test_program(test)
+    def make_plain_test_program(test, color_enabled: true)
       <<~PROGRAM
-        #{set_up_with("super_diff/rspec")}
+        #{set_up_with("super_diff/rspec", color_enabled: color_enabled)}
         #{describe_block_including(test)}
       PROGRAM
     end
 
-    def make_rspec_active_record_program(test)
+    def make_rspec_active_record_program(test, color_enabled: true)
       <<~PROGRAM
         #{
           set_up_active_record_around do
-            set_up_with("super_diff/rspec", "super_diff/active_record")
+            set_up_with(
+              "super_diff/rspec", "super_diff/active_record",
+              color_enabled: true
+            )
           end
         }
         #{describe_block_including(test)}
       PROGRAM
     end
 
-    def make_rspec_rails_test_program(test)
+    def make_rspec_rails_test_program(test, color_enabled: true)
       <<~PROGRAM
         #{
           set_up_active_record_around do
-            set_up_with("super_diff/rspec-rails")
+            set_up_with("super_diff/rspec-rails", color_enabled: color_enabled)
           end
         }
         #{describe_block_including(test)}
@@ -55,7 +58,7 @@ module SuperDiff
       PROGRAM
     end
 
-    def set_up_with(*libraries)
+    def set_up_with(*libraries, color_enabled:)
       <<~SETUP
         PROJECT_DIRECTORY = Pathname.new("#{PROJECT_DIRECTORY}")
         SUPPORT_DIR = PROJECT_DIRECTORY.join("spec/support")
@@ -71,7 +74,7 @@ module SuperDiff
         end
 
         RSpec.configure do |config|
-          config.color_mode = :on
+          config.color_mode = :#{color_enabled ? "on" : "off"}
         end
 
 #{libraries.map { |library| %(        require "#{library}") }.join("\n")}
@@ -92,7 +95,7 @@ module SuperDiff
       PROGRAM
     end
 
-    def build_expected_output(
+    def build_colored_expected_output(
       snippet:,
       expectation:,
       newline_before_expectation: false,
@@ -158,8 +161,78 @@ module SuperDiff
       end
     end
 
+    def build_uncolored_expected_output(
+      snippet:,
+      expectation:,
+      newline_before_expectation: false,
+      diff: nil
+    )
+      uncolored do
+        line "Failures:\n"
+
+        line "1) test passes", indent_by: 2
+
+        line indent_by: 5 do
+          plain "Failure/Error: "
+          plain snippet
+        end
+
+        if diff || newline_before_expectation
+          newline
+        end
+
+        indent by: 7 do
+          evaluate_block(&expectation)
+
+          if diff
+            newline
+
+            plain_line "Diff:"
+
+            newline
+
+            line do
+              plain "┌ (Key) ──────────────────────────┐"
+            end
+
+            line do
+              plain "│ "
+              plain "‹-› in expected, not in actual"
+              plain "  │"
+            end
+
+            line do
+              plain "│ "
+              plain "‹+› in actual, not in expected"
+              plain "  │"
+            end
+
+            line do
+              plain "│ "
+              plain "‹ › in both expected and actual"
+              plain " │"
+            end
+
+            line do
+              plain "└─────────────────────────────────┘"
+            end
+
+            newline
+
+            evaluate_block(&diff)
+
+            newline
+          end
+        end
+      end
+    end
+
     def colored(&block)
-      SuperDiff::Tests::Colorizer.call(&block).to_s.chomp
+      SuperDiff::Helpers.style(color_enabled: true, &block).to_s.chomp
+    end
+
+    def uncolored(&block)
+      SuperDiff::Helpers.style(color_enabled: false, &block).to_s.chomp
     end
 
     def reindent(code, level: 0)

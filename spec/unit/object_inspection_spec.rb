@@ -1007,6 +1007,6 @@ RSpec.describe SuperDiff::ObjectInspection do
   end
 
   def colorize(*args, **opts, &block)
-    SuperDiff::Tests::Colorizer.call(*args, **opts, &block)
+    SuperDiff::Helpers.style(*args, **opts, &block).to_s.chomp
   end
 end

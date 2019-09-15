@@ -2,21 +2,32 @@
 module SuperDiff
   module Csi
     autoload :Color, "super_diff/csi/color"
+    autoload :ColorSequenceBlock, "super_diff/csi/color_sequence_block"
     autoload :ColorizedDocument, "super_diff/csi/colorized_document"
+    autoload :Document, "super_diff/csi/document"
     autoload :EightBitColor, "super_diff/csi/eight_bit_color"
     autoload :FourBitColor, "super_diff/csi/four_bit_color"
     autoload :ResetSequence, "super_diff/csi/reset_sequence"
     autoload :TwentyFourBitColor, "super_diff/csi/twenty_four_bit_color"
+    autoload :UncolorizedDocument, "super_diff/csi/uncolorized_document"
+
+    class << self
+      attr_writer :color_enabled
+    end
 
     def self.reset_sequence
       ResetSequence.new
     end
 
+    def self.color_enabled?
+      @color_enabled
+    end
+
     def self.colorize(*args, **opts, &block)
-      if block
-        ColorizedDocument.new(&block)
+      if color_enabled?
+        ColorizedDocument.new(*args, **opts, &block)
       else
-        ColorizedDocument.new { colorize(*args, **opts) }
+        UncolorizedDocument.new(*args, **opts, &block)
       end
     end
 
@@ -41,5 +52,7 @@ module SuperDiff
           end
         end
     end
+
+    self.color_enabled = STDOUT.tty?
   end
 end

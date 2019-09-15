@@ -18,7 +18,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do
@@ -66,7 +66,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           newline_before_expectation: true,
           expectation: proc {
@@ -99,7 +99,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           newline_before_expectation: true,
           expectation: proc {
@@ -143,7 +143,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do
@@ -200,7 +200,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do
@@ -260,7 +260,7 @@ shared_examples_for "integration with ActiveRecord" do
           expect(actual).to eq(expected)
         TEST
 
-        expected_output = build_expected_output(
+        expected_output = build_colored_expected_output(
           snippet: "expect(actual).to eq(expected)",
           expectation: proc {
             line do

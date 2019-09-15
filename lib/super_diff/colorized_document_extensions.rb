@@ -1,8 +1,10 @@
 module SuperDiff
-  class ColorizedDocument < Csi::ColorizedDocument
-    alias_method :normal, :text
-    # FIXME: Backward compatibility
-    alias_method :plain, :normal
+  module ColorizedDocumentExtensions
+    def self.extended(extendee)
+      extendee.singleton_class.class_eval do
+        alias_method :normal, :text
+      end
+    end
 
     def deleted(*args, **opts, &block)
       colorize(*args, **opts, fg: :red, &block)

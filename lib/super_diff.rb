@@ -3,7 +3,7 @@ require "diff-lcs"
 require "patience_diff"
 
 module SuperDiff
-  autoload :ColorizedDocument, "super_diff/colorized_document"
+  autoload :ColorizedDocumentExtensions, "super_diff/colorized_document_extensions"
   autoload :Csi, "super_diff/csi"
   autoload :DiffFormatter, "super_diff/diff_formatter"
   autoload :DiffFormatters, "super_diff/diff_formatters"
