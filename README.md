@@ -7,8 +7,12 @@
 [hound-badge]: https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg
 [hound]: https://houndci.com
 
-SuperDiff is a tool that displays the differences between two data structures of
-any type in Ruby.
+SuperDiff is a Ruby gem that intelligently displays the differences between two
+data structures of any type.
+
+📢 **[See what's changed in the latest version (0.1.0)][changelog].**
+
+[changelog]: CHANGELOG.md
 
 ## Introduction
 
@@ -17,8 +21,8 @@ capabilities. Sometimes, whenever you use a matcher such as `eq`, `match`,
 `include`, or `have_attributes`, you will get a diff of the two data structures
 you are trying to match against. This is really helpful for strings, but not so
 helpful for other, more "real world" kinds of values, such as arrays, hashes,
-and full-scale objects. The reason this doesn't work is because [RSpec will
-naively run your `expected` and `actual` values through Ruby's PrettyPrinter
+and full-scale objects. The reason this doesn't work is because [all RSpec does
+is run your `expected` and `actual` values through Ruby's PrettyPrinter
 library][rspec-differ-fail] and then perform a diff of these strings.
 
 For instance, let's say you wanted to compare these two hashes:
@@ -77,9 +81,9 @@ You would get output that looks like:
 
 Not great.
 
-This library provides a sophisticated set of comparators that know how to
-intelligent compute the differences between two data structures and display them
-in a way that makes sense. Using the example above, you'd get this instead:
+This library provides a diff engine that knows how to figure out the differences
+between any two data structures and display them in a sensible way. Using the
+example above, you'd get this instead:
 
 ![After super_diff](doc/after_super_diff.png)
 
@@ -131,9 +135,9 @@ your test helper file (either `rails_helper` or `spec_helper`):
 
 ``` ruby
 SuperDiff::RSpec.configure do |config|
-  config.extra_differ_classes << YourDiffer
-  config.extra_operational_sequencer_classes << YourOperationalSequencer
-  config.extra_diff_formatter_classes << YourDiffFormatter
+  config.add_extra_differ_class(YourDiffer)
+  config.add_extra_operational_sequencer_class(YourOperationalSequencer)
+  config.add_extra_diff_formatter_class(YourDiffFormatter)
 end
 ```
 
@@ -143,16 +147,17 @@ and diff formatter. Also explanations on what these are.)*
 ## Contributing
 
 If you encounter a bug or have an idea for how this could be better, feel free
-to create an issue.
+to [create an issue](https://github.com/mcmire/super_diff/issues).
 
 If you'd like to submit a PR instead, here's how to get started. First, fork
-this repo and then run:
+this repo. Then, when you've cloned your fork, run:
 
 ```
 bundle install
 ```
 
-This will install dependencies. From here you can run all of the tests:
+This will install various dependencies. After this, you can run all of the
+tests: 
 
 ```
 bundle exec rake
@@ -188,7 +193,7 @@ Thank you so much!
 
 [original-version]: https://github.com/mcmire/super_diff/tree/old-master
 [diff-lcs]: https://github.com/halostatue/diff-lcs
-[pretty-printer]: https://github.com/ruby/ruby/tree/master/lib
+[pretty-printer]: https://github.com/ruby/ruby/tree/master/lib/prettyprint.rb
 [awesome-print]: https://github.com/awesome-print/awesome_print
 [inspection-tree]: https://github.com/mcmire/super_diff/blob/master/lib/super_diff/object_inspection/inspection_tree.rb
 
