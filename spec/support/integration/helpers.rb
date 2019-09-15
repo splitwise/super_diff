@@ -15,7 +15,7 @@ module SuperDiff
           set_up_active_record_around do
             set_up_with(
               "super_diff/rspec", "super_diff/active_record",
-              color_enabled: true
+              color_enabled: color_enabled
             )
           end
         }
@@ -177,6 +177,7 @@ module SuperDiff
           plain snippet
         end
 
+        # TODO: Make this happen if the `expectation` contains a new line
         if diff || newline_before_expectation
           newline
         end

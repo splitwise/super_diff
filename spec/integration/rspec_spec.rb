@@ -1,6 +1,1006 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec", type: :integration do
+  describe "the #be matcher with a boolean" do
+    context "assuming color is enabled" do
+      context "when comparing true and false" do
+        it "produces the correct output" do
+          program = make_plain_test_program(<<~TEST.strip)
+            expect(true).to be(false)
+          TEST
+
+          expected_output = build_colored_expected_output(
+            snippet: %|expect(true).to be(false)|,
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|true|
+                plain " to equal "
+                red %|false|
+                plain "."
+              end
+            },
+          )
+
+          expect(program).to produce_output_when_run(expected_output)
+        end
+      end
+
+      context "when comparing false and true" do
+        it "produces the correct output" do
+          program = make_plain_test_program(<<~TEST.strip)
+            expect(false).to be(true)
+          TEST
+
+          expected_output = build_colored_expected_output(
+            snippet: %|expect(false).to be(true)|,
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|false|
+                plain " to equal "
+                red %|true|
+                plain "."
+              end
+            },
+          )
+
+          expect(program).to produce_output_when_run(expected_output)
+        end
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(true).to be(false)
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(true).to be(false)|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|true|
+              plain " to equal "
+              plain %|false|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with no arguments" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(nil).to be
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(nil).to be|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|nil|
+              plain " to be "
+              red %|truthy|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(nil).to be
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(nil).to be|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|nil|
+              plain " to be "
+              plain %|truthy|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with ==" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(nil).to be == :foo
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(nil).to be == :foo|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|nil|
+              plain " to == "
+              red %|:foo|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(nil).to be == :foo
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(nil).to be == :foo|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|nil|
+              plain " to == "
+              plain %|:foo|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with <" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(1).to be < 1
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(1).to be < 1|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|1|
+              plain " to < "
+              red %|1|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(1).to be < 1
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(1).to be < 1|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|1|
+              plain " to < "
+              plain %|1|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with <=" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(1).to be <= 0
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(1).to be <= 0|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|1|
+              plain " to <= "
+              red %|0|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(1).to be <= 0
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(1).to be <= 0|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|1|
+              plain " to <= "
+              plain %|0|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with >=" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(1).to be >= 2
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(1).to be >= 2|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|1|
+              plain " to >= "
+              red %|2|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(1).to be >= 2
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(1).to be >= 2|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|1|
+              plain " to >= "
+              plain %|2|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with >" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(1).to be > 2
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(1).to be > 2|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|1|
+              plain " to > "
+              red %|2|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(1).to be > 2
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(1).to be > 2|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|1|
+              plain " to > "
+              plain %|2|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with ===" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(:foo).to be === String
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(:foo).to be === String|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|:foo|
+              plain " to === "
+              red %|String|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(:foo).to be === String
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(:foo).to be === String|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|:foo|
+              plain " to === "
+              plain %|String|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be matcher with =~" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect("foo").to be =~ /bar/
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect("foo").to be =~ /bar/|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|"foo"|
+              plain " to =~ "
+              red %|/bar/|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect("foo").to be =~ /bar/
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect("foo").to be =~ /bar/|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|"foo"|
+              plain " to =~ "
+              plain %|/bar/|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be_truthy matcher" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(nil).to be_truthy
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(nil).to be_truthy|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|nil|
+              plain " to be "
+              red %|truthy|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(nil).to be_truthy
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(nil).to be_truthy|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|nil|
+              plain " to be "
+              plain %|truthy|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be_falsey matcher" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(:foo).to be_falsey
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(:foo).to be_falsey|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|:foo|
+              plain " to be "
+              red %|falsey|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(:foo).to be_falsey
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(:foo).to be_falsey|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|:foo|
+              plain " to be "
+              plain %|falsey|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be_nil matcher" do
+    context "assuming color is enabled" do
+      it "produces the correct output" do
+        program = make_plain_test_program(<<~TEST.strip)
+          expect(:foo).to be_nil
+        TEST
+
+        expected_output = build_colored_expected_output(
+          snippet: %|expect(:foo).to be_nil|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|:foo|
+              plain " to be "
+              red %|nil|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+
+    context "if color has been disabled" do
+      it "does not include the color in the output" do
+        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
+          expect(:foo).to be_nil
+        TEST
+
+        expected_output = build_uncolored_expected_output(
+          snippet: %|expect(:foo).to be_nil|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              plain %|:foo|
+              plain " to be "
+              plain %|nil|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).to produce_output_when_run(expected_output)
+      end
+    end
+  end
+
+  describe "the #be_* matcher" do
+    context "assuming color is enabled" do
+      ["be", "be_a", "be_an"].each do |prefix|
+        context "using #{prefix}_<predicate>" do
+          context "when the predicate method doesn't exist on the object" do
+            context "when the inspected version of the actual value is short" do
+              it "produces the correct output" do
+                program = make_plain_test_program(<<~TEST.strip)
+                  expect(:foo).to #{prefix}_strong
+                TEST
+
+                expected_output = build_colored_expected_output(
+                  snippet: %|expect(:foo).to #{prefix}_strong|,
+                  expectation: proc {
+                    line do
+                      plain "Expected "
+                      yellow %|:foo|
+                      plain " to respond to "
+                      magenta %|`strong?`|
+                      plain " or "
+                      magenta %|`strongs?`|
+                      plain "."
+                    end
+                  },
+                )
+
+                expect(program).to produce_output_when_run(expected_output)
+              end
+            end
+
+            context "when the inspected version of the actual value is long" do
+              it "produces the correct output" do
+                program = make_plain_test_program(<<~TEST.strip)
+                  hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }
+                  expect(hash).to #{prefix}_strong
+                TEST
+
+                expected_output = build_colored_expected_output(
+                  snippet: %|expect(hash).to #{prefix}_strong|,
+                  newline_before_expectation: true,
+                  expectation: proc {
+                    line do
+                      plain "     Expected "
+                      yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                    end
+
+                    line do
+                      plain "to respond to "
+                      magenta %|`strong?`|
+                      plain " or "
+                      magenta %|`strongs?`|
+                    end
+                  },
+                )
+
+                expect(program).to produce_output_when_run(expected_output)
+              end
+            end
+          end
+
+          context "when the predicate method exists on the object" do
+            context "but is private" do
+              context "when the inspected version of the actual value is short" do
+                it "produces the correct output" do
+                  program = make_plain_test_program(<<~TEST.strip)
+                    class Foo
+                      private def strong?; end
+                    end
+
+                    expect(Foo.new).to #{prefix}_strong
+                  TEST
+
+                  expected_output = build_colored_expected_output(
+                    snippet: %|expect(Foo.new).to #{prefix}_strong|,
+                    expectation: proc {
+                      line do
+                        plain "Expected "
+                        yellow %|#<Foo>|
+                        plain " to have a public method "
+                        magenta %|`strong?`|
+                        plain " or "
+                        magenta %|`strongs?`|
+                        plain "."
+                      end
+                    },
+                  )
+
+                  expect(program).
+                    to produce_output_when_run(expected_output).
+                    removing_object_ids
+                end
+              end
+
+              context "when the inspected version of the actual value is long" do
+                it "produces the correct output" do
+                  program = make_plain_test_program(<<~TEST.strip)
+                    hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }
+
+                    class << hash
+                      private def strong?; end
+                    end
+
+                    expect(hash).to #{prefix}_strong
+                  TEST
+
+                  expected_output = build_colored_expected_output(
+                    snippet: %|expect(hash).to #{prefix}_strong|,
+                    newline_before_expectation: true,
+                    expectation: proc {
+                      line do
+                        plain "               Expected "
+                        yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                      end
+
+                      line do
+                        plain "to have a public method "
+                        magenta %|`strong?`|
+                        plain " or "
+                        magenta %|`strongs?`|
+                      end
+                    },
+                  )
+
+                  expect(program).
+                    to produce_output_when_run(expected_output).
+                    removing_object_ids
+                end
+              end
+            end
+
+            context "and is public and returns false" do
+              context "but is called #true?" do
+                context "when the inspected version of the actual value is short" do
+                  it "produces the correct output" do
+                    program = make_plain_test_program(<<~TEST.strip)
+                      class Foo
+                        def true?; false; end
+                      end
+
+                      expect(Foo.new).to #{prefix}_true
+                    TEST
+
+                    expected_output = build_colored_expected_output(
+                      snippet: %|expect(Foo.new).to #{prefix}_true|,
+                      newline_before_expectation: true,
+                      expectation: proc {
+                        line do
+                          plain "Expected "
+                          yellow %|#<Foo>|
+                          plain " to return true for "
+                          magenta %|`true?`|
+                          plain " or "
+                          magenta %|`trues?`|
+                          plain "."
+                        end
+
+                        newline
+
+                        line do
+                          plain "(Perhaps you want to use "
+                          blue "`be(true)`"
+                          plain " or "
+                          blue "`be_truthy`"
+                          plain " instead?)"
+                        end
+                      },
+                    )
+
+                    expect(program).
+                      to produce_output_when_run(expected_output).
+                      removing_object_ids
+                  end
+                end
+
+                context "when the inspected version of the actual value is long" do
+                  it "produces the correct output" do
+                    program = make_plain_test_program(<<~TEST.strip)
+                      hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }
+
+                      class << hash
+                        def true?; false; end
+                      end
+
+                      expect(hash).to #{prefix}_true
+                    TEST
+
+                    expected_output = build_colored_expected_output(
+                      snippet: %|expect(hash).to #{prefix}_true|,
+                      newline_before_expectation: true,
+                      expectation: proc {
+                        line do
+                          plain "          Expected "
+                          yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                        end
+
+                        line do
+                          plain "to return true for "
+                          magenta %|`true?`|
+                          plain " or "
+                          magenta %|`trues?`|
+                        end
+
+                        newline
+
+                        line do
+                          plain "(Perhaps you want to use "
+                          blue "`be(true)`"
+                          plain " or "
+                          blue "`be_truthy`"
+                          plain " instead?)"
+                        end
+                      },
+                    )
+
+                    expect(program).
+                      to produce_output_when_run(expected_output).
+                      removing_object_ids
+                  end
+                end
+              end
+
+              context "but is called #false?" do
+                it "produces the correct output" do
+                  program = make_plain_test_program(<<~TEST.strip)
+                    class X
+                      def false?; false; end
+                    end
+
+                    expect(X.new).to #{prefix}_false
+                  TEST
+
+                  expected_output = build_colored_expected_output(
+                    snippet: %|expect(X.new).to #{prefix}_false|,
+                    newline_before_expectation: true,
+                    expectation: proc {
+                      line do
+                        plain "Expected "
+                        yellow %|#<X>|
+                        plain " to return true for "
+                        magenta %|`false?`|
+                        plain " or "
+                        magenta %|`falses?`|
+                        plain "."
+                      end
+                    },
+                  )
+
+                  expect(program).
+                    to produce_output_when_run(expected_output).
+                    removing_object_ids
+                end
+              end
+
+              context "and is called neither #true? nor #false?" do
+                context "and is singular" do
+                  context "when the inspected version of the actual value is short" do
+                    it "produces the correct output" do
+                      program = make_plain_test_program(<<~TEST.strip)
+                        class X
+                          def y?; false; end
+                        end
+
+                        expect(X.new).to #{prefix}_y
+                      TEST
+
+                      expected_output = build_colored_expected_output(
+                        snippet: %|expect(X.new).to #{prefix}_y|,
+                        expectation: proc {
+                          line do
+                            plain "Expected "
+                            yellow %|#<X>|
+                            plain " to return true for "
+                            magenta %|`y?`|
+                            plain " or "
+                            magenta %|`ys?`|
+                            plain "."
+                          end
+                        },
+                      )
+
+                      expect(program).
+                        to produce_output_when_run(expected_output).
+                        removing_object_ids
+                    end
+                  end
+
+                  context "when the inspected version of the actual value is long" do
+                    it "produces the correct output" do
+                      program = make_plain_test_program(<<~TEST.strip)
+                        hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }
+
+                        class << hash
+                          def y?; false; end
+                        end
+
+                        expect(hash).to #{prefix}_y
+                      TEST
+
+                      expected_output = build_colored_expected_output(
+                        snippet: %|expect(hash).to #{prefix}_y|,
+                        newline_before_expectation: true,
+                        expectation: proc {
+                          line do
+                            plain "          Expected "
+                            yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                          end
+
+                          line do
+                            plain "to return true for "
+                            magenta %|`y?`|
+                            plain " or "
+                            magenta %|`ys?`|
+                          end
+                        },
+                      )
+
+                      expect(program).
+                        to produce_output_when_run(expected_output).
+                        removing_object_ids
+                    end
+                  end
+                end
+
+                context "and is plural" do
+                  context "when the inspected version of the actual value is short" do
+                    it "produces the correct output" do
+                      program = make_plain_test_program(<<~TEST.strip)
+                        class X
+                          def ys?; false; end
+                        end
+
+                        expect(X.new).to #{prefix}_y
+                      TEST
+
+                      expected_output = build_colored_expected_output(
+                        snippet: %|expect(X.new).to #{prefix}_y|,
+                        expectation: proc {
+                          line do
+                            plain "Expected "
+                            yellow %|#<X>|
+                            plain " to return true for "
+                            magenta %|`y?`|
+                            plain " or "
+                            magenta %|`ys?`|
+                            plain "."
+                          end
+                        },
+                      )
+
+                      expect(program).
+                        to produce_output_when_run(expected_output).
+                        removing_object_ids
+                    end
+                  end
+
+                  context "when the inspected version of the actual value is long" do
+                    it "produces the correct output" do
+                      program = make_plain_test_program(<<~TEST.strip)
+                        hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }
+
+                        class << hash
+                          def ys?; false; end
+                        end
+
+                        expect(hash).to #{prefix}_y
+                      TEST
+
+                      expected_output = build_colored_expected_output(
+                        snippet: %|expect(hash).to #{prefix}_y|,
+                        newline_before_expectation: true,
+                        expectation: proc {
+                          line do
+                            plain "          Expected "
+                            yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                          end
+
+                          line do
+                            plain "to return true for "
+                            magenta %|`y?`|
+                            plain " or "
+                            magenta %|`ys?`|
+                          end
+                        },
+                      )
+
+                      expect(program).
+                        to produce_output_when_run(expected_output).
+                        removing_object_ids
+                    end
+                  end
+                end
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+
   describe "the #eq matcher" do
     context "assuming color is enabled" do
       context "when comparing two different integers" do
@@ -42,7 +1042,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
                 red %|:foo|
                 plain "."
               end
-            }
+            },
           )
 
           expect(program).to produce_output_when_run(expected_output)
@@ -65,7 +1065,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
                 red %|"Marty"|
                 plain "."
               end
-            }
+            },
           )
 
           expect(program).to produce_output_when_run(expected_output)
@@ -453,7 +1453,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
 
           expect(program).
             to produce_output_when_run(expected_output).
-            first_replacing(/#<([\w:]+):0x[a-z0-9]+ /, '#<\1 ')
+            removing_object_ids
         end
       end
     end
@@ -2024,6 +3024,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
     end
   end
 
+  # TODO: Update coloring here
   describe "the #respond_to matcher" do
     context "assuming color is enabled" do
       context "without any qualifiers" do
@@ -2053,11 +3054,11 @@ RSpec.describe "Integration with RSpec", type: :integration do
         context "when a large number of methods are specified" do
           it "produces the correct output" do
             program = make_plain_test_program(<<~TEST)
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)
+              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :qux, :fizz, :buzz, :zing)
             TEST
 
             expected_output = build_colored_expected_output(
-              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz)|,
+              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :qux, :fizz, :buzz, :zing)|,
               newline_before_expectation: true,
               expectation: proc {
                 line do
@@ -2070,8 +3071,16 @@ RSpec.describe "Integration with RSpec", type: :integration do
                   red %|:foo|
                   plain ", "
                   red %|:bar|
-                  plain " and "
+                  plain ", "
                   red %|:baz|
+                  plain ", "
+                  red %|:qux|
+                  plain ", "
+                  red %|:fizz|
+                  plain ", "
+                  red %|:buzz|
+                  plain " and "
+                  red %|:zing|
                 end
               },
             )
@@ -2110,11 +3119,11 @@ RSpec.describe "Integration with RSpec", type: :integration do
         context "when a large number of methods are specified" do
           it "produces the correct output" do
             program = make_plain_test_program(<<~TEST)
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments
+              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :fizz, :buzz).with(3).arguments
             TEST
 
             expected_output = build_colored_expected_output(
-              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with(3).arguments|,
+              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :fizz, :buzz).with(3).arguments|,
               newline_before_expectation: true,
               expectation: proc {
                 line do
@@ -2127,8 +3136,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
                   red %|:foo|
                   plain ", "
                   red %|:bar|
-                  plain " and "
+                  plain ", "
                   red %|:baz|
+                  plain ", "
+                  red %|:fizz|
+                  plain " and "
+                  red %|:buzz|
                   plain " with "
                   red %|3|
                   plain " arguments"
@@ -2170,11 +3183,11 @@ RSpec.describe "Integration with RSpec", type: :integration do
         context "when a large number of methods are specified" do
           it "produces the correct output" do
             program = make_plain_test_program(<<~TEST)
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)
+              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :fizz, :buzz).with_keywords(:qux, :blargh)
             TEST
 
             expected_output = build_colored_expected_output(
-              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_keywords(:qux, :blargh)|,
+              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :fizz, :buzz).with_keywords(:qux, :blargh)|,
               newline_before_expectation: true,
               expectation: proc {
                 line do
@@ -2187,8 +3200,12 @@ RSpec.describe "Integration with RSpec", type: :integration do
                   red %|:foo|
                   plain ", "
                   red %|:bar|
-                  plain " and "
+                  plain ", "
                   red %|:baz|
+                  plain ", "
+                  red %|:fizz|
+                  plain " and "
+                  red %|:buzz|
                   plain " with keywords "
                   red %|:qux|
                   plain " and "
@@ -2231,11 +3248,11 @@ RSpec.describe "Integration with RSpec", type: :integration do
         context "when a large number of methods are specified" do
           it "produces the correct output" do
             program = make_plain_test_program(<<~TEST)
-              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords
+              expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :qux, :fizz, :buzz).with_any_keywords
             TEST
 
             expected_output = build_colored_expected_output(
-              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords|,
+              snippet: %|expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz, :qux, :fizz, :buzz).with_any_keywords|,
               newline_before_expectation: true,
               expectation: proc {
                 line do
@@ -2248,8 +3265,14 @@ RSpec.describe "Integration with RSpec", type: :integration do
                   red %|:foo|
                   plain ", "
                   red %|:bar|
-                  plain " and "
+                  plain ", "
                   red %|:baz|
+                  plain ", "
+                  red %|:qux|
+                  plain ", "
+                  red %|:fizz|
+                  plain " and "
+                  red %|:buzz|
                   plain " with "
                   red %|any|
                   plain " keywords "

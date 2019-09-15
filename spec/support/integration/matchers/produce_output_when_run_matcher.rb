@@ -13,8 +13,8 @@ module SuperDiff
         @output_processor = nil
       end
 
-      def first_replacing(pattern, replacement)
-        @output_processor = [pattern, replacement]
+      def removing_object_ids
+        first_replacing(/#<([\w:]+):0x[a-z0-9]+(.*?)>/, '#<\1\2>')
         self
       end
 
@@ -44,6 +44,11 @@ module SuperDiff
       private
 
       attr_reader :expected_output, :program, :output_processor
+
+      def first_replacing(pattern, replacement)
+        @output_processor = [pattern, replacement]
+        self
+      end
 
       def actual_output
         @_actual_output ||= begin

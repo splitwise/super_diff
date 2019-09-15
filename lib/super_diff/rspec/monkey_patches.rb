@@ -3,6 +3,7 @@ require "rspec/matchers"
 require "rspec/expectations/fail_with"
 require "rspec/expectations/handler"
 require "rspec/support/object_formatter"
+require "rspec/matchers/built_in/be"
 require "rspec/matchers/built_in/contain_exactly"
 require "rspec/matchers/built_in/eq"
 require "rspec/matchers/built_in/have_attributes"
@@ -217,7 +218,104 @@ module RSpec
     end
 
     module BuiltIn
+      class Be
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def expected_for_failure_message
+            "truthy"
+          end
+        end)
+      end
+
+      class BeComparedTo
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def expected_action
+            "#{@operator}"
+          end
+        end)
+      end
+
+      class BeTruthy
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def expected_action
+            "be"
+          end
+
+          def expected_for_failure_message
+            "truthy"
+          end
+        end)
+      end
+
+      class BeFalsey
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def expected_action
+            "be"
+          end
+
+          def expected_for_failure_message
+            "falsey"
+          end
+        end)
+      end
+
+      class BeNil
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def expected_action
+            "be"
+          end
+
+          def expected_for_failure_message
+            "nil"
+          end
+        end)
+      end
+
+      class BePredicate
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def actual_for_failure_message
+            actual
+          end
+
+          def expected_for_failure_message
+            expected
+          end
+
+          def expected_action
+            "return true for"
+          end
+
+          # Override to use a custom template builder
+          def failure_message_template_builder
+            @_failure_message_template_builder ||=
+              SuperDiff::RSpec::FailureMessageBuilders::BePredicate.new(
+                actual: actual_for_failure_message,
+                expected: expected_for_failure_message,
+                expected_action: expected_action,
+                predicate_accessible: predicate_accessible?,
+                private_predicate: private_predicate?,
+                expected_predicate_method_name: predicate
+              )
+          end
+        end)
+      end
+
       class Eq
+        prepend SuperDiff::RSpec::AugmentedMatcher
+      end
+
+      class Equal
         prepend SuperDiff::RSpec::AugmentedMatcher
       end
 
@@ -243,13 +341,8 @@ module RSpec
             expected
           end
 
-          def failure_message_template_builder
-            @_failure_message_template_builder ||=
-              SuperDiff::RSpec::FailureMessageBuilders::ContainExactly.new(
-                actual: actual_for_failure_message,
-                expected: expected_for_failure_message,
-                description_as_phrase: description_as_phrase,
-              )
+          def failure_message_template_builder_class
+            SuperDiff::RSpec::FailureMessageBuilders::ContainExactly
           end
         end)
       end
@@ -315,7 +408,7 @@ module RSpec
               SuperDiff::RSpec::FailureMessageBuilders::Match.new(
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
-                description_as_phrase: description_as_phrase,
+                expected_action: expected_action,
                 expected_captures: @expected_captures
               )
           end
@@ -410,7 +503,7 @@ module RSpec
               SuperDiff::RSpec::FailureMessageBuilders::RespondTo.new(
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
-                description_as_phrase: description_as_phrase,
+                expected_action: expected_action,
                 expected_arity: @expected_arity,
                 arbitrary_keywords: @arbitrary_keywords,
                 expected_keywords: @expected_keywords,
@@ -453,17 +546,12 @@ module RSpec
             !@expected_message.to_s.empty?
           end
 
-          def description_as_phrase
+          def expected_action
             "match"
           end
 
-          def failure_message_template_builder
-            @_failure_message_template_builder ||=
-              SuperDiff::RSpec::FailureMessageBuilders::RaiseError.new(
-                actual: actual_for_failure_message,
-                expected: expected_for_failure_message,
-                description_as_phrase: description_as_phrase,
-              )
+          def failure_message_template_builder_class
+            SuperDiff::RSpec::FailureMessageBuilders::RaiseError
           end
         end)
 

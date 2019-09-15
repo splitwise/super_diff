@@ -19,10 +19,11 @@ module SuperDiff
         protected
 
         def add_expected_value_to(template)
+          template.add_text " "
           template.add_list_in_color(expected_color, expected)
         end
 
-        def add_extra
+        def add_extra_after_expected
           if expected_arity
             add_arity_clause
           end

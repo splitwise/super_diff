@@ -43,14 +43,17 @@ module SuperDiff
         add_token(Insertion, *args, &block)
       end
 
-      def length
-        tokens.sum(&:length)
+      def length_of_first_paragraph
+        Csi.decolorize(to_string_in_singleline_mode).
+          split(/\n\n/).
+          first.
+          length
       end
 
       def to_s(as_single_line: nil)
-        if length > MAX_LINE_LENGTH || as_single_line == false
+        if length_of_first_paragraph > MAX_LINE_LENGTH || as_single_line == false
           to_string_in_multiline_mode
-        elsif length <= MAX_LINE_LENGTH || as_single_line == true
+        elsif length_of_first_paragraph <= MAX_LINE_LENGTH || as_single_line == true
           to_string_in_singleline_mode
         end
       end

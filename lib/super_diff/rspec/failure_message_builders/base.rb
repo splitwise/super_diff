@@ -2,11 +2,12 @@ module SuperDiff
   module RSpec
     module FailureMessageBuilders
       class Base
-        def initialize(actual:, expected:, description_as_phrase:)
+        def initialize(actual:, expected:, expected_action:)
           @actual = actual
           @expected = expected
-          @description_as_phrase = description_as_phrase
+          @expected_action = expected_action
 
+          @negated = nil
           @template = FailureMessageTemplate.new
         end
 
@@ -18,12 +19,20 @@ module SuperDiff
         end
 
         def matcher_description
-          Csi.decolorize(expected_section.to_s(as_single_line: true))
+          template = FailureMessageTemplate.new do |t|
+            t.add_text expected_action
+            add_expected_value_to(t)
+          end
+
+          Csi.decolorize(template.to_s(as_single_line: true))
         end
 
         protected
 
-        def add_extra
+        def add_extra_after_expected
+        end
+
+        def add_extra_after_error
         end
 
         def actual_color
@@ -36,7 +45,7 @@ module SuperDiff
 
         private
 
-        attr_reader :expected, :actual, :description_as_phrase, :template
+        attr_reader :expected, :actual, :expected_action, :template
 
         def negated?
           @negated
@@ -46,8 +55,9 @@ module SuperDiff
           add_actual_section
           template.add_break
           template.insert expected_section
-          add_extra
+          add_extra_after_expected
           template.add_text_in_singleline_mode "."
+          add_extra_after_error
         end
 
         def add_actual_section
@@ -71,23 +81,19 @@ module SuperDiff
           FailureMessageTemplate.new do |t|
             t.add_text_in_singleline_mode expected_phrase
             t.add_text_in_multiline_mode do
-              if phrase_width
-                expected_phrase.to_s.rjust(phrase_width)
-              else
-                expected_phrase
-              end
+              expected_phrase.to_s.rjust(phrase_width)
             end
-            t.add_text " "
             add_expected_value_to(t)
           end
         end
 
-        def expected_phrase
-          "#{to_or_not_to} #{description_as_phrase}"
+        def add_expected_value_to(template)
+          template.add_text " "
+          template.add_text_in_color(expected_color, expected)
         end
 
-        def add_expected_value_to(template)
-          template.add_text_in_color(expected_color) { expected }
+        def expected_phrase
+          "#{to_or_not_to} #{expected_action}"
         end
 
         def to_or_not_to

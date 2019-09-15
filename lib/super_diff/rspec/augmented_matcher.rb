@@ -4,7 +4,7 @@ module SuperDiff
       # Update to use expected_for_description instead of @expected
       # TODO: Test
       def description
-        failure_message_builder.matcher_description
+        failure_message_template_builder.matcher_description
       end
 
       # Colorize the 'actual' value
@@ -42,7 +42,7 @@ module SuperDiff
           failure_message_template_builder_class.new(
             actual: actual_for_failure_message,
             expected: expected_for_failure_message,
-            description_as_phrase: description_as_phrase,
+            expected_action: expected_action,
           )
       end
 
@@ -52,7 +52,7 @@ module SuperDiff
 
       private
 
-      def description_as_phrase
+      def expected_action
         ::RSpec::Matchers::EnglishPhrasing.split_words(self.class.matcher_name)
       end
 

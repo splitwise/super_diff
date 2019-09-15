@@ -3,6 +3,10 @@ module SuperDiff
     module FailureMessageBuilders
       autoload :Base, "super_diff/rspec/failure_message_builders/base"
       autoload(
+        :BePredicate,
+        "super_diff/rspec/failure_message_builders/be_predicate",
+      )
+      autoload(
         :ContainExactly,
         "super_diff/rspec/failure_message_builders/contain_exactly",
       )
