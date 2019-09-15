@@ -2397,7 +2397,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
 
     context "if color has been disabled" do
       it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST, color_enabled: true)
+        program = make_plain_test_program(<<~TEST, color_enabled: false)
           expect(double).to respond_to(:foo)
         TEST
 

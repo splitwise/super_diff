@@ -20,7 +20,7 @@ module SuperDiff
       end
 
       def add_part(part)
-        if !part.is_a?(ResetSequence) && part.is_a?(ColorSequenceBlock)
+        if !part.is_a?(ResetSequence) && !part.is_a?(ColorSequenceBlock)
           super
         end
       end
