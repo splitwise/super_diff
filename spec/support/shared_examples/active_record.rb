@@ -1,5 +1,5 @@
 shared_examples_for "integration with ActiveRecord" do
-  describe "the #eq matcher" do
+  describe "and RSpec's #eq matcher" do
     context "when comparing two instances of the same ActiveRecord model" do
       it "produces the correct output" do
         program = make_program(<<~TEST.strip)

@@ -1,9 +1,5 @@
-require "spec_helper"
-
-RSpec.describe "Integration with RSpec and Rails", type: :integration do
-  it_behaves_like "integration with ActiveRecord"
-
-  describe "the #eq matcher" do
+shared_examples_for "integration with HashWithIndifferentAccess" do
+  describe "and RSpec's #eq matcher" do
     context "when the actual value is a HashWithIndifferentAccess" do
       it "produces the correct output" do
         program = make_rspec_rails_test_program(<<~TEST.strip)
@@ -101,7 +97,7 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
     end
   end
 
-  describe "the #match matcher" do
+  describe "and RSpec's #match matcher" do
     context "when the actual value is a HashWithIndifferentAccess" do
       it "produces the correct output" do
         program = make_rspec_rails_test_program(<<~TEST.strip)
@@ -197,9 +193,5 @@ RSpec.describe "Integration with RSpec and Rails", type: :integration do
         expect(program).to produce_output_when_run(expected_output)
       end
     end
-  end
-
-  def make_program(test)
-    make_rspec_rails_test_program(test)
   end
 end
