@@ -1,4 +1,6 @@
 language: ruby
+before_install:
+  - "gem install bundler -v '~> 2.0'"
 cache:
   bundler: true
 env:
