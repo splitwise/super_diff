@@ -174,7 +174,8 @@ Finally, submit your PR and I'll take a look at it when I get a chance.
 
 ## Compatibility
 
-`super_diff` is [tested][travis] to work with Ruby >= 2.4.x and RSpec 3.x.
+`super_diff` is [tested][travis] to work with Ruby >= 2.4.x, RSpec 3.x, and
+Rails >= 5.x.
 
 [travis]: http://travis-ci.org/mcmire/super_diff
 

@@ -8,6 +8,14 @@ begin
 rescue LoadError
 end
 
+#---
+
+require_relative "support/current_bundle"
+
+SuperDiff::Test::CurrentBundle.instance.assert_appraisal!
+
+#---
+
 require "active_record"
 
 ActiveRecord::Base.establish_connection(

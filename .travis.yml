@@ -6,6 +6,15 @@ cache:
 env:
   # Source: https://github.com/rspec/rspec-rails/pull/2148
   - JAVA_OPTS="--add-opens java.base/sun.nio.ch=org.jruby.dist --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.security.cert=ALL-UNNAMED --add-opens=java.base/java.util.zip=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util.regex=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/javax.crypto=ALL-UNNAMED --add-opens=java.management/sun.management=ALL-UNNAMED --add-opens=java.base/java.io=org.jruby.dist"
+gemfile:
+  - gemfiles/rails_5_0.gemfile
+  - gemfiles/rails_5_1.gemfile
+  - gemfiles/rails_5_2.gemfile
+  - gemfiles/rails_6_0.gemfile
+matrix:
+  exclude:
+    - rvm: ruby-2.4.6
+      gemfile: gemfiles/rails_6_0.gemfile
 rvm:
   - ruby-2.6.3
   - ruby-2.5.5
