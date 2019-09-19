@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module DiffFormatters
       class HashWithIndifferentAccess < SuperDiff::DiffFormatters::Base
         def self.applies_to?(operations)

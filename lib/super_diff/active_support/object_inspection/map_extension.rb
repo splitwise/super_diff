@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module ObjectInspection
       module MapExtension
         def call(object)

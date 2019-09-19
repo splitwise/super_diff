@@ -1,10 +1,10 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module ObjectInspection
       module Inspectors
         autoload(
           :HashWithIndifferentAccess,
-          "super_diff/rails/object_inspection/inspectors/hash_with_indifferent_access",
+          "super_diff/active_support/object_inspection/inspectors/hash_with_indifferent_access",
         )
       end
     end

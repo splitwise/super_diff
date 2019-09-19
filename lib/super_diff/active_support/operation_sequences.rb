@@ -1,9 +1,9 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module OperationSequences
       autoload(
         :HashWithIndifferentAccess,
-        "super_diff/rails/operation_sequences/hash_with_indifferent_access",
+        "super_diff/active_support/operation_sequences/hash_with_indifferent_access",
       )
     end
   end

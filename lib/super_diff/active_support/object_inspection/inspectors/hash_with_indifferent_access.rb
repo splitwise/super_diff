@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module ObjectInspection
       module Inspectors
         HashWithIndifferentAccess = SuperDiff::ObjectInspection::InspectionTree.new do

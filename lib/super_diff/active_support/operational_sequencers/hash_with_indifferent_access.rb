@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module OperationalSequencers
       class HashWithIndifferentAccess < SuperDiff::OperationalSequencers::Hash
         def initialize(expected:, actual:, **rest)

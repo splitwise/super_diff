@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module Differs
       class HashWithIndifferentAccess < SuperDiff::Differs::Hash
         def self.applies_to?(expected, actual)

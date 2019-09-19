@@ -1,5 +1,5 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module OperationSequences
       class HashWithIndifferentAccess < SuperDiff::OperationSequences::Base
         def to_diff(indent_level:, collection_prefix:, add_comma:)

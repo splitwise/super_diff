@@ -1,9 +1,9 @@
 module SuperDiff
-  module Rails
+  module ActiveSupport
     module Differs
       autoload(
         :HashWithIndifferentAccess,
-        "super_diff/rails/differs/hash_with_indifferent_access",
+        "super_diff/active_support/differs/hash_with_indifferent_access",
       )
     end
   end

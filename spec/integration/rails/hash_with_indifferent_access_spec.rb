@@ -9,7 +9,7 @@ RSpec.describe "Integration with Rails's HashWithIndifferentAccess", type: :inte
     end
   end
 
-  xcontext "when using 'super_diff/active_support'" do
+  context "when using 'super_diff/active_support'" do
     include_context "integration with HashWithIndifferentAccess"
 
     def make_program(test)
