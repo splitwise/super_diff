@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    module FailureMessageBuilders
+    module MatcherTextBuilders
       class Base
         def initialize(actual:, expected:, expected_action:)
           @actual = actual
@@ -8,7 +8,7 @@ module SuperDiff
           @expected_action = expected_action
 
           @negated = nil
-          @template = FailureMessageTemplate.new
+          @template = MatcherTextTemplate.new
         end
 
         def call(negated:)
@@ -19,7 +19,7 @@ module SuperDiff
         end
 
         def matcher_description
-          template = FailureMessageTemplate.new do |t|
+          template = MatcherTextTemplate.new do |t|
             t.add_text expected_action
             add_expected_value_to(t)
           end
@@ -78,7 +78,7 @@ module SuperDiff
         end
 
         def expected_section
-          FailureMessageTemplate.new do |t|
+          MatcherTextTemplate.new do |t|
             t.add_text_in_singleline_mode expected_phrase
             t.add_text_in_multiline_mode do
               expected_phrase.to_s.rjust(phrase_width)

@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    module FailureMessageBuilders
+    module MatcherTextBuilders
       class BePredicate < Base
         def initialize(
           predicate_accessible:,
@@ -15,7 +15,7 @@ module SuperDiff
         end
 
         def matcher_description
-          template = FailureMessageTemplate.new do |t|
+          template = MatcherTextTemplate.new do |t|
             t.add_text "return true for"
             add_expected_value_to(t)
           end

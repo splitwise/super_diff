@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    class FailureMessageTemplate
+    class MatcherTextTemplate
       MAX_LINE_LENGTH = 100
 
       def self.generate(&block)

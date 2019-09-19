@@ -6,14 +6,8 @@ module SuperDiff
     autoload :Configuration, "super_diff/rspec/configuration"
     autoload :Differ, "super_diff/rspec/differ"
     autoload :Differs, "super_diff/rspec/differs"
-    autoload(
-      :FailureMessageBuilders,
-      "super_diff/rspec/failure_message_builders",
-    )
-    autoload(
-      :FailureMessageTemplate,
-      "super_diff/rspec/failure_message_template",
-    )
+    autoload :MatcherTextBuilders, "super_diff/rspec/matcher_text_builders"
+    autoload :MatcherTextTemplate, "super_diff/rspec/matcher_text_template"
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
     autoload :OperationalSequencers, "super_diff/rspec/operational_sequencers"
 

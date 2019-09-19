@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    module FailureMessageBuilders
+    module MatcherTextBuilders
       class RespondTo < Base
         def initialize(
           expected_arity:,

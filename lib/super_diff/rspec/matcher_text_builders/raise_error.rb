@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    module FailureMessageBuilders
+    module MatcherTextBuilders
       class RaiseError < Base
         protected
 

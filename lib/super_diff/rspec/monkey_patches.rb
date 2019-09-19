@@ -299,7 +299,7 @@ module RSpec
           # Override to use a custom template builder
           def failure_message_template_builder
             @_failure_message_template_builder ||=
-              SuperDiff::RSpec::FailureMessageBuilders::BePredicate.new(
+              SuperDiff::RSpec::MatcherTextBuilders::BePredicate.new(
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
                 expected_action: expected_action,
@@ -342,7 +342,7 @@ module RSpec
           end
 
           def failure_message_template_builder_class
-            SuperDiff::RSpec::FailureMessageBuilders::ContainExactly
+            SuperDiff::RSpec::MatcherTextBuilders::ContainExactly
           end
         end)
       end
@@ -405,7 +405,7 @@ module RSpec
         prepend(Module.new do
           def failure_message_template_builder
             @_failure_message_template_builder ||=
-              SuperDiff::RSpec::FailureMessageBuilders::Match.new(
+              SuperDiff::RSpec::MatcherTextBuilders::Match.new(
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
                 expected_action: expected_action,
@@ -500,7 +500,7 @@ module RSpec
           # Override to use a custom template builder
           def failure_message_template_builder
             @_failure_message_template_builder ||=
-              SuperDiff::RSpec::FailureMessageBuilders::RespondTo.new(
+              SuperDiff::RSpec::MatcherTextBuilders::RespondTo.new(
                 actual: actual_for_failure_message,
                 expected: expected_for_failure_message,
                 expected_action: expected_action,
@@ -551,7 +551,7 @@ module RSpec
           end
 
           def failure_message_template_builder_class
-            SuperDiff::RSpec::FailureMessageBuilders::RaiseError
+            SuperDiff::RSpec::MatcherTextBuilders::RaiseError
           end
         end)
 

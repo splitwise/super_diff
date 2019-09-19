@@ -1,6 +1,6 @@
 module SuperDiff
   module RSpec
-    module FailureMessageBuilders
+    module MatcherTextBuilders
       class Match < Base
         def initialize(expected_captures:, **rest)
           super(rest)

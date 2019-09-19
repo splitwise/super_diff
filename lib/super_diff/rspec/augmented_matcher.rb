@@ -4,7 +4,7 @@ module SuperDiff
       # Update to use expected_for_description instead of @expected
       # TODO: Test
       def description
-        failure_message_template_builder.matcher_description
+        matcher_text_builder.matcher_description
       end
 
       # Colorize the 'actual' value
@@ -26,7 +26,7 @@ module SuperDiff
       protected
 
       def build_failure_message(negated:)
-        failure_message_template_builder.call(negated: negated)
+        matcher_text_builder.call(negated: negated)
       end
 
       def actual_for_failure_message
@@ -37,17 +37,17 @@ module SuperDiff
         description_of(expected)
       end
 
-      def failure_message_template_builder
-        @_failure_message_template_builder ||=
-          failure_message_template_builder_class.new(
+      def matcher_text_builder
+        @_matcher_text_builder ||=
+          matcher_text_builder_class.new(
             actual: actual_for_failure_message,
             expected: expected_for_failure_message,
             expected_action: expected_action,
           )
       end
 
-      def failure_message_template_builder_class
-        FailureMessageBuilders::Base
+      def matcher_text_builder_class
+        MatcherTextBuilders::Base
       end
 
       private
