@@ -222,7 +222,7 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def expected_for_failure_message
+          def expected_for_matcher_text
             "truthy"
           end
         end)
@@ -232,8 +232,12 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def expected_action
-            "#{@operator}"
+          def expected_action_for_matcher_text
+            if [:==, :===, :=~].include?(@operator)
+              "#{@operator}"
+            else
+              "be #{@operator}"
+            end
           end
         end)
       end
@@ -242,11 +246,11 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def expected_action
+          def expected_action_for_matcher_text
             "be"
           end
 
-          def expected_for_failure_message
+          def expected_for_matcher_text
             "truthy"
           end
         end)
@@ -256,11 +260,11 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def expected_action
+          def expected_action_for_matcher_text
             "be"
           end
 
-          def expected_for_failure_message
+          def expected_for_matcher_text
             "falsey"
           end
         end)
@@ -270,11 +274,11 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def expected_action
+          def expected_action_for_matcher_text
             "be"
           end
 
-          def expected_for_failure_message
+          def expected_for_matcher_text
             "nil"
           end
         end)
@@ -284,29 +288,28 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def actual_for_failure_message
+          def actual_for_matcher_text
             actual
           end
 
-          def expected_for_failure_message
+          def expected_for_matcher_text
             expected
           end
 
-          def expected_action
+          def expected_action_for_matcher_text
             "return true for"
           end
 
-          # Override to use a custom template builder
-          def failure_message_template_builder
-            @_failure_message_template_builder ||=
-              SuperDiff::RSpec::MatcherTextBuilders::BePredicate.new(
-                actual: actual_for_failure_message,
-                expected: expected_for_failure_message,
-                expected_action: expected_action,
-                predicate_accessible: predicate_accessible?,
-                private_predicate: private_predicate?,
-                expected_predicate_method_name: predicate
-              )
+          def matcher_text_builder_class
+            SuperDiff::RSpec::MatcherTextBuilders::BePredicate
+          end
+
+          def matcher_text_builder_args
+            super.merge(
+              predicate_accessible: predicate_accessible?,
+              private_predicate: private_predicate?,
+              expected_predicate_method_name: predicate
+            )
           end
         end)
       end
@@ -331,17 +334,11 @@ module RSpec
 
           private
 
-          # Override to use readable_list_of
-          def expected_for_description
-            readable_list_of(expected).lstrip
-          end
-
-          # Override to use raw expected value
-          def expected_for_failure_message
+          def expected_for_matcher_text
             expected
           end
 
-          def failure_message_template_builder_class
+          def matcher_text_builder_class
             SuperDiff::RSpec::MatcherTextBuilders::ContainExactly
           end
         end)
@@ -388,7 +385,7 @@ module RSpec
 
           # Update to use (...) as delimiter instead of {...}
           def readable_list_of(items)
-            if items.all? { |item| item.is_a?(Hash) }
+            if items && items.all? { |item| item.is_a?(Hash) }
               description_of(items.inject(:merge)).
                 sub(/^\{ /, '(').
                 sub(/ \}$/, ')')
@@ -403,14 +400,12 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def failure_message_template_builder
-            @_failure_message_template_builder ||=
-              SuperDiff::RSpec::MatcherTextBuilders::Match.new(
-                actual: actual_for_failure_message,
-                expected: expected_for_failure_message,
-                expected_action: expected_action,
-                expected_captures: @expected_captures
-              )
+          def matcher_text_builder_class
+            SuperDiff::RSpec::MatcherTextBuilders::Match
+          end
+
+          def matcher_text_builder_args
+            super.merge(expected_captures: @expected_captures)
           end
         end)
       end
@@ -430,15 +425,14 @@ module RSpec
           end
 
           # Override to use the whole object, not just part of it
-          def actual_for_failure_message
+          def actual_for_matcher_text
             description_of(@actual)
           end
 
           # Override to use (...) as delimiters rather than {...}
-          def expected_for_failure_message
+          def expected_for_matcher_text
             super.sub(/^\{ /, '(').gsub(/ \}$/, ')')
           end
-          alias_method :expected_for_description, :expected_for_failure_message
 
           # Override so that the differ knows that this is a partial object
           def actual_for_diff
@@ -497,21 +491,23 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          # Override to use a custom template builder
-          def failure_message_template_builder
-            @_failure_message_template_builder ||=
-              SuperDiff::RSpec::MatcherTextBuilders::RespondTo.new(
-                actual: actual_for_failure_message,
-                expected: expected_for_failure_message,
-                expected_action: expected_action,
-                expected_arity: @expected_arity,
-                arbitrary_keywords: @arbitrary_keywords,
-                expected_keywords: @expected_keywords,
-                unlimited_arguments: @unlimited_arguments
-              )
+          def matcher_text_builder_class
+            SuperDiff::RSpec::MatcherTextBuilders::RespondTo
           end
 
-          # Override to use this
+          def matcher_text_builder_args
+            super.merge(
+              expected_arity: @expected_arity,
+              arbitrary_keywords: @arbitrary_keywords,
+              expected_keywords: @expected_keywords,
+              unlimited_arguments: @unlimited_arguments
+            )
+          end
+
+          def expected_for_description
+            @names
+          end
+
           def expected_for_failure_message
             @failing_method_names
           end
@@ -522,15 +518,17 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
-          def actual_for_failure_message
-            "#<#{@actual_error.class.name} #{@actual_error.message.inspect}>"
+          def actual_for_matcher_text
+            if @actual_error
+              "#<#{@actual_error.class.name} #{@actual_error.message.inspect}>"
+            end
           end
 
           def actual_for_diff
             @actual_error.message
           end
 
-          def expected_for_failure_message
+          def expected_for_matcher_text
             if @expected_message
               "#<#{@expected_error.name} #{@expected_message.inspect}>"
             else
@@ -546,11 +544,11 @@ module RSpec
             !@expected_message.to_s.empty?
           end
 
-          def expected_action
+          def expected_action_for_failure_message
             "match"
           end
 
-          def failure_message_template_builder_class
+          def matcher_text_builder_class
             SuperDiff::RSpec::MatcherTextBuilders::RaiseError
           end
         end)

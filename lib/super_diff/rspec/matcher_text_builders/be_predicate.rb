@@ -14,18 +14,9 @@ module SuperDiff
           @expected_predicate_method_name = expected_predicate_method_name
         end
 
-        def matcher_description
-          template = MatcherTextTemplate.new do |t|
-            t.add_text "return true for"
-            add_expected_value_to(t)
-          end
-
-          Csi.decolorize(template.to_s(as_single_line: true))
-        end
-
         protected
 
-        def expected_action
+        def expected_action_for_failure_message
           if predicate_accessible?
             "return true for"
           elsif private_predicate?
@@ -49,7 +40,7 @@ module SuperDiff
           :magenta
         end
 
-        def add_expected_value_to(template)
+        def add_expected_value_to(template, expected)
           template.add_text " "
           template.add_text_in_color(expected_color, "`#{expected}?`")
           template.add_text " or "

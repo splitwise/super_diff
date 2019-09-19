@@ -29,31 +29,53 @@ module SuperDiff
         matcher_text_builder.call(negated: negated)
       end
 
-      def actual_for_failure_message
-        description_of(actual)
-      end
-
-      def expected_for_failure_message
-        description_of(expected)
-      end
-
       def matcher_text_builder
         @_matcher_text_builder ||=
-          matcher_text_builder_class.new(
-            actual: actual_for_failure_message,
-            expected: expected_for_failure_message,
-            expected_action: expected_action,
-          )
+          matcher_text_builder_class.new(matcher_text_builder_args)
       end
 
       def matcher_text_builder_class
-        MatcherTextBuilders::Base
+        RSpec::MatcherTextBuilders::Base
+      end
+
+      def matcher_text_builder_args
+        {
+          actual: actual_for_matcher_text,
+          expected_for_failure_message: expected_for_failure_message,
+          expected_for_description: expected_for_description,
+          expected_action_for_failure_message: expected_action_for_failure_message,
+          expected_action_for_description: expected_action_for_description,
+        }
+      end
+
+      def actual_for_matcher_text
+        description_of(actual)
+      end
+
+      def expected_for_matcher_text
+        description_of(expected)
+      end
+
+      def expected_for_failure_message
+        expected_for_matcher_text
+      end
+
+      def expected_for_description
+        expected_for_matcher_text
       end
 
       private
 
-      def expected_action
+      def expected_action_for_matcher_text
         ::RSpec::Matchers::EnglishPhrasing.split_words(self.class.matcher_name)
+      end
+
+      def expected_action_for_failure_message
+        expected_action_for_matcher_text
+      end
+
+      def expected_action_for_description
+        expected_action_for_matcher_text
       end
 
       def readable_list_of(things)

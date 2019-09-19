@@ -18,24 +18,24 @@ module SuperDiff
 
         protected
 
-        def add_expected_value_to(template)
+        def add_expected_value_to(template, expected)
           template.add_text " "
           template.add_list_in_color(expected_color, expected)
         end
 
-        def add_extra_after_expected
+        def add_extra_after_expected_to(template)
           if expected_arity
-            add_arity_clause
+            add_arity_clause_to(template)
           end
 
           if arbitrary_keywords?
-            add_arbitrary_keywords_clause
+            add_arbitrary_keywords_clause_to(template)
           elsif has_expected_keywords?
-            add_keywords_clause
+            add_keywords_clause_to(template)
           end
 
           if unlimited_arguments?
-            add_unlimited_arguments_clause
+            add_unlimited_arguments_clause_to(template)
           end
         end
 
@@ -55,27 +55,27 @@ module SuperDiff
           @unlimited_arguments
         end
 
-        def add_arity_clause
+        def add_arity_clause_to(template)
           template.add_text " with "
           template.add_text_in_color :red, expected_arity
           template.add_text " "
           template.add_text pluralize("argument", expected_arity)
         end
 
-        def add_arbitrary_keywords_clause
+        def add_arbitrary_keywords_clause_to(template)
           template.add_text " with "
           template.add_text_in_color :red, "any"
           template.add_text " keywords"
         end
 
-        def add_keywords_clause
+        def add_keywords_clause_to(template)
           template.add_text " with "
           template.add_text pluralize("keyword", expected_keywords.length)
           template.add_text " "
           template.add_list_in_color :red, expected_keywords
         end
 
-        def add_unlimited_arguments_clause
+        def add_unlimited_arguments_clause_to(template)
           if arbitrary_keywords? || has_expected_keywords?
             template.add_text " and "
           else

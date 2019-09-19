@@ -40,7 +40,7 @@ RSpec.configure do |config|
   config.disable_monkey_patching!
   config.warnings = true
 
-  if config.files_to_run.one?
+  if !["true", "1"].include?(ENV["CI"])
     config.default_formatter = "documentation"
   end
 

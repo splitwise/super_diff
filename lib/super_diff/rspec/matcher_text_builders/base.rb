@@ -2,10 +2,19 @@ module SuperDiff
   module RSpec
     module MatcherTextBuilders
       class Base
-        def initialize(actual:, expected:, expected_action:)
+        def initialize(
+          actual:,
+          expected_for_failure_message:,
+          expected_for_description:,
+          expected_action_for_failure_message:,
+          expected_action_for_description:
+        )
           @actual = actual
-          @expected = expected
-          @expected_action = expected_action
+          @expected_for_failure_message = expected_for_failure_message
+          @expected_for_description = expected_for_description
+          @expected_action_for_failure_message =
+            expected_action_for_failure_message
+          @expected_action_for_description = expected_action_for_description
 
           @negated = nil
           @template = MatcherTextTemplate.new
@@ -20,8 +29,9 @@ module SuperDiff
 
         def matcher_description
           template = MatcherTextTemplate.new do |t|
-            t.add_text expected_action
-            add_expected_value_to(t)
+            t.add_text expected_action_for_description
+            add_expected_value_to_description(t)
+            add_extra_after_expected_to(t)
           end
 
           Csi.decolorize(template.to_s(as_single_line: true))
@@ -29,7 +39,7 @@ module SuperDiff
 
         protected
 
-        def add_extra_after_expected
+        def add_extra_after_expected_to(template)
         end
 
         def add_extra_after_error
@@ -45,7 +55,14 @@ module SuperDiff
 
         private
 
-        attr_reader :expected, :actual, :expected_action, :template
+        attr_reader(
+          :actual,
+          :expected_for_failure_message,
+          :expected_for_description,
+          :expected_action_for_failure_message,
+          :expected_action_for_description,
+          :template,
+        )
 
         def negated?
           @negated
@@ -55,7 +72,7 @@ module SuperDiff
           add_actual_section
           template.add_break
           template.insert expected_section
-          add_extra_after_expected
+          add_extra_after_expected_to(template)
           template.add_text_in_singleline_mode "."
           add_extra_after_error
         end
@@ -83,17 +100,33 @@ module SuperDiff
             t.add_text_in_multiline_mode do
               expected_phrase.to_s.rjust(phrase_width)
             end
-            add_expected_value_to(t)
+            add_expected_value_to_failure_message(t)
           end
         end
 
-        def add_expected_value_to(template)
-          template.add_text " "
-          template.add_text_in_color(expected_color, expected)
+        def add_expected_value_to_failure_message(template)
+          if respond_to?(:add_expected_value_to, true)
+            add_expected_value_to(template, expected_for_failure_message)
+          else
+            template.add_text " "
+            template.add_text_in_color(
+              expected_color,
+              expected_for_failure_message,
+            )
+          end
+        end
+
+        def add_expected_value_to_description(template)
+          if respond_to?(:add_expected_value_to, true)
+            add_expected_value_to(template, expected_for_description)
+          else
+            template.add_text " "
+            template.add_text_in_color(expected_color, expected_for_description)
+          end
         end
 
         def expected_phrase
-          "#{to_or_not_to} #{expected_action}"
+          "#{to_or_not_to} #{expected_action_for_failure_message}"
         end
 
         def to_or_not_to

@@ -183,7 +183,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               green %|1|
-              plain " to < "
+              plain " to be < "
               red %|1|
               plain "."
             end
@@ -206,7 +206,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               plain %|1|
-              plain " to < "
+              plain " to be < "
               plain %|1|
               plain "."
             end
@@ -231,7 +231,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               green %|1|
-              plain " to <= "
+              plain " to be <= "
               red %|0|
               plain "."
             end
@@ -254,7 +254,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               plain %|1|
-              plain " to <= "
+              plain " to be <= "
               plain %|0|
               plain "."
             end
@@ -279,7 +279,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               green %|1|
-              plain " to >= "
+              plain " to be >= "
               red %|2|
               plain "."
             end
@@ -302,7 +302,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               plain %|1|
-              plain " to >= "
+              plain " to be >= "
               plain %|2|
               plain "."
             end
@@ -327,7 +327,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               green %|1|
-              plain " to > "
+              plain " to be > "
               red %|2|
               plain "."
             end
@@ -350,7 +350,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
             line do
               plain "Expected "
               plain %|1|
-              plain " to > "
+              plain " to be > "
               plain %|2|
               plain "."
             end
@@ -3345,7 +3345,7 @@ RSpec.describe "Integration with RSpec", type: :integration do
         end
       end
 
-      context "qualified with #with_arbitrary_keywords + #with_unlimited_arguments" do
+      context "qualified with #with_any_keywords + #with_unlimited_arguments" do
         it "produces the correct output" do
           program = make_plain_test_program(<<~TEST)
             expect(double(:something_really_long)).to respond_to(:foo, :bar, :baz).with_any_keywords.with_unlimited_arguments
