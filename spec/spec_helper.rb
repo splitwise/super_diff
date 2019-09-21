@@ -10,9 +10,9 @@ end
 
 #---
 
-require_relative "support/current_bundle"
+require_relative "../support/current_bundle"
 
-SuperDiff::Test::CurrentBundle.instance.assert_appraisal!
+SuperDiff::CurrentBundle.instance.assert_appraisal!
 
 #---
 
