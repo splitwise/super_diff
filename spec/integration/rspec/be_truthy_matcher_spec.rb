@@ -1,13 +1,15 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration do
-  context "assuming color is enabled" do
-    it "produces the correct output" do
-      program = make_plain_test_program(<<~TEST.strip)
-        expect(nil).to be_truthy
-      TEST
+  it "produces the correct output" do
+    as_both_colored_and_uncolored do |color_enabled|
+      program =
+        make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+          expect(nil).to be_truthy
+        TEST
 
-      expected_output = build_colored_expected_output(
+      expected_output = build_expected_output(
+        color_enabled: color_enabled,
         snippet: %|expect(nil).to be_truthy|,
         expectation: proc {
           line do
@@ -20,30 +22,9 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration
         },
       )
 
-      expect(program).to produce_output_when_run(expected_output)
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-        expect(nil).to be_truthy
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect(nil).to be_truthy|,
-        expectation: proc {
-          line do
-            plain "Expected "
-            plain %|nil|
-            plain " to be "
-            plain %|truthy|
-            plain "."
-          end
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
+      expect(program).
+        to produce_output_when_run(expected_output).
+        in_color(color_enabled)
     end
   end
 end

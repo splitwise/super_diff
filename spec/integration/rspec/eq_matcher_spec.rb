@@ -1,15 +1,15 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
-  context "assuming color is enabled" do
-    context "when comparing two different integers" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(1).to eq(42)
-        TEST
+  context "when comparing two different integers" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect(1).to eq(42)|
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
-          snippet: %|expect(1).to eq(42)|,
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: snippet,
           expectation: proc {
             line do
               plain "Expected "
@@ -21,18 +21,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two different symbols" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(:bar).to eq(:foo)
-        TEST
+  context "when comparing two different symbols" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect(:bar).to eq(:foo)|
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
-          snippet: %|expect(:bar).to eq(:foo)|,
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: snippet,
           expectation: proc {
             line do
               plain "Expected "
@@ -44,17 +51,24 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two different single-line strings" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect("Jennifer").to eq("Marty")
-        TEST
+  context "when comparing two different single-line strings" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect("Jennifer").to eq("Marty")|
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect("Jennifer").to eq("Marty")|,
           expectation: proc {
             line do
@@ -67,19 +81,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing a single-line string with a multi-line string" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "when comparing a single-line string with a multi-line string" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = "Something entirely different"
           actual = "This is a line\\nAnd that's another line\\n"
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -97,19 +117,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing a multi-line string with a single-line string" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "when comparing a multi-line string with a single-line string" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's another line\\n"
           actual = "Something entirely different"
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -127,19 +153,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two closely different multi-line strings" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "when comparing two closely different multi-line strings" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
           actual = "This is a line\\nSomething completely different\\nAnd there's a line too\\n"
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -160,19 +192,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two completely different multi-line strings" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "when comparing two completely different multi-line strings" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's a line\\n"
           actual = "Something completely different\\nAnd something else too\\n"
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -193,13 +231,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two arrays with other data structures inside" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "when comparing two arrays with other data structures inside" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST
           expected = [
             [
               :h1,
@@ -231,8 +273,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           ]
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -278,13 +322,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two hashes with other data structures inside" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "when comparing two hashes with other data structures inside" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = {
             customer: {
               person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
@@ -325,8 +373,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           }
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
@@ -374,13 +424,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two different kinds of custom objects" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "when comparing two different kinds of custom objects" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = SuperDiff::Test::Person.new(
             name: "Marty",
             age: 31,
@@ -392,8 +446,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           )
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           newline_before_expectation: true,
           expectation: proc {
@@ -409,13 +465,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when comparing two different kinds of non-custom objects" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "when comparing two different kinds of non-custom objects" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = SuperDiff::Test::Item.new(
             name: "camera",
             quantity: 3,
@@ -430,8 +490,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           )
           expect(actual).to eq(expected)
         TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to eq(expected)|,
           newline_before_expectation: true,
           expectation: proc {
@@ -452,38 +514,9 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
 
         expect(program).
           to produce_output_when_run(expected_output).
+          in_color(color_enabled).
           removing_object_ids
       end
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-        expected = "Something entirely different"
-        actual = "This is a line\\nAnd that's another line\\n"
-        expect(actual).to eq(expected)
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect(actual).to eq(expected)|,
-        expectation: proc {
-          line do
-            plain "Expected "
-            plain %|"This is a line\\nAnd that's another line\\n"|
-            plain " to eq "
-            plain %|"Something entirely different"|
-            plain "."
-          end
-        },
-        diff: proc {
-          plain_line %|- Something entirely different|
-          plain_line %|+ This is a line\\n|
-          plain_line %|+ And that's another line\\n|
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
     end
   end
 end

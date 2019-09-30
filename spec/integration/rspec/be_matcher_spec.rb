@@ -2,14 +2,16 @@ require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
   context "with a boolean" do
-    context "assuming color is enabled" do
-      context "when comparing true and false" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST.strip)
-            expect(true).to be(false)
-          TEST
+    context "when comparing true and false" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          program =
+            make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+              expect(true).to be(false)
+            TEST
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(true).to be(false)|,
             expectation: proc {
               line do
@@ -22,17 +24,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "when comparing false and true" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST.strip)
-            expect(false).to be(true)
-          TEST
+    context "when comparing false and true" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          program =
+            make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+              expect(false).to be(true)
+            TEST
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(false).to be(true)|,
             expectation: proc {
               line do
@@ -45,43 +53,24 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(true).to be(false)
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(true).to be(false)|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|true|
-              plain " to equal "
-              plain %|false|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
       end
     end
   end
 
   context "with no arguments" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(nil).to be
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(nil).to be
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(nil).to be|,
           expectation: proc {
             line do
@@ -94,42 +83,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(nil).to be
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(nil).to be|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|nil|
-              plain " to be "
-              plain %|truthy|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with ==" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(nil).to be == :foo
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(nil).to be == :foo
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(nil).to be == :foo|,
           expectation: proc {
             line do
@@ -142,42 +112,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(nil).to be == :foo
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(nil).to be == :foo|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|nil|
-              plain " to == "
-              plain %|:foo|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with <" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(1).to be < 1
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(1).to be < 1
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(1).to be < 1|,
           expectation: proc {
             line do
@@ -190,42 +141,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(1).to be < 1
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(1).to be < 1|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|1|
-              plain " to be < "
-              plain %|1|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with <=" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(1).to be <= 0
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(1).to be <= 0
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(1).to be <= 0|,
           expectation: proc {
             line do
@@ -238,42 +170,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(1).to be <= 0
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(1).to be <= 0|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|1|
-              plain " to be <= "
-              plain %|0|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with >=" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(1).to be >= 2
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(1).to be >= 2
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(1).to be >= 2|,
           expectation: proc {
             line do
@@ -286,42 +199,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(1).to be >= 2
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(1).to be >= 2|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|1|
-              plain " to be >= "
-              plain %|2|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with >" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(1).to be > 2
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(1).to be > 2
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(1).to be > 2|,
           expectation: proc {
             line do
@@ -334,42 +228,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(1).to be > 2
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(1).to be > 2|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|1|
-              plain " to be > "
-              plain %|2|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with ===" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect(:foo).to be === String
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect(:foo).to be === String
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(:foo).to be === String|,
           expectation: proc {
             line do
@@ -382,42 +257,23 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect(:foo).to be === String
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect(:foo).to be === String|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|:foo|
-              plain " to === "
-              plain %|String|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end
 
   context "with =~" do
-    context "assuming color is enabled" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
-          expect("foo").to be =~ /bar/
-        TEST
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program =
+          make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
+            expect("foo").to be =~ /bar/
+          TEST
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect("foo").to be =~ /bar/|,
           expectation: proc {
             line do
@@ -430,30 +286,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
-      end
-    end
-
-    context "if color has been disabled" do
-      it "does not include the color in the output" do
-        program = make_plain_test_program(<<~TEST.strip, color_enabled: false)
-          expect("foo").to be =~ /bar/
-        TEST
-
-        expected_output = build_uncolored_expected_output(
-          snippet: %|expect("foo").to be =~ /bar/|,
-          expectation: proc {
-            line do
-              plain "Expected "
-              plain %|"foo"|
-              plain " to =~ "
-              plain %|/bar/|
-              plain "."
-            end
-          },
-        )
-
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
   end

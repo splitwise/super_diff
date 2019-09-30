@@ -1,17 +1,22 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
-  context "assuming color is enabled" do
-    context "when the expected value is a partial hash" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value is a partial hash" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_hash_including(city: "Hill Valley")
             actual = { city: "Burbank" }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -30,13 +35,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_hash_including(
               city: "Hill Valley",
               zip: "90382"
@@ -49,8 +58,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -75,15 +89,19 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value includes a partial hash" do
-      context "and the corresponding actual value is a hash" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value includes a partial hash" do
+    context "and the corresponding actual value is a hash" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "Marty McFly",
               address: a_hash_including(
@@ -102,8 +120,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -131,13 +154,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "and the corresponding actual value is not a hash" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "and the corresponding actual value is not a hash" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "Marty McFly",
               address: a_hash_including(
@@ -151,8 +178,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -177,21 +209,30 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value is a partial array" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value is a partial array" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_collection_including("a")
             actual = ["b"]
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -211,19 +252,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_collection_including("milk", "bread")
             actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -249,15 +299,19 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value includes a partial array" do
-      context "and the corresponding actual value is an array" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value includes a partial array" do
+    context "and the corresponding actual value is an array" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
@@ -268,8 +322,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -296,13 +355,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "when the corresponding actual value is not an array" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "when the corresponding actual value is not an array" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
@@ -313,8 +376,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -339,23 +407,32 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value is a partial object" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value is a partial object" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = an_object_having_attributes(
               name: "b"
             )
             actual = A.new("a")
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -375,13 +452,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = an_object_having_attributes(
               line_1: "123 Main St.",
               city: "Oakland",
@@ -398,8 +479,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             )
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -429,14 +515,18 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value includes a partial object" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "when the expected value includes a partial object" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = {
             name: "Marty McFly",
             shipping_address: an_object_having_attributes(
@@ -459,8 +549,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           }
           expect(actual).to match(expected)
         TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to match(expected)|,
           expectation: proc {
             line do
@@ -492,20 +587,29 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when the expected value is an order-independent array" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value is an order-independent array" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("a")
             actual = ["b"]
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -524,19 +628,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("milk", "bread")
             actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -561,15 +674,19 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when the expected value includes an order-independent array" do
-      context "and the corresponding actual value is an array" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when the expected value includes an order-independent array" do
+    context "and the corresponding actual value is an array" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
@@ -580,8 +697,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -607,13 +729,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "when the corresponding actual value is not an array" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "when the corresponding actual value is not an array" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
@@ -624,8 +750,13 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to match(expected)|,
             expectation: proc {
               line do
@@ -650,40 +781,11 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST, color_enabled: false)
-        expected = a_hash_including(city: "Hill Valley")
-        actual = { city: "Burbank" }
-        expect(actual).to match(expected)
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect(actual).to match(expected)|,
-        expectation: proc {
-          line do
-            plain "Expected "
-            plain %|{ city: "Burbank" }|
-            plain " to match "
-            plain %|#<a hash including (city: "Hill Valley")>|
-            plain "."
-          end
-        },
-        diff: proc {
-          plain_line %|  {|
-          plain_line %|-   city: "Hill Valley"|
-          plain_line %|+   city: "Burbank"|
-          plain_line %|  }|
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
     end
   end
 end

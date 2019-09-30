@@ -1,16 +1,21 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integration do
-  context "assuming color is enabled" do
-    context "when a few number of values are given" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "when a few number of values are given" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expected = ["Einie", "Marty"]
           actual = ["Marty", "Jennifer", "Doc"]
           expect(actual).to contain_exactly(*expected)
         TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(actual).to contain_exactly(*expected)|,
           expectation: proc {
             line do
@@ -33,14 +38,18 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "when a large number of values are given" do
-      context "and they are only simple strings" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when a large number of values are given" do
+    context "and they are only simple strings" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = [
               "Doc Brown",
               "Marty McFly",
@@ -56,8 +65,13 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             ]
             expect(actual).to contain_exactly(*expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
@@ -90,13 +104,17 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "and some of them are regexen" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "and some of them are regexen" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST
             expected = [
               / Brown$/,
               "Marty McFly",
@@ -112,8 +130,13 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             ]
             expect(actual).to contain_exactly(*expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
@@ -147,13 +170,17 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "and some of them are fuzzy objects" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "and some of them are fuzzy objects" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = [
               a_hash_including(foo: "bar"),
               a_collection_containing_exactly("zing"),
@@ -166,8 +193,13 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             ]
             expect(actual).to contain_exactly(*expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
@@ -200,44 +232,11 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST, color_enabled: false)
-        expected = ["Einie", "Marty"]
-        actual = ["Marty", "Jennifer", "Doc"]
-        expect(actual).to contain_exactly(*expected)
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect(actual).to contain_exactly(*expected)|,
-        expectation: proc {
-          line do
-            plain "Expected "
-            plain %|["Marty", "Jennifer", "Doc"]|
-            plain " to contain exactly "
-            plain %|"Einie"|
-            plain " and "
-            plain %|"Marty"|
-            plain "."
-          end
-        },
-        diff: proc {
-          plain_line %|  [|
-          plain_line %|    "Marty",|
-          plain_line %|    "Jennifer",|
-          plain_line %|    "Doc",|
-          plain_line %|-   "Einie"|
-          plain_line %|  ]|
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
     end
   end
 end

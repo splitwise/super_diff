@@ -1,14 +1,19 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integration do
-  context "assuming color is enabled" do
-    context "given only an exception class" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST.strip)
+  context "given only an exception class" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           expect { raise StandardError.new('boo') }.to raise_error(RuntimeError)
         TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect { raise StandardError.new('boo') }.to raise_error(RuntimeError)|,
           expectation: proc {
             line do
@@ -21,18 +26,27 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
     end
+  end
 
-    context "with only a message (and assuming a RuntimeError)" do
-      context "when the message is short" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "with only a message (and assuming a RuntimeError)" do
+    context "when the message is short" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expect { raise 'boo' }.to raise_error('hell')
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect { raise 'boo' }.to raise_error('hell')|,
             expectation: proc {
               line do
@@ -45,20 +59,29 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "when the message is long" do
-        context "but contains no line breaks" do
-          it "produces the correct output" do
-            program = make_plain_test_program(<<~TEST)
+    context "when the message is long" do
+      context "but contains no line breaks" do
+        it "produces the correct output" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
               actual_message = "some really really really long message"
               expected_message = "whatever"
               expect { raise(actual_message) }.to raise_error(expected_message)
             TEST
+            program = make_plain_test_program(
+              snippet,
+              color_enabled: color_enabled,
+            )
 
-            expected_output = build_colored_expected_output(
+            expected_output = build_expected_output(
+              color_enabled: color_enabled,
               snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
               newline_before_expectation: true,
               expectation: proc {
@@ -74,25 +97,34 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               },
             )
 
-            expect(program).to produce_output_when_run(expected_output)
+            expect(program).
+              to produce_output_when_run(expected_output).
+              in_color(color_enabled)
           end
         end
+      end
 
-        context "but contains line breaks" do
-          it "produces the correct output" do
-            program = make_plain_test_program(<<~TEST)
-              actual_message = <<~MESSAGE.rstrip
+      context "but contains line breaks" do
+        it "produces the correct output" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              actual_message = <<\~MESSAGE.rstrip
                 This is fun
                 So is this
               MESSAGE
-              expected_message = <<~MESSAGE.rstrip
+              expected_message = <<\~MESSAGE.rstrip
                 This is fun
                 And so is this
               MESSAGE
               expect { raise(actual_message) }.to raise_error(expected_message)
             TEST
+            program = make_plain_test_program(
+              snippet,
+              color_enabled: color_enabled,
+            )
 
-            expected_output = build_colored_expected_output(
+            expected_output = build_expected_output(
+              color_enabled: color_enabled,
               snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
               expectation: proc {
                 line do
@@ -112,20 +144,29 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               },
             )
 
-            expect(program).to produce_output_when_run(expected_output)
+            expect(program).
+              to produce_output_when_run(expected_output).
+              in_color(color_enabled)
           end
         end
       end
     end
+  end
 
-    context "with both an exception and a message" do
-      it "produces the correct output" do
-        program = make_plain_test_program(<<~TEST)
+  context "with both an exception and a message" do
+    it "produces the correct output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
           block = -> { raise StandardError.new('a') }
           expect(&block).to raise_error(RuntimeError, 'b')
         TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
 
-        expected_output = build_colored_expected_output(
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
           snippet: %|expect(&block).to raise_error(RuntimeError, 'b')|,
           expectation: proc {
             line do
@@ -138,46 +179,10 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           },
         )
 
-        expect(program).to produce_output_when_run(expected_output)
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
       end
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST, color_enabled: false)
-        actual_message = <<~MESSAGE.rstrip
-          This is fun
-          So is this
-        MESSAGE
-        expected_message = <<~MESSAGE.rstrip
-          This is fun
-          And so is this
-        MESSAGE
-        expect { raise(actual_message) }.to raise_error(expected_message)
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
-        expectation: proc {
-          line do
-            plain "Expected raised exception "
-            plain %|#<RuntimeError "This is fun\\nSo is this">|
-          end
-
-          line do
-            plain "                 to match "
-            plain %|#<Exception "This is fun\\nAnd so is this">|
-          end
-        },
-        diff: proc {
-          plain_line %|  This is fun\\n|
-          plain_line %|- And so is this|
-          plain_line %|+ So is this|
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
     end
   end
 end

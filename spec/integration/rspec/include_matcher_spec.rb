@@ -1,17 +1,22 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #include matcher", type: :integration do
-  context "assuming color is enabled" do
-    context "when used against an array" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when used against an array" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = ["Marty", "Einie"]
             actual = ["Marty", "Jennifer", "Doc"]
             expect(actual).to include(*expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
@@ -33,13 +38,17 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = [
               "Marty McFly",
               "Doc Brown",
@@ -56,8 +65,13 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             ]
             expect(actual).to include(*expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
@@ -83,21 +97,30 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
     end
+  end
 
-    context "when used against a hash" do
-      context "that is small" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+  context "when used against a hash" do
+    context "that is small" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
             actual = { city: "Burbank", zip: "90210" }
             expect(actual).to include(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
@@ -120,13 +143,17 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
+    end
 
-      context "that is large" do
-        it "produces the correct output" do
-          program = make_plain_test_program(<<~TEST)
+    context "that is large" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
             expected = {
               city: "Hill Valley",
               zip: "90382"
@@ -138,8 +165,13 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             }
             expect(actual).to include(expected)
           TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-          expected_output = build_colored_expected_output(
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
             snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
@@ -163,43 +195,11 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             },
           )
 
-          expect(program).to produce_output_when_run(expected_output)
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
       end
-    end
-  end
-
-  context "if color has been disabled" do
-    it "does not include the color in the output" do
-      program = make_plain_test_program(<<~TEST, color_enabled: false)
-        expected = ["Marty", "Einie"]
-        actual = ["Marty", "Jennifer", "Doc"]
-        expect(actual).to include(*expected)
-      TEST
-
-      expected_output = build_uncolored_expected_output(
-        snippet: %|expect(actual).to include(*expected)|,
-        expectation: proc {
-          line do
-            plain "Expected "
-            plain %|["Marty", "Jennifer", "Doc"]|
-            plain " to include "
-            plain %|"Einie"|
-            plain "."
-          end
-        },
-        diff: proc {
-          plain_line %|  [|
-          plain_line %|    "Marty",|
-          plain_line %|    "Jennifer",|
-          # plain_line %|    "Doc",|   # FIXME
-          plain_line %|    "Doc"|
-          plain_line %|-   "Einie"|
-          plain_line %|  ]|
-        },
-      )
-
-      expect(program).to produce_output_when_run(expected_output)
     end
   end
 end
