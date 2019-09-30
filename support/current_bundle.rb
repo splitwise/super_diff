@@ -18,11 +18,11 @@ module SuperDiff
 
           Possible appraisals are:
 
-          #{available_appraisals.map { |appraisal| "- #{appraisal.name}\n" }.join}
+          #{available_appraisals.map { |appraisal| "    - #{appraisal.name}" }.join("\n")}
 
           Or to simply go with the latest appraisal, use:
 
-              bin/rspec #{current_command}
+              bin/rspec #{shell_arguments}
         MESSAGE
       end
     end
@@ -57,6 +57,10 @@ module SuperDiff
 
     def current_command
       Shellwords.join([File.basename($0)] + ARGV)
+    end
+
+    def shell_arguments
+      Shellwords.join(ARGV)
     end
 
     class AppraisalNotSpecified < ArgumentError; end
