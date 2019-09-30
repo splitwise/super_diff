@@ -37,6 +37,7 @@ Metrics/AbcSize:
   Max: 32
 Metrics/BlockLength:
   ExcludedMethods:
+    - as_both_colored_and_uncolored
     - build_expected_output
     - colored
     - colorize
@@ -57,10 +58,10 @@ Metrics/LineLength:
   Max: 80
   IgnoredPatterns:
     - "^\\s*RSpec.describe"
-    - "^\\s*describe"
-    - "^\\s*context"
-    - "^\\s*it"
     - "^\\s*class [\\w:]+ < [\\w:]+"
+    - "^\\s*context"
+    - "^\\s*describe"
+    - "^\\s*it"
 Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:
