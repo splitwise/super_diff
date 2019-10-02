@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
   context "when comparing two different integers" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = %|expect(1).to eq(42)|
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -26,10 +26,35 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect(42).not_to eq(42)|
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: snippet,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|42|
+              plain " not to eq "
+              red %|42|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
   end
 
   context "when comparing two different symbols" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = %|expect(:bar).to eq(:foo)|
         program = make_plain_test_program(
@@ -56,10 +81,66 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect(:foo).not_to eq(:foo)|
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: snippet,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|:foo|
+              plain " not to eq "
+              red %|:foo|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
   end
 
-  context "when comparing two different single-line strings" do
-    it "produces the correct output" do
+  context "when comparing two single-line strings" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = %|expect("Jennifer").to eq("Marty")|
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect("Jennifer").to eq("Marty")|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|"Jennifer"|
+              plain " to eq "
+              red %|"Marty"|
+              plain "."
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+
+    it "produces the correct failure message when used in the negative" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = %|expect("Jennifer").to eq("Marty")|
         program = make_plain_test_program(
@@ -89,7 +170,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
   end
 
   context "when comparing a single-line string with a multi-line string" do
-    it "produces the correct output" do
+    it "produces the correct failure message" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "Something entirely different"
@@ -125,7 +206,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
   end
 
   context "when comparing a multi-line string with a single-line string" do
-    it "produces the correct output" do
+    it "produces the correct failure message" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's another line\\n"
@@ -160,8 +241,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     end
   end
 
-  context "when comparing two closely different multi-line strings" do
-    it "produces the correct output" do
+  context "when comparing two multi-line strings" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
@@ -197,37 +278,29 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
-  end
 
-  context "when comparing two completely different multi-line strings" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the negative" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = "This is a line\\nAnd that's a line\\n"
-          actual = "Something completely different\\nAnd something else too\\n"
-          expect(actual).to eq(expected)
+          string = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
+          expect(string).not_to eq(string)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
         expected_output = build_expected_output(
           color_enabled: color_enabled,
-          snippet: %|expect(actual).to eq(expected)|,
+          snippet: %|expect(string).not_to eq(string)|,
+          newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "Expected "
-              green %|"Something completely different\\nAnd something else too\\n"|
+              plain " Expected "
+              green %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
             end
 
             line do
-              plain "   to eq "
-              red   %|"This is a line\\nAnd that's a line\\n"|
+              plain "not to eq "
+              red   %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
             end
-          },
-          diff: proc {
-            red_line   %|- This is a line\\n|
-            red_line   %|- And that's a line\\n|
-            green_line %|+ Something completely different\\n|
-            green_line %|+ And something else too\\n|
           },
         )
 
@@ -239,7 +312,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
   end
 
   context "when comparing two arrays with other data structures inside" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST
           expected = [
@@ -327,10 +400,53 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST
+          value = [
+            [
+              :h1,
+              [:span, [:text, "Hello world"]],
+              {
+                class: "header",
+                data: {
+                  "sticky" => true,
+                  person: SuperDiff::Test::Person.new(name: "Marty", age: 60)
+                }
+              }
+            ]
+          ]
+          expect(value).not_to eq(value)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(value).not_to eq(value)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain " Expected "
+              green %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
+            end
+
+            line do
+              plain "not to eq "
+              red   %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
   end
 
   context "when comparing two hashes with other data structures inside" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = {
@@ -429,10 +545,59 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          value = {
+            customer: {
+              person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
+              shipping_address: {
+                line_1: "123 Main St.",
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382"
+              }
+            },
+            items: [
+              {
+                name: "Fender Stratocaster",
+                cost: 100_000,
+                options: ["red", "blue", "green"]
+              },
+              { name: "Chevy 4x4" }
+            ]
+          }
+          expect(value).not_to eq(value)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(value).not_to eq(value)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain " Expected "
+              green %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
+            end
+
+            line do
+              plain "not to eq "
+              red   %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
   end
 
   context "when comparing two different kinds of custom objects" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = SuperDiff::Test::Person.new(
@@ -470,10 +635,44 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           in_color(color_enabled)
       end
     end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          value = SuperDiff::Test::Person.new(
+            name: "Marty",
+            age: 31,
+          )
+          expect(value).not_to eq(value)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(value).not_to eq(value)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain " Expected "
+              green %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+            end
+
+            line do
+              plain "not to eq "
+              red %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
   end
 
   context "when comparing two different kinds of non-custom objects" do
-    it "produces the correct output" do
+    it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = SuperDiff::Test::Item.new(
@@ -506,6 +705,44 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
 
               line do
                 plain "   to eq "
+                red %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+              end
+            end
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled).
+          removing_object_ids
+      end
+    end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          value = SuperDiff::Test::Item.new(
+            name: "camera",
+            quantity: 3,
+          )
+          expect(value).not_to eq(value)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(value).not_to eq(value)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            if SuperDiff::Test.jruby?
+            else
+              line do
+                plain " Expected "
+                green %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+              end
+
+              line do
+                plain "not to eq "
                 red %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
               end
             end

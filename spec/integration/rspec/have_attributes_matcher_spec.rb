@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integration do
   context "when given a small set of attributes" do
     context "when all of the names are methods on the actual object" do
-      it "produces the correct output" do
+      it "produces the correct output when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { name: "b" }
@@ -34,6 +34,38 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               green_line %|+   name: "a",|
               plain_line %|    age: 9|
               plain_line %|  }>|
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
+
+      it "produces the correct output when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = { name: "a" }
+            actual = SuperDiff::Test::Person.new(name: "a", age: 9)
+            expect(actual).not_to have_attributes(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).not_to have_attributes(expected)|,
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|#<SuperDiff::Test::Person name: "a", age: 9>|
+                plain " not to have attributes "
+                red   %|(name: "a")|
+                plain "."
+              end
             },
           )
 
@@ -92,7 +124,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
 
   context "when given a large set of attributes" do
     context "when all of the names are methods on the actual object" do
-      it "produces the correct output" do
+      it "produces the correct output when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = {
@@ -141,6 +173,52 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               red_line   %|-   zip: "91234"|
               green_line %|+   zip: "90382"|
               plain_line %|  }>|
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
+
+      it "produces the correct output when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = {
+              line_1: "123 Main St.",
+              city: "Oakland",
+              state: "CA",
+              zip: "91234"
+            }
+            actual = SuperDiff::Test::ShippingAddress.new(
+              line_1: "123 Main St.",
+              line_2: nil,
+              city: "Oakland",
+              state: "CA",
+              zip: "91234"
+            )
+            expect(actual).not_to have_attributes(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).not_to have_attributes(expected)|,
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "              Expected "
+                green %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
+              end
+
+              line do
+                plain "not to have attributes "
+                red   %|(line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")|
+              end
             },
           )
 

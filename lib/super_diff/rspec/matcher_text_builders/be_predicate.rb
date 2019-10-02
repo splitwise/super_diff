@@ -18,7 +18,7 @@ module SuperDiff
 
         def expected_action_for_failure_message
           if predicate_accessible?
-            "return true for"
+            "return a truthy result for"
           elsif private_predicate?
             "have a public method"
           else

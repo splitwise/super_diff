@@ -380,6 +380,8 @@ module RSpec
 
           # Override to use readable_list_of
           def expected_for_failure_message
+            # TODO: Switch to using @divergent_items and handle this in the text
+            # builder
             readable_list_of(@divergent_items).lstrip
           end
 

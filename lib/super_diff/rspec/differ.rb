@@ -44,7 +44,7 @@ module SuperDiff
       end
 
       def comparing_inequal_values?
-        expected != actual
+        !helpers.values_match?(expected, actual)
       end
 
       def comparing_primitive_values?
@@ -58,6 +58,16 @@ module SuperDiff
           actual.is_a?(String) &&
           !expected.include?("\n") &&
           !actual.include?("\n")
+      end
+
+      def helpers
+        @_helpers ||= Helpers.new
+      end
+
+      class Helpers
+        include ::RSpec::Matchers::Composable
+
+        public :values_match?
       end
     end
   end

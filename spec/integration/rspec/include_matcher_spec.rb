@@ -3,7 +3,7 @@ require "spec_helper"
 RSpec.describe "Integration with RSpec's #include matcher", type: :integration do
   context "when used against an array" do
     context "that is small" do
-      it "produces the correct output" do
+      it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = ["Marty", "Einie"]
@@ -43,10 +43,41 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             in_color(color_enabled)
         end
       end
+
+      it "produces the correct failure message when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            values = ["Marty", "Einie"]
+            expect(values).not_to include(*values)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(values).not_to include(*values)|,
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|["Marty", "Einie"]|
+                plain " not to include "
+                red   %|"Marty" and "Einie"|
+                plain "."
+              end
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
     end
 
     context "that is large" do
-      it "produces the correct output" do
+      it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = [
@@ -102,12 +133,59 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             in_color(color_enabled)
         end
       end
+
+      it "produces the correct failure message when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Biff Tannen",
+              "George McFly",
+              "Lorraine McFly"
+            ]
+            expect(actual).not_to include(*expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).not_to include(*expected)|,
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "      Expected "
+                green %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
+              end
+
+              line do
+                plain "not to include "
+                red %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
+              end
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
     end
   end
 
   context "when used against a hash" do
     context "that is small" do
-      it "produces the correct output" do
+      it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
@@ -148,10 +226,42 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             in_color(color_enabled)
         end
       end
+
+      it "produces the correct failure message when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = { city: "Burbank" }
+            actual = { city: "Burbank", zip: "90210" }
+            expect(actual).not_to include(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).not_to include(expected)|,
+            expectation: proc {
+              line do
+                plain "Expected "
+                green %|{ city: "Burbank", zip: "90210" }|
+                plain " not to include "
+                red %|(city: "Burbank")|
+                plain "."
+              end
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
     end
 
     context "that is large" do
-      it "produces the correct output" do
+      it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = {
@@ -192,6 +302,41 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               red_line   %|-   zip: "90382"|
               green_line %|+   zip: "90210"|
               plain_line %|  }|
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
+
+      it "produces the correct failure message when used in the negative" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = { city: "Hill Valley", state: "CA" }
+            actual = { city: "Hill Valley", state: "CA", zip: "90210" }
+            expect(actual).not_to include(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).not_to include(expected)|,
+            newline_before_expectation: true,
+            expectation: proc {
+              line do
+                plain "      Expected "
+                green %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
+              end
+
+              line do
+                plain "not to include "
+                red %|(city: "Hill Valley", state: "CA")|
+              end
             },
           )
 
