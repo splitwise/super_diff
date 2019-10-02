@@ -53,6 +53,14 @@ module SuperDiff
         add_node :nesting, &block
       end
 
+      def when_empty(&block)
+        add_node :when_empty, &block
+      end
+
+      def when_non_empty(&block)
+        add_node :when_non_empty, &block
+      end
+
       def insert_array_inspection_of(array)
         # FIXME: why must this be inside the `nested`?
         add_break

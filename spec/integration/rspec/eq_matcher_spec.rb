@@ -756,4 +756,119 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       end
     end
   end
+
+  context "when comparing two data structures where one contains an empty array" do
+    it "formats the array correctly in the diff" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = { foo: nil }
+          actual = { foo: [] }
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to eq(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|{ foo: [] }|
+              plain " to eq "
+              red %|{ foo: nil }|
+              plain "."
+            end
+          },
+          diff: proc {
+            plain_line %|  {|
+            red_line   %|-   foo: nil|
+            green_line %|+   foo: []|
+            plain_line %|  }|
+          }
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
+
+  context "when comparing two data structures where one contains an empty hash" do
+    it "formats the hash correctly in the diff" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = { foo: nil }
+          actual = { foo: {} }
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to eq(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|{ foo: {} }|
+              plain " to eq "
+              red %|{ foo: nil }|
+              plain "."
+            end
+          },
+          diff: proc {
+            plain_line %|  {|
+            red_line   %|-   foo: nil|
+            green_line %|+   foo: {}|
+            plain_line %|  }|
+          }
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
+
+  context "when comparing two data structures where one contains an empty object" do
+    it "formats the object correctly in the diff" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = { foo: nil }
+          actual = { foo: SuperDiff::Test::EmptyClass.new }
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to eq(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "Expected "
+              green %|{ foo: #<SuperDiff::Test::EmptyClass> }|
+              plain " to eq "
+              red %|{ foo: nil }|
+              plain "."
+            end
+          },
+          diff: proc {
+            plain_line %|  {|
+            red_line   %|-   foo: nil|
+            green_line %|+   foo: #<SuperDiff::Test::EmptyClass>|
+            plain_line %|  }|
+          }
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled).
+          removing_object_ids
+      end
+    end
+  end
 end

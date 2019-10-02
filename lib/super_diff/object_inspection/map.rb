@@ -16,8 +16,9 @@ module SuperDiff
             Inspectors::Hash
           when String
             Inspectors::String
-          when true, false, nil, Symbol, Numeric, Regexp
-            Inspectors::Primitive else
+          when true, false, nil, Symbol, Numeric, Regexp, Class
+            Inspectors::Primitive
+          else
             Inspectors::DefaultObject
           end
         end

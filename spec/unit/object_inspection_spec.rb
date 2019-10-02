@@ -221,6 +221,22 @@ RSpec.describe SuperDiff::ObjectInspection do
           end
         end
       end
+
+      context "which is empty" do
+        context "given as_single_line: true" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect([], as_single_line: true)
+            expect(inspection).to eq(%([]))
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect([], as_single_line: false)
+            expect(inspection).to eq(%([]))
+          end
+        end
+      end
     end
 
     context "given a hash" do
@@ -343,6 +359,44 @@ RSpec.describe SuperDiff::ObjectInspection do
               }
             INSPECTION
           end
+        end
+      end
+
+      context "which is empty" do
+        context "given as_single_line: true" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect({}, as_single_line: true)
+            expect(inspection).to eq(%({}))
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect({}, as_single_line: false)
+            expect(inspection).to eq(%({}))
+          end
+        end
+      end
+    end
+
+    context "given a class" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            SuperDiff::Test::Person,
+            as_single_line: true,
+          )
+          expect(inspection).to eq("SuperDiff::Test::Person")
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            SuperDiff::Test::Person,
+            as_single_line: false,
+          )
+          expect(inspection).to eq("SuperDiff::Test::Person")
         end
       end
     end
@@ -523,6 +577,32 @@ RSpec.describe SuperDiff::ObjectInspection do
               }>
             INSPECTION
             expect(inspection).to match(/\A#{regexp}\Z/)
+          end
+        end
+      end
+
+      context "which is empty" do
+        context "given as_single_line: true" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect(
+              SuperDiff::Test::EmptyClass.new,
+              as_single_line: true,
+            )
+            expect(inspection).to match(
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+            )
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the array on a single line" do
+            inspection = described_class.inspect(
+              SuperDiff::Test::EmptyClass.new,
+              as_single_line: false,
+            )
+            expect(inspection).to match(
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+            )
           end
         end
       end
