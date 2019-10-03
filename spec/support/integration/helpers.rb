@@ -114,7 +114,7 @@ module SuperDiff
         line "1) test passes", indent_by: 2
 
         line indent_by: 5 do
-          white "Failure/Error: "
+          bold "Failure/Error: "
           plain snippet
         end
 

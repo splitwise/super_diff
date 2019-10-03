@@ -1,6 +1,7 @@
 # Source: <https://en.wikipedia.org/wiki/ANSI_escape_code>
 module SuperDiff
   module Csi
+    autoload :BoldSequence, "super_diff/csi/bold_sequence"
     autoload :Color, "super_diff/csi/color"
     autoload :ColorSequenceBlock, "super_diff/csi/color_sequence_block"
     autoload :ColorizedDocument, "super_diff/csi/colorized_document"

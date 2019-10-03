@@ -16,6 +16,10 @@ module SuperDiff
         parts.each(&block)
       end
 
+      def bold(*args, **opts, &block)
+        colorize(BoldSequence.new, *args, **opts, &block)
+      end
+
       def colorize(*args, **opts, &block)
         contents, colors = args.partition do |arg|
           arg.is_a?(String) || arg.is_a?(self.class)
@@ -110,10 +114,12 @@ module SuperDiff
         match = name.to_s.match(/\A(.+)_line\Z/)
 
         if match
-          if respond_to?(match[1].to_sym)
-            MethodRequest.new(name: match[1].to_sym, line: true)
-          elsif Csi::Color.exists?(match[1].to_sym)
-            ColorRequest.new(name: match[1].to_sym, line: true)
+          color_name = match[1].to_sym
+
+          if respond_to?(color_name)
+            MethodRequest.new(name: color_name, line: true)
+          elsif Csi::Color.exists?(color_name)
+            ColorRequest.new(name: color_name, line: true)
           end
         elsif Csi::Color.exists?(name.to_sym)
           ColorRequest.new(name: name.to_sym, line: false)

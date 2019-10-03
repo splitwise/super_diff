@@ -111,10 +111,7 @@ module RSpec
         def failure_slash_error_lines
           lines = read_failed_lines
 
-          failure_slash_error = ConsoleCodes.wrap(
-            "Failure/Error: ",
-            :white
-          )
+          failure_slash_error = ConsoleCodes.wrap("Failure/Error: ", :bold)
 
           if lines.count == 1
             lines[0] = failure_slash_error + lines[0].strip
