@@ -20,11 +20,11 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           expectation: proc {
             line do
               plain "Expected "
-              green %|["Marty", "Jennifer", "Doc"]|
+              beta %|["Marty", "Jennifer", "Doc"]|
               plain " to contain exactly "
-              red   %|"Einie"|
+              alpha %|"Einie"|
               plain " and "
-              red   %|"Marty"|
+              alpha %|"Marty"|
               plain "."
             end
           },
@@ -33,7 +33,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             plain_line %|    "Marty",|
             plain_line %|    "Jennifer",|
             plain_line %|    "Doc",|
-            red_line   %|-   "Einie"|
+            alpha_line %|-   "Einie"|
             plain_line %|  ]|
           },
         )
@@ -61,11 +61,11 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           expectation: proc {
             line do
               plain "Expected "
-              green %|["Einie", "Marty"]|
+              beta %|["Einie", "Marty"]|
               plain " not to contain exactly "
-              red   %|"Einie"|
+              alpha %|"Einie"|
               plain " and "
-              red   %|"Marty"|
+              alpha %|"Marty"|
               plain "."
             end
           },
@@ -109,20 +109,20 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             expectation: proc {
               line do
                 plain "          Expected "
-                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
                 plain "to contain exactly "
-                red %|"Doc Brown"|
+                alpha %|"Doc Brown"|
                 plain ", "
-                red %|"Marty McFly"|
+                alpha %|"Marty McFly"|
                 plain ", "
-                red %|"Biff Tannen"|
+                alpha %|"Biff Tannen"|
                 plain ", "
-                red %|"George McFly"|
+                alpha %|"George McFly"|
                 plain " and "
-                red %|"Lorraine McFly"|
+                alpha %|"Lorraine McFly"|
               end
             },
             diff: proc {
@@ -131,8 +131,8 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|    "Doc Brown",|
               plain_line %|    "Einie",|
               plain_line %|    "Lorraine McFly",|
-              red_line   %|-   "Biff Tannen",|
-              red_line   %|-   "George McFly"|
+              alpha_line %|-   "Biff Tannen",|
+              alpha_line %|-   "George McFly"|
               plain_line %|  ]|
             },
           )
@@ -166,18 +166,18 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             expectation: proc {
               line do
                 plain "              Expected "
-                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
                 plain "not to contain exactly "
-                red %|"Marty McFly"|
+                alpha %|"Marty McFly"|
                 plain ", "
-                red %|"Doc Brown"|
+                alpha %|"Doc Brown"|
                 plain ", "
-                red %|"Einie"|
+                alpha %|"Einie"|
                 plain " and "
-                red %|"Lorraine McFly"|
+                alpha %|"Lorraine McFly"|
               end
             },
           )
@@ -219,20 +219,20 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             expectation: proc {
               line do
                 plain "          Expected "
-                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
                 plain "to contain exactly "
-                red %|/ Brown$/|
+                alpha %|/ Brown$/|
                 plain ", "
-                red %|"Marty McFly"|
+                alpha %|"Marty McFly"|
                 plain ", "
-                red %|"Biff Tannen"|
+                alpha %|"Biff Tannen"|
                 plain ", "
-                red %|/Georg McFly/|
+                alpha %|/Georg McFly/|
                 plain " and "
-                red %|/Lorrain McFly/|
+                alpha %|/Lorrain McFly/|
               end
             },
             diff: proc {
@@ -241,9 +241,9 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|    "Doc Brown",|
               plain_line %|    "Einie",|
               plain_line %|    "Lorraine McFly",|
-              red_line   %|-   "Biff Tannen",|
-              red_line   %|-   /Georg McFly/,|
-              red_line   %|-   /Lorrain McFly/|
+              alpha_line %|-   "Biff Tannen",|
+              alpha_line %|-   /Georg McFly/,|
+              alpha_line %|-   /Lorrain McFly/|
               plain_line %|  ]|
             },
           )
@@ -278,20 +278,20 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             expectation: proc {
               line do
                 plain "              Expected "
-                green %|[/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/]|
+                beta %|[/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/]|
               end
 
               line do
                 plain "not to contain exactly "
-                red %|/ Brown$/|
+                alpha %|/ Brown$/|
                 plain ", "
-                red %|"Marty McFly"|
+                alpha %|"Marty McFly"|
                 plain ", "
-                red %|"Biff Tannen"|
+                alpha %|"Biff Tannen"|
                 plain ", "
-                red %|/Georg McFly/|
+                alpha %|/Georg McFly/|
                 plain " and "
-                red %|/Lorrain McFly/|
+                alpha %|/Lorrain McFly/|
               end
             },
           )
@@ -330,16 +330,16 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             expectation: proc {
               line do
                 plain "          Expected "
-                green %|[{ foo: "bar" }, #<Double (anonymous)>, { blargh: "riddle" }]|
+                beta %|[{ foo: "bar" }, #<Double (anonymous)>, { blargh: "riddle" }]|
               end
 
               line do
                 plain "to contain exactly "
-                red %|#<a hash including (foo: "bar")>|
+                alpha %|#<a hash including (foo: "bar")>|
                 plain ", "
-                red %|#<a collection containing exactly ("zing")>|
+                alpha %|#<a collection containing exactly ("zing")>|
                 plain " and "
-                red %|#<an object having attributes (baz: "qux")>|
+                alpha %|#<an object having attributes (baz: "qux")>|
               end
             },
             diff: proc {
@@ -351,9 +351,9 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|    {|
               plain_line %|      blargh: "riddle"|
               plain_line %|    },|
-              red_line   %|-   #<a collection containing exactly (|
-              red_line   %|-     "zing"|
-              red_line   %|-   )>|
+              alpha_line %|-   #<a collection containing exactly (|
+              alpha_line %|-     "zing"|
+              alpha_line %|-   )>|
               plain_line %|  ]|
             },
           )

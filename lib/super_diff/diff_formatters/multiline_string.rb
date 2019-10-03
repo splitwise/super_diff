@@ -15,14 +15,14 @@ module SuperDiff
         operations.reduce([]) do |array, operation|
           case operation.name
           when :change
-            array << Helpers.style(:deleted, "- #{operation.left_value}")
-            array << Helpers.style(:inserted, "+ #{operation.right_value}")
+            array << Helpers.style(:alpha, "- #{operation.left_value}")
+            array << Helpers.style(:beta, "+ #{operation.right_value}")
           when :delete
-            array << Helpers.style(:deleted, "- #{operation.value}")
+            array << Helpers.style(:alpha, "- #{operation.value}")
           when :insert
-            array << Helpers.style(:inserted, "+ #{operation.value}")
+            array << Helpers.style(:beta, "+ #{operation.value}")
           else
-            array << Helpers.style(:normal, "  #{operation.value}")
+            array << Helpers.style(:plain, "  #{operation.value}")
           end
         end
       end

@@ -138,13 +138,13 @@ module SuperDiff
 
             line do
               blue "│ "
-              red "‹-› in expected, not in actual"
+              magenta "‹-› in expected, not in actual"
               blue "  │"
             end
 
             line do
               blue "│ "
-              green "‹+› in actual, not in expected"
+              yellow "‹+› in actual, not in expected"
               blue "  │"
             end
 

@@ -21,17 +21,17 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<SuperDiff::Test::Person name: "a", age: 9>|
+                beta %|#<SuperDiff::Test::Person name: "a", age: 9>|
                 plain " to have attributes "
-                red   %|(name: "b")|
+                alpha %|(name: "b")|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  #<SuperDiff::Test::Person {|
-              # red_line   %|-   name: "b",|  # FIXME
-              red_line   %|-   name: "b"|
-              green_line %|+   name: "a",|
+              # alpha_line %|-   name: "b",|  # FIXME
+              alpha_line %|-   name: "b"|
+              beta_line %|+   name: "a",|
               plain_line %|    age: 9|
               plain_line %|  }>|
             },
@@ -61,9 +61,9 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<SuperDiff::Test::Person name: "a", age: 9>|
+                beta %|#<SuperDiff::Test::Person name: "a", age: 9>|
                 plain " not to have attributes "
-                red   %|(name: "a")|
+                alpha %|(name: "a")|
                 plain "."
               end
             },
@@ -95,11 +95,11 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "Expected "
-                green  %|#<SuperDiff::Test::Person name: "a", age: 9>|
+                beta %|#<SuperDiff::Test::Person name: "a", age: 9>|
                 plain " to respond to "
-                red  %|:foo|
+                alpha %|:foo|
                 plain " with "
-                red  %|0|
+                alpha %|0|
                 plain " arguments."
               end
             },
@@ -108,8 +108,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               plain_line %|    name: "a",|
               # plain_line %|    age: 9,|  # FIXME
               plain_line %|    age: 9|
-              # red_line   %|-   foo: "bar",|  # FIXME
-              red_line   %|-   foo: "bar"|
+              # alpha_line %|-   foo: "bar",|  # FIXME
+              alpha_line %|-   foo: "bar"|
               plain_line %|  }>|
             },
           )
@@ -153,25 +153,25 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "          Expected "
-                green %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
+                beta %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
               end
 
               line do
                 plain "to have attributes "
-                red   %|(line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")|
+                alpha %|(line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")|
               end
             },
             diff: proc {
               plain_line %|  #<SuperDiff::Test::ShippingAddress {|
-              red_line   %|-   line_1: "123 Main St.",|
-              green_line %|+   line_1: "456 Ponderosa Ct.",|
+              alpha_line %|-   line_1: "123 Main St.",|
+              beta_line %|+   line_1: "456 Ponderosa Ct.",|
               plain_line %|    line_2: nil,|
-              red_line   %|-   city: "Oakland",|
-              green_line %|+   city: "Hill Valley",|
+              alpha_line %|-   city: "Oakland",|
+              beta_line %|+   city: "Hill Valley",|
               plain_line %|    state: "CA",|
-              # red_line   %|-   zip: "91234",|  # FIXME
-              red_line   %|-   zip: "91234"|
-              green_line %|+   zip: "90382"|
+              # alpha_line %|-   zip: "91234",|  # FIXME
+              alpha_line %|-   zip: "91234"|
+              beta_line %|+   zip: "90382"|
               plain_line %|  }>|
             },
           )
@@ -212,12 +212,12 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "              Expected "
-                green %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
+                beta %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
               end
 
               line do
                 plain "not to have attributes "
-                red   %|(line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")|
+                alpha %|(line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")|
               end
             },
           )
@@ -261,16 +261,16 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             expectation: proc {
               line do
                 plain "     Expected "
-                green %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
+                beta %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
               end
 
               line do
                 plain "to respond to "
-                red  %|:foo|
+                alpha %|:foo|
                 plain " and "
-                red %|:baz|
+                alpha %|:baz|
                 plain " with "
-                red %|0|
+                alpha %|0|
                 plain " arguments"
               end
             },
@@ -282,9 +282,9 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               plain_line %|    state: "CA",|
               # plain_line %|    zip: "90382",|  # FIXME
               plain_line %|    zip: "90382"|
-              # red_line   %|-   foo: "bar",|  # FIXME
-              red_line   %|-   foo: "bar"|
-              red_line   %|-   baz: "qux"|
+              # alpha_line %|-   foo: "bar",|  # FIXME
+              alpha_line %|-   foo: "bar"|
+              alpha_line %|-   baz: "qux"|
               plain_line %|  }>|
             },
           )

@@ -6,12 +6,12 @@ module SuperDiff
       end
     end
 
-    def deleted(*args, **opts, &block)
-      colorize(*args, **opts, fg: :red, &block)
+    def alpha(*args, **opts, &block)
+      colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:alpha), &block)
     end
 
-    def inserted(*args, **opts, &block)
-      colorize(*args, **opts, fg: :green, &block)
+    def beta(*args, **opts, &block)
+      colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:beta), &block)
     end
   end
 end

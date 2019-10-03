@@ -26,25 +26,25 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234">|
+                beta %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234">|
               end
 
               line do
                 plain "   to eq "
-                red   %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
+                alpha %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
               end
             },
             diff: proc {
               plain_line %|  #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
               plain_line %|    id: nil,|
-              red_line   %|-   city: "Hill Valley",|
-              green_line %|+   city: "Oakland",|
-              red_line   %|-   line_1: "123 Main St.",|
-              green_line %|+   line_1: "456 Ponderosa Ct.",|
+              alpha_line %|-   city: "Hill Valley",|
+              beta_line %|+   city: "Oakland",|
+              alpha_line %|-   line_1: "123 Main St.",|
+              beta_line %|+   line_1: "456 Ponderosa Ct.",|
               plain_line %|    line_2: "",|
               plain_line %|    state: "CA",|
-              red_line   %|-   zip: "90382"|
-              green_line %|+   zip: "91234"|
+              alpha_line %|-   zip: "90382"|
+              beta_line %|+   zip: "91234"|
               plain_line %|  }>|
             },
           )
@@ -81,12 +81,12 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">|
+                beta %|#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">|
               end
 
               line do
                 plain "   to eq "
-                red   %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
+                alpha %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
               end
             },
           )
@@ -120,12 +120,12 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|nil|
+                beta %|nil|
               end
 
               line do
                 plain "   to eq "
-                red   %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
+                alpha %|#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">|
               end
             },
           )
@@ -169,12 +169,12 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234"> }|
+                beta %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234"> }|
               end
 
               line do
                 plain "   to eq "
-                red   %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382"> }|
+                alpha %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382"> }|
               end
             },
             diff: proc {
@@ -182,14 +182,14 @@ shared_examples_for "integration with ActiveRecord" do
               plain_line %|    name: "Marty McFly",|
               plain_line %|    shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
               plain_line %|      id: nil,|
-              red_line   %|-     city: "Hill Valley",|
-              green_line %|+     city: "Oakland",|
-              red_line   %|-     line_1: "123 Main St.",|
-              green_line %|+     line_1: "456 Ponderosa Ct.",|
+              alpha_line %|-     city: "Hill Valley",|
+              beta_line %|+     city: "Oakland",|
+              alpha_line %|-     line_1: "123 Main St.",|
+              beta_line %|+     line_1: "456 Ponderosa Ct.",|
               plain_line %|      line_2: "",|
               plain_line %|      state: "CA",|
-              red_line   %|-     zip: "90382"|
-              green_line %|+     zip: "91234"|
+              alpha_line %|-     zip: "90382"|
+              beta_line %|+     zip: "91234"|
               plain_line %|    }>|
               plain_line %|  }|
             },
@@ -232,30 +232,30 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot"> }|
+                beta %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot"> }|
               end
 
               line do
                 plain "   to eq "
-                red   %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382"> }|
+                alpha %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382"> }|
               end
             },
             diff: proc {
               plain_line %|  {|
               plain_line %|    name: "Marty McFly",|
-              red_line   %|-   shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
-              red_line   %|-     id: nil,|
-              red_line   %|-     city: "Hill Valley",|
-              red_line   %|-     line_1: "123 Main St.",|
-              red_line   %|-     line_2: "",|
-              red_line   %|-     state: "CA",|
-              red_line   %|-     zip: "90382"|
-              red_line   %|-   }>|
-              green_line %|+   shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person {|
-              green_line %|+     id: nil,|
-              green_line %|+     age: 31,|
-              green_line %|+     name: "Elliot"|
-              green_line %|+   }>|
+              alpha_line %|-   shipping_address: #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
+              alpha_line %|-     id: nil,|
+              alpha_line %|-     city: "Hill Valley",|
+              alpha_line %|-     line_1: "123 Main St.",|
+              alpha_line %|-     line_2: "",|
+              alpha_line %|-     state: "CA",|
+              alpha_line %|-     zip: "90382"|
+              alpha_line %|-   }>|
+              beta_line %|+   shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person {|
+              beta_line %|+     id: nil,|
+              beta_line %|+     age: 31,|
+              beta_line %|+     name: "Elliot"|
+              beta_line %|+   }>|
               plain_line %|  }|
             },
           )
@@ -298,12 +298,12 @@ shared_examples_for "integration with ActiveRecord" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">, #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 2, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234">]>|
+                beta %|#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">, #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 2, city: "Oakland", line_1: "456 Ponderosa Ct.", line_2: "", state: "CA", zip: "91234">]>|
               end
 
               line do
                 plain "   to eq "
-                red   %|[#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">]|
+                alpha %|[#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: 1, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">]|
               end
             },
             diff: proc {
@@ -316,14 +316,14 @@ shared_examples_for "integration with ActiveRecord" do
               plain_line %|      state: "CA",|
               plain_line %|      zip: "90382"|
               plain_line %|    }>,|
-              green_line %|+   #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
-              green_line %|+     id: 2,|
-              green_line %|+     city: "Oakland",|
-              green_line %|+     line_1: "456 Ponderosa Ct.",|
-              green_line %|+     line_2: "",|
-              green_line %|+     state: "CA",|
-              green_line %|+     zip: "91234"|
-              green_line %|+   }>|
+              beta_line %|+   #<SuperDiff::Test::Models::ActiveRecord::ShippingAddress {|
+              beta_line %|+     id: 2,|
+              beta_line %|+     city: "Oakland",|
+              beta_line %|+     line_1: "456 Ponderosa Ct.",|
+              beta_line %|+     line_2: "",|
+              beta_line %|+     state: "CA",|
+              beta_line %|+     zip: "91234"|
+              beta_line %|+   }>|
               plain_line %|  ]>|
             },
           )

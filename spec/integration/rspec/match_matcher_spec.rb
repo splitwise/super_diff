@@ -21,16 +21,16 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ city: "Burbank" }|
+                beta %|{ city: "Burbank" }|
                 plain " to match "
-                red %|#<a hash including (city: "Hill Valley")>|
+                alpha %|#<a hash including (city: "Hill Valley")>|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  {|
-              red_line   %|-   city: "Hill Valley"|
-              green_line %|+   city: "Burbank"|
+              alpha_line %|-   city: "Hill Valley"|
+              beta_line %|+   city: "Burbank"|
               plain_line %|  }|
             },
           )
@@ -59,9 +59,9 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ city: "Burbank" }|
+                beta %|{ city: "Burbank" }|
                 plain " not to match "
-                red %|#<a hash including (city: "Burbank")>|
+                alpha %|#<a hash including (city: "Burbank")>|
                 plain "."
               end
             },
@@ -101,22 +101,22 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
+                beta %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
               end
 
               line do
                 plain "to match "
-                red %|#<a hash including (city: "Hill Valley", zip: "90382")>|
+                alpha %|#<a hash including (city: "Hill Valley", zip: "90382")>|
               end
             },
             diff: proc {
               plain_line %|  {|
               plain_line %|    line_1: "123 Main St.",|
-              red_line   %|-   city: "Hill Valley",|
-              green_line %|+   city: "Burbank",|
+              alpha_line %|-   city: "Hill Valley",|
+              beta_line %|+   city: "Burbank",|
               plain_line %|    state: "CA",|
-              red_line   %|-   zip: "90382"|
-              green_line %|+   zip: "90210"|
+              alpha_line %|-   zip: "90382"|
+              beta_line %|+   zip: "90210"|
               plain_line %|  }|
             },
           )
@@ -154,12 +154,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
+                beta %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
               end
 
               line do
                 plain "not to match "
-                red %|#<a hash including (city: "Burbank", zip: "90210")>|
+                alpha %|#<a hash including (city: "Burbank", zip: "90210")>|
               end
             },
           )
@@ -206,12 +206,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
+                beta %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
+                alpha %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
               end
             },
             diff: proc {
@@ -219,11 +219,11 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|    name: "Marty McFly",|
               plain_line %|    address: {|
               plain_line %|      line_1: "123 Main St.",|
-              red_line   %|-     city: "Hill Valley",|
-              green_line %|+     city: "Burbank",|
+              alpha_line %|-     city: "Hill Valley",|
+              beta_line %|+     city: "Burbank",|
               plain_line %|      state: "CA",|
-              red_line   %|-     zip: "90382"|
-              green_line %|+     zip: "90210"|
+              alpha_line %|-     zip: "90382"|
+              beta_line %|+     zip: "90210"|
               plain_line %|    }|
               plain_line %|  }|
             },
@@ -268,12 +268,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
+                beta %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
               end
 
               line do
                 plain "not to match "
-                red   %|{ name: "Marty McFly", address: #<a hash including (city: "Burbank", zip: "90210")> }|
+                alpha %|{ name: "Marty McFly", address: #<a hash including (city: "Burbank", zip: "90210")> }|
               end
             },
           )
@@ -313,22 +313,22 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "Marty McFly", address: nil }|
+                beta %|{ name: "Marty McFly", address: nil }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
+                alpha %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
               end
             },
             diff: proc {
               plain_line %!  {!
               plain_line %!    name: "Marty McFly",!
-              red_line   %!-   address: #<a hash including (!
-              red_line   %!-     city: "Hill Valley",!
-              red_line   %!-     zip: "90382"!
-              red_line   %!-   )>!
-              green_line %!+   address: nil!
+              alpha_line %!-   address: #<a hash including (!
+              alpha_line %!-     city: "Hill Valley",!
+              alpha_line %!-     zip: "90382"!
+              alpha_line %!-   )>!
+              beta_line %!+   address: nil!
               plain_line %!  }!
             },
           )
@@ -361,17 +361,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["b"]|
+                beta %|["b"]|
                 plain " to match "
-                red   %|#<a collection including ("a")>|
+                alpha %|#<a collection including ("a")>|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  [|
               plain_line %|    "b"|
-              # red_line   %|-   "a",|   # FIXME
-              red_line   %|-   "a"|
+              # alpha_line %|-   "a",|   # FIXME
+              alpha_line %|-   "a"|
               plain_line %|  ]|
             },
           )
@@ -400,9 +400,9 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["b"]|
+                beta %|["b"]|
                 plain " not to match "
-                red   %|#<a collection including ("b")>|
+                alpha %|#<a collection including ("b")>|
                 plain "."
               end
             },
@@ -434,12 +434,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                beta %|["milk", "toast", "eggs", "cheese", "English muffins"]|
               end
 
               line do
                 plain "to match "
-                red   %|#<a collection including ("milk", "bread")>|
+                alpha %|#<a collection including ("milk", "bread")>|
               end
             },
             diff: proc {
@@ -450,7 +450,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|    "cheese",|
               # plain_line %|    "English muffins",|  # FIXME
               plain_line %|    "English muffins"|
-              red_line   %|-   "bread"|
+              alpha_line %|-   "bread"|
               plain_line %|  ]|
             },
           )
@@ -480,12 +480,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                beta %|["milk", "toast", "eggs", "cheese", "English muffins"]|
               end
 
               line do
                 plain "not to match "
-                red   %|#<a collection including ("milk", "toast")>|
+                alpha %|#<a collection including ("milk", "toast")>|
               end
             },
           )
@@ -524,12 +524,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                beta %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
               end
             },
             diff: proc {
@@ -540,7 +540,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|      "toast",|
               # plain_line %|      "eggs",|     # FIXME
               plain_line %|      "eggs"|
-              red_line   %|-     "bread"|
+              alpha_line %|-     "bread"|
               plain_line %|    ]|
               plain_line %|  }|
             },
@@ -577,12 +577,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                beta %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
               end
 
               line do
                 plain "not to match "
-                red   %|{ name: "shopping list", contents: #<a collection including ("milk", "toast")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection including ("milk", "toast")> }|
               end
             },
           )
@@ -619,22 +619,22 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "shopping list", contents: nil }|
+                beta %|{ name: "shopping list", contents: nil }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
               end
             },
             diff: proc {
               plain_line %!  {!
               plain_line %!    name: "shopping list",!
-              red_line   %!-   contents: #<a collection including (!
-              red_line   %!-     "milk",!
-              red_line   %!-     "bread"!
-              red_line   %!-   )>!
-              green_line %!+   contents: nil!
+              alpha_line %!-   contents: #<a collection including (!
+              alpha_line %!-     "milk",!
+              alpha_line %!-     "bread"!
+              alpha_line %!-   )>!
+              beta_line %!+   contents: nil!
               plain_line %!  }!
             },
           )
@@ -667,17 +667,17 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<A name: "a">|
+                beta %|#<A name: "a">|
                 plain " to match "
-                red   %|#<an object having attributes (name: "b")>|
+                alpha %|#<an object having attributes (name: "b")>|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  #<A {|
-              # red_line   %|-   name: "b",|  # FIXME
-              red_line   %|-   name: "b"|
-              green_line %|+   name: "a"|
+              # alpha_line %|-   name: "b",|  # FIXME
+              alpha_line %|-   name: "b"|
+              beta_line %|+   name: "a"|
               plain_line %|  }>|
             },
           )
@@ -706,9 +706,9 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<A name: "b">|
+                beta %|#<A name: "b">|
                 plain " not to match "
-                red   %|#<an object having attributes (name: "b")>|
+                alpha %|#<an object having attributes (name: "b")>|
                 plain "."
               end
             },
@@ -752,27 +752,27 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
+                beta %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
               end
 
               line do
                 plain "to match "
-                red   %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234", state: "CA", something_else: "blah")>|
+                alpha %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234", state: "CA", something_else: "blah")>|
               end
             },
             diff: proc {
               plain_line %|  #<SuperDiff::Test::ShippingAddress {|
-              red_line   %|-   line_1: "123 Main St.",|
-              green_line %|+   line_1: "456 Ponderosa Ct.",|
+              alpha_line %|-   line_1: "123 Main St.",|
+              beta_line %|+   line_1: "456 Ponderosa Ct.",|
               plain_line %|    line_2: nil,|
-              red_line   %|-   city: "Oakland",|
-              green_line %|+   city: "Hill Valley",|
+              alpha_line %|-   city: "Oakland",|
+              beta_line %|+   city: "Hill Valley",|
               plain_line %|    state: "CA",|
-              # red_line   %|-   zip: "91234",|  # FIXME
-              # green_line %|+   zip: "90382",|  # FIXME
-              red_line   %|-   zip: "91234"|
-              green_line %|+   zip: "90382"|
-              red_line   %|-   something_else: "blah"|
+              # alpha_line %|-   zip: "91234",|  # FIXME
+              # beta_line %|+   zip: "90382",|  # FIXME
+              alpha_line %|-   zip: "91234"|
+              beta_line %|+   zip: "90382"|
+              alpha_line %|-   something_else: "blah"|
               plain_line %|  }>|
             },
           )
@@ -812,12 +812,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
+                beta %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
               end
 
               line do
                 plain "not to match "
-                red   %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234")>|
+                alpha %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234")>|
               end
             },
           )
@@ -867,28 +867,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382"> }|
+              beta %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382"> }|
             end
 
             line do
               plain "to match "
-              red   %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234", something_else: "blah")> }|
+              alpha %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234", something_else: "blah")> }|
             end
           },
           diff: proc {
             plain_line %|  {|
             plain_line %|    name: "Marty McFly",|
             plain_line %|    shipping_address: #<SuperDiff::Test::ShippingAddress {|
-            red_line   %|-     line_1: "123 Main St.",|
-            green_line %|+     line_1: "456 Ponderosa Ct.",|
+            alpha_line %|-     line_1: "123 Main St.",|
+            beta_line %|+     line_1: "456 Ponderosa Ct.",|
             plain_line %|      line_2: nil,|
-            red_line   %|-     city: "Oakland",|
-            green_line %|+     city: "Hill Valley",|
+            alpha_line %|-     city: "Oakland",|
+            beta_line %|+     city: "Hill Valley",|
             plain_line %|      state: "CA",|
-            # red_line   %|-     zip: "91234",|  # FIXME
-            red_line   %|-     zip: "91234"|
-            green_line %|+     zip: "90382"|
-            red_line   %|-     something_else: "blah"|
+            # alpha_line %|-     zip: "91234",|  # FIXME
+            alpha_line %|-     zip: "91234"|
+            beta_line %|+     zip: "90382"|
+            alpha_line %|-     something_else: "blah"|
             plain_line %|    }>|
             plain_line %|  }|
           },
@@ -936,12 +936,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           expectation: proc {
             line do
               plain "    Expected "
-              green %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234"> }|
+              beta %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234"> }|
             end
 
             line do
               plain "not to match "
-              red   %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")> }|
+              alpha %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")> }|
             end
           },
         )
@@ -973,16 +973,16 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["b"]|
+                beta %|["b"]|
                 plain " to match "
-                red   %|#<a collection containing exactly ("a")>|
+                alpha %|#<a collection containing exactly ("a")>|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  [|
               plain_line %|    "b",|
-              red_line   %|-   "a"|
+              alpha_line %|-   "a"|
               plain_line %|  ]|
             },
           )
@@ -1011,9 +1011,9 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["b"]|
+                beta %|["b"]|
                 plain " not to match "
-                red   %|#<a collection containing exactly ("b")>|
+                alpha %|#<a collection containing exactly ("b")>|
                 plain "."
               end
             },
@@ -1045,12 +1045,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                beta %|["milk", "toast", "eggs", "cheese", "English muffins"]|
               end
 
               line do
                 plain "to match "
-                red   %|#<a collection containing exactly ("milk", "bread")>|
+                alpha %|#<a collection containing exactly ("milk", "bread")>|
               end
             },
             diff: proc {
@@ -1060,7 +1060,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|    "eggs",|
               plain_line %|    "cheese",|
               plain_line %|    "English muffins",|
-              red_line   %|-   "bread"|
+              alpha_line %|-   "bread"|
               plain_line %|  ]|
             },
           )
@@ -1090,12 +1090,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|["milk", "toast", "eggs"]|
+                beta %|["milk", "toast", "eggs"]|
               end
 
               line do
                 plain "not to match "
-                red   %|#<a collection containing exactly ("milk", "eggs", "toast")>|
+                alpha %|#<a collection containing exactly ("milk", "eggs", "toast")>|
               end
             },
           )
@@ -1134,12 +1134,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                beta %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
               end
             },
             diff: proc {
@@ -1149,7 +1149,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|      "milk",|
               plain_line %|      "toast",|
               plain_line %|      "eggs",|
-              red_line   %|-     "bread"|
+              alpha_line %|-     "bread"|
               plain_line %|    ]|
               plain_line %|  }|
             },
@@ -1186,12 +1186,12 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "    Expected "
-                green %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                beta %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
               end
 
               line do
                 plain "not to match "
-                red   %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "eggs", "toast")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "eggs", "toast")> }|
               end
             },
           )
@@ -1228,22 +1228,22 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ name: "shopping list", contents: nil }|
+                beta %|{ name: "shopping list", contents: nil }|
               end
 
               line do
                 plain "to match "
-                red   %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+                alpha %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
               end
             },
             diff: proc {
               plain_line %!  {!
               plain_line %!    name: "shopping list",!
-              red_line   %!-   contents: #<a collection containing exactly (!
-              red_line   %!-     "milk",!
-              red_line   %!-     "bread"!
-              red_line   %!-   )>!
-              green_line %!+   contents: nil!
+              alpha_line %!-   contents: #<a collection containing exactly (!
+              alpha_line %!-     "milk",!
+              alpha_line %!-     "bread"!
+              alpha_line %!-   )>!
+              beta_line %!+   contents: nil!
               plain_line %!  }!
             },
           )

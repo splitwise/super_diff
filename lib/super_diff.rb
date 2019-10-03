@@ -3,7 +3,10 @@ require "diff-lcs"
 require "patience_diff"
 
 module SuperDiff
-  autoload :ColorizedDocumentExtensions, "super_diff/colorized_document_extensions"
+  autoload(
+    :ColorizedDocumentExtensions,
+    "super_diff/colorized_document_extensions",
+  )
   autoload :Csi, "super_diff/csi"
   autoload :DiffFormatter, "super_diff/diff_formatter"
   autoload :DiffFormatters, "super_diff/diff_formatters"
@@ -23,4 +26,11 @@ module SuperDiff
   autoload :OperationSequences, "super_diff/operation_sequences"
   autoload :Operations, "super_diff/operations"
   autoload :RecursionGuard, "super_diff/recursion_guard"
+
+  COLORS = {
+    alpha: :magenta,
+    beta: :yellow,
+    border: :blue,
+    header: :white,
+  }.freeze
 end

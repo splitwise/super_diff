@@ -12,9 +12,9 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher", type: :integration
         expectation: proc {
           line do
             plain "Expected "
-            green %|:foo|
+            beta %|:foo|
             plain " to be "
-            red %|falsey|
+            alpha %|falsey|
             plain "."
           end
         },
@@ -37,9 +37,9 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher", type: :integration
         expectation: proc {
           line do
             plain "Expected "
-            green %|false|
+            beta %|false|
             plain " not to be "
-            red %|falsey|
+            alpha %|falsey|
             plain "."
           end
         },

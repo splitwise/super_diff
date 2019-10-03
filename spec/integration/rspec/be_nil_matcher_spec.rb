@@ -12,9 +12,9 @@ RSpec.describe "Integration with RSpec's #be_nil matcher", type: :integration do
         expectation: proc {
           line do
             plain "Expected "
-            green %|:foo|
+            beta %|:foo|
             plain " to be "
-            red %|nil|
+            alpha %|nil|
             plain "."
           end
         },
@@ -37,9 +37,9 @@ RSpec.describe "Integration with RSpec's #be_nil matcher", type: :integration do
         expectation: proc {
           line do
             plain "Expected "
-            green %|nil|
+            beta %|nil|
             plain " not to be "
-            red %|nil|
+            alpha %|nil|
             plain "."
           end
         },

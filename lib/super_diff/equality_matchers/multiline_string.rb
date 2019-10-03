@@ -12,14 +12,14 @@ module SuperDiff
           #{
             # TODO: This whole thing should not be red or green, just the values
             Helpers.style(
-              :deleted,
+              :alpha,
               "Expected: " +
               ObjectInspection.inspect(expected, as_single_line: true),
             )
           }
           #{
             Helpers.style(
-              :inserted,
+              :beta,
               "  Actual: " +
               ObjectInspection.inspect(actual, as_single_line: true),
             )

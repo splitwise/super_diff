@@ -18,9 +18,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           expectation: proc {
             line do
               plain "Expected raised exception "
-              green %|#<StandardError "boo">|
+              beta %|#<StandardError "boo">|
               plain " to match "
-              red %|#<RuntimeError>|
+              alpha %|#<RuntimeError>|
               plain "."
             end
           },
@@ -48,9 +48,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           expectation: proc {
             line do
               plain "Expected raised exception "
-              green %|#<StandardError "boo">|
+              beta %|#<StandardError "boo">|
               plain " not to match "
-              red %|#<StandardError>|
+              alpha %|#<StandardError>|
               plain "."
             end
           },
@@ -81,9 +81,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
             expectation: proc {
               line do
                 plain "Expected raised exception "
-                green %|#<RuntimeError "boo">|
+                beta %|#<RuntimeError "boo">|
                 plain " to match "
-                red %|#<Exception "hell">|
+                alpha %|#<Exception "hell">|
                 plain "."
               end
             },
@@ -111,9 +111,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
             expectation: proc {
               line do
                 plain "Expected raised exception "
-                green %|#<RuntimeError "boo">|
+                beta %|#<RuntimeError "boo">|
                 plain " not to match "
-                red %|#<Exception "boo">|
+                alpha %|#<Exception "boo">|
                 plain "."
               end
             },
@@ -147,12 +147,12 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               expectation: proc {
                 line do
                   plain "Expected raised exception "
-                  green %|#<RuntimeError "some really really really long message">|
+                  beta %|#<RuntimeError "some really really really long message">|
                 end
 
                 line do
                   plain "                 to match "
-                  red %|#<Exception "whatever">|
+                  alpha %|#<Exception "whatever">|
                 end
               },
             )
@@ -181,12 +181,12 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               expectation: proc {
                 line do
                   plain "Expected raised exception "
-                  green %|#<RuntimeError "some really long message">|
+                  beta %|#<RuntimeError "some really long message">|
                 end
 
                 line do
                   plain "             not to match "
-                  red %|#<Exception "some really long message">|
+                  alpha %|#<Exception "some really long message">|
                 end
               },
             )
@@ -223,18 +223,18 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               expectation: proc {
                 line do
                   plain "Expected raised exception "
-                  green %|#<RuntimeError "This is fun\\nSo is this">|
+                  beta %|#<RuntimeError "This is fun\\nSo is this">|
                 end
 
                 line do
                   plain "                 to match "
-                  red %|#<Exception "This is fun\\nAnd so is this">|
+                  alpha %|#<Exception "This is fun\\nAnd so is this">|
                 end
               },
               diff: proc {
                 plain_line %|  This is fun\\n|
-                red_line   %|- And so is this|
-                green_line %|+ So is this|
+                alpha_line %|- And so is this|
+                beta_line %|+ So is this|
               },
             )
 
@@ -265,12 +265,12 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               expectation: proc {
                 line do
                   plain "Expected raised exception "
-                  green %|#<RuntimeError "This is fun\\nSo is this">|
+                  beta %|#<RuntimeError "This is fun\\nSo is this">|
                 end
 
                 line do
                   plain "             not to match "
-                  red %|#<Exception "This is fun\\nSo is this">|
+                  alpha %|#<Exception "This is fun\\nSo is this">|
                 end
               },
             )
@@ -302,9 +302,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           expectation: proc {
             line do
               plain "Expected raised exception "
-              green %|#<StandardError "a">|
+              beta %|#<StandardError "a">|
               plain " to match "
-              red %|#<RuntimeError "b">|
+              alpha %|#<RuntimeError "b">|
               plain "."
             end
           },
@@ -333,9 +333,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
           expectation: proc {
             line do
               plain "Expected raised exception "
-              green %|#<StandardError "a">|
+              beta %|#<StandardError "a">|
               plain " not to match "
-              red %|#<StandardError "a">|
+              alpha %|#<StandardError "a">|
               plain "."
             end
           },

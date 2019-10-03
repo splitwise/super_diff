@@ -14,9 +14,9 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration
         expectation: proc {
           line do
             plain "Expected "
-            green %|nil|
+            beta %|nil|
             plain " to be "
-            red %|truthy|
+            alpha %|truthy|
             plain "."
           end
         },
@@ -41,9 +41,9 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration
         expectation: proc {
           line do
             plain "Expected "
-            green %|true|
+            beta %|true|
             plain " not to be "
-            red %|truthy|
+            alpha %|truthy|
             plain "."
           end
         },

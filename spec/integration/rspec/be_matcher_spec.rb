@@ -16,9 +16,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|true|
+                beta %|true|
                 plain " to equal "
-                red %|false|
+                alpha %|false|
                 plain "."
               end
             },
@@ -43,9 +43,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|false|
+                beta %|false|
                 plain " not to equal "
-                red %|false|
+                alpha %|false|
                 plain "."
               end
             },
@@ -72,9 +72,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|false|
+                beta %|false|
                 plain " to equal "
-                red %|true|
+                alpha %|true|
                 plain "."
               end
             },
@@ -99,9 +99,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|true|
+                beta %|true|
                 plain " not to equal "
-                red %|true|
+                alpha %|true|
                 plain "."
               end
             },
@@ -129,9 +129,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|nil|
+              beta %|nil|
               plain " to be "
-              red %|truthy|
+              alpha %|truthy|
               plain "."
             end
           },
@@ -156,9 +156,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|:something|
+              beta %|:something|
               plain " not to be "
-              red %|truthy|
+              alpha %|truthy|
               plain "."
             end
           },
@@ -185,9 +185,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|nil|
+              beta %|nil|
               plain " to == "
-              red %|:foo|
+              alpha %|:foo|
               plain "."
             end
           },
@@ -212,9 +212,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|:foo|
+              beta %|:foo|
               plain " not to == "
-              red %|:foo|
+              alpha %|:foo|
               plain "."
             end
           },
@@ -241,9 +241,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|1|
+              beta %|1|
               plain " to be < "
-              red %|1|
+              alpha %|1|
               plain "."
             end
           },
@@ -268,9 +268,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|0|
+              beta %|0|
               plain " not to be < "
-              red %|1|
+              alpha %|1|
               plain "."
             end
           },
@@ -297,9 +297,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|1|
+              beta %|1|
               plain " to be <= "
-              red %|0|
+              alpha %|0|
               plain "."
             end
           },
@@ -324,9 +324,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|0|
+              beta %|0|
               plain " not to be <= "
-              red %|0|
+              alpha %|0|
               plain "."
             end
           },
@@ -353,9 +353,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|1|
+              beta %|1|
               plain " to be >= "
-              red %|2|
+              alpha %|2|
               plain "."
             end
           },
@@ -380,9 +380,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|2|
+              beta %|2|
               plain " not to be >= "
-              red %|2|
+              alpha %|2|
               plain "."
             end
           },
@@ -409,9 +409,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|1|
+              beta %|1|
               plain " to be > "
-              red %|2|
+              alpha %|2|
               plain "."
             end
           },
@@ -436,9 +436,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|3|
+              beta %|3|
               plain " not to be > "
-              red %|2|
+              alpha %|2|
               plain "."
             end
           },
@@ -465,9 +465,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|String|
+              beta %|String|
               plain " to === "
-              red %|:foo|
+              alpha %|:foo|
               plain "."
             end
           },
@@ -492,9 +492,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|String|
+              beta %|String|
               plain " not to === "
-              red %|"foo"|
+              alpha %|"foo"|
               plain "."
             end
           },
@@ -521,9 +521,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|"foo"|
+              beta %|"foo"|
               plain " to =~ "
-              red %|/bar/|
+              alpha %|/bar/|
               plain "."
             end
           },
@@ -548,9 +548,9 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           expectation: proc {
             line do
               plain "Expected "
-              green %|"bar"|
+              beta %|"bar"|
               plain " not to =~ "
-              red %|/bar/|
+              alpha %|/bar/|
               plain "."
             end
           },

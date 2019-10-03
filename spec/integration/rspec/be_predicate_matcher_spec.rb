@@ -21,11 +21,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                 expectation: proc {
                   line do
                     plain "Expected "
-                    yellow %|:foo|
+                    beta %|:foo|
                     plain " to respond to "
-                    magenta %|`strong?`|
+                    alpha %|`strong?`|
                     plain " or "
-                    magenta %|`strongs?`|
+                    alpha %|`strongs?`|
                     plain "."
                   end
                 },
@@ -57,14 +57,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                 expectation: proc {
                   line do
                     plain "     Expected "
-                    yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                    beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
                   end
 
                   line do
                     plain "to respond to "
-                    magenta %|`strong?`|
+                    alpha %|`strong?`|
                     plain " or "
-                    magenta %|`strongs?`|
+                    alpha %|`strongs?`|
                   end
                 },
               )
@@ -100,11 +100,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                   expectation: proc {
                     line do
                       plain "Expected "
-                      yellow %|#<Foo>|
+                      beta %|#<Foo>|
                       plain " to have a public method "
-                      magenta %|`strong?`|
+                      alpha %|`strong?`|
                       plain " or "
-                      magenta %|`strongs?`|
+                      alpha %|`strongs?`|
                       plain "."
                     end
                   },
@@ -142,14 +142,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                   expectation: proc {
                     line do
                       plain "               Expected "
-                      yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                      beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
                     end
 
                     line do
                       plain "to have a public method "
-                      magenta %|`strong?`|
+                      alpha %|`strong?`|
                       plain " or "
-                      magenta %|`strongs?`|
+                      alpha %|`strongs?`|
                     end
                   },
                 )
@@ -188,11 +188,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                       expectation: proc {
                         line do
                           plain "Expected "
-                          yellow %|#<Foo>|
+                          beta %|#<Foo>|
                           plain " to return a truthy result for "
-                          magenta %|`true?`|
+                          alpha %|`true?`|
                           plain " or "
-                          magenta %|`trues?`|
+                          alpha %|`trues?`|
                           plain "."
                         end
 
@@ -245,14 +245,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                       expectation: proc {
                         line do
                           plain "                     Expected "
-                          yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                          beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
                         end
 
                         line do
                           plain "to return a truthy result for "
-                          magenta %|`true?`|
+                          alpha %|`true?`|
                           plain " or "
-                          magenta %|`trues?`|
+                          alpha %|`trues?`|
                         end
 
                         newline
@@ -298,11 +298,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                     expectation: proc {
                       line do
                         plain "Expected "
-                        yellow %|#<X>|
+                        beta %|#<X>|
                         plain " to return a truthy result for "
-                        magenta %|`false?`|
+                        alpha %|`false?`|
                         plain " or "
-                        magenta %|`falses?`|
+                        alpha %|`falses?`|
                         plain "."
                       end
                     },
@@ -339,11 +339,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                         expectation: proc {
                           line do
                             plain "Expected "
-                            yellow %|#<X>|
+                            beta %|#<X>|
                             plain " to return a truthy result for "
-                            magenta %|`y?`|
+                            alpha %|`y?`|
                             plain " or "
-                            magenta %|`ys?`|
+                            alpha %|`ys?`|
                             plain "."
                           end
                         },
@@ -387,14 +387,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                         expectation: proc {
                           line do
                             plain "                     Expected "
-                            yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                            beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                           end
 
                           line do
                             plain "to return a truthy result for "
-                            magenta %|`y?`|
+                            alpha %|`y?`|
                             plain " or "
-                            magenta %|`ys?`|
+                            alpha %|`ys?`|
                           end
                         },
                       )
@@ -430,11 +430,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                         expectation: proc {
                           line do
                             plain "Expected "
-                            yellow %|#<X>|
+                            beta %|#<X>|
                             plain " to return a truthy result for "
-                            magenta %|`y?`|
+                            alpha %|`y?`|
                             plain " or "
-                            magenta %|`ys?`|
+                            alpha %|`ys?`|
                             plain "."
                           end
                         },
@@ -478,14 +478,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                         expectation: proc {
                           line do
                             plain "                     Expected "
-                            yellow %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                            beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                           end
 
                           line do
                             plain "to return a truthy result for "
-                            magenta %|`y?`|
+                            alpha %|`y?`|
                             plain " or "
-                            magenta %|`ys?`|
+                            alpha %|`ys?`|
                           end
                         },
                       )
@@ -522,11 +522,11 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                   expectation: proc {
                     line do
                       plain "Expected "
-                      yellow %|#<Foo>|
+                      beta %|#<Foo>|
                       plain " not to return a truthy result for "
-                      magenta %|`strong?`|
+                      alpha %|`strong?`|
                       plain " or "
-                      magenta %|`strongs?`|
+                      alpha %|`strongs?`|
                       plain "."
                     end
                   },

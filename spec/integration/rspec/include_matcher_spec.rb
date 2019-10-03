@@ -21,9 +21,9 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["Marty", "Jennifer", "Doc"]|
+                beta %|["Marty", "Jennifer", "Doc"]|
                 plain " to include "
-                red   %|"Einie"|
+                alpha %|"Einie"|
                 plain "."
               end
             },
@@ -33,7 +33,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               plain_line %|    "Jennifer",|
               # plain_line %|    "Doc",|   # FIXME
               plain_line %|    "Doc"|
-              red_line   %|-   "Einie"|
+              alpha_line %|-   "Einie"|
               plain_line %|  ]|
             },
           )
@@ -61,9 +61,9 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "Expected "
-                green %|["Marty", "Einie"]|
+                beta %|["Marty", "Einie"]|
                 plain " not to include "
-                red   %|"Marty" and "Einie"|
+                alpha %|"Marty" and "Einie"|
                 plain "."
               end
             },
@@ -107,12 +107,12 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "  Expected "
-                green %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
                 plain "to include "
-                red %|"Biff Tannen" and "George McFly"|
+                alpha %|"Biff Tannen" and "George McFly"|
               end
             },
             diff: proc {
@@ -122,8 +122,8 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               plain_line %|    "Einie",|
               # plain_line %|    "Lorraine McFly",|   # FIXME
               plain_line %|    "Lorraine McFly"|
-              red_line   %|-   "Biff Tannen",|
-              red_line   %|-   "George McFly"|
+              alpha_line %|-   "Biff Tannen",|
+              alpha_line %|-   "George McFly"|
               plain_line %|  ]|
             },
           )
@@ -165,12 +165,12 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "      Expected "
-                green %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
+                beta %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
               end
 
               line do
                 plain "not to include "
-                red %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
+                alpha %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
               end
             },
           )
@@ -203,20 +203,20 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ city: "Burbank", zip: "90210" }|
+                beta %|{ city: "Burbank", zip: "90210" }|
                 plain " to include "
-                red %|(city: "Hill Valley", state: "CA")|
+                alpha %|(city: "Hill Valley", state: "CA")|
                 plain "."
               end
             },
             diff: proc {
               plain_line %|  {|
-              red_line   %|-   city: "Hill Valley",|
-              green_line %|+   city: "Burbank",|
+              alpha_line %|-   city: "Hill Valley",|
+              beta_line %|+   city: "Burbank",|
               # FIXME
               # plain_line %|    zip: "90210",|
               plain_line %|    zip: "90210"|
-              red_line   %|-   state: "CA"|
+              alpha_line %|-   state: "CA"|
               plain_line %|  }|
             },
           )
@@ -245,9 +245,9 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ city: "Burbank", zip: "90210" }|
+                beta %|{ city: "Burbank", zip: "90210" }|
                 plain " not to include "
-                red %|(city: "Burbank")|
+                alpha %|(city: "Burbank")|
                 plain "."
               end
             },
@@ -286,21 +286,21 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "  Expected "
-                green %|{ city: "Burbank", state: "CA", zip: "90210" }|
+                beta %|{ city: "Burbank", state: "CA", zip: "90210" }|
               end
 
               line do
                 plain "to include "
-                red %|(city: "Hill Valley", zip: "90382")|
+                alpha %|(city: "Hill Valley", zip: "90382")|
               end
             },
             diff: proc {
               plain_line %|  {|
-              red_line   %|-   city: "Hill Valley",|
-              green_line %|+   city: "Burbank",|
+              alpha_line %|-   city: "Hill Valley",|
+              beta_line %|+   city: "Burbank",|
               plain_line %|    state: "CA",|
-              red_line   %|-   zip: "90382"|
-              green_line %|+   zip: "90210"|
+              alpha_line %|-   zip: "90382"|
+              beta_line %|+   zip: "90210"|
               plain_line %|  }|
             },
           )
@@ -330,12 +330,12 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             expectation: proc {
               line do
                 plain "      Expected "
-                green %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
+                beta %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
               end
 
               line do
                 plain "not to include "
-                red %|(city: "Hill Valley", state: "CA")|
+                alpha %|(city: "Hill Valley", state: "CA")|
               end
             },
           )

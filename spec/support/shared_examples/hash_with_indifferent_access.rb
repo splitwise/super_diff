@@ -29,23 +29,23 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
               end
 
               line do
                 plain "   to eq "
-                red   %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                alpha %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
               end
             },
             diff: proc {
               plain_line %|  #<HashWithIndifferentAccess {|
-              red_line   %|-   "line_1" => "123 Main St.",|
-              green_line %|+   "line_1" => "456 Ponderosa Ct.",|
-              red_line   %|-   "city" => "Hill Valley",|
-              green_line %|+   "city" => "Oakland",|
+              alpha_line %|-   "line_1" => "123 Main St.",|
+              beta_line %|+   "line_1" => "456 Ponderosa Ct.",|
+              alpha_line %|-   "city" => "Hill Valley",|
+              beta_line %|+   "city" => "Oakland",|
               plain_line %|    "state" => "CA",|
-              red_line   %|-   "zip" => "90382"|
-              green_line %|+   "zip" => "91234"|
+              alpha_line %|-   "zip" => "90382"|
+              beta_line %|+   "zip" => "91234"|
               plain_line %|  }>|
             },
           )
@@ -86,23 +86,23 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                beta %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
               end
 
               line do
                 plain "   to eq "
-                red   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
               end
             },
             diff: proc {
               plain_line %|  #<HashWithIndifferentAccess {|
-              red_line   %|-   "line_1" => "456 Ponderosa Ct.",|
-              green_line %|+   "line_1" => "123 Main St.",|
-              red_line   %|-   "city" => "Oakland",|
-              green_line %|+   "city" => "Hill Valley",|
+              alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
+              beta_line %|+   "line_1" => "123 Main St.",|
+              alpha_line %|-   "city" => "Oakland",|
+              beta_line %|+   "city" => "Hill Valley",|
               plain_line %|    "state" => "CA",|
-              red_line   %|-   "zip" => "91234"|
-              green_line %|+   "zip" => "90382"|
+              alpha_line %|-   "zip" => "91234"|
+              beta_line %|+   "zip" => "90382"|
               plain_line %|  }>|
             },
           )
@@ -145,23 +145,23 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
               end
 
               line do
                 plain "to match "
-                red   %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                alpha %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
               end
             },
             diff: proc {
               plain_line %|  #<HashWithIndifferentAccess {|
-              red_line   %|-   "line_1" => "123 Main St.",|
-              green_line %|+   "line_1" => "456 Ponderosa Ct.",|
-              red_line   %|-   "city" => "Hill Valley",|
-              green_line %|+   "city" => "Oakland",|
+              alpha_line %|-   "line_1" => "123 Main St.",|
+              beta_line %|+   "line_1" => "456 Ponderosa Ct.",|
+              alpha_line %|-   "city" => "Hill Valley",|
+              beta_line %|+   "city" => "Oakland",|
               plain_line %|    "state" => "CA",|
-              red_line   %|-   "zip" => "90382"|
-              green_line %|+   "zip" => "91234"|
+              alpha_line %|-   "zip" => "90382"|
+              beta_line %|+   "zip" => "91234"|
               plain_line %|  }>|
             },
           )
@@ -202,23 +202,23 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
             expectation: proc {
               line do
                 plain "Expected "
-                green %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                beta %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
               end
 
               line do
                 plain "to match "
-                red   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
               end
             },
             diff: proc {
               plain_line %|  #<HashWithIndifferentAccess {|
-              red_line   %|-   "line_1" => "456 Ponderosa Ct.",|
-              green_line %|+   "line_1" => "123 Main St.",|
-              red_line   %|-   "city" => "Oakland",|
-              green_line %|+   "city" => "Hill Valley",|
+              alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
+              beta_line %|+   "line_1" => "123 Main St.",|
+              alpha_line %|-   "city" => "Oakland",|
+              beta_line %|+   "city" => "Hill Valley",|
               plain_line %|    "state" => "CA",|
-              red_line   %|-   "zip" => "91234"|
-              green_line %|+   "zip" => "90382"|
+              alpha_line %|-   "zip" => "91234"|
+              beta_line %|+   "zip" => "90382"|
               plain_line %|  }>|
             },
           )

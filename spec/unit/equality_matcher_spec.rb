@@ -27,8 +27,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: 42)
-              green_line %(  Actual: 1)
+              alpha_line %(Expected: 42)
+              beta_line  %(  Actual: 1)
             end
           }
         STR
@@ -54,8 +54,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: :foo)
-              green_line %(  Actual: :bar)
+              alpha_line %(Expected: :foo)
+              beta_line  %(  Actual: :bar)
             end
           }
         STR
@@ -84,8 +84,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "Marty")
-              green_line %(  Actual: "Jennifer")
+              alpha_line %(Expected: "Marty")
+              beta_line  %(  Actual: "Jennifer")
             end
           }
         STR
@@ -106,8 +106,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "Marty")
-              green_line %(  Actual: "Marty McFly")
+              alpha_line %(Expected: "Marty")
+              beta_line  %(  Actual: "Marty McFly")
             end
           }
         STR
@@ -128,8 +128,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "Something entirely different")
-              green_line %(  Actual: "This is a line\\nAnd that's another line\\n")
+              alpha_line %(Expected: "Something entirely different")
+              beta_line  %(  Actual: "This is a line\\nAnd that's another line\\n")
             end
           }
         STR
@@ -150,8 +150,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "This is a line\\nAnd that's another line\\n")
-              green_line %(  Actual: "Something entirely different")
+              alpha_line %(Expected: "This is a line\\nAnd that's another line\\n")
+              beta_line  %(  Actual: "Something entirely different")
             end
           }
         STR
@@ -172,8 +172,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "This is a line\\nAnd that's a line\\nAnd there's a line too")
-              green_line %(  Actual: "This is a line\\nSomething completely different\\nAnd there's a line too")
+              alpha_line %(Expected: "This is a line\\nAnd that's a line\\nAnd there's a line too")
+              beta_line  %(  Actual: "This is a line\\nSomething completely different\\nAnd there's a line too")
             end
           }
 
@@ -182,8 +182,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  This is a line\\n)
-              red_line   %(- And that's a line\\n)
-              green_line %(+ Something completely different\\n)
+              alpha_line %(- And that's a line\\n)
+              beta_line  %(+ Something completely different\\n)
               plain_line %(  And there's a line too)
             end
           }
@@ -205,8 +205,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: "This is a line\\nAnd that's a line\\n")
-              green_line %(  Actual: "Something completely different\\nAnd something else too\\n")
+              alpha_line %(Expected: "This is a line\\nAnd that's a line\\n")
+              beta_line  %(  Actual: "Something completely different\\nAnd something else too\\n")
             end
           }
 
@@ -214,10 +214,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(- This is a line\\n)
-              red_line   %(- And that's a line\\n)
-              green_line %(+ Something completely different\\n)
-              green_line %(+ And something else too\\n)
+              alpha_line %(- This is a line\\n)
+              alpha_line %(- And that's a line\\n)
+              beta_line  %(+ Something completely different\\n)
+              beta_line  %(+ And something else too\\n)
             end
           }
         STR
@@ -264,12 +264,12 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              deleted_line do
+              alpha_line do
                 text "Expected: "
                 text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mAnd that's a line\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
               end
 
-              inserted_line do
+              beta_line do
                 text "  Actual: "
                 text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mSomething completely different\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
               end
@@ -281,8 +281,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  \\e[34mThis is a line\\e[0m\\n)
-              red_line   %(- \\e[38;5;176mAnd that's a line\\e[0m\\n)
-              green_line %(+ \\e[38;5;176mSomething completely different\\e[0m\\n)
+              alpha_line %(- \\e[38;5;176mAnd that's a line\\e[0m\\n)
+              beta_line  %(+ \\e[38;5;176mSomething completely different\\e[0m\\n)
               plain_line %(  \\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n)
             end
           }
@@ -315,8 +315,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [1, 2, 3, 4])
-              green_line %(  Actual: [1, 2, 99, 4])
+              alpha_line %(Expected: [1, 2, 3, 4])
+              beta_line  %(  Actual: [1, 2, 99, 4])
             end
           }
 
@@ -327,8 +327,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(  [)
               plain_line %(    1,)
               plain_line %(    2,)
-              red_line   %(-   3,)
-              green_line %(+   99,)
+              alpha_line %(-   3,)
+              beta_line  %(+   99,)
               plain_line %(    4)
               plain_line %(  ])
             end
@@ -351,8 +351,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [:one, :fish, :two, :fish])
-              green_line %(  Actual: [:one, :FISH, :two, :fish])
+              alpha_line %(Expected: [:one, :fish, :two, :fish])
+              beta_line  %(  Actual: [:one, :FISH, :two, :fish])
             end
           }
 
@@ -362,8 +362,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    :one,)
-              red_line   %(-   :fish,)
-              green_line %(+   :FISH,)
+              alpha_line %(-   :fish,)
+              beta_line  %(+   :FISH,)
               plain_line %(    :two,)
               plain_line %(    :fish)
               plain_line %(  ])
@@ -387,8 +387,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["sausage", "egg", "cheese"])
-              green_line %(  Actual: ["bacon", "egg", "cheese"])
+              alpha_line %(Expected: ["sausage", "egg", "cheese"])
+              beta_line  %(  Actual: ["bacon", "egg", "cheese"])
             end
           }
 
@@ -397,8 +397,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  [)
-              red_line   %(-   "sausage",)
-              green_line %(+   "bacon",)
+              alpha_line %(-   "sausage",)
+              beta_line  %(+   "bacon",)
               plain_line %(    "egg",)
               plain_line %(    "cheese")
               plain_line %(  ])
@@ -428,8 +428,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Jennifer", age: 17>])
-              green_line %(  Actual: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Doc", age: 50>])
+              alpha_line %(Expected: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Jennifer", age: 17>])
+              beta_line  %(  Actual: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Doc", age: 50>])
             end
           }
 
@@ -443,10 +443,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(      age: 18)
               plain_line %(    }>,)
               plain_line %(    #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Jennifer",)
-              green_line %(+     name: "Doc",)
-              red_line   %(-     age: 17)
-              green_line %(+     age: 50)
+              alpha_line %(-     name: "Jennifer",)
+              beta_line  %(+     name: "Doc",)
+              alpha_line %(-     age: 17)
+              beta_line  %(+     age: 50)
               plain_line %(    }>)
               plain_line %(  ])
             end
@@ -469,8 +469,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["bread"])
-              green_line %(  Actual: ["bread", "eggs", "milk"])
+              alpha_line %(Expected: ["bread"])
+              beta_line  %(  Actual: ["bread", "eggs", "milk"])
             end
           }
 
@@ -480,8 +480,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    "bread",)
-              green_line %(+   "eggs",)
-              green_line %(+   "milk")
+              beta_line  %(+   "eggs",)
+              beta_line  %(+   "milk")
               plain_line %(  ])
             end
           }
@@ -503,8 +503,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["bread", "eggs", "milk"])
-              green_line %(  Actual: ["bread"])
+              alpha_line %(Expected: ["bread", "eggs", "milk"])
+              beta_line  %(  Actual: ["bread"])
             end
           }
 
@@ -514,8 +514,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    "bread")
-              red_line   %(-   "eggs",)
-              red_line   %(-   "milk")
+              alpha_line %(-   "eggs",)
+              alpha_line %(-   "milk")
               plain_line %(  ])
             end
           }
@@ -537,8 +537,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["milk"])
-              green_line %(  Actual: ["bread", "eggs", "milk"])
+              alpha_line %(Expected: ["milk"])
+              beta_line  %(  Actual: ["bread", "eggs", "milk"])
             end
           }
 
@@ -547,8 +547,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  [)
-              green_line %(+   "bread",)
-              green_line %(+   "eggs",)
+              beta_line  %(+   "bread",)
+              beta_line  %(+   "eggs",)
               plain_line %(    "milk")
               plain_line %(  ])
             end
@@ -571,8 +571,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["bread", "eggs", "milk"])
-              green_line %(  Actual: ["milk"])
+              alpha_line %(Expected: ["bread", "eggs", "milk"])
+              beta_line  %(  Actual: ["milk"])
             end
           }
 
@@ -581,8 +581,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  [)
-              red_line   %(-   "bread",)
-              red_line   %(-   "eggs",)
+              alpha_line %(-   "bread",)
+              alpha_line %(-   "eggs",)
               plain_line %(    "milk")
               plain_line %(  ])
             end
@@ -605,8 +605,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [1, 2, [:a, :b, :c], 4])
-              green_line %(  Actual: [1, 2, [:a, :x, :c], 4])
+              alpha_line %(Expected: [1, 2, [:a, :b, :c], 4])
+              beta_line  %(  Actual: [1, 2, [:a, :x, :c], 4])
             end
           }
 
@@ -619,8 +619,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    2,)
               plain_line %(    [)
               plain_line %(      :a,)
-              red_line   %(-     :b,)
-              green_line %(+     :x,)
+              alpha_line %(-     :b,)
+              beta_line  %(+     :x,)
               plain_line %(      :c)
               plain_line %(    ],)
               plain_line %(    4)
@@ -645,8 +645,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [1, 2, { foo: "bar", baz: "qux" }, 4])
-              green_line %(  Actual: [1, 2, { foo: "bar", baz: "qox" }, 4])
+              alpha_line %(Expected: [1, 2, { foo: "bar", baz: "qux" }, 4])
+              beta_line  %(  Actual: [1, 2, { foo: "bar", baz: "qox" }, 4])
             end
           }
 
@@ -659,8 +659,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    2,)
               plain_line %(    {)
               plain_line %(      foo: "bar",)
-              red_line   %(-     baz: "qux")
-              green_line %(+     baz: "qox")
+              alpha_line %(-     baz: "qux")
+              beta_line  %(+     baz: "qox")
               plain_line %(    },)
               plain_line %(    4)
               plain_line %(  ])
@@ -689,8 +689,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty", age: 18>, 4])
-              green_line %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc", age: 50>, 4])
+              alpha_line %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty", age: 18>, 4])
+              beta_line  %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc", age: 50>, 4])
             end
           }
 
@@ -702,10 +702,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    1,)
               plain_line %(    2,)
               plain_line %(    #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Marty",)
-              green_line %(+     name: "Doc",)
-              red_line   %(-     age: 18)
-              green_line %(+     age: 50)
+              alpha_line %(-     name: "Marty",)
+              beta_line  %(+     name: "Doc",)
+              alpha_line %(-     age: 18)
+              beta_line  %(+     age: 50)
               plain_line %(    }>,)
               plain_line %(    4)
               plain_line %(  ])
@@ -749,8 +749,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
-              green_line %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated" } }], :br])
+              alpha_line %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
+              beta_line  %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated" } }], :br])
             end
           }
 
@@ -760,27 +760,27 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    [)
-              red_line   %(-     :h1,)
-              green_line %(+     :h2,)
+              alpha_line %(-     :h1,)
+              beta_line  %(+     :h2,)
               plain_line %(      [)
               plain_line %(        :span,)
               plain_line %(        [)
               plain_line %(          :text,)
-              red_line   %(-         "Hello world")
-              green_line %(+         "Goodbye world")
+              alpha_line %(-         "Hello world")
+              beta_line  %(+         "Goodbye world")
               plain_line %(        ])
               plain_line %(      ],)
               plain_line %(      {)
-              green_line %(+       id: "hero",)
+              beta_line  %(+       id: "hero",)
               plain_line %(        class: "header",)
               plain_line %(        data: {)
-              red_line   %(-         "sticky" => true)
-              green_line %(+         "sticky" => false,)
-              green_line %(+         role: "deprecated")
+              alpha_line %(-         "sticky" => true)
+              beta_line  %(+         "sticky" => false,)
+              beta_line  %(+         role: "deprecated")
               plain_line %(        })
               plain_line %(      })
               plain_line %(    ],)
-              green_line %(+   :br)
+              beta_line  %(+   :br)
               plain_line %(  ])
             end
           }
@@ -813,8 +813,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { tall: 12, grande: 19, venti: 20 })
-              green_line %(  Actual: { tall: 12, grande: 16, venti: 20 })
+              alpha_line %(Expected: { tall: 12, grande: 19, venti: 20 })
+              beta_line  %(  Actual: { tall: 12, grande: 16, venti: 20 })
             end
           }
 
@@ -824,8 +824,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    tall: 12,)
-              red_line   %(-   grande: 19,)
-              green_line %(+   grande: 16,)
+              alpha_line %(-   grande: 19,)
+              beta_line  %(+   grande: 16,)
               plain_line %(    venti: 20)
               plain_line %(  })
             end
@@ -848,8 +848,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { "tall" => 12, "grande" => 19, "venti" => 20 })
-              green_line %(  Actual: { "tall" => 12, "grande" => 16, "venti" => 20 })
+              alpha_line %(Expected: { "tall" => 12, "grande" => 19, "venti" => 20 })
+              beta_line  %(  Actual: { "tall" => 12, "grande" => 16, "venti" => 20 })
             end
           }
 
@@ -859,8 +859,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    "tall" => 12,)
-              red_line   %(-   "grande" => 19,)
-              green_line %(+   "grande" => 16,)
+              alpha_line %(-   "grande" => 19,)
+              beta_line  %(+   "grande" => 16,)
               plain_line %(    "venti" => 20)
               plain_line %(  })
             end
@@ -883,8 +883,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { tall: :small, grande: :grand, venti: :large })
-              green_line %(  Actual: { tall: :small, grande: :medium, venti: :large })
+              alpha_line %(Expected: { tall: :small, grande: :grand, venti: :large })
+              beta_line  %(  Actual: { tall: :small, grande: :medium, venti: :large })
             end
           }
 
@@ -894,8 +894,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    tall: :small,)
-              red_line   %(-   grande: :grand,)
-              green_line %(+   grande: :medium,)
+              alpha_line %(-   grande: :grand,)
+              beta_line  %(+   grande: :medium,)
               plain_line %(    venti: :large)
               plain_line %(  })
             end
@@ -918,8 +918,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { tall: "small", grande: "grand", venti: "large" })
-              green_line %(  Actual: { tall: "small", grande: "medium", venti: "large" })
+              alpha_line %(Expected: { tall: "small", grande: "grand", venti: "large" })
+              beta_line  %(  Actual: { tall: "small", grande: "medium", venti: "large" })
             end
           }
 
@@ -929,8 +929,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    tall: "small",)
-              red_line   %(-   grande: "grand",)
-              green_line %(+   grande: "medium",)
+              alpha_line %(-   grande: "grand",)
+              beta_line  %(+   grande: "medium",)
               plain_line %(    venti: "large")
               plain_line %(  })
             end
@@ -959,8 +959,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs", age: 30>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
-              green_line %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak", age: 33>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
+              alpha_line %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs", age: 30>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
+              beta_line  %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak", age: 33>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
             end
           }
 
@@ -970,10 +970,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    steve: #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Jobs",)
-              green_line %(+     name: "Wozniak",)
-              red_line   %(-     age: 30)
-              green_line %(+     age: 33)
+              alpha_line %(-     name: "Jobs",)
+              beta_line  %(+     name: "Wozniak",)
+              alpha_line %(-     age: 30)
+              beta_line  %(+     age: 33)
               plain_line %(    }>,)
               plain_line %(    susan: #<SuperDiff::Test::Person {)
               plain_line %(      name: "Kare",)
@@ -1000,8 +1000,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { latte: 4.5 })
-              green_line %(  Actual: { latte: 4.5, mocha: 3.5, cortado: 3 })
+              alpha_line %(Expected: { latte: 4.5 })
+              beta_line  %(  Actual: { latte: 4.5, mocha: 3.5, cortado: 3 })
             end
           }
 
@@ -1011,8 +1011,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    latte: 4.5,)
-              green_line %(+   mocha: 3.5,)
-              green_line %(+   cortado: 3)
+              beta_line  %(+   mocha: 3.5,)
+              beta_line  %(+   cortado: 3)
               plain_line %(  })
             end
           }
@@ -1034,8 +1034,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { latte: 4.5, mocha: 3.5, cortado: 3 })
-              green_line %(  Actual: { latte: 4.5 })
+              alpha_line %(Expected: { latte: 4.5, mocha: 3.5, cortado: 3 })
+              beta_line  %(  Actual: { latte: 4.5 })
             end
           }
 
@@ -1045,8 +1045,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    latte: 4.5)
-              red_line   %(-   mocha: 3.5,)
-              red_line   %(-   cortado: 3)
+              alpha_line %(-   mocha: 3.5,)
+              alpha_line %(-   cortado: 3)
               plain_line %(  })
             end
           }
@@ -1076,8 +1076,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { name: "Elliot", interests: ["music", "football", "programming"], age: 30 })
-              green_line %(  Actual: { name: "Elliot", interests: ["music", "travel", "programming"], age: 30 })
+              alpha_line %(Expected: { name: "Elliot", interests: ["music", "football", "programming"], age: 30 })
+              beta_line  %(  Actual: { name: "Elliot", interests: ["music", "travel", "programming"], age: 30 })
             end
           }
 
@@ -1089,8 +1089,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    name: "Elliot",)
               plain_line %(    interests: [)
               plain_line %(      "music",)
-              red_line   %(-     "football",)
-              green_line %(+     "travel",)
+              alpha_line %(-     "football",)
+              beta_line  %(+     "travel",)
               plain_line %(      "programming")
               plain_line %(    ],)
               plain_line %(    age: 30)
@@ -1131,8 +1131,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Buns, ribs, and bacon", "YMMV" => "Your mileage may vary" }, check_grammar: false })
-              green_line %(  Actual: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Be right back", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+              alpha_line %(Expected: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Buns, ribs, and bacon", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+              beta_line  %(  Actual: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Be right back", "YMMV" => "Your mileage may vary" }, check_grammar: false })
             end
           }
 
@@ -1144,8 +1144,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(    check_spelling: true,)
               plain_line %(    substitutions: {)
               plain_line %(      "YOLO" => "You only live once",)
-              red_line   %(-     "BRB" => "Buns, ribs, and bacon",)
-              green_line %(+     "BRB" => "Be right back",)
+              alpha_line %(-     "BRB" => "Buns, ribs, and bacon",)
+              beta_line  %(+     "BRB" => "Be right back",)
               plain_line %(      "YMMV" => "Your mileage may vary")
               plain_line %(    },)
               plain_line %(    check_grammar: false)
@@ -1178,8 +1178,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty", age: 18>, amount: 35000 })
-              green_line %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc", age: 50>, amount: 35000 })
+              alpha_line %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty", age: 18>, amount: 35000 })
+              beta_line  %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc", age: 50>, amount: 35000 })
             end
           }
 
@@ -1190,10 +1190,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(  {)
               plain_line %(    order_id: 1234,)
               plain_line %(    person: #<SuperDiff::Test::Person {)
-              red_line   %(-     name: "Marty",)
-              green_line %(+     name: "Doc",)
-              red_line   %(-     age: 18)
-              green_line %(+     age: 50)
+              alpha_line %(-     name: "Marty",)
+              beta_line  %(+     name: "Doc",)
+              alpha_line %(-     age: 18)
+              beta_line  %(+     age: 50)
               plain_line %(    }>,)
               plain_line %(    amount: 35000)
               plain_line %(  })
@@ -1253,8 +1253,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { customer: { name: "Marty McFly", shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] })
-              green_line %(  Actual: { customer: { name: "Marty McFly, Jr.", shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] })
+              alpha_line %(Expected: { customer: { name: "Marty McFly", shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] })
+              beta_line  %(  Actual: { customer: { name: "Marty McFly, Jr.", shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] })
             end
           }
 
@@ -1264,11 +1264,11 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  {)
               plain_line %(    customer: {)
-              red_line   %(-     name: "Marty McFly",)
-              green_line %(+     name: "Marty McFly, Jr.",)
+              alpha_line %(-     name: "Marty McFly",)
+              beta_line  %(+     name: "Marty McFly, Jr.",)
               plain_line %(      shipping_address: {)
-              red_line   %(-       line_1: "123 Main St.",)
-              green_line %(+       line_1: "456 Ponderosa Ct.",)
+              alpha_line %(-       line_1: "123 Main St.",)
+              beta_line  %(+       line_1: "456 Ponderosa Ct.",)
               plain_line %(        city: "Hill Valley",)
               plain_line %(        state: "CA",)
               plain_line %(        zip: "90382")
@@ -1285,8 +1285,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(        ])
               plain_line %(      },)
               plain_line %(      {)
-              red_line   %(-       name: "Chevy 4x4")
-              green_line %(+       name: "Mattel Hoverboard")
+              alpha_line %(-       name: "Chevy 4x4")
+              beta_line  %(+       name: "Mattel Hoverboard")
               plain_line %(      })
               plain_line %(    ])
               plain_line %(  })
@@ -1324,8 +1324,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 18>)
-              green_line %(  Actual: #<SuperDiff::Test::Person name: "Doc", age: 50>)
+              alpha_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 18>)
+              beta_line  %(  Actual: #<SuperDiff::Test::Person name: "Doc", age: 50>)
             end
           }
 
@@ -1334,10 +1334,10 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  #<SuperDiff::Test::Person {)
-              red_line   %(-   name: "Marty",)
-              green_line %(+   name: "Doc",)
-              red_line   %(-   age: 18)
-              green_line %(+   age: 50)
+              alpha_line %(-   name: "Marty",)
+              beta_line  %(+   name: "Doc",)
+              alpha_line %(-   age: 18)
+              beta_line  %(+   age: 50)
               plain_line %(  }>)
             end
           }
@@ -1375,13 +1375,13 @@ RSpec.describe SuperDiff::EqualityMatcher do
             if SuperDiff::Test.jruby?
               # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
               colored do
-                red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % expected.hash} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
-                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
+                alpha_line %(Expected: #<SuperDiff::Test::Player:#{"0x%x" % expected.hash} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
+                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
               end
             else
               colored do
-                red_line   %(Expected: #<SuperDiff::Test::Player:#{"0x%016x" % (expected.object_id * 2)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
-                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+                alpha_line %(Expected: #<SuperDiff::Test::Player:#{"0x%016x" % (expected.object_id * 2)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
               end
             end
           }
@@ -1391,16 +1391,16 @@ RSpec.describe SuperDiff::EqualityMatcher do
           #{
             colored do
               plain_line %(  #<SuperDiff::Test::Player {)
-              red_line   %(-   @character="mirage",)
-              green_line %(+   @character="lifeline",)
-              red_line   %(-   @handle="martymcfly",)
-              green_line %(+   @handle="docbrown",)
+              alpha_line %(-   @character="mirage",)
+              beta_line  %(+   @character="lifeline",)
+              alpha_line %(-   @handle="martymcfly",)
+              beta_line  %(+   @handle="docbrown",)
               plain_line %(    @health=0.3,)
               plain_line %(    @inventory=[)
-              red_line   %(-     "flatline",)
-              green_line %(+     "wingman",)
-              red_line   %(-     "purple body shield")
-              green_line %(+     "mastiff")
+              alpha_line %(-     "flatline",)
+              beta_line  %(+     "wingman",)
+              alpha_line %(-     "purple body shield")
+              beta_line  %(+     "mastiff")
               plain_line %(    ],)
               plain_line %(    @shields=0.6,)
               plain_line %(    @ultimate=0.8)
@@ -1432,8 +1432,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 31>)
-              green_line %(  Actual: #<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">)
+              alpha_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 31>)
+              beta_line  %(  Actual: #<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">)
             end
           }
         STR
@@ -1466,13 +1466,13 @@ RSpec.describe SuperDiff::EqualityMatcher do
             if SuperDiff::Test.jruby?
               # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
               colored do
-                red_line   %(Expected: #<SuperDiff::Test::Item:#{"0x%x" % expected.hash} @name="camera", @quantity=3>)
-                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
+                alpha_line %(Expected: #<SuperDiff::Test::Item:#{"0x%x" % expected.hash} @name="camera", @quantity=3>)
+                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{"0x%x" % actual.hash} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
               end
             else
               colored do
-                red_line   %(Expected: #<SuperDiff::Test::Item:#{"0x%016x" % (expected.object_id * 2)} @name="camera", @quantity=3>)
-                green_line %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
+                alpha_line %(Expected: #<SuperDiff::Test::Item:#{"0x%016x" % (expected.object_id * 2)} @name="camera", @quantity=3>)
+                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{"0x%016x" % (actual.object_id * 2)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
               end
             end
           }
@@ -1495,8 +1495,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["a", ∙∙∙, "b", "c"])
-              green_line %(  Actual: ["a", "x", "b", "c"])
+              alpha_line %(Expected: ["a", ∙∙∙, "b", "c"])
+              beta_line  %(  Actual: ["a", "x", "b", "c"])
             end
           }
 
@@ -1506,8 +1506,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    "a",)
-              red_line   %(-   ∙∙∙,)
-              green_line %(+   "x",)
+              alpha_line %(-   ∙∙∙,)
+              beta_line  %(+   "x",)
               plain_line %(    "b",)
               plain_line %(    "c")
               plain_line %(  ])
@@ -1532,8 +1532,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: ["a", "x", "b", "c"])
-              green_line %(  Actual: ["a", ∙∙∙, "b", "c"])
+              alpha_line %(Expected: ["a", "x", "b", "c"])
+              beta_line  %(  Actual: ["a", ∙∙∙, "b", "c"])
             end
           }
 
@@ -1543,8 +1543,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
             colored do
               plain_line %(  [)
               plain_line %(    "a",)
-              red_line   %(-   "x",)
-              green_line %(+   ∙∙∙,)
+              alpha_line %(-   "x",)
+              beta_line  %(+   ∙∙∙,)
               plain_line %(    "b",)
               plain_line %(    "c")
               plain_line %(  ])
@@ -1569,8 +1569,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { foo: ["a", "x", "b", "c"] })
-              green_line %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+              alpha_line %(Expected: { foo: ["a", "x", "b", "c"] })
+              beta_line  %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
             end
           }
 
@@ -1581,8 +1581,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(  {)
               plain_line %(    foo: [)
               plain_line %(      "a",)
-              red_line   %(-     "x",)
-              green_line %(+     ∙∙∙,)
+              alpha_line %(-     "x",)
+              beta_line  %(+     ∙∙∙,)
               plain_line %(      "b",)
               plain_line %(      "c")
               plain_line %(    ])
@@ -1608,8 +1608,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
 
           #{
             colored do
-              red_line   %(Expected: { foo: ["a", "x", "b", "c"] })
-              green_line %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+              alpha_line %(Expected: { foo: ["a", "x", "b", "c"] })
+              beta_line  %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
             end
           }
 
@@ -1620,8 +1620,8 @@ RSpec.describe SuperDiff::EqualityMatcher do
               plain_line %(  {)
               plain_line %(    foo: [)
               plain_line %(      "a",)
-              red_line   %(-     "x",)
-              green_line %(+     ∙∙∙,)
+              alpha_line %(-     "x",)
+              beta_line  %(+     ∙∙∙,)
               plain_line %(      "b",)
               plain_line %(      "c")
               plain_line %(    ])

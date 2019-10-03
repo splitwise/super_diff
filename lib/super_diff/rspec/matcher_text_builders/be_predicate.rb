@@ -26,25 +26,21 @@ module SuperDiff
           end
         end
 
-        def actual_color
+        def beta_color
           :yellow
         end
 
         def add_actual_value
-          template.add_text_in_color(actual_color) do
+          template.add_text_in_color(beta_color) do
             description_of(actual)
           end
         end
 
-        def expected_color
-          :magenta
-        end
-
         def add_expected_value_to(template, expected)
           template.add_text " "
-          template.add_text_in_color(expected_color, "`#{expected}?`")
+          template.add_text_in_color(alpha_color, "`#{expected}?`")
           template.add_text " or "
-          template.add_text_in_color(expected_color, "`#{expected}s?`")
+          template.add_text_in_color(alpha_color, "`#{expected}s?`")
         end
 
         def add_extra_after_error
