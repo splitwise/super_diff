@@ -31,7 +31,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               plain_line %|  #<SuperDiff::Test::Person {|
               # alpha_line %|-   name: "b",|  # FIXME
               alpha_line %|-   name: "b"|
-              beta_line %|+   name: "a",|
+              beta_line  %|+   name: "a",|
               plain_line %|    age: 9|
               plain_line %|  }>|
             },
@@ -164,14 +164,14 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
             diff: proc {
               plain_line %|  #<SuperDiff::Test::ShippingAddress {|
               alpha_line %|-   line_1: "123 Main St.",|
-              beta_line %|+   line_1: "456 Ponderosa Ct.",|
+              beta_line  %|+   line_1: "456 Ponderosa Ct.",|
               plain_line %|    line_2: nil,|
               alpha_line %|-   city: "Oakland",|
-              beta_line %|+   city: "Hill Valley",|
+              beta_line  %|+   city: "Hill Valley",|
               plain_line %|    state: "CA",|
               # alpha_line %|-   zip: "91234",|  # FIXME
               alpha_line %|-   zip: "91234"|
-              beta_line %|+   zip: "90382"|
+              beta_line  %|+   zip: "90382"|
               plain_line %|  }>|
             },
           )

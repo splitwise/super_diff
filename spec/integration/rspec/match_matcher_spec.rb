@@ -30,7 +30,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             diff: proc {
               plain_line %|  {|
               alpha_line %|-   city: "Hill Valley"|
-              beta_line %|+   city: "Burbank"|
+              beta_line  %|+   city: "Burbank"|
               plain_line %|  }|
             },
           )
@@ -113,10 +113,10 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|  {|
               plain_line %|    line_1: "123 Main St.",|
               alpha_line %|-   city: "Hill Valley",|
-              beta_line %|+   city: "Burbank",|
+              beta_line  %|+   city: "Burbank",|
               plain_line %|    state: "CA",|
               alpha_line %|-   zip: "90382"|
-              beta_line %|+   zip: "90210"|
+              beta_line  %|+   zip: "90210"|
               plain_line %|  }|
             },
           )
@@ -220,10 +220,10 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|    address: {|
               plain_line %|      line_1: "123 Main St.",|
               alpha_line %|-     city: "Hill Valley",|
-              beta_line %|+     city: "Burbank",|
+              beta_line  %|+     city: "Burbank",|
               plain_line %|      state: "CA",|
               alpha_line %|-     zip: "90382"|
-              beta_line %|+     zip: "90210"|
+              beta_line  %|+     zip: "90210"|
               plain_line %|    }|
               plain_line %|  }|
             },
@@ -328,7 +328,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               alpha_line %!-     city: "Hill Valley",!
               alpha_line %!-     zip: "90382"!
               alpha_line %!-   )>!
-              beta_line %!+   address: nil!
+              beta_line  %!+   address: nil!
               plain_line %!  }!
             },
           )
@@ -634,7 +634,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               alpha_line %!-     "milk",!
               alpha_line %!-     "bread"!
               alpha_line %!-   )>!
-              beta_line %!+   contents: nil!
+              beta_line  %!+   contents: nil!
               plain_line %!  }!
             },
           )
@@ -677,7 +677,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|  #<A {|
               # alpha_line %|-   name: "b",|  # FIXME
               alpha_line %|-   name: "b"|
-              beta_line %|+   name: "a"|
+              beta_line  %|+   name: "a"|
               plain_line %|  }>|
             },
           )
@@ -763,15 +763,15 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             diff: proc {
               plain_line %|  #<SuperDiff::Test::ShippingAddress {|
               alpha_line %|-   line_1: "123 Main St.",|
-              beta_line %|+   line_1: "456 Ponderosa Ct.",|
+              beta_line  %|+   line_1: "456 Ponderosa Ct.",|
               plain_line %|    line_2: nil,|
               alpha_line %|-   city: "Oakland",|
-              beta_line %|+   city: "Hill Valley",|
+              beta_line  %|+   city: "Hill Valley",|
               plain_line %|    state: "CA",|
               # alpha_line %|-   zip: "91234",|  # FIXME
-              # beta_line %|+   zip: "90382",|  # FIXME
+              # beta_line  %|+   zip: "90382",|  # FIXME
               alpha_line %|-   zip: "91234"|
-              beta_line %|+   zip: "90382"|
+              beta_line  %|+   zip: "90382"|
               alpha_line %|-   something_else: "blah"|
               plain_line %|  }>|
             },
@@ -880,14 +880,14 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             plain_line %|    name: "Marty McFly",|
             plain_line %|    shipping_address: #<SuperDiff::Test::ShippingAddress {|
             alpha_line %|-     line_1: "123 Main St.",|
-            beta_line %|+     line_1: "456 Ponderosa Ct.",|
+            beta_line  %|+     line_1: "456 Ponderosa Ct.",|
             plain_line %|      line_2: nil,|
             alpha_line %|-     city: "Oakland",|
-            beta_line %|+     city: "Hill Valley",|
+            beta_line  %|+     city: "Hill Valley",|
             plain_line %|      state: "CA",|
             # alpha_line %|-     zip: "91234",|  # FIXME
             alpha_line %|-     zip: "91234"|
-            beta_line %|+     zip: "90382"|
+            beta_line  %|+     zip: "90382"|
             alpha_line %|-     something_else: "blah"|
             plain_line %|    }>|
             plain_line %|  }|
@@ -1243,7 +1243,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               alpha_line %!-     "milk",!
               alpha_line %!-     "bread"!
               alpha_line %!-   )>!
-              beta_line %!+   contents: nil!
+              beta_line  %!+   contents: nil!
               plain_line %!  }!
             },
           )

@@ -212,7 +212,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             diff: proc {
               plain_line %|  {|
               alpha_line %|-   city: "Hill Valley",|
-              beta_line %|+   city: "Burbank",|
+              beta_line  %|+   city: "Burbank",|
               # FIXME
               # plain_line %|    zip: "90210",|
               plain_line %|    zip: "90210"|
@@ -297,10 +297,10 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             diff: proc {
               plain_line %|  {|
               alpha_line %|-   city: "Hill Valley",|
-              beta_line %|+   city: "Burbank",|
+              beta_line  %|+   city: "Burbank",|
               plain_line %|    state: "CA",|
               alpha_line %|-   zip: "90382"|
-              beta_line %|+   zip: "90210"|
+              beta_line  %|+   zip: "90210"|
               plain_line %|  }|
             },
           )

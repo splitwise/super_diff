@@ -193,8 +193,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           },
           diff: proc {
             alpha_line %|- Something entirely different|
-            beta_line %|+ This is a line\\n|
-            beta_line %|+ And that's another line\\n|
+            beta_line  %|+ This is a line\\n|
+            beta_line  %|+ And that's another line\\n|
           },
         )
 
@@ -230,7 +230,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           diff: proc {
             alpha_line %|- This is a line\\n|
             alpha_line %|- And that's another line\\n|
-            beta_line %|+ Something entirely different|
+            beta_line  %|+ Something entirely different|
           },
         )
 
@@ -268,7 +268,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           diff: proc {
             plain_line %|  This is a line\\n|
             alpha_line %|- And that's a line\\n|
-            beta_line %|+ Something completely different\\n|
+            beta_line  %|+ Something completely different\\n|
             plain_line %|  And there's a line too\\n|
           },
         )
@@ -366,31 +366,31 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             plain_line %|  [|
             plain_line %|    [|
             alpha_line %|-     :h1,|
-            beta_line %|+     :h2,|
+            beta_line  %|+     :h2,|
             plain_line %|      [|
             plain_line %|        :span,|
             plain_line %|        [|
             plain_line %|          :text,|
             alpha_line %|-         "Hello world"|
-            beta_line %|+         "Goodbye world"|
+            beta_line  %|+         "Goodbye world"|
             plain_line %|        ]|
             plain_line %|      ],|
             plain_line %|      {|
-            beta_line %|+       id: "hero",|
+            beta_line  %|+       id: "hero",|
             plain_line %|        class: "header",|
             plain_line %|        data: {|
             alpha_line %|-         "sticky" => true,|
-            beta_line %|+         "sticky" => false,|
-            beta_line %|+         role: "deprecated",|
+            beta_line  %|+         "sticky" => false,|
+            beta_line  %|+         role: "deprecated",|
             plain_line %|          person: #<SuperDiff::Test::Person {|
             alpha_line %|-           name: "Marty",|
-            beta_line %|+           name: "Doc",|
+            beta_line  %|+           name: "Doc",|
             plain_line %|            age: 60|
             plain_line %|          }>|
             plain_line %|        }|
             plain_line %|      }|
             plain_line %|    ],|
-            beta_line %|+   :br|
+            beta_line  %|+   :br|
             plain_line %|  ]|
           },
         )
@@ -510,12 +510,12 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             plain_line %|    customer: {|
             plain_line %|      person: #<SuperDiff::Test::Person {|
             alpha_line %|-       name: "Marty McFly",|
-            beta_line %|+       name: "Marty McFly, Jr.",|
+            beta_line  %|+       name: "Marty McFly, Jr.",|
             plain_line %|        age: 17|
             plain_line %|      }>,|
             plain_line %|      shipping_address: {|
             alpha_line %|-       line_1: "123 Main St.",|
-            beta_line %|+       line_1: "456 Ponderosa Ct.",|
+            beta_line  %|+       line_1: "456 Ponderosa Ct.",|
             plain_line %|        city: "Hill Valley",|
             plain_line %|        state: "CA",|
             plain_line %|        zip: "90382"|
@@ -533,7 +533,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             plain_line %|      },|
             plain_line %|      {|
             alpha_line %|-       name: "Chevy 4x4"|
-            beta_line %|+       name: "Mattel Hoverboard"|
+            beta_line  %|+       name: "Mattel Hoverboard"|
             plain_line %|      }|
             plain_line %|    ]|
             plain_line %|  }|
@@ -783,7 +783,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           diff: proc {
             plain_line %|  {|
             alpha_line %|-   foo: nil|
-            beta_line %|+   foo: []|
+            beta_line  %|+   foo: []|
             plain_line %|  }|
           }
         )
@@ -821,7 +821,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           diff: proc {
             plain_line %|  {|
             alpha_line %|-   foo: nil|
-            beta_line %|+   foo: {}|
+            beta_line  %|+   foo: {}|
             plain_line %|  }|
           }
         )
@@ -859,7 +859,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           diff: proc {
             plain_line %|  {|
             alpha_line %|-   foo: nil|
-            beta_line %|+   foo: #<SuperDiff::Test::EmptyClass>|
+            beta_line  %|+   foo: #<SuperDiff::Test::EmptyClass>|
             plain_line %|  }|
           }
         )
