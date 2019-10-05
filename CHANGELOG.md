@@ -34,6 +34,16 @@ Lots of fixes and new features!
 * Detect and handle recursive data structures
 * Automatically disable color output when running tests non-interactively
   (e.g. on a CI service)
+* Add custom coloring/messaging to `be_*` matcher
+* Fix representation of empty arrays, hashes, and objects in diffs
+  so that they are always on single lines
+* Change colors in diffs and messages
+  from red/green to magenta/yellow
+* Use bold to highlight "Failure/Error" instead of white
+  so that output looks good on a light terminal color scheme
+* Fix coloring for unhandled errors
+  so that the whole message isn't colored in red,
+  but only the first line
 
 ## [0.1.0 (2018-10-02)][v0.1.0]
 
