@@ -82,16 +82,35 @@ module RSpec
         def initialize(exception, example, options={})
           @exception               = exception
           @example                 = example
-          # Patch to use no color by default
-          # TODO: Only use color if no diff is being printed
-          @message_color           = options[:message_color]
+          @message_color           = options.fetch(:message_color)          { RSpec.configuration.failure_color }
           @description             = options.fetch(:description)            { example.full_description }
           @detail_formatter        = options.fetch(:detail_formatter)       { Proc.new {} }
           @extra_detail_formatter  = options.fetch(:extra_detail_formatter) { Proc.new {} }
           @backtrace_formatter     = options.fetch(:backtrace_formatter)    { RSpec.configuration.backtrace_formatter }
           @indentation             = options.fetch(:indentation, 2)
           @skip_shared_group_trace = options.fetch(:skip_shared_group_trace, false)
-          @failure_lines           = options[:failure_lines]
+          # Patch to convert options[:failure_lines] to groups
+          if options.include?(:failure_lines)
+            @failure_line_groups = {
+              lines: options[:failure_lines],
+              already_colored: false
+            }
+          end
+        end
+
+        # Override to only color uncolored lines in red
+        def colorized_message_lines(colorizer=::RSpec::Core::Formatters::ConsoleCodes)
+          lines = failure_line_groups.flat_map do |group|
+            if group[:already_colored]
+              group[:lines]
+            else
+              group[:lines].map do |line|
+                colorizer.wrap(line, message_color)
+              end
+            end
+          end
+
+          add_shared_group_lines(lines, colorizer)
         end
 
         private
@@ -105,6 +124,39 @@ module RSpec
           end
 
           lines
+        end
+
+        # Considering that `failure_slash_error_lines` is already colored,
+        # extract this from the other lines so that they, too, can be colored,
+        # later
+        def failure_line_groups
+          @failure_line_groups ||= [].tap do |groups|
+            groups << {
+              lines: failure_slash_error_lines,
+              already_colored: true
+            }
+
+            sections = [failure_slash_error_lines, exception_lines]
+            separate_groups = (
+              sections.any? { |section| section.size > 1 } &&
+              !exception_lines.first.empty?
+            )
+            if separate_groups
+              groups << { lines: [''], already_colored: true }
+            end
+            already_has_coloration = exception_lines.any? do |line|
+              line.match?(/\e\[\d+m/)
+            end
+
+            groups << {
+              lines: exception_lines[0..0],
+              already_colored: already_has_coloration
+            }
+            groups << {
+              lines: exception_lines[1..-1] + extra_failure_lines,
+              already_colored: true
+            }
+          end
         end
 
         # Style the first part in white and don't style the snippet of the line
