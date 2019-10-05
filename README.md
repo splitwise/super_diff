@@ -7,8 +7,8 @@
 [hound-badge]: https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg
 [hound]: https://houndci.com
 
-SuperDiff is a Ruby gem that intelligently displays the differences between two
-data structures of any type.
+SuperDiff is a gem that hooks into RSpec to intelligently display the
+differences between two data structures of any type.
 
 📢 **[See what's changed in the latest version (0.2.0)][changelog].**
 
@@ -16,14 +16,21 @@ data structures of any type.
 
 ## Introduction
 
-The primary motivation behind this gem is to replace RSpec's built-in diffing
-capabilities. Sometimes, whenever you use a matcher such as `eq`, `match`,
-`include`, or `have_attributes`, you will get a diff of the two data structures
-you are trying to match against. This is really helpful for strings, but not so
-helpful for other, more "real world" kinds of values, such as arrays, hashes,
-and full-scale objects. The reason this doesn't work is because [all RSpec does
-is run your `expected` and `actual` values through Ruby's PrettyPrinter
-library][rspec-differ-fail] and then perform a diff of these strings.
+The primary motivation behind this gem is to vastly improve upon RSpec's
+built-in diffing capabilities.
+
+Sometimes, whenever you use a matcher such as `eq`, `match`, `include`, or
+`have_attributes`, you will get a diff of the two data structures you are trying
+to match against. This is great if all you want to do is compare multi-line
+strings. But if you want to compare other, more "real world" kinds of values —
+nested data structures (arrays, hashes, and full-scale objects), such as what
+you might work with when developing API endpoints or testing methods that make
+database calls and return a set of model objects — then you are out of luck.
+Since [RSpec merely runs your `expected` and `actual` values through Ruby's
+PrettyPrinter library][rspec-differ-fail] and then performs a diff of these
+strings, the output it produces leaves much to be desired.
+
+[rspec-differ-fail]: https://github.com/rspec/rspec-support/blob/c69a231d7369dd165ad7ce4742e1a2e21e3462b5/lib/rspec/support/differ.rb#L178
 
 For instance, let's say you wanted to compare these two hashes:
 
@@ -75,19 +82,15 @@ If, somewhere in a test, you were to say:
 expect(actual).to eq(expected)
 ```
 
-You would get output that looks like:
+You would get output that looks like this:
 
 ![Before super_diff](doc/before_super_diff.png)
 
-Not great.
-
-This library provides a diff engine that knows how to figure out the differences
-between any two data structures and display them in a sensible way. Using the
-example above, you'd get this instead:
+What this library does is to provide a diff engine that knows how to figure out
+the differences between any two data structures and display them in a sensible
+way. So, using the example above, you'd get this instead:
 
 ![After super_diff](doc/after_super_diff.png)
-
-[rspec-differ-fail]: https://github.com/rspec/rspec-support/blob/c69a231d7369dd165ad7ce4742e1a2e21e3462b5/lib/rspec/support/differ.rb#L178
 
 ## Installation
 
@@ -131,7 +134,7 @@ You're done!
 As capable as this library is, it doesn't know how to deal with every kind of
 object out there. You might find it necessary to instruct the gem on how to diff
 your object. To do this, you can use a configuration block. Simply add this to
-your test helper file (either `rails_helper` or `spec_helper`):
+your test helper file (`rails_helper` or `spec_helper`):
 
 ``` ruby
 SuperDiff::RSpec.configure do |config|
@@ -153,21 +156,21 @@ If you'd like to submit a PR instead, here's how to get started. First, fork
 this repo. Then, when you've cloned your fork, run:
 
 ```
-bundle install
+bin/setup
 ```
 
 This will install various dependencies. After this, you can run all of the
-tests: 
+tests:
 
 ```
 bundle exec rake
 ```
 
-Or a single test:
+If you update one of the tests, you can run it like so:
 
 ```
-bundle exec rspec spec/acceptance/...
-bundle exec rspec spec/unit/...
+bin/rspec spec/integration/...
+bin/rspec spec/unit/...
 ```
 
 Finally, submit your PR and I'll take a look at it when I get a chance.
