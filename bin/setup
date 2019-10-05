@@ -6,3 +6,4 @@ if ! bundle -v &>/dev/null; then
 fi
 
 bundle install
+bundle exec appraisal install
