@@ -27,6 +27,10 @@ module SuperDiff
       end
     end
 
+    def appraisal_in_use?
+      !current_appraisal.nil?
+    end
+
     def current_appraisal
       if path
         available_appraisals.find do |appraisal|
@@ -42,10 +46,6 @@ module SuperDiff
     end
 
     private
-
-    def appraisal_in_use?
-      !current_appraisal.nil?
-    end
 
     def path
       Bundler.default_gemfile
