@@ -10,7 +10,7 @@
 SuperDiff is a Ruby gem that intelligently displays the differences between two
 data structures of any type.
 
-📢 **[See what's changed in the latest version (0.1.0)][changelog].**
+📢 **[See what's changed in the latest version (0.2.0)][changelog].**
 
 [changelog]: CHANGELOG.md
 
