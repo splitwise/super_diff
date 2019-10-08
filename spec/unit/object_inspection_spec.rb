@@ -589,7 +589,7 @@ RSpec.describe SuperDiff::ObjectInspection do
               as_single_line: true,
             )
             expect(inspection).to match(
-              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/,
             )
           end
         end
@@ -601,7 +601,7 @@ RSpec.describe SuperDiff::ObjectInspection do
               as_single_line: false,
             )
             expect(inspection).to match(
-              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/,
             )
           end
         end
@@ -772,7 +772,9 @@ RSpec.describe SuperDiff::ObjectInspection do
           )
 
           expect(inspection).to eq(
-            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">)
+            # rubocop:disable Metrics/LineLength
+            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">),
+            # rubocop:enable Metrics/LineLength
           )
         end
       end
@@ -816,7 +818,9 @@ RSpec.describe SuperDiff::ObjectInspection do
           )
 
           expect(inspection).to eq(
-            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>)
+            # rubocop:disable Metrics/LineLength
+            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>),
+            # rubocop:enable Metrics/LineLength
           )
         end
       end
@@ -859,17 +863,21 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
+            # rubocop:disable Style/BracesAroundHashParameters
             HashWithIndifferentAccess.new({
               line_1: "123 Main St.",
               city: "Hill Valley",
               state: "CA",
               zip: "90382",
             }),
+            # rubocop:enable Style/BracesAroundHashParameters
             as_single_line: true,
           )
 
           expect(inspection).to eq(
-            %(#<HashWithIndifferentAccess { "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }>)
+            # rubocop:disable Metrics/LineLength
+            %(#<HashWithIndifferentAccess { "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }>),
+            # rubocop:enable Metrics/LineLength
           )
         end
       end
@@ -877,12 +885,14 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect(
+            # rubocop:disable Style/BracesAroundHashParameters
             HashWithIndifferentAccess.new({
               line_1: "123 Main St.",
               city: "Hill Valley",
               state: "CA",
               zip: "90382",
             }),
+            # rubocop:enable Style/BracesAroundHashParameters
             as_single_line: false,
           )
 
@@ -1057,31 +1067,282 @@ RSpec.describe SuperDiff::ObjectInspection do
         end
       end
     end
-  end
 
-  context "given a data structure that refers to itself somewhere inside of it" do
-    context "given as_single_line: true" do
-      it "replaces the reference with ∙∙∙" do
-        value = ["a", "b", "c"]
-        value.insert(1, value)
-        inspection = described_class.inspect(value, as_single_line: true)
-        expect(inspection).to eq(%(["a", ∙∙∙, "b", "c"]))
+    context "given a data structure that refers to itself somewhere inside of it" do
+      context "given as_single_line: true" do
+        it "replaces the reference with ∙∙∙" do
+          value = ["a", "b", "c"]
+          value.insert(1, value)
+          inspection = described_class.inspect(value, as_single_line: true)
+          expect(inspection).to eq(%(["a", ∙∙∙, "b", "c"]))
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "replaces the reference with ∙∙∙" do
+          value = ["a", "b", "c"]
+          value.insert(1, value)
+          inspection = described_class.inspect(value, as_single_line: false)
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            [
+              "a",
+              ∙∙∙,
+              "b",
+              "c"
+            ]
+          INSPECTION
+        end
       end
     end
 
-    context "given as_single_line: false" do
-      it "replaces the reference with ∙∙∙" do
-        value = ["a", "b", "c"]
-        value.insert(1, value)
-        inspection = described_class.inspect(value, as_single_line: false)
-        expect(inspection).to eq(<<~INSPECTION.rstrip)
-          [
-            "a",
-            ∙∙∙,
-            "b",
-            "c"
-          ]
-        INSPECTION
+    context "given an AnyArgMatcher" do
+      context "given as_single_line: true" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(anything, as_single_line: true)
+          expect(inspection).to eq("anything")
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(anything, as_single_line: false)
+          expect(inspection).to eq("anything")
+        end
+      end
+    end
+
+    context "given an AnyArgsMatcher" do
+      context "given as_single_line: true" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(any_args, as_single_line: true)
+          expect(inspection).to eq("*(any args)")
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(any_args, as_single_line: false)
+          expect(inspection).to eq("*(any args)")
+        end
+      end
+    end
+
+    context "given an ArrayIncludingMatcher" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            array_including(1, 2, 3),
+            as_single_line: true,
+          )
+          expect(inspection).to eq(%[array_including(1, 2, 3)])
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object across multiple lines" do
+          inspection = described_class.inspect(
+            array_including(1, 2, 3),
+            as_single_line: false,
+          )
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            array_including(
+              1,
+              2,
+              3
+            )
+          INSPECTION
+        end
+      end
+    end
+
+    context "given a BooleanMatcher" do
+      context "given as_single_line: true" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(boolean, as_single_line: true)
+          expect(inspection).to eq("boolean")
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(boolean, as_single_line: false)
+          expect(inspection).to eq("boolean")
+        end
+      end
+    end
+
+    context "given a DuckTypeMatcher" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            duck_type(:foo, :bar, :baz),
+            as_single_line: true,
+          )
+          expect(inspection).to eq(%[duck_type(:foo, :bar, :baz)])
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object across multiple lines" do
+          inspection = described_class.inspect(
+            duck_type(:foo, :bar, :baz),
+            as_single_line: false,
+          )
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            duck_type(
+              :foo,
+              :bar,
+              :baz
+            )
+          INSPECTION
+        end
+      end
+    end
+
+    context "given a HashExcludingMatcher" do
+      context "via #hash_excluding" do
+        context "given as_single_line: true" do
+          it "returns a representation of the object on a single line" do
+            inspection = described_class.inspect(
+              hash_excluding(foo: "bar", baz: "qux"),
+              as_single_line: true,
+            )
+            expect(inspection).to eq(
+              %[hash_not_including(foo: "bar", baz: "qux")],
+            )
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the object across multiple lines" do
+            inspection = described_class.inspect(
+              hash_excluding(foo: "bar", baz: "qux"),
+              as_single_line: false,
+            )
+            expect(inspection).to eq(<<~INSPECTION.rstrip)
+              hash_not_including(
+                foo: "bar",
+                baz: "qux"
+              )
+            INSPECTION
+          end
+        end
+      end
+
+      context "via #hash_not_including" do
+        context "given as_single_line: true" do
+          it "returns a representation of the object on a single line" do
+            inspection = described_class.inspect(
+              hash_not_including(foo: "bar", baz: "qux"),
+              as_single_line: true,
+            )
+            expect(inspection).to eq(
+              %[hash_not_including(foo: "bar", baz: "qux")],
+            )
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the object across multiple lines" do
+            inspection = described_class.inspect(
+              hash_not_including(foo: "bar", baz: "qux"),
+              as_single_line: false,
+            )
+            expect(inspection).to eq(<<~INSPECTION.rstrip)
+              hash_not_including(
+                foo: "bar",
+                baz: "qux"
+              )
+            INSPECTION
+          end
+        end
+      end
+    end
+
+    context "given a HashIncludingMatcher" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            hash_including(foo: "bar", baz: "qux"),
+            as_single_line: true,
+          )
+          expect(inspection).to eq(%[hash_including(foo: "bar", baz: "qux")])
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object across multiple lines" do
+          inspection = described_class.inspect(
+            hash_including(foo: "bar", baz: "qux"),
+            as_single_line: false,
+          )
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            hash_including(
+              foo: "bar",
+              baz: "qux"
+            )
+          INSPECTION
+        end
+      end
+    end
+
+    context "given an InstanceOf" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            instance_of(String),
+            as_single_line: true,
+          )
+          expect(inspection).to eq(%[an_instance_of(String)])
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "still returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            instance_of(String),
+            as_single_line: false,
+          )
+          expect(inspection).to eq(%[an_instance_of(String)])
+        end
+      end
+    end
+
+    context "given a KindOf" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            kind_of(String),
+            as_single_line: true,
+          )
+          expect(inspection).to eq(%[(kind of String)])
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "still returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            kind_of(String),
+            as_single_line: false,
+          )
+          expect(inspection).to eq(%[(kind of String)])
+        end
+      end
+    end
+
+    context "given a NoArgsMatcher" do
+      context "given as_single_line: true" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(no_args, as_single_line: true)
+          expect(inspection).to eq("no args")
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns what the object's #inspect method returns" do
+          inspection = described_class.inspect(no_args, as_single_line: false)
+          expect(inspection).to eq("no args")
+        end
       end
     end
   end
