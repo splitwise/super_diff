@@ -225,6 +225,21 @@ module RSpec
           lines
         end
 
+        def exception_lines
+          lines = []
+          lines << "#{exception_class_name}:" unless exception_class_name =~ /RSpec/
+          # Run the exception message through the registered exception message
+          # formatters
+          message = SuperDiff::RSpec.format_exception_message(
+            encoded_string(exception.message.to_s)
+          )
+          message.split("\n").each do |line|
+            # Don't double-indent lines that already have indentation
+            lines << ((line.empty? || line.match?(/^[ ]+/)) ? line : "  #{line}")
+          end
+          lines
+        end
+
         # Exclude this file from being included in backtraces, so that the
         # SnippetExtractor prints the right thing
         def find_failed_line

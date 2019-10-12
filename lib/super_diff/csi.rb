@@ -11,6 +11,7 @@ module SuperDiff
     autoload :ResetSequence, "super_diff/csi/reset_sequence"
     autoload :TwentyFourBitColor, "super_diff/csi/twenty_four_bit_color"
     autoload :UncolorizedDocument, "super_diff/csi/uncolorized_document"
+    autoload :UnderlineSequence, "super_diff/csi/underline_sequence"
 
     class << self
       attr_writer :color_enabled

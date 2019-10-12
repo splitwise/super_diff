@@ -20,6 +20,10 @@ module SuperDiff
         colorize(BoldSequence.new, *args, **opts, &block)
       end
 
+      def underline(*args, **opts, &block)
+        colorize(UnderlineSequence.new, *args, **opts, &block)
+      end
+
       def colorize(*args, **opts, &block)
         contents, colors = args.partition do |arg|
           arg.is_a?(String) || arg.is_a?(self.class)
