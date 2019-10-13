@@ -26,11 +26,6 @@ module SuperDiff
   autoload :OperationSequences, "super_diff/operation_sequences"
   autoload :Operations, "super_diff/operations"
   autoload :RecursionGuard, "super_diff/recursion_guard"
-
-  COLORS = {
-    alpha: :magenta,
-    beta: :yellow,
-    border: :blue,
-    header: :white,
-  }.freeze
 end
+
+require "super_diff/colors"

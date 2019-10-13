@@ -12,6 +12,10 @@ module SuperDiff
         end
       end
 
+      def +(other)
+        to_s + other.to_s
+      end
+
       def each(&block)
         parts.each(&block)
       end

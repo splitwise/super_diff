@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module ExceptionMessageFormatters
-      class RaiseExpectationError < Base
+      class ExpectationError < Base
         def self.regex
           /\A\(.+\)\..+\(.+\)\s+expected: (\d+) times? with (any) arguments\s+received: (\d+) times with (any) arguments\Z/.freeze
         end
@@ -9,7 +9,7 @@ module SuperDiff
         protected
 
         def colors
-          [:beta, :beta, :alpha, :alpha]
+          [:alpha, :alpha, :beta, :beta]
         end
       end
     end

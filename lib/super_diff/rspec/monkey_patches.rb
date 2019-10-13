@@ -9,6 +9,7 @@ require "rspec/matchers/built_in/eq"
 require "rspec/matchers/built_in/have_attributes"
 require "rspec/matchers/built_in/include"
 require "rspec/matchers/built_in/match"
+require "rspec/mocks/error_generator"
 
 module RSpec
   module Expectations
@@ -225,6 +226,7 @@ module RSpec
           lines
         end
 
+=begin
         def exception_lines
           lines = []
           lines << "#{exception_class_name}:" unless exception_class_name =~ /RSpec/
@@ -235,10 +237,12 @@ module RSpec
           )
           message.split("\n").each do |line|
             # Don't double-indent lines that already have indentation
-            lines << ((line.empty? || line.match?(/^[ ]+/)) ? line : "  #{line}")
+            # lines << ((line.empty? || line.match?(/^[ ]+/)) ? line : "  #{line}")
+            lines << (line.empty? ? line : "  #{line}")
           end
           lines
         end
+=end
 
         # Exclude this file from being included in backtraces, so that the
         # SnippetExtractor prints the right thing
@@ -743,5 +747,172 @@ module RSpec
       BuiltIn::MatchArray.new(items)
     end
     alias_matcher :an_array_matching, :match_array
+  end
+
+  module Mocks
+    class ErrorGenerator
+      def raise_expectation_error(
+        message,
+        expected_received_count,
+        argument_list_matcher,
+        actual_received_count,
+        expectation_count_type,
+        args,
+        backtrace_line = nil,
+        source_id = nil
+      )
+        expected_part = expected_part_of_expectation_error(
+          expected_received_count,
+          expectation_count_type,
+          argument_list_matcher
+        )
+        received_part = received_part_of_expectation_error(
+          actual_received_count,
+          args
+        )
+
+        message = [
+          SuperDiff::Helpers.style(
+            :highlight,
+            "(#{intro(:unwrapped)}).#{message}#{format_args(args)}"
+          ),
+          "\n",
+          "  #{expected_part}\n",
+          "  #{received_part}"
+        ].join
+
+        __raise(message, backtrace_line, source_id)
+      end
+
+      def method_call_args_description(
+        args,
+        generic_prefix = " with arguments: ",
+        matcher_prefix = " with ",
+        color:
+      )
+        case args.first
+        when ArgumentMatchers::AnyArgsMatcher
+          [
+            matcher_prefix,
+            SuperDiff::Helpers.style(color, "any"),
+            " arguments"
+          ].join
+        when ArgumentMatchers::NoArgsMatcher
+          [
+            matcher_prefix,
+            SuperDiff::Helpers.style(color, "no"),
+            " arguments"
+          ].join
+        else
+          if yield
+            [
+              generic_prefix,
+              SuperDiff::Helpers.style(color, format_args(args))
+            ].join
+          else
+            ""
+          end
+        end
+      end
+
+      private
+
+      def expected_part_of_expectation_error(expected_received_count, expectation_count_type, argument_list_matcher)
+        rest = [
+          count_message(
+            expected_received_count, expectation_count_type,
+            color: :alpha
+          ),
+          method_call_args_description(
+            argument_list_matcher.expected_args,
+            color: :alpha
+          ) do
+            argument_list_matcher.expected_args.length > 0
+          end
+        ].join
+
+        # ["expected: ", SuperDiff::Helpers.style(:alpha, rest)].join
+        "expected: #{rest}"
+      end
+
+      def received_part_of_expectation_error(actual_received_count, args)
+        rest = [
+          count_message(actual_received_count, color: :beta),
+          method_call_args_description(args, color: :beta) do
+            actual_received_count > 0 && args.length > 0
+          end
+        ].join
+
+        # ["received: ", SuperDiff::Helpers.style(:beta, rest)].join
+        "received: #{rest}"
+      end
+
+      def error_message(expectation, args_for_multiple_calls)
+        expected_args = SuperDiff::Helpers.style(
+          :alpha,
+          format_args(expectation.expected_args)
+        )
+        actual_args = format_received_args(args_for_multiple_calls)
+        message = default_error_message(expectation, expected_args, actual_args)
+
+        if args_for_multiple_calls.one?
+          diff = diff_message(
+            expectation.expected_args,
+            args_for_multiple_calls.first
+          )
+          message << "\nDiff:#{diff}" unless diff.strip.empty?
+        end
+
+        message
+      end
+
+      def default_error_message(expectation, expected_args, actual_args)
+        parts = [
+          SuperDiff::Helpers.style(:highlight, intro),
+          " received ",
+          SuperDiff::Helpers.style(:highlight, expectation.message.inspect),
+          " ",
+          unexpected_arguments_message(expected_args, actual_args)
+        ]
+
+        parts.join
+      end
+
+      def format_received_args(args_for_multiple_calls)
+        grouped_args(args_for_multiple_calls).map do |args_for_one_call, index|
+          SuperDiff::Helpers.style(:beta, format_args(args_for_one_call)) +
+            group_count(index, args_for_multiple_calls, color: :beta)
+        end.join("\n            ")
+      end
+
+      def count_message(count, expectation_count_type=nil, color:)
+        if count < 0 || expectation_count_type == :at_least
+          times(count.abs, color: color, prefix: "at least ")
+        end
+
+        if expectation_count_type == :at_most
+          times(count.abs, color: color, prefix: "at most ")
+        end
+
+        times(count, color: color)
+      end
+
+      def group_count(index, args, color:)
+        " (#{times(index, color: color)})" if args.size > 1 || index > 1
+      end
+
+      def times(count, color:, prefix: '')
+        SuperDiff::Helpers.style(color, "#{prefix}#{count}") +
+          " time#{count == 1 ? '' : 's'}"
+      end
+
+      # def diff_message(expected_args, actual_args)
+        # raise "Hey we tried to generate a diff"
+      # end
+
+      def differ
+        SuperDiff::RSpec::Differ
+      end
+    end
   end
 end

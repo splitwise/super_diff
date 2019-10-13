@@ -4,8 +4,12 @@ module SuperDiff
       autoload :Base, "super_diff/rspec/exception_message_formatters/base"
       autoload :Default, "super_diff/rspec/exception_message_formatters/default"
       autoload(
-        :RaiseExpectationError,
-        "super_diff/rspec/exception_message_formatters/raise_expectation_error",
+        :ExpectationError,
+        "super_diff/rspec/exception_message_formatters/expectation_error",
+      )
+      autoload(
+        :UnexpectedMessageArgsError,
+        "super_diff/rspec/exception_message_formatters/unexpected_message_args_error",
       )
     end
   end

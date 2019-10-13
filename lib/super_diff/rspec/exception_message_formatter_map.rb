@@ -5,7 +5,8 @@ module SuperDiff
 
       def call(exception_message)
         strategies = [
-          ExceptionMessageFormatters::RaiseExpectationError,
+          ExceptionMessageFormatters::ExpectationError,
+          ExceptionMessageFormatters::UnexpectedMessageArgsError,
           ExceptionMessageFormatters::Default,
         ]
 
@@ -13,13 +14,9 @@ module SuperDiff
           strategy.applies_to?(exception_message)
         end
 
-        if found_strategy
-          found_strategy#.call(exception.message)
-        else
-          raise NotFoundError.new(
-            "Could not find an appropriate formatter class!",
-          )
-        end
+        found_strategy or raise NotFoundError.new(
+          "Could not find an appropriate formatter class!",
+        )
       end
     end
   end

@@ -13,5 +13,9 @@ module SuperDiff
     def beta(*args, **opts, &block)
       colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:beta), &block)
     end
+
+    def highlight(*args, **opts, &block)
+      colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:highlight), &block)
+    end
   end
 end

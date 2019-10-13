@@ -6,6 +6,8 @@ module SuperDiff
       static_facade :diff, :actual, :expected
 
       def diff
+        # binding.pry
+
         if worth_diffing?
           diff = SuperDiff::Differ.call(
             expected,

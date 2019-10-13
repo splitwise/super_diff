@@ -18,6 +18,7 @@ module SuperDiff
     autoload :MatcherTextTemplate, "super_diff/rspec/matcher_text_template"
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
     autoload :OperationalSequencers, "super_diff/rspec/operational_sequencers"
+    autoload :StringTagger, "super_diff/rspec/string_tagger"
 
     class << self
       attr_accessor :extra_differ_classes
