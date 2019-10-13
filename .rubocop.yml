@@ -85,6 +85,8 @@ Style/AccessModifierDeclarations:
   Enabled: false
 Style/Alias:
   Enabled: false
+Style/AndOr:
+  Enabled: false
 Style/CollectionMethods:
   Enabled: true
 Style/Documentation:
@@ -113,11 +115,15 @@ Style/MultilineBlockChain:
   Enabled: false
 Style/NegatedIf:
   Enabled: false
+Style/Next:
+  Enabled: false
 Style/NegatedWhile:
   Enabled: false
 Style/NumericPredicate:
   Enabled: false
 Style/OneLineConditional:
+  Enabled: false
+Style/ParenthesesAroundCondition:
   Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
