@@ -14,7 +14,16 @@ module SuperDiff
       protected
 
       def attribute_names
-        ["year", "month", "day", "hour", "min", "sec", "nsec", "zone", "gmt_offset"]
+        base = ["year", "month", "day", "hour", "min", "sec", "nsec", "zone", "gmt_offset"]
+
+        # If timezones are different, also show a normalized timestamp at the
+        # end of the diff to help visualize why they are different moments in
+        # time.
+        if actual.zone != expected.zone
+          base + ["utc"]
+        else
+          base
+        end
       end
     end
   end
