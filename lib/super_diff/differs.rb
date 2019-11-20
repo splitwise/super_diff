@@ -7,10 +7,12 @@ module SuperDiff
     autoload :Empty, "super_diff/differs/empty"
     autoload :Hash, "super_diff/differs/hash"
     autoload :MultilineString, "super_diff/differs/multiline_string"
+    autoload :Time, "super_diff/differs/time"
 
     DEFAULTS = [
       Array,
       Hash,
+      Time,
       MultilineString,
       CustomObject,
       DefaultObject,

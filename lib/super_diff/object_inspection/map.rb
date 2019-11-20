@@ -16,6 +16,8 @@ module SuperDiff
             Inspectors::Hash
           when String
             Inspectors::String
+          when Time
+            Inspectors::Time
           when true, false, nil, Symbol, Numeric, Regexp, Class
             Inspectors::Primitive
           else
