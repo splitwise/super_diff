@@ -13,6 +13,7 @@ module SuperDiff
       autoload :Hash, "super_diff/object_inspection/inspectors/hash"
       autoload :Primitive, "super_diff/object_inspection/inspectors/primitive"
       autoload :String, "super_diff/object_inspection/inspectors/string"
+      autoload :Time, "super_diff/object_inspection/inspectors/time"
     end
   end
 end

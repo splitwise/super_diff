@@ -10,6 +10,7 @@ module SuperDiff
       :MultilineString,
       "super_diff/operational_sequencers/multiline_string",
     )
+    autoload :TimeLike, "super_diff/operational_sequencers/time_like"
 
     DEFAULTS = [Array, Hash, CustomObject].freeze
   end
