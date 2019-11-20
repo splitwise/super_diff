@@ -290,8 +290,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             plain_line "    nsec: 0,"
             alpha_line "-   zone: \"CET\","
             beta_line  "+   zone: \"UTC\","
-            alpha_line "-   gmt_offset: 3600"
-            beta_line  "+   gmt_offset: 0"
+            alpha_line "-   gmt_offset: 3600,"
+            beta_line  "+   gmt_offset: 0,"
+            alpha_line "-   utc: 2011-12-13 15:15:16.000 UTC +00:00 (Time)"
+            beta_line  "+   utc: 2011-12-13 14:15:16.000 UTC +00:00 (Time)"
             plain_line "  }>"
           },
         )
