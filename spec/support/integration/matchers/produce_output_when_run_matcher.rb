@@ -89,7 +89,7 @@ module SuperDiff
 
       def run_command
         CommandRunner.run(
-          "rspec",
+          "rspec --options /tmp/dummy-rspec-config",
           tempfile.to_s,
           env: { "DISABLE_PRY" => "true" },
         )
