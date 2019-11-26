@@ -287,39 +287,7 @@ module RSpec
       # Add a key for different sides
       def self.from(expected)
         return expected if self === expected
-
-        text =
-          colorizer.wrap("Diff:", SuperDiff::COLORS.fetch(:header)) +
-          "\n\n" +
-          colorizer.wrap(
-            "┌ (Key) ──────────────────────────┐",
-            SuperDiff::COLORS.fetch(:border)
-          ) +
-          "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
-          colorizer.wrap(
-            "‹-› in expected, not in actual",
-            SuperDiff::COLORS.fetch(:alpha)
-          ) +
-          colorizer.wrap("  │", SuperDiff::COLORS.fetch(:border)) +
-          "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
-          colorizer.wrap(
-            "‹+› in actual, not in expected",
-            SuperDiff::COLORS.fetch(:beta)
-          ) +
-          colorizer.wrap("  │", SuperDiff::COLORS.fetch(:border)) +
-          "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
-          "‹ › in both expected and actual" +
-          colorizer.wrap(" │", SuperDiff::COLORS.fetch(:border)) +
-          "\n" +
-          colorizer.wrap(
-            "└─────────────────────────────────┘",
-            SuperDiff::COLORS.fetch(:border)
-          )
-
-        new([[expected, text]])
+        new([[expected, SuperDiff::DiffLegendBuilder.call(expected)]])
       end
 
       def self.colorizer
@@ -860,7 +828,12 @@ module RSpec
             expectation.expected_args,
             args_for_multiple_calls.first
           )
-          message << "\nDiff:#{diff}" unless diff.strip.empty?
+
+          unless diff.strip.empty?
+            message << "\n\n"
+            message << SuperDiff::DiffLegendBuilder.call(expectation.expected_args).to_s
+            message << diff
+          end
         end
 
         message

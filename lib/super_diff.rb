@@ -10,6 +10,7 @@ module SuperDiff
   autoload :Csi, "super_diff/csi"
   autoload :DiffFormatter, "super_diff/diff_formatter"
   autoload :DiffFormatters, "super_diff/diff_formatters"
+  autoload :DiffLegendBuilder, "super_diff/diff_legend_builder"
   autoload :Differ, "super_diff/differ"
   autoload :Differs, "super_diff/differs"
   autoload :EqualityMatcher, "super_diff/equality_matcher"

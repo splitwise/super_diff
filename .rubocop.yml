@@ -50,6 +50,7 @@ Metrics/BlockLength:
     - shared_context
     - shared_examples
     - shared_examples_for
+    - xit
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
@@ -62,6 +63,7 @@ Metrics/LineLength:
     - "^\\s*context"
     - "^\\s*describe"
     - "^\\s*it"
+    - "^\\s*xit"
 Metrics/MethodLength:
   Enabled: false
 Metrics/ModuleLength:

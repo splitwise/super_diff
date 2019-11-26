@@ -114,7 +114,8 @@ module SuperDiff
       expectation:,
       newline_before_expectation: false,
       indentation: 7,
-      diff: nil
+      diff: nil,
+      after_diff: nil
     )
       colored(color_enabled: color_enabled) do
         line "Failures:\n"
@@ -171,6 +172,11 @@ module SuperDiff
             evaluate_block(&diff)
 
             newline
+          end
+
+          if after_diff
+            newline
+            text after_diff
           end
         end
       end
