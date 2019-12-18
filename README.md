@@ -84,13 +84,13 @@ expect(actual).to eq(expected)
 
 You would get output that looks like this:
 
-![Before super_diff](doc/before_super_diff.png)
+![Before super_diff](doc/before.png)
 
 What this library does is to provide a diff engine that knows how to figure out
 the differences between any two data structures and display them in a sensible
 way. So, using the example above, you'd get this instead:
 
-![After super_diff](doc/after_super_diff.png)
+![After super_diff](doc/after.png)
 
 ## Installation
 
