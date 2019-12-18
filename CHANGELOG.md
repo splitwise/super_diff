@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.1
+
+* Add useful diff representation of Time-like values
+  [[#61][issue-61]]
+  ([@Mange][mange])
+* Fix tests so they run even with a global `--color` setting
+  [[#62][issue-62]]
+
+[issue-61]: https://github.com/mcmire/super_diff/pull/61
+[issue-62]: https://github.com/mcmire/super_diff/pull/62
+[mange]: https://github.com/Mange
+
 ## 0.2.0
 
 Lots of fixes and new features!
