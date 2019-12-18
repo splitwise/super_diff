@@ -1,6 +1,8 @@
 # Changelog
 
-## 0.2.1
+## [0.3.0 (2019-12-17)][v0.3.0]
+
+[v0.3.0]: https://github.com/mcmire/super_diff/tree/v0.3.0
 
 * Add useful diff representation of Time-like values
   [[#61][issue-61]]
@@ -12,7 +14,9 @@
 [issue-62]: https://github.com/mcmire/super_diff/pull/62
 [mange]: https://github.com/Mange
 
-## 0.2.0
+## [0.2.0 (2019-10-04)][v0.2.0]
+
+[v0.2.0]: https://github.com/mcmire/super_diff/tree/v0.2.0
 
 Lots of fixes and new features!
 
@@ -57,7 +61,7 @@ Lots of fixes and new features!
   so that the whole message isn't colored in red,
   but only the first line
 
-## [0.1.0 (2018-10-02)][v0.1.0]
+## [0.1.0 (2019-10-02)][v0.1.0]
 
 [v0.1.0]: https://github.com/mcmire/super_diff/tree/v0.1.0
 
