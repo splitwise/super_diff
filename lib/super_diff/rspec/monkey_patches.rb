@@ -303,20 +303,6 @@ module RSpec
         end)
       end
 
-      class BeTruthy
-        prepend SuperDiff::RSpec::AugmentedMatcher
-
-        prepend(Module.new do
-          def expected_action_for_matcher_text
-            "be"
-          end
-
-          def expected_for_matcher_text
-            "truthy"
-          end
-        end)
-      end
-
       class BeFalsey
         prepend SuperDiff::RSpec::AugmentedMatcher
 
@@ -375,12 +361,18 @@ module RSpec
         end)
       end
 
-      class Eq
+      class BeTruthy
         prepend SuperDiff::RSpec::AugmentedMatcher
-      end
 
-      class Equal
-        prepend SuperDiff::RSpec::AugmentedMatcher
+        prepend(Module.new do
+          def expected_action_for_matcher_text
+            "be"
+          end
+
+          def expected_for_matcher_text
+            "truthy"
+          end
+        end)
       end
 
       class ContainExactly
@@ -405,82 +397,12 @@ module RSpec
         end)
       end
 
-      class MatchArray < ContainExactly
-        def expected_for_diff
-          matchers.an_array_matching(expected)
-        end
-
-        def expected_action_for_matcher_text
-          "match array with"
-        end
+      class Eq
+        prepend SuperDiff::RSpec::AugmentedMatcher
       end
 
-      class Include
+      class Equal
         prepend SuperDiff::RSpec::AugmentedMatcher
-
-        prepend(Module.new do
-          # Override this method so that the differ knows that this is a partial
-          # array or hash
-          def expected_for_diff
-            if expecteds.all? { |item| item.is_a?(Hash) }
-              matchers.a_collection_including(expecteds.first)
-            else
-              matchers.a_collection_including(*expecteds)
-            end
-          end
-
-          private
-
-          # Override to capitalize message and add period at end
-          def build_failure_message(negated:)
-            message = super
-
-            if actual.respond_to?(:include?)
-              message
-            elsif message.end_with?(".")
-              message.sub("\.$", ", ") + "but it does not respond to `include?`."
-            else
-              message + "\n\nBut it does not respond to `include?`."
-            end
-          end
-
-          # Override to use readable_list_of
-          def expected_for_description
-            readable_list_of(expecteds).lstrip
-          end
-
-          # Override to use readable_list_of
-          def expected_for_failure_message
-            # TODO: Switch to using @divergent_items and handle this in the text
-            # builder
-            readable_list_of(@divergent_items).lstrip
-          end
-
-          # Update to use (...) as delimiter instead of {...}
-          def readable_list_of(items)
-            if items && items.all? { |item| item.is_a?(Hash) }
-              description_of(items.inject(:merge)).
-                sub(/^\{ /, '(').
-                sub(/ \}$/, ')')
-            else
-              super
-            end
-          end
-        end)
-      end
-
-      class Match
-        prepend SuperDiff::RSpec::AugmentedMatcher
-
-        prepend(Module.new do
-          def matcher_text_builder_class
-            SuperDiff::RSpec::MatcherTextBuilders::Match
-          end
-
-          def matcher_text_builder_args
-            super.merge(expected_captures: @expected_captures)
-          end
-        end)
       end
 
       class HaveAttributes
@@ -560,31 +482,82 @@ module RSpec
         end
       end
 
-      class RespondTo
+      class Include
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          # Override this method so that the differ knows that this is a partial
+          # array or hash
+          def expected_for_diff
+            if expecteds.all? { |item| item.is_a?(Hash) }
+              matchers.a_collection_including(expecteds.first)
+            else
+              matchers.a_collection_including(*expecteds)
+            end
+          end
+
+          private
+
+          # Override to capitalize message and add period at end
+          def build_failure_message(negated:)
+            message = super
+
+            if actual.respond_to?(:include?)
+              message
+            elsif message.end_with?(".")
+              message.sub("\.$", ", ") + "but it does not respond to `include?`."
+            else
+              message + "\n\nBut it does not respond to `include?`."
+            end
+          end
+
+          # Override to use readable_list_of
+          def expected_for_description
+            readable_list_of(expecteds).lstrip
+          end
+
+          # Override to use readable_list_of
+          def expected_for_failure_message
+            # TODO: Switch to using @divergent_items and handle this in the text
+            # builder
+            readable_list_of(@divergent_items).lstrip
+          end
+
+          # Update to use (...) as delimiter instead of {...}
+          def readable_list_of(items)
+            if items && items.all? { |item| item.is_a?(Hash) }
+              description_of(items.inject(:merge)).
+                sub(/^\{ /, '(').
+                sub(/ \}$/, ')')
+            else
+              super
+            end
+          end
+        end)
+      end
+
+      class Match
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
           def matcher_text_builder_class
-            SuperDiff::RSpec::MatcherTextBuilders::RespondTo
+            SuperDiff::RSpec::MatcherTextBuilders::Match
           end
 
           def matcher_text_builder_args
-            super.merge(
-              expected_arity: @expected_arity,
-              arbitrary_keywords: @arbitrary_keywords,
-              expected_keywords: @expected_keywords,
-              unlimited_arguments: @unlimited_arguments
-            )
-          end
-
-          def expected_for_description
-            @names
-          end
-
-          def expected_for_failure_message
-            @failing_method_names
+            super.merge(expected_captures: @expected_captures)
           end
         end)
+      end
+
+      class MatchArray < ContainExactly
+        def expected_for_diff
+          matchers.an_array_matching(expected)
+        end
+
+        def expected_action_for_matcher_text
+          "match array with"
+        end
       end
 
       class RaiseError
@@ -629,6 +602,33 @@ module RSpec
         def self.matcher_name
           'raise error'
         end
+      end
+
+      class RespondTo
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def matcher_text_builder_class
+            SuperDiff::RSpec::MatcherTextBuilders::RespondTo
+          end
+
+          def matcher_text_builder_args
+            super.merge(
+              expected_arity: @expected_arity,
+              arbitrary_keywords: @arbitrary_keywords,
+              expected_keywords: @expected_keywords,
+              unlimited_arguments: @unlimited_arguments
+            )
+          end
+
+          def expected_for_description
+            @names
+          end
+
+          def expected_for_failure_message
+            @failing_method_names
+          end
+        end)
       end
     end
 
