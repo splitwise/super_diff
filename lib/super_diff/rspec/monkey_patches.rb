@@ -405,6 +405,16 @@ module RSpec
         end)
       end
 
+      class MatchArray < ContainExactly
+        def expected_for_diff
+          matchers.an_array_matching(expected)
+        end
+
+        def expected_action_for_matcher_text
+          "match array with"
+        end
+      end
+
       class Include
         prepend SuperDiff::RSpec::AugmentedMatcher
 
@@ -621,5 +631,10 @@ module RSpec
         end
       end
     end
+
+    def match_array(items)
+      BuiltIn::MatchArray.new(items)
+    end
+    alias_matcher :an_array_matching, :match_array
   end
 end
