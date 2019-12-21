@@ -487,6 +487,35 @@ module RSpec
         end
       end
 
+      class Has
+        prepend SuperDiff::RSpec::AugmentedMatcher
+
+        prepend(Module.new do
+          def actual_for_matcher_text
+            actual
+          end
+
+          def expected_for_matcher_text
+            "#{predicate}#{failure_message_args_description}"
+          end
+
+          def expected_action_for_matcher_text
+            "return true for"
+          end
+
+          def matcher_text_builder_class
+            SuperDiff::RSpec::MatcherTextBuilders::HavePredicate
+          end
+
+          def matcher_text_builder_args
+            super.merge(
+              predicate_accessible: predicate_accessible?,
+              private_predicate: private_predicate?
+            )
+          end
+        end)
+      end
+
       class Include
         prepend SuperDiff::RSpec::AugmentedMatcher
 
