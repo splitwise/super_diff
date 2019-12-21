@@ -205,6 +205,11 @@ module RSpec
   module Support
     class ObjectFormatter
       # Override to use our formatting algorithm
+      def self.format(value)
+        SuperDiff::ObjectInspection.inspect(value, as_single_line: true)
+      end
+
+      # Override to use our formatting algorithm
       def format(value)
         SuperDiff::ObjectInspection.inspect(value, as_single_line: true)
       end
