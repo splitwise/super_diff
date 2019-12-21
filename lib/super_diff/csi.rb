@@ -36,6 +36,10 @@ module SuperDiff
       text.gsub(/\e\[\d+(?:;\d+)*m(.+?)\e\[0m/, '\1')
     end
 
+    def self.already_colorized?(text)
+      text.match?(/\e\[\d+m/)
+    end
+
     def self.inspect_colors_in(text)
       [FourBitColor, EightBitColor, TwentyFourBitColor].
         reduce(text) do |str, klass|

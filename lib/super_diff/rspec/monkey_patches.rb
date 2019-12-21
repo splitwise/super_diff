@@ -93,19 +93,31 @@ module RSpec
           if options.include?(:failure_lines)
             @failure_line_groups = {
               lines: options[:failure_lines],
-              already_colored: false
+              already_colorized: false
             }
           end
         end
 
         # Override to only color uncolored lines in red
-        def colorized_message_lines(colorizer=::RSpec::Core::Formatters::ConsoleCodes)
+        # and to not color empty lines
+        def colorized_message_lines(colorizer = ::RSpec::Core::Formatters::ConsoleCodes)
           lines = failure_line_groups.flat_map do |group|
-            if group[:already_colored]
+            if group[:already_colorized]
               group[:lines]
             else
               group[:lines].map do |line|
-                colorizer.wrap(line, message_color)
+                if line.strip.empty?
+                  line
+                else
+                  indentation = line[/^[ ]+/]
+                  rest = colorizer.wrap(line.sub(/^[ ]+/, ''), message_color)
+
+                  if indentation
+                    indentation + rest
+                  else
+                    rest
+                  end
+                end
               end
             end
           end
@@ -129,33 +141,68 @@ module RSpec
         # Considering that `failure_slash_error_lines` is already colored,
         # extract this from the other lines so that they, too, can be colored,
         # later
+        #
+        # TODO: Refactor this somehow
+        #
         def failure_line_groups
-          @failure_line_groups ||= [].tap do |groups|
-            groups << {
-              lines: failure_slash_error_lines,
-              already_colored: true
-            }
+          if defined?(@failure_line_groups)
+            @failure_line_groups
+          else
+            @failure_line_groups = [
+              {
+                lines: failure_slash_error_lines,
+                already_colorized: true
+              }
+            ]
 
             sections = [failure_slash_error_lines, exception_lines]
             separate_groups = (
               sections.any? { |section| section.size > 1 } &&
               !exception_lines.first.empty?
             )
+
             if separate_groups
-              groups << { lines: [''], already_colored: true }
-            end
-            already_has_coloration = exception_lines.any? do |line|
-              line.match?(/\e\[\d+m/)
+              @failure_line_groups << { lines: [''], already_colorized: true }
             end
 
-            groups << {
-              lines: exception_lines[0..0],
-              already_colored: already_has_coloration
-            }
-            groups << {
-              lines: exception_lines[1..-1] + extra_failure_lines,
-              already_colored: true
-            }
+            already_colorized = exception_lines.any? do |line|
+              SuperDiff::Csi.already_colorized?(line)
+            end
+
+            if already_colorized
+              @failure_line_groups << {
+                lines: exception_lines,
+                already_colorized: true
+              }
+            else
+              locatable_exception_lines =
+                exception_lines.each_with_index.map do |line, index|
+                  { text: line, index: index }
+                end
+
+              boundary_line =
+                locatable_exception_lines.find do |line, index|
+                  line[:text].strip.empty? || line[:text].match?(/^    /)
+                end
+
+              if boundary_line
+                @failure_line_groups << {
+                  lines: exception_lines[0..boundary_line[:index] - 1],
+                  already_colorized: false
+                }
+                @failure_line_groups << {
+                  lines: exception_lines[boundary_line[:index]..-1],
+                  already_colorized: true
+                }
+              else
+                @failure_line_groups << {
+                  lines: exception_lines,
+                  already_colorized: false
+                }
+              end
+            end
+
+            @failure_line_groups
           end
         end
 

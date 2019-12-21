@@ -2,92 +2,67 @@ require "spec_helper"
 
 RSpec.describe "Integration with RSpec and unhandled errors", type: :integration do
   context "when a random exception occurs" do
-    it "highlights the whole output after the code snippet in red" do
-      as_both_colored_and_uncolored do |color_enabled|
-        snippet = <<~TEST.strip
-          raise "Some kind of error or whatever"
-        TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
-        )
+    context "and the message spans multiple lines" do
+      it "highlights the first line in red, and then leaves the rest of the message alone" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            raise "Some kind of error or whatever\\n\\nThis is another line"
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-        expected_output = colored(color_enabled: color_enabled) do
-          line "Failures:\n"
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|raise "Some kind of error or whatever\\n\\nThis is another line"|,
+            newline_before_expectation: true,
+            indentation: 5,
+            expectation: proc {
+              red_line "RuntimeError:"
+              indent by: 2 do
+                red_line "Some kind of error or whatever"
+                newline
+                plain_line "This is another line"
+              end
+            }
+          )
 
-          line "1) test passes", indent_by: 2
-
-          line indent_by: 5 do
-            bold "Failure/Error: "
-            plain %|raise "Some kind of error or whatever"|
-          end
-
-          newline
-
-          indent by: 5 do
-            red_line "RuntimeError:"
-            plain_line "  Some kind of error or whatever"
-          end
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
-
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
       end
     end
-  end
 
-  context "when a matcher that has a multi-line message fails" do
-    it "highlights the first line of the failure message in red" do
-      as_both_colored_and_uncolored do |color_enabled|
-        snippet = <<~TEST.strip
-          RSpec::Matchers.define :fail_with_multiline_message do
-            match do
-              false
-            end
+    context "and the message does not span multiple lines" do
+      it "highlights the whole output after the code snippet in red" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            raise "Some kind of error or whatever"
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
 
-            failure_message do
-              <<\~MESSAGE
-                First line
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|raise "Some kind of error or whatever"|,
+            newline_before_expectation: true,
+            indentation: 5,
+            expectation: proc {
+              red_line "RuntimeError:"
+              indent by: 2 do
+                red_line "Some kind of error or whatever"
+              end
+            }
+          )
 
-                Second line
-
-                Third line
-              MESSAGE
-            end
-          end
-
-          expect(:foo).to fail_with_multiline_message
-        TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
-        )
-
-        expected_output = colored(color_enabled: color_enabled) do
-          line "Failures:\n"
-
-          line "1) test passes", indent_by: 2
-
-          line indent_by: 5 do
-            bold "Failure/Error: "
-            plain %|expect(:foo).to fail_with_multiline_message|
-          end
-
-          newline
-
-          indent by: 5 do
-            red_line "  First line"
-            newline
-            plain_line "  Second line"
-            newline
-            plain_line "  Third line"
-          end
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
         end
-
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
       end
     end
   end

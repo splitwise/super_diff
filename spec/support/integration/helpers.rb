@@ -79,15 +79,22 @@ module SuperDiff
           require "pry-nav"
         end
 
+        module SuperDiff
+          module IntegrationTests; end
+        end
+
         RSpec.configure do |config|
           config.color_mode = :#{color_enabled ? "on" : "off"}
+          config.include SuperDiff::IntegrationTests
         end
 
 #{libraries.map { |library| %(        require "#{library}") }.join("\n")}
 
-        Dir.glob(SUPPORT_DIR.join("{diff_formatters,models,operational_sequencers,operation_sequences}/*.rb")).each do |path|
+        Dir.glob(SUPPORT_DIR.join("{models,matchers}/*.rb")).each do |path|
           require path
         end
+
+        require SUPPORT_DIR.join("integration/matchers")
       SETUP
     end
 
@@ -106,6 +113,7 @@ module SuperDiff
       snippet:,
       expectation:,
       newline_before_expectation: false,
+      indentation: 7,
       diff: nil
     )
       colored(color_enabled: color_enabled) do
@@ -122,7 +130,7 @@ module SuperDiff
           newline
         end
 
-        indent by: 7 do
+        indent by: indentation do
           evaluate_block(&expectation)
 
           if diff
