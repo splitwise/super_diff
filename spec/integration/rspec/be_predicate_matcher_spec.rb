@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
+RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integration do
   # rubocop:disable Metrics/BlockLength
   ["be", "be_a", "be_an"].each do |prefix|
   # rubocop:enable Metrics/BlockLength
@@ -23,9 +23,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                     plain "Expected "
                     beta %|:foo|
                     plain " to respond to "
-                    alpha %|`strong?`|
+                    alpha %|strong?|
                     plain " or "
-                    alpha %|`strongs?`|
+                    alpha %|strongs?|
                     plain "."
                   end
                 },
@@ -42,7 +42,7 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
           it "produces the correct failure message" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }
+                hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }
                 expect(hash).to #{prefix}_strong
               TEST
               program = make_plain_test_program(
@@ -57,14 +57,14 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                 expectation: proc {
                   line do
                     plain "     Expected "
-                    beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                    beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                   end
 
                   line do
                     plain "to respond to "
-                    alpha %|`strong?`|
+                    alpha %|strong?|
                     plain " or "
-                    alpha %|`strongs?`|
+                    alpha %|strongs?|
                   end
                 },
               )
@@ -102,9 +102,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                       plain "Expected "
                       beta %|#<Foo>|
                       plain " to have a public method "
-                      alpha %|`strong?`|
+                      alpha %|strong?|
                       plain " or "
-                      alpha %|`strongs?`|
+                      alpha %|strongs?|
                       plain "."
                     end
                   },
@@ -147,9 +147,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
 
                     line do
                       plain "to have a public method "
-                      alpha %|`strong?`|
+                      alpha %|strong?|
                       plain " or "
-                      alpha %|`strongs?`|
+                      alpha %|strongs?|
                     end
                   },
                 )
@@ -190,9 +190,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                           plain "Expected "
                           beta %|#<Foo>|
                           plain " to return a truthy result for "
-                          alpha %|`true?`|
+                          alpha %|true?|
                           plain " or "
-                          alpha %|`trues?`|
+                          alpha %|trues?|
                           plain "."
                         end
 
@@ -200,9 +200,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
 
                         line do
                           plain "(Perhaps you want to use "
-                          blue "`be(true)`"
+                          blue "be(true)"
                           plain " or "
-                          blue "`be_truthy`"
+                          blue "be_truthy"
                           plain " instead?)"
                         end
                       },
@@ -250,18 +250,18 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
 
                         line do
                           plain "to return a truthy result for "
-                          alpha %|`true?`|
+                          alpha %|true?|
                           plain " or "
-                          alpha %|`trues?`|
+                          alpha %|trues?|
                         end
 
                         newline
 
                         line do
                           plain "(Perhaps you want to use "
-                          blue "`be(true)`"
+                          blue "be(true)"
                           plain " or "
-                          blue "`be_truthy`"
+                          blue "be_truthy"
                           plain " instead?)"
                         end
                       },
@@ -300,9 +300,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                         plain "Expected "
                         beta %|#<X>|
                         plain " to return a truthy result for "
-                        alpha %|`false?`|
+                        alpha %|false?|
                         plain " or "
-                        alpha %|`falses?`|
+                        alpha %|falses?|
                         plain "."
                       end
                     },
@@ -341,9 +341,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                             plain "Expected "
                             beta %|#<X>|
                             plain " to return a truthy result for "
-                            alpha %|`y?`|
+                            alpha %|y?|
                             plain " or "
-                            alpha %|`ys?`|
+                            alpha %|ys?|
                             plain "."
                           end
                         },
@@ -392,9 +392,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
 
                           line do
                             plain "to return a truthy result for "
-                            alpha %|`y?`|
+                            alpha %|y?|
                             plain " or "
-                            alpha %|`ys?`|
+                            alpha %|ys?|
                           end
                         },
                       )
@@ -432,9 +432,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
                             plain "Expected "
                             beta %|#<X>|
                             plain " to return a truthy result for "
-                            alpha %|`y?`|
+                            alpha %|y?|
                             plain " or "
-                            alpha %|`ys?`|
+                            alpha %|ys?|
                             plain "."
                           end
                         },
@@ -483,9 +483,9 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
 
                           line do
                             plain "to return a truthy result for "
-                            alpha %|`y?`|
+                            alpha %|y?|
                             plain " or "
-                            alpha %|`ys?`|
+                            alpha %|ys?|
                           end
                         },
                       )
@@ -502,40 +502,92 @@ RSpec.describe "Integration with RSpec's #be_* matcher", type: :integration do
           end
 
           context "and returns true" do
-            it "produces the correct failure message when used in the negative" do
-              as_both_colored_and_uncolored do |color_enabled|
-                snippet = <<~TEST.strip
-                  class Foo
-                    def strong?; true; end
-                  end
-
-                  expect(Foo.new).not_to #{prefix}_strong
-                TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
-
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(Foo.new).not_to #{prefix}_strong|,
-                  expectation: proc {
-                    line do
-                      plain "Expected "
-                      beta %|#<Foo>|
-                      plain " not to return a truthy result for "
-                      alpha %|`strong?`|
-                      plain " or "
-                      alpha %|`strongs?`|
-                      plain "."
+            context "when the inspected version of the actual value is short" do
+              it "produces the correct failure message when used in the negative" do
+                as_both_colored_and_uncolored do |color_enabled|
+                  snippet = <<~TEST.strip
+                    class Foo
+                      def strong?; true; end
                     end
-                  },
-                )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                    expect(Foo.new).not_to #{prefix}_strong
+                  TEST
+                  program = make_plain_test_program(
+                    snippet,
+                    color_enabled: color_enabled,
+                  )
+
+                  expected_output = build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: %|expect(Foo.new).not_to #{prefix}_strong|,
+                    expectation: proc {
+                      line do
+                        plain "Expected "
+                        beta %|#<Foo>|
+                        plain " not to return a truthy result for "
+                        alpha %|strong?|
+                        plain " or "
+                        alpha %|strongs?|
+                        plain "."
+                      end
+                    },
+                  )
+
+                  expect(program).
+                    to produce_output_when_run(expected_output).
+                    in_color(color_enabled).
+                    removing_object_ids
+                end
+              end
+            end
+
+            context "when the inspected version of the actual value is long" do
+              it "produces the correct failure message when used in the negative" do
+                as_both_colored_and_uncolored do |color_enabled|
+                  snippet = <<~TEST.strip
+                    hash = {
+                      foo: "bar",
+                      baz: "qux",
+                      blargh: "foz",
+                      fizz: "buzz",
+                      aaaaaa: "bbbbbb"
+                    }
+
+                    class << hash
+                      def ys?; true; end
+                    end
+
+                    expect(hash).not_to #{prefix}_y
+                  TEST
+                  program = make_plain_test_program(
+                    snippet,
+                    color_enabled: color_enabled,
+                  )
+
+                  expected_output = build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: %|expect(hash).not_to #{prefix}_y|,
+                    newline_before_expectation: true,
+                    expectation: proc {
+                      line do
+                        plain "                         Expected "
+                        beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                      end
+
+                      line do
+                        plain "not to return a truthy result for "
+                        alpha %|y?|
+                        plain " or "
+                        alpha %|ys?|
+                      end
+                    },
+                  )
+
+                  expect(program).
+                    to produce_output_when_run(expected_output).
+                    in_color(color_enabled).
+                    removing_object_ids
+                end
               end
             end
           end

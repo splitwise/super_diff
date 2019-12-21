@@ -36,27 +36,46 @@ module SuperDiff
           end
         end
 
-        def add_expected_value_to(template, expected)
+        def add_expected_value_to_failure_message(template)
           template.add_text " "
-          template.add_text_in_color(alpha_color, "`#{expected}?`")
+          template.add_text_in_color(
+            alpha_color,
+            "#{expected_for_failure_message}?",
+          )
           template.add_text " or "
-          template.add_text_in_color(alpha_color, "`#{expected}s?`")
+          template.add_text_in_color(
+            alpha_color,
+            "#{expected_for_failure_message}s?",
+          )
+        end
+
+        def add_expected_value_to_description(template)
+          template.add_text " "
+          template.add_text_in_color(
+            alpha_color,
+            "`#{expected_for_description}?`",
+          )
+          template.add_text " or "
+          template.add_text_in_color(
+            alpha_color,
+            "`#{expected_for_description}s?`",
+          )
         end
 
         def add_extra_after_error
           if expected_predicate_method_name == :true?
             template.add_text "\n\n"
             template.add_text "(Perhaps you want to use "
-            template.add_text_in_color(:blue, "`be(true)`")
+            template.add_text_in_color(:blue, "be(true)")
             template.add_text " or "
-            template.add_text_in_color(:blue, "`be_truthy`")
+            template.add_text_in_color(:blue, "be_truthy")
             template.add_text " instead?)"
           elsif expected_predicate_method_name == :false?
             template.add_text "\n\n"
             template.add_text "(Perhaps you want to use "
-            template.add_text_in_color(:blue, "`be(false)`")
+            template.add_text_in_color(:blue, "be(false)")
             template.add_text " or "
-            template.add_text_in_color(:blue, "`be_falsey`")
+            template.add_text_in_color(:blue, "be_falsey")
             template.add_text " instead?)"
           end
         end
