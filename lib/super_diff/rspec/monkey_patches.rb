@@ -605,7 +605,9 @@ module RSpec
           end
 
           def actual_for_diff
-            @actual_error.message
+            if @actual_error
+              @actual_error.message
+            end
           end
 
           def expected_for_matcher_text
@@ -625,7 +627,11 @@ module RSpec
           end
 
           def expected_action_for_failure_message
-            "match"
+            if @actual_error
+              "match"
+            else
+              "raise error"
+            end
           end
 
           def matcher_text_builder_class
@@ -634,7 +640,7 @@ module RSpec
         end)
 
         def self.matcher_name
-          'raise error'
+          "raise error"
         end
       end
 
