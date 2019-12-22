@@ -335,4 +335,68 @@ shared_examples_for "integration with ActiveRecord" do
       end
     end
   end
+
+  describe "and RSpec's #match matcher" do
+    it "shows the right output" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          SuperDiff::Test::Models::ActiveRecord::Person.create!(
+            name: "Murphy",
+            age: 20
+          )
+
+          expected = [
+            an_object_having_attributes(
+              results: [
+                an_object_having_attributes(name: "John")
+              ]
+            )
+          ]
+
+          actual = [
+            SuperDiff::Test::Models::ActiveRecord::Query.new(
+              results: SuperDiff::Test::Models::ActiveRecord::Person.all
+            )
+          ]
+          expect(actual).to match(expected)
+        TEST
+
+        program = make_program(snippet, color_enabled: color_enabled)
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match(expected)|,
+          newline_before_expectation: true,
+          expectation: proc {
+            line do
+              plain "Expected "
+              beta %|[#<SuperDiff::Test::Models::ActiveRecord::Query @results=#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, name: "Murphy", age: 20>]>>]|
+            end
+
+            line do
+              plain "to match "
+              alpha %|[#<an object having attributes (results: [#<an object having attributes (name: "John")>])>]|
+            end
+          },
+          diff: proc {
+            plain_line %|  [|
+            plain_line %|    #<SuperDiff::Test::Models::ActiveRecord::Query {|
+            plain_line %|      @results=#<ActiveRecord::Relation [|
+            plain_line %|        #<SuperDiff::Test::Models::ActiveRecord::Person {|
+            alpha_line %|-         @name="John"|
+            beta_line  %|+         @name="Murphy"|
+            plain_line %|        }>|
+            plain_line %|      ]>|
+            plain_line %|    }>|
+            plain_line %|  ]|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled).
+          removing_object_ids
+      end
+    end
+  end
 end
