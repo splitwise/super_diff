@@ -9,7 +9,6 @@ module SuperDiff
         protected
 
         def build_operation_sequencer
-          # TODO: Test this
           if actual.respond_to?(:attributes_for_super_diff)
             OperationSequences::CustomObject.new([], value_class: actual.class)
           else
@@ -18,7 +17,6 @@ module SuperDiff
         end
 
         def attribute_names
-          # TODO: Test this
           if actual.respond_to?(:attributes_for_super_diff)
             actual.attributes_for_super_diff.keys | expected.expected.keys
           else

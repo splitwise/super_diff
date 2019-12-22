@@ -36,6 +36,8 @@ if defined?(SuperDiff::RSpec)
   end
 end
 
+require "super_diff/active_record/monkey_patches"
+
 SuperDiff::ObjectInspection.map.prepend(
   SuperDiff::ActiveRecord::ObjectInspection::MapExtension,
 )
