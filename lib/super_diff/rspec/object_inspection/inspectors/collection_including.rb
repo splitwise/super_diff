@@ -2,9 +2,9 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        PartialArray = SuperDiff::ObjectInspection::InspectionTree.new do
+        CollectionIncluding = SuperDiff::ObjectInspection::InspectionTree.new do
           def self.applies_to?(object)
-            SuperDiff::RSpec.partial_array?(object)
+            SuperDiff::RSpec.a_collection_including?(object)
           end
 
           add_text "#<a collection including ("

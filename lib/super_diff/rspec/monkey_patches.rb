@@ -695,6 +695,11 @@ module RSpec
         prepend SuperDiff::RSpec::AugmentedMatcher
 
         prepend(Module.new do
+          def initialize(*)
+            super
+            @failing_method_names = nil
+          end
+
           def matcher_text_builder_class
             SuperDiff::RSpec::MatcherTextBuilders::RespondTo
           end

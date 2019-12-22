@@ -3,7 +3,7 @@ module SuperDiff
     module Differs
       class CollectionContainingExactly < SuperDiff::Differs::Array
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.collection_containing_exactly?(expected) &&
+          SuperDiff::RSpec.a_collection_containing_exactly_something?(expected) &&
             actual.is_a?(::Array)
         end
 

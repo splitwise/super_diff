@@ -5,9 +5,15 @@ module SuperDiff
         :CollectionContainingExactly,
         "super_diff/rspec/differs/collection_containing_exactly",
       )
-      autoload :PartialArray, "super_diff/rspec/differs/partial_array"
-      autoload :PartialHash, "super_diff/rspec/differs/partial_hash"
-      autoload :PartialObject, "super_diff/rspec/differs/partial_object"
+      autoload(
+        :CollectionIncluding,
+        "super_diff/rspec/differs/collection_including",
+      )
+      autoload :HashIncluding, "super_diff/rspec/differs/hash_including"
+      autoload(
+        :ObjectHavingAttributes,
+        "super_diff/rspec/differs/object_having_attributes",
+      )
     end
   end
 end

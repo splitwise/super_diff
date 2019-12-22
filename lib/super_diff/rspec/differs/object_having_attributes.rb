@@ -1,15 +1,15 @@
 module SuperDiff
   module RSpec
     module Differs
-      class PartialObject < SuperDiff::Differs::DefaultObject
+      class ObjectHavingAttributes < SuperDiff::Differs::DefaultObject
         def self.applies_to?(expected, _actual)
-          SuperDiff::RSpec.partial_object?(expected)
+          SuperDiff::RSpec.an_object_having_some_attributes?(expected)
         end
 
         private
 
         def operations
-          OperationalSequencers::PartialObject.call(
+          OperationalSequencers::ObjectHavingAttributes.call(
             expected: expected,
             actual: actual,
             extra_operational_sequencer_classes: extra_operational_sequencer_classes,

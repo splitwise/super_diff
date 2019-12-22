@@ -14,16 +14,16 @@ module SuperDiff
             extra_classes: [
               *RSpec.configuration.extra_differ_classes,
               Differs::CollectionContainingExactly,
-              Differs::PartialArray,
-              Differs::PartialHash,
-              Differs::PartialObject,
+              Differs::CollectionIncluding,
+              Differs::HashIncluding,
+              Differs::ObjectHavingAttributes,
             ],
             extra_operational_sequencer_classes: [
               *RSpec.configuration.extra_operational_sequencer_classes,
               OperationalSequencers::CollectionContainingExactly,
-              OperationalSequencers::PartialArray,
-              OperationalSequencers::PartialHash,
-              OperationalSequencers::PartialObject,
+              OperationalSequencers::CollectionIncluding,
+              OperationalSequencers::HashIncluding,
+              OperationalSequencers::ObjectHavingAttributes,
             ],
             extra_diff_formatter_classes: RSpec.configuration.extra_diff_formatter_classes,
           )

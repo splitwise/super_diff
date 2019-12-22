@@ -608,9 +608,9 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given a partial hash" do
+    context "given a hash-including-<something>" do
       context "given as_single_line: true" do
-        it "returns a representation of the partial hash on a single line" do
+        it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
             a_hash_including(foo: "bar", baz: "qux"),
             as_single_line: true,
@@ -623,7 +623,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
 
       context "given as_single_line: false" do
-        it "returns a representation of the partial hash across multiple lines" do
+        it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect(
             a_hash_including(foo: "bar", baz: "qux"),
             as_single_line: false,
@@ -639,9 +639,9 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given a partial array" do
+    context "given a collection-including-<something>" do
       context "given as_single_line: true" do
-        it "returns a representation of the partial hash on a single line" do
+        it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
             a_collection_including(1, 2, 3),
             as_single_line: true,
@@ -654,7 +654,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
 
       context "given as_single_line: false" do
-        it "returns a representation of the partial hash across multiple lines" do
+        it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect(
             a_collection_including(1, 2, 3),
             as_single_line: false,
@@ -671,9 +671,9 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given a partial object" do
+    context "given a fuzzy object" do
       context "given as_single_line: true" do
-        it "returns a representation of the partial object on a single line" do
+        it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
             an_object_having_attributes(foo: "bar", baz: "qux"),
             as_single_line: true,
@@ -686,7 +686,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
 
       context "given as_single_line: false" do
-        it "returns a representation of the partial object across multiple lines" do
+        it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect(
             an_object_having_attributes(foo: "bar", baz: "qux"),
             as_single_line: false,
@@ -702,9 +702,9 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given a fuzzy object matching a collection containing exactly <something>" do
+    context "given a collection-containing-exactly-<something>" do
       context "given as_single_line: true" do
-        it "returns a representation of the partial object on a single line" do
+        it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
             a_collection_containing_exactly("foo", "bar", "baz"),
             as_single_line: true,
@@ -717,7 +717,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
 
       context "given as_single_line: false" do
-        it "returns a representation of the partial object across multiple lines" do
+        it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect(
             a_collection_containing_exactly("foo", "bar", "baz"),
             as_single_line: false,
@@ -737,7 +737,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a Double" do
       context "that is anonymous" do
         context "given as_single_line: true" do
-          it "returns a representation of the partial object on a single line" do
+          it "returns a representation of the object on a single line" do
             inspection = described_class.inspect(
               double(foo: "bar", baz: "qux"),
               as_single_line: true,
@@ -748,7 +748,7 @@ RSpec.describe SuperDiff::ObjectInspection do
         end
 
         context "given as_single_line: false" do
-          it "returns a representation of the partial object across multiple lines" do
+          it "returns a representation of the object across multiple lines" do
             inspection = described_class.inspect(
               double(foo: "bar", baz: "qux"),
               as_single_line: false,

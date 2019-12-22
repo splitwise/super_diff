@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
-  context "when the expected value is a partial hash" do
+  context "when the expected value is a hash-including-<something>" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -172,7 +172,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value includes a partial hash" do
+  context "when the expected value includes a hash-including-<something>" do
     context "and the corresponding actual value is a hash" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -341,7 +341,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value is a partial array" do
+  context "when the expected value is a collection-including-<something>" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -498,7 +498,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value includes a partial array" do
+  context "when the expected value includes a collection-including-<something>" do
     context "and the corresponding actual value is an array" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -647,7 +647,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value is a partial object" do
+  context "when the expected value is an object-having-attributes" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -830,7 +830,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value includes a partial object" do
+  context "when the expected value includes an object-having-attributes" do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
@@ -953,7 +953,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value is an order-independent array" do
+  context "when the expected value is a collection-containing-exactly-<something>" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
@@ -1108,7 +1108,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
-  context "when the expected value includes an order-independent array" do
+  context "when the expected value includes a collection-containing-exactly-<something>" do
     context "and the corresponding actual value is an array" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|

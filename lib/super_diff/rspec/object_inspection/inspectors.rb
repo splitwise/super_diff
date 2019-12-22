@@ -7,16 +7,16 @@ module SuperDiff
           "super_diff/rspec/object_inspection/inspectors/collection_containing_exactly",
         )
         autoload(
-          :PartialArray,
-          "super_diff/rspec/object_inspection/inspectors/partial_array",
+          :CollectionIncluding,
+          "super_diff/rspec/object_inspection/inspectors/collection_including",
         )
         autoload(
-          :PartialHash,
-          "super_diff/rspec/object_inspection/inspectors/partial_hash",
+          :HashIncluding,
+          "super_diff/rspec/object_inspection/inspectors/hash_including",
         )
         autoload(
-          :PartialObject,
-          "super_diff/rspec/object_inspection/inspectors/partial_object",
+          :ObjectHavingAttributes,
+          "super_diff/rspec/object_inspection/inspectors/object_having_attributes",
         )
       end
     end

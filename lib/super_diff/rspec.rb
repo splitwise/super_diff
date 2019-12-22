@@ -25,30 +25,30 @@ module SuperDiff
       @_configuration ||= Configuration.new
     end
 
-    def self.partial_hash?(value)
-      partial_placeholder?(value) &&
+    def self.a_hash_including_something?(value)
+      fuzzy_object?(value) &&
         value.respond_to?(:expecteds) &&
         value.expecteds.one? &&
         value.expecteds.first.is_a?(::Hash)
     end
 
-    def self.partial_array?(value)
-      partial_placeholder?(value) &&
+    def self.a_collection_including_something?(value)
+      fuzzy_object?(value) &&
         value.respond_to?(:expecteds) &&
         !(value.expecteds.one? && value.expecteds.first.is_a?(::Hash))
     end
 
-    def self.partial_object?(value)
-      partial_placeholder?(value) &&
+    def self.an_object_having_some_attributes?(value)
+      fuzzy_object?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::HaveAttributes)
     end
 
-    def self.collection_containing_exactly?(value)
-      partial_placeholder?(value) &&
+    def self.a_collection_containing_exactly_something?(value)
+      fuzzy_object?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::ContainExactly)
     end
 
-    def self.partial_placeholder?(value)
+    def self.fuzzy_object?(value)
       value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end
   end

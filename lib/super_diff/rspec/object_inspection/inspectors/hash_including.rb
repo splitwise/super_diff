@@ -2,12 +2,12 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        PartialObject = SuperDiff::ObjectInspection::InspectionTree.new do
-          add_text "#<an object having attributes ("
+        HashIncluding = SuperDiff::ObjectInspection::InspectionTree.new do
+          add_text "#<a hash including ("
 
           nested do |aliased_matcher|
             insert_hash_inspection_of(
-              aliased_matcher.expected,
+              aliased_matcher.expecteds.first,
               initial_break: nil,
             )
           end

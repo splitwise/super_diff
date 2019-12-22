@@ -1,9 +1,10 @@
 module SuperDiff
   module RSpec
     module OperationalSequencers
-      class PartialHash < SuperDiff::OperationalSequencers::Hash
+      class HashIncluding < SuperDiff::OperationalSequencers::Hash
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.partial_hash?(expected) && actual.is_a?(::Hash)
+          SuperDiff::RSpec.a_hash_including_something?(expected) &&
+            actual.is_a?(::Hash)
         end
 
         def initialize(expected:, **rest)

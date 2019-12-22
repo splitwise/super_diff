@@ -1,9 +1,9 @@
 module SuperDiff
   module RSpec
     module OperationalSequencers
-      class PartialObject < SuperDiff::OperationalSequencers::DefaultObject
+      class ObjectHavingAttributes < SuperDiff::OperationalSequencers::DefaultObject
         def self.applies_to?(expected, _actual)
-          SuperDiff::RSpec.partial_object?(expected)
+          SuperDiff::RSpec.an_object_having_some_attributes?(expected)
         end
 
         protected

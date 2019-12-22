@@ -6,16 +6,16 @@ module SuperDiff
         "super_diff/rspec/operational_sequencers/collection_containing_exactly",
       )
       autoload(
-        :PartialArray,
-        "super_diff/rspec/operational_sequencers/partial_array",
+        :CollectionIncluding,
+        "super_diff/rspec/operational_sequencers/collection_including",
       )
       autoload(
-        :PartialHash,
-        "super_diff/rspec/operational_sequencers/partial_hash",
+        :HashIncluding,
+        "super_diff/rspec/operational_sequencers/hash_including",
       )
       autoload(
-        :PartialObject,
-        "super_diff/rspec/operational_sequencers/partial_object",
+        :ObjectHavingAttributes,
+        "super_diff/rspec/operational_sequencers/object_having_attributes",
       )
     end
   end

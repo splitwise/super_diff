@@ -1,9 +1,10 @@
 module SuperDiff
   module RSpec
     module OperationalSequencers
-      class PartialArray < SuperDiff::OperationalSequencers::Array
+      class CollectionIncluding < SuperDiff::OperationalSequencers::Array
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.partial_array?(expected) && actual.is_a?(::Array)
+          SuperDiff::RSpec.a_collection_including_something?(expected) &&
+            actual.is_a?(::Array)
         end
 
         def initialize(expected:, actual:, **rest)
