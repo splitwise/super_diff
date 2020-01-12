@@ -16,17 +16,26 @@ SuperDiff::CurrentBundle.instance.assert_appraisal!
 
 #---
 
-require "active_record"
+begin
+  require "active_record"
+  active_record_available = true
+rescue LoadError
+  active_record_available = false
+end
 
-ActiveRecord::Base.establish_connection(
-  adapter: "sqlite3",
-  database: ":memory:",
-)
+if active_record_available
+  ActiveRecord::Base.establish_connection(
+    adapter: "sqlite3",
+    database: ":memory:",
+  )
 
-$:.unshift(File.expand_path("../lib", __dir__))
-require "super_diff/rspec-rails"
+  require "super_diff/rspec-rails"
+else
+  require "super_diff/rspec"
+end
 
 Dir.glob(File.expand_path("support/**/*.rb", __dir__)).each do |file|
+  next if !active_record_available && file.include?('models/active_record')
   require file
 end
 
@@ -51,6 +60,8 @@ RSpec.configure do |config|
   if !["true", "1"].include?(ENV["CI"])
     config.default_formatter = "documentation"
   end
+
+  config.filter_run_excluding active_record: true unless active_record_available
 
   config.order = :random
   Kernel.srand config.seed

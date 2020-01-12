@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe "Integration with Rails's HashWithIndifferentAccess", type: :integration do
+RSpec.describe "Integration with Rails's HashWithIndifferentAccess", type: :integration, active_record: true do
   context "when using 'super_diff/rspec-rails'" do
     include_context "integration with HashWithIndifferentAccess"
 

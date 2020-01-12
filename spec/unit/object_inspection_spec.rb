@@ -760,7 +760,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given an ActiveRecord object" do
+    context "given an ActiveRecord object", active_record: true do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(
@@ -798,7 +798,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given an ActiveRecord::Relation object" do
+    context "given an ActiveRecord::Relation object", active_record: true do
       context "given as_single_line: true" do
         it "returns a representation of the Relation on a single line" do
           SuperDiff::Test::Models::ActiveRecord::Person.create!(
@@ -855,7 +855,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       end
     end
 
-    context "given a HashWithIndifferentAccess" do
+    context "given a HashWithIndifferentAccess", active_record: true do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
           inspection = described_class.inspect(

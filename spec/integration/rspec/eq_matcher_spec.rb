@@ -251,7 +251,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     end
   end
 
-  context "when comparing two different Time and ActiveSupport::TimeWithZone instances" do
+  context "when comparing two different Time and ActiveSupport::TimeWithZone instances", active_record: true do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY

@@ -34,7 +34,7 @@ module SuperDiff
       end
 
       def diff_section
-        if diff.blank?
+        if diff.empty?
           ""
         else
           <<~SECTION
