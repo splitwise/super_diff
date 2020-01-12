@@ -31,7 +31,6 @@ PATH
   remote: ..
   specs:
     super_diff (0.3.0)
-      activerecord (> 4.2, < 7.0)
       attr_extras
       diff-lcs
       patience_diff

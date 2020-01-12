@@ -24,6 +24,9 @@ appraise "rails_5_2" do
   gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
 end
 
+appraise "no_rails" do
+end
+
 if Gem::Requirement.new(">= 2.5.0").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   appraise "rails_6_0" do
     instance_eval(&common_dependencies)
