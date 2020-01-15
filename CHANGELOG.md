@@ -1,20 +1,26 @@
 # Changelog
 
-## [0.3.0 (2019-12-17)][v0.3.0]
+## Master
+
+* [Remove explicit dependency on ActiveRecord][#64]
+  ([@flash-gordon][])
+
+[#64]: https://github.com/mcmire/super_diff/pull/64
+[@flash-gordon]: https://github.com/flash-gordon
+
+## [v0.3.0][] (2019-12-17)
 
 [v0.3.0]: https://github.com/mcmire/super_diff/tree/v0.3.0
 
-* Add useful diff representation of Time-like values
-  [[#61][issue-61]]
-  ([@Mange][mange])
-* Fix tests so they run even with a global `--color` setting
-  [[#62][issue-62]]
+* [Add useful diff representation of Time-like values][#61]
+  ([@Mange][])
+* [Fix tests so they run even with a global `--color` setting][#62]
 
-[issue-61]: https://github.com/mcmire/super_diff/pull/61
-[issue-62]: https://github.com/mcmire/super_diff/pull/62
-[mange]: https://github.com/Mange
+[#61]: https://github.com/mcmire/super_diff/pull/61
+[#62]: https://github.com/mcmire/super_diff/pull/62
+[@Mange]: https://github.com/Mange
 
-## [0.2.0 (2019-10-04)][v0.2.0]
+## [v0.2.0][] (2019-10-04)
 
 [v0.2.0]: https://github.com/mcmire/super_diff/tree/v0.2.0
 
@@ -61,7 +67,7 @@ Lots of fixes and new features!
   so that the whole message isn't colored in red,
   but only the first line
 
-## [0.1.0 (2019-10-02)][v0.1.0]
+## [v0.1.0][] (2019-10-02)
 
 [v0.1.0]: https://github.com/mcmire/super_diff/tree/v0.1.0
 
