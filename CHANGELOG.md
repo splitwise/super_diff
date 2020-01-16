@@ -1,6 +1,6 @@
 # Changelog
 
-## Master
+## [v0.4.0][] (2020-01-16)
 
 * Support `match_array` matcher
 * Support `has_*` matcher
@@ -9,6 +9,7 @@
 * [Remove explicit dependency on ActiveRecord][#64]
   ([@flash-gordon][])
 
+[v0.4.0]: https://github.com/mcmire/super_diff/tree/v0.4.0
 [#64]: https://github.com/mcmire/super_diff/pull/64
 [@flash-gordon]: https://github.com/flash-gordon
 
