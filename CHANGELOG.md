@@ -2,6 +2,10 @@
 
 ## Master
 
+* Support `match_array` matcher
+* Support `has_*` matcher
+* Be smarter about highlighting first line of failure message
+* Fix diffing of ActiveRecord objects in nested objects
 * [Remove explicit dependency on ActiveRecord][#64]
   ([@flash-gordon][])
 
