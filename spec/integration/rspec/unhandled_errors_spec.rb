@@ -66,4 +66,25 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
       end
     end
   end
+
+  context "when multiple exception occur" do
+    it "highlights the first line in red, and then leaves the rest of the message alone" do
+      as_both_colored_and_uncolored do |color_enabled|
+        program = <<~PROGRAM.strip
+          #{set_up_with("super_diff/rspec", color_enabled: color_enabled)}
+          RSpec.describe "test" do
+            after(:each) do
+              raise "Some kind of after error or whatever\\n\\nThis is another line"
+            end
+            it "passes" do
+              raise "Some kind of error or whatever\\n\\nThis is another line"
+            end
+          end
+        PROGRAM
+
+        expect(program).
+          to produce_output_when_run('Some kind of after error or whatever')
+      end
+    end
+  end
 end
