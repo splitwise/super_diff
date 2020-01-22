@@ -91,10 +91,12 @@ module RSpec
           @skip_shared_group_trace = options.fetch(:skip_shared_group_trace, false)
           # Patch to convert options[:failure_lines] to groups
           if options.include?(:failure_lines)
-            @failure_line_groups = {
-              lines: options[:failure_lines],
-              already_colorized: false
-            }
+            @failure_line_groups = [
+              {
+                lines: options[:failure_lines],
+                already_colorized: false
+              }
+            ]
           end
         end
 
