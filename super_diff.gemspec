@@ -6,11 +6,10 @@ Gem::Specification.new do |s|
   s.authors     = ["Elliot Winkler"]
   s.email       = ["elliot.winkler@gmail.com"]
   s.homepage    = "https://github.com/mcmire/super_diff"
-  s.summary     = "Diff complex data structures in Ruby, with helpful output."
+  s.summary     = "A better way to view differences between complex data structures in RSpec."
   s.description = <<~DESC
-    SuperDiff is a utility that helps you diff two complex data structures in
-    Ruby, and gives you helpful output to show you exactly how the two data
-    structures differ.
+    SuperDiff is a gem that hooks into RSpec to intelligently display the
+    differences between two data structures of any type.
   DESC
   s.required_ruby_version = "~> 2.4"
 
