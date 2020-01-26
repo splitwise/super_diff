@@ -8,7 +8,7 @@ module SuperDiff
         @indentation_stack = []
 
         if block
-          evaluate_block(&block)
+          apply(&block)
         end
       end
 
@@ -53,7 +53,7 @@ module SuperDiff
 
       def text(*contents, **, &block)
         if block
-          evaluate_block(&block)
+          apply(&block)
         elsif contents.any?
           contents.each do |part|
             add_part(part)
@@ -68,10 +68,14 @@ module SuperDiff
 
       def line(*contents, indent_by: 0, &block)
         indent(by: indent_by) do
+          # if block
+            # binding.pry
+          # end
+
           add_part(indentation_stack.join)
 
           if block
-            evaluate_block(&block)
+            apply(&block)
           elsif contents.any?
             text(*contents)
           else
@@ -83,6 +87,7 @@ module SuperDiff
 
         add_part("\n")
       end
+      alias_method :add_line, :line
 
       def newline
         add_part("\n")
@@ -91,8 +96,16 @@ module SuperDiff
       def indent(by:, &block)
         # TODO: This won't work if using `text` manually to add lines
         indentation_stack << (by.is_a?(String) ? by : " " * by)
-        evaluate_block(&block)
+        apply(&block)
         indentation_stack.pop
+      end
+
+      def apply(&block)
+        if block.arity > 0
+          block.call(self)
+        else
+          instance_eval(&block)
+        end
       end
 
       def method_missing(name, *args, **opts, &block)
@@ -136,14 +149,6 @@ module SuperDiff
         end
       end
 
-      def evaluate_block(&block)
-        if block.arity > 0
-          block.call(self)
-        else
-          instance_eval(&block)
-        end
-      end
-
       def add_part(part)
         parts.push(part)
       end
@@ -173,16 +178,16 @@ module SuperDiff
 
       class MethodRequest < Request
         def resolve(doc, args, opts, &block)
-          doc.public_send(wrapper) do |d|
-            d.public_send(name, *args, **opts, &block)
+          doc.public_send(wrapper, **opts) do |d|
+            d.public_send(name, *args, &block)
           end
         end
       end
 
       class ColorRequest < Request
         def resolve(doc, args, opts, &block)
-          doc.public_send(wrapper) do |d|
-            d.colorize(*args, **opts, fg: name, &block)
+          doc.public_send(wrapper, **opts) do |d|
+            d.colorize(*args, fg: name, &block)
           end
         end
       end

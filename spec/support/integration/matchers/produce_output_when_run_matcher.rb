@@ -48,13 +48,17 @@ module SuperDiff
             "Actual output:\n\n" +
             CommandRunner::OutputHelpers.bookended(actual_output)
 
-          ::RSpec::Matchers::ExpectedsForMultipleDiffs.
-            from(expected_output).
-            message_with_diff(
-              message,
-              ::RSpec::Expectations.differ,
-              actual_output,
-            )
+          if ENV["SHOW_DIFF"]
+            ::RSpec::Matchers::ExpectedsForMultipleDiffs.
+              from(expected_output).
+              message_with_diff(
+                message,
+                ::RSpec::Expectations.differ,
+                actual_output,
+              )
+          else
+            message
+          end
         end
       end
 

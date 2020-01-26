@@ -719,6 +719,20 @@ module RSpec
 
   module Mocks
     class ErrorGenerator
+      def default_error_message(expectation, expected_args, actual_args)
+        SuperDiff::Helpers.style do |doc|
+          doc.red_line(
+            "#{intro} received ##{expectation.message} " +
+            "with unexpected arguments."
+          )
+
+          doc.newline
+
+          doc.line "Expected: #{expected_args}"
+          doc.line "     Got: #{actual_args}"
+        end.to_s
+      end
+
       def raise_expectation_error(
         message,
         expected_received_count,
@@ -739,17 +753,72 @@ module RSpec
           args
         )
 
-        message = [
+        error_message = [
           SuperDiff::Helpers.style(
-            :highlight,
-            "(#{intro(:unwrapped)}).#{message}#{format_args(args)}"
+            :red,
+            "Expectation failed for double: " +
+            "#{@target.class}##{message}"
           ),
-          "\n",
-          "  #{expected_part}\n",
-          "  #{received_part}"
+          "\n\n",
+          "#{expected_part}\n",
+          "#{received_part}"
         ].join
 
-        __raise(message, backtrace_line, source_id)
+        __raise(error_message, backtrace_line, source_id)
+      end
+
+      def raise_unimplemented_error(doubled_module, method_name, object)
+        message = SuperDiff::Helpers.style do
+          line do
+            red "Could not place double."
+          end
+
+          newline
+        end
+
+        case object
+        when InstanceVerifyingDouble
+          message.add_line do
+            plain "The "
+            highlight doubled_module.description
+            plain " class does not implement the instance method "
+            highlight method_name.to_s
+            plain "."
+          end
+
+          if ObjectMethodReference.for(doubled_module, method_name).implemented?
+            message.add_line do
+              plain "Perhaps you meant to use "
+              highlight "class_double"
+              plain " instead?"
+            end
+          end
+        when ClassVerifyingDouble
+          message.add_line do
+            plain "The "
+            highlight doubled_module.description
+            plain " class does not implement the class method "
+            highlight method_name.to_s
+            plain "."
+          end
+
+          if ObjectMethodReference.for(doubled_module, method_name).implemented?
+            message.add_line do
+              plain "Perhaps you meant to use "
+              highlight "instance_double"
+              plain " instead?"
+            end
+          end
+        else
+          message.line do
+            blue method_name.to_s
+            plain " is not a method on "
+            yellow doubled_module.description
+            plain "."
+          end
+        end
+
+        __raise message.to_s
       end
 
       def method_call_args_description(
@@ -783,7 +852,28 @@ module RSpec
         end
       end
 
+      def intro(unwrapped=false)
+        case @target
+        when TestDouble then TestDoubleFormatter.format(@target, unwrapped)
+        when Class then @target.name
+        when NilClass then "nil"
+        else "#<#{@target.class.name}>"
+        end
+      end
+
       private
+
+      def received_part_of_expectation_error(actual_received_count, args)
+        rest = count_message(actual_received_count, color: :beta)
+
+        if actual_received_count > 0
+          rest << method_call_args_description(args, color: :beta) do
+            args.length > 0
+          end
+        end
+
+        "Received: #{rest}"
+      end
 
       def expected_part_of_expectation_error(expected_received_count, expectation_count_type, argument_list_matcher)
         rest = [
@@ -799,20 +889,7 @@ module RSpec
           end
         ].join
 
-        # ["expected: ", SuperDiff::Helpers.style(:alpha, rest)].join
-        "expected: #{rest}"
-      end
-
-      def received_part_of_expectation_error(actual_received_count, args)
-        rest = [
-          count_message(actual_received_count, color: :beta),
-          method_call_args_description(args, color: :beta) do
-            actual_received_count > 0 && args.length > 0
-          end
-        ].join
-
-        # ["received: ", SuperDiff::Helpers.style(:beta, rest)].join
-        "received: #{rest}"
+        "Expected: #{rest}"
       end
 
       def error_message(expectation, args_for_multiple_calls)
@@ -837,18 +914,6 @@ module RSpec
         end
 
         message
-      end
-
-      def default_error_message(expectation, expected_args, actual_args)
-        parts = [
-          SuperDiff::Helpers.style(:highlight, intro),
-          " received ",
-          SuperDiff::Helpers.style(:highlight, expectation.message.inspect),
-          " ",
-          unexpected_arguments_message(expected_args, actual_args)
-        ]
-
-        parts.join
       end
 
       def format_received_args(args_for_multiple_calls)
@@ -878,10 +943,6 @@ module RSpec
         SuperDiff::Helpers.style(color, "#{prefix}#{count}") +
           " time#{count == 1 ? '' : 's'}"
       end
-
-      # def diff_message(expected_args, actual_args)
-        # raise "Hey we tried to generate a diff"
-      # end
 
       def differ
         SuperDiff::RSpec::Differ

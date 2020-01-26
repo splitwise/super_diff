@@ -12,8 +12,8 @@ module SuperDiff
       document = klass.new.extend(ColorizedDocumentExtensions)
 
       if block
-        document.__send__(:evaluate_block, &block)
-      else
+        document.apply(&block)
+      elsif args.any? || opts.any?
         document.colorize(*args, **opts)
       end
 

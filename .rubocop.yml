@@ -89,6 +89,8 @@ Style/Alias:
   Enabled: false
 Style/AndOr:
   Enabled: false
+Style/BlockComments:
+  Enabled: false
 Style/CollectionMethods:
   Enabled: true
 Style/Documentation:

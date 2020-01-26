@@ -17,7 +17,7 @@ module SuperDiff
 
         add_part(color_sequence)
         color_sequences_open_in_parent << color_sequence
-        evaluate_block(&block)
+        apply(&block)
         add_part(Csi.reset_sequence)
 
         color_sequence_to_reopen = color_sequences_open_in_parent.pop

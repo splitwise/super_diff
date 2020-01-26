@@ -4,7 +4,7 @@ module SuperDiff
       protected
 
       def colorize_block(*, &block)
-        evaluate_block(&block)
+        apply(&block)
       end
 
       def colorize_inline(contents, *)
