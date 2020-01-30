@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.4.1][] (2020-01-30)
+
+* [Fix multiple exception failures so that they work again][#66]
+  ([@numbata][])
+
+[v0.4.1]: https://github.com/mcmire/super_diff/tree/v0.4.1
+[#66]: https://github.com/mcmire/super_diff/pull/66
+[@numbata]: https://github.com/numbata
+
 ## [v0.4.0][] (2020-01-16)
 
 * Support `match_array` matcher
