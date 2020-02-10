@@ -3,7 +3,7 @@ module SuperDiff
     module MatcherTextBuilders
       class Match < Base
         def initialize(expected_captures:, **rest)
-          super(rest)
+          super(**rest)
           @expected_captures = expected_captures
         end
 
