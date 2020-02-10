@@ -9,7 +9,7 @@ module SuperDiff
           unlimited_arguments:,
           **rest
         )
-          super(rest)
+          super(**rest)
           @expected_arity = expected_arity
           @arbitrary_keywords = arbitrary_keywords
           @expected_keywords = expected_keywords

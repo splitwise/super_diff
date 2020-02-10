@@ -31,7 +31,7 @@ module SuperDiff
 
       def matcher_text_builder
         @_matcher_text_builder ||=
-          matcher_text_builder_class.new(matcher_text_builder_args)
+          matcher_text_builder_class.new(**matcher_text_builder_args)
       end
 
       def matcher_text_builder_class
