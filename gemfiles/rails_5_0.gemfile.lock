@@ -30,7 +30,7 @@ GIT
 PATH
   remote: ..
   specs:
-    super_diff (0.4.1)
+    super_diff (0.4.2)
       attr_extras
       diff-lcs
       patience_diff

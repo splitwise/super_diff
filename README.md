@@ -10,7 +10,7 @@
 SuperDiff is a gem that hooks into RSpec
 to intelligently display the differences between two data structures of any type.
 
-📢 **[See what's changed in the latest version (0.4.1)][changelog].**
+📢 **[See what's changed in the latest version (0.4.2)][changelog].**
 
 [changelog]: CHANGELOG.md
 
