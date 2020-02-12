@@ -661,7 +661,9 @@ module RSpec
 
           def expected_for_matcher_text
             if @expected_message
-              "#<#{@expected_error.name} #{@expected_message.inspect}>"
+              "#<#{@expected_error.name} #{description_of(@expected_message)}>"
+            elsif @expected_error.is_a? Regexp
+              "#<Exception #{description_of(@expected_error)}>"
             else
               "#<#{@expected_error.name}>"
             end
