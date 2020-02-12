@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.4.2][] (2020-02-11)
+
+* [Fix `raise_error` when used with a regex][#72]
+  ([@numbata][])
+
+[v0.4.2]: https://github.com/mcmire/super_diff/tree/v0.4.2
+[#72]: https://github.com/mcmire/super_diff/pull/72
+
 ## [v0.4.1][] (2020-01-30)
 
 * [Fix multiple exception failures so that they work again][#66]
