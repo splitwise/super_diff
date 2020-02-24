@@ -7,7 +7,7 @@ module SuperDiff
             actual.is_a?(::Array)
         end
 
-        def initialize(actual:, **rest)
+        def initialize(actual:, **)
           super
           populate_pairings_maximizer_in_expected_with(actual)
         end

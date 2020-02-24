@@ -108,7 +108,6 @@ module SuperDiff
               start_index.upto(eks.size - 1) do |ei2|
                 ek = eks[ei2]
                 ev, av2 = expected[ek], actual[ek]
-                ai2 = aks.index(ek)
 
                 if actual.include?(ek) && ev == av2
                   # If the key in 'expected' we've landed on happens to be a
