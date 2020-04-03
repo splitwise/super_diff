@@ -405,5 +405,48 @@ shared_examples_for "integration with ActiveRecord" do
         end
       end
     end
+
+    context "when comparing a collection_containing_exactly with an ActiveRecord::Relation inside of another data structure" do
+      it "produces the correct output" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            SuperDiff::Test::Models::ActiveRecord::Person.create!(
+              name: "Murphy",
+              age: 20
+            )
+            SuperDiff::Test::Models::ActiveRecord::Person.create!(
+              name: "Cooper",
+              age: 23
+            )
+
+            expected = {
+              people: a_collection_containing_exactly(
+                an_object_having_attributes(
+                  name: "Murphy",
+                  age: 20
+                ),
+                an_object_having_attributes(
+                  name: "Cooper",
+                  age: 23
+                )
+              )
+            }
+
+            actual = {
+              people: SuperDiff::Test::Models::ActiveRecord::Person.all
+            }
+
+            expect(actual).to match(expected)
+          TEST
+
+          program = make_program(snippet, color_enabled: color_enabled)
+
+          expect(program).
+            to produce_output_when_run('0 failures').
+            in_color(color_enabled).
+            removing_object_ids
+        end
+      end
+    end
   end
 end
