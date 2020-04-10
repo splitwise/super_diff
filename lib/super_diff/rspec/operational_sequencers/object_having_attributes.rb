@@ -8,12 +8,8 @@ module SuperDiff
 
         protected
 
-        def build_operation_sequencer
-          if actual.respond_to?(:attributes_for_super_diff)
-            OperationSequences::CustomObject.new([], value_class: actual.class)
-          else
-            OperationSequences::DefaultObject.new([], value_class: actual.class)
-          end
+        def build_operation_sequence
+          find_operation_sequence_for(actual)
         end
 
         def attribute_names

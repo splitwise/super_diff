@@ -1,12 +1,12 @@
 module SuperDiff
   module OperationSequences
-    class Hash < Base
+    class MultilineString < Base
       def self.applies_to?(value)
-        value.is_a?(::Hash)
+        value.is_a?(::String) && value.is_a?(::String)
       end
 
       def to_diff(indent_level:, collection_prefix:, add_comma:)
-        DiffFormatters::Hash.call(
+        DiffFormatters::MultilineString.call(
           self,
           indent_level: indent_level,
           collection_prefix: collection_prefix,

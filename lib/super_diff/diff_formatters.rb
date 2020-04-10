@@ -8,7 +8,11 @@ module SuperDiff
     autoload :Hash, "super_diff/diff_formatters/hash"
     autoload :MultilineString, "super_diff/diff_formatters/multiline_string"
 
-    # TODO: Why doesn't this include CustomObject and DefaultObject?
-    DEFAULTS = [Array, Hash, MultilineString].freeze
+    DEFAULTS = [
+      Array,
+      Hash,
+      CustomObject,
+      DefaultObject,
+    ].freeze
   end
 end

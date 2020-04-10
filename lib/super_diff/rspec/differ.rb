@@ -18,6 +18,9 @@ module SuperDiff
               Differs::HashIncluding,
               Differs::ObjectHavingAttributes,
             ],
+            extra_operation_sequence_classes: [
+              *RSpec.configuration.extra_operation_sequence_classes,
+            ],
             extra_operational_sequencer_classes: [
               *RSpec.configuration.extra_operational_sequencer_classes,
               OperationalSequencers::CollectionContainingExactly,
@@ -25,7 +28,9 @@ module SuperDiff
               OperationalSequencers::HashIncluding,
               OperationalSequencers::ObjectHavingAttributes,
             ],
-            extra_diff_formatter_classes: RSpec.configuration.extra_diff_formatter_classes,
+            extra_diff_formatter_classes: [
+              *RSpec.configuration.extra_diff_formatter_classes,
+            ],
           )
           "\n\n" + diff
         else

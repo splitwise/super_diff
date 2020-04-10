@@ -38,9 +38,7 @@ module SuperDiff
         if @value_class
           @value_class
         else
-          raise NotImplementedError.new(
-            "You must override #value_class in your subclass.",
-          )
+          unimplemented_instance_method!
         end
       end
     end

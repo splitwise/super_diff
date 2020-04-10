@@ -28,7 +28,7 @@ module SuperDiff
           operations
         end
 
-        def build_operation_sequencer
+        def build_operation_sequence
           OperationSequences::Array.new([])
         end
 

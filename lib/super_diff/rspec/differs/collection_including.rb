@@ -9,13 +9,8 @@ module SuperDiff
 
         private
 
-        def operations
-          OperationalSequencers::CollectionIncluding.call(
-            expected: expected,
-            actual: actual,
-            extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-            extra_diff_formatter_classes: extra_diff_formatter_classes,
-          )
+        def operational_sequencer_class
+          OperationalSequencers::CollectionIncluding
         end
       end
     end

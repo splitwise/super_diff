@@ -7,16 +7,22 @@ module SuperDiff
       [
         :indent_level!,
         add_comma: false,
+        value_class: nil,
         extra_classes: [],
       ],
     )
 
     def call
-      resolved_class.call(
-        operations,
-        indent_level: indent_level,
-        add_comma: add_comma?,
-      )
+      if resolved_class
+        resolved_class.call(
+          operations,
+          indent_level: indent_level,
+          add_comma: add_comma?,
+          value_class: value_class
+        )
+      else
+        raise NoDiffFormatterAvailableError.create(operations)
+      end
     end
 
     private
@@ -24,9 +30,11 @@ module SuperDiff
     attr_query :add_comma?
 
     def resolved_class
-      (DiffFormatters::DEFAULTS + extra_classes).find do |klass|
-        klass.applies_to?(operations)
-      end
+      available_classes.find { |klass| klass.applies_to?(operations) }
+    end
+
+    def available_classes
+      DiffFormatters::DEFAULTS + extra_classes
     end
   end
 end

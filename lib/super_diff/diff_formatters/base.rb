@@ -5,6 +5,7 @@ module SuperDiff
         raise NotImplementedError
       end
 
+      include ImplementationChecks
       extend AttrExtras.mixin
 
       method_object(

@@ -7,7 +7,7 @@ module SuperDiff
           actual.respond_to?(:attributes_for_super_diff)
       end
 
-      def build_operation_sequencer
+      def build_operation_sequence
         # XXX This assumes that `expected` and `actual` are the same
         OperationSequences::CustomObject.new([], value_class: expected.class)
       end

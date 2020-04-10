@@ -1,6 +1,10 @@
 module SuperDiff
   module OperationSequences
     class CustomObject < DefaultObject
+      def self.applies_to?(value)
+        value.respond_to?(:attributes_for_super_diff)
+      end
+
       def to_diff(indent_level:, add_comma: false, collection_prefix: nil)
         DiffFormatters::CustomObject.call(
           self,

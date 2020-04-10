@@ -22,9 +22,17 @@ module SuperDiff
         end
       end
 
-      def build_operation_sequencer
+      def build_operation_sequence
         # XXX This assumes that `expected` and `actual` are the same
+        # TODO: Does this need to be find_operation_sequence_for?
         OperationSequences::DefaultObject.new([], value_class: expected.class)
+      end
+
+      def find_operation_sequence_for(value)
+        OperationSequence.call(
+          value,
+          extra_classes: extra_operation_sequence_classes,
+        )
       end
 
       def attribute_names

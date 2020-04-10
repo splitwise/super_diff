@@ -11,6 +11,7 @@ module SuperDiff
         [
           :expected!,
           :actual!,
+          extra_operation_sequence_classes: [],
           extra_operational_sequencer_classes: [],
           extra_diff_formatter_classes: [],
         ],
@@ -18,7 +19,7 @@ module SuperDiff
 
       def call
         i = 0
-        operations = build_operation_sequencer
+        operations = build_operation_sequence
 
         while i < unary_operations.length
           operation = unary_operations[i]
@@ -51,11 +52,11 @@ module SuperDiff
       protected
 
       def unary_operations
-        raise NotImplementedError
+        SuperDiff.unimplemented_instance_method!
       end
 
-      def build_operation_sequencer
-        raise NotImplementedError
+      def build_operation_sequence
+        SuperDiff.unimplemented_instance_method!
       end
 
       private

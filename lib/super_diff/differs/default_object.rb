@@ -5,10 +5,6 @@ module SuperDiff
         expected.class == actual.class
       end
 
-      def call
-        operations.to_diff(indent_level: indent_level)
-      end
-
       private
 
       def operations
@@ -16,6 +12,7 @@ module SuperDiff
           expected: expected,
           actual: actual,
           all_or_nothing: true,
+          extra_operation_sequence_classes: extra_operation_sequence_classes,
           extra_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
         )

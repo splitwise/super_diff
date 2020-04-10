@@ -1,6 +1,10 @@
 module SuperDiff
   module OperationSequences
     class Array < Base
+      def self.applies_to?(value)
+        value.is_a?(::Array)
+      end
+
       def to_diff(indent_level:, collection_prefix:, add_comma:)
         DiffFormatters::Array.call(
           self,

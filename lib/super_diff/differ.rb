@@ -10,6 +10,7 @@ module SuperDiff
         index_in_collection: nil,
         omit_empty: false,
         extra_classes: [],
+        extra_operation_sequence_classes: [],
         extra_operational_sequencer_classes: [],
         extra_diff_formatter_classes: [],
       ],
@@ -22,6 +23,7 @@ module SuperDiff
           actual,
           indent_level: indent_level,
           index_in_collection: index_in_collection,
+          extra_operation_sequence_classes: extra_operation_sequence_classes,
           extra_operational_sequencer_classes: extra_operational_sequencer_classes,
           extra_diff_formatter_classes: extra_diff_formatter_classes,
         )

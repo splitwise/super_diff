@@ -6,22 +6,10 @@ module SuperDiff
           (expected.include?("\n") || actual.include?("\n"))
       end
 
-      def call
-        DiffFormatters::MultilineString.call(
-          operations,
-          indent_level: indent_level,
-        )
-      end
-
       private
 
-      def operations
-        OperationalSequencers::MultilineString.call(
-          expected: expected,
-          actual: actual,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
+      def operational_sequencer_class
+        OperationalSequencers::MultilineString
       end
     end
   end

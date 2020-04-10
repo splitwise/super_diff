@@ -30,8 +30,8 @@ module SuperDiff
         end
       end
 
-      def build_operation_sequencer
-        OperationSequences::Array.new([])
+      def build_operation_sequence
+        OperationSequences::MultilineString.new([])
       end
 
       private

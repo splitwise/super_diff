@@ -1,6 +1,12 @@
 module SuperDiff
   module OperationSequences
     class Base < SimpleDelegator
+      def self.applies_to?(_value)
+        unimplemented_class_method!
+      end
+
+      extend ImplementationChecks
+
       # rubocop:disable Lint/UnusedMethodArgument
       def to_diff(indent_level:, add_comma: false, collection_prefix: nil)
         raise NotImplementedError

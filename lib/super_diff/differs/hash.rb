@@ -5,19 +5,10 @@ module SuperDiff
         expected.is_a?(::Hash) && actual.is_a?(::Hash)
       end
 
-      def call
-        DiffFormatters::Hash.call(operations, indent_level: indent_level)
-      end
-
       private
 
-      def operations
-        OperationalSequencers::Hash.call(
-          expected: expected,
-          actual: actual,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
+      def operational_sequencer_class
+        OperationalSequencers::Hash
       end
     end
   end
