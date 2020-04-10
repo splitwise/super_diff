@@ -601,7 +601,7 @@ RSpec.describe SuperDiff::ObjectInspection do
               as_single_line: false,
             )
             expect(inspection).to match(
-              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/,
             )
           end
         end
@@ -730,6 +730,82 @@ RSpec.describe SuperDiff::ObjectInspection do
               "baz"
             )>
           INSPECTION
+        end
+      end
+    end
+
+    context "given a kind-of-<something>" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            a_kind_of(Symbol),
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(%(#<a kind of Symbol>))
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            a_kind_of(Symbol),
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(%(#<a kind of Symbol>))
+        end
+      end
+    end
+
+    context "given an-instance-of-<something>" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            an_instance_of(Symbol),
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(%(#<an instance of Symbol>))
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            an_instance_of(Symbol),
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(%(#<an instance of Symbol>))
+        end
+      end
+    end
+
+    context "given a-value-within-<something>" do
+      context "given as_single_line: true" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            a_value_within(1).of(Time.utc(2020, 4, 9)),
+            as_single_line: true,
+          )
+
+          expect(inspection).to eq(
+            %(#<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>),
+          )
+        end
+      end
+
+      context "given as_single_line: false" do
+        it "returns a representation of the object on a single line" do
+          inspection = described_class.inspect(
+            a_value_within(1).of(Time.utc(2020, 4, 9)),
+            as_single_line: false,
+          )
+
+          expect(inspection).to eq(
+            %(#<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>),
+          )
         end
       end
     end

@@ -107,8 +107,12 @@ module SuperDiff
         end
       end
 
-      def add_inspection_of(value)
-        add_node :inspection, value
+      def add_inspection_of(value = nil, &block)
+        if block
+          add_node :inspection, &block
+        else
+          add_node :inspection, value
+        end
       end
 
       def apply_tree(tree)

@@ -11,6 +11,12 @@ module SuperDiff
             Inspectors::ObjectHavingAttributes
           elsif SuperDiff::RSpec.a_collection_containing_exactly_something?(object)
             Inspectors::CollectionContainingExactly
+          elsif SuperDiff::RSpec.a_kind_of_something?(object)
+            Inspectors::KindOf
+          elsif SuperDiff::RSpec.an_instance_of_something?(object)
+            Inspectors::InstanceOf
+          elsif SuperDiff::RSpec.a_value_within_something?(object)
+            Inspectors::ValueWithin
           elsif object.is_a?(::RSpec::Mocks::Double)
             SuperDiff::ObjectInspection::Inspectors::Primitive
           else

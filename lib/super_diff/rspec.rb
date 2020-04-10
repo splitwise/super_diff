@@ -48,6 +48,21 @@ module SuperDiff
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::ContainExactly)
     end
 
+    def self.a_kind_of_something?(value)
+      fuzzy_object?(value) &&
+        value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeAKindOf)
+    end
+
+    def self.an_instance_of_something?(value)
+      fuzzy_object?(value) &&
+        value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeAnInstanceOf)
+    end
+
+    def self.a_value_within_something?(value)
+      fuzzy_object?(value) &&
+        value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeWithin)
+    end
+
     def self.fuzzy_object?(value)
       value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end

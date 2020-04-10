@@ -2,9 +2,16 @@ module SuperDiff
   module ObjectInspection
     module Nodes
       class Inspection < Base
-        def evaluate(_object, indent_level:, as_single_line:)
+        def evaluate(object, indent_level:, as_single_line:)
+          value =
+            if block
+              tree.evaluate_block(object, &block)
+            else
+              immediate_value
+            end
+
           SuperDiff::ObjectInspection.inspect(
-            immediate_value,
+            value,
             indent_level: indent_level,
             as_single_line: as_single_line,
           )
