@@ -304,7 +304,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = { name: "Elliot", age: 32 }
-          actual = { name: "Elliot", age: 32 }
+          actual = {}
           expect(actual).to have_attributes(expected)
         TEST
 
@@ -316,7 +316,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
           expectation: proc {
             line do
               plain "Expected "
-              beta %|{ name: "Elliot", age: 32 }|
+              beta %|{}|
               plain " to respond to "
               alpha %|:name|
               plain " and "
@@ -337,6 +337,89 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
         expect(program).
           to produce_output_when_run(expected_output).
           in_color(color_enabled)
+      end
+    end
+
+    # TODO: Add as many fuzzy matchers as we can here
+    context "that contains fuzzy matcher objects instead of an object" do
+      it "displays the hash correctly" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = {
+              name: "Elliot",
+              shipping_address: an_object_having_attributes(
+                line_1: a_kind_of(String),
+                line_2: nil,
+                city: an_instance_of(String),
+                state: "CA",
+                zip: "91234"
+              ),
+              order_ids: a_collection_including(1, 2),
+              data: a_hash_including(active: true),
+              created_at: a_value_within(1).of(Time.utc(2020, 4, 9))
+            }
+
+            actual = {}
+
+            expect(actual).to have_attributes(expected)
+          TEST
+
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).to have_attributes(expected)|,
+            expectation: proc {
+              line do
+                plain "     Expected "
+                beta %|{}|
+              end
+
+              line do
+                plain "to respond to "
+                alpha %|:name|
+                plain ", "
+                alpha %|:shipping_address|
+                plain ", "
+                alpha %|:order_ids|
+                plain ", "
+                alpha %|:data|
+                plain " and "
+                alpha %|:created_at|
+                plain " with "
+                alpha %|0|
+                plain " arguments"
+              end
+            },
+            diff: proc {
+              plain_line %|  {|
+              alpha_line %|-   name: "Elliot",|
+              alpha_line %|-   shipping_address: #<an object having attributes (|
+              alpha_line %|-     line_1: #<a kind of String>,|
+              alpha_line %|-     line_2: nil,|
+              alpha_line %|-     city: #<an instance of String>,|
+              alpha_line %|-     state: "CA",|
+              alpha_line %|-     zip: "91234"|
+              alpha_line %|-   )>,|
+              alpha_line %|-   order_ids: #<a collection including (|
+              alpha_line %|-     1,|
+              alpha_line %|-     2|
+              alpha_line %|-   )>,|
+              alpha_line %|-   data: #<a hash including (|
+              alpha_line %|-     active: true|
+              alpha_line %|-   )>,|
+              alpha_line %|-   created_at: #<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>|
+              plain_line %|  }|
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
       end
     end
   end
