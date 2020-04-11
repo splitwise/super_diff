@@ -85,7 +85,7 @@ expect(actual).to eq(expected)
 
 You would get output that looks like this:
 
-![Before super_diff](doc/before.png)
+![Before super_diff](docs/before.png)
 
 What this library does
 is to provide a diff engine
@@ -94,7 +94,7 @@ and display them in a sensible way.
 So, using the example above,
 you'd get this instead:
 
-![After super_diff](doc/after.png)
+![After super_diff](docs/after.png)
 
 ## Installation
 

@@ -35,3 +35,9 @@ I'll try to respond as quickly as I can.
 I may have suggestions about code style or your approach,
 but hopefully everything looks good and your changes get merged!
 Now you're a contributor! 🎉
+
+## Understanding the codebase
+
+If you want to make a change
+but you're having trouble where to start,
+you might find the [Architecture](./ARCHITECTURE.md) document helpful.
