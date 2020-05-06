@@ -1,11 +1,12 @@
-# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][travis-badge]][travis] ![Downloads][downloads-badge] [![Hound][hound-badge]][hound]
+# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][travis-badge]][travis] ![Downloads][downloads-badge] [![IssueHunt][issuehunt-badge]][issuehunt]
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
 [travis-badge]: http://img.shields.io/travis/mcmire/super_diff/master.svg
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
-[hound-badge]: https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg
 [hound]: https://houndci.com
+[issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
+[issuehunt]: https://issuehunt.io/r/mcmire/super_diff
 
 SuperDiff is a gem that hooks into RSpec
 to intelligently display the differences between two data structures of any type.
@@ -186,8 +187,16 @@ I'll try to respond to it as soon as I can!
 
 ## Contributing
 
-Any contributions to improve this library are welcome!
+Any code contributions to improve this library are welcome!
 Please see the [contributing](./CONTRIBUTING.md) document for more on how to do that.
+
+## Sponsoring
+
+If there's a change you want implemented, you can choose to sponsor that change!
+`super_diff` is set up on IssueHunt,
+so feel free to search for an existing issue (or make your own)
+and [add a bounty](https://issuehunt.io/r/mcmire/super_diff/issues).
+I'll get notified right away!
 
 ## Compatibility
 
