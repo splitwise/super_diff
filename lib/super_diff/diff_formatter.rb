@@ -8,7 +8,6 @@ module SuperDiff
         :indent_level!,
         add_comma: false,
         value_class: nil,
-        extra_classes: [],
       ],
     )
 
@@ -18,7 +17,7 @@ module SuperDiff
           operations,
           indent_level: indent_level,
           add_comma: add_comma?,
-          value_class: value_class
+          value_class: value_class,
         )
       else
         raise NoDiffFormatterAvailableError.create(operations)
@@ -34,7 +33,8 @@ module SuperDiff
     end
 
     def available_classes
-      DiffFormatters::DEFAULTS + extra_classes
+      DiffFormatters::DEFAULTS +
+        SuperDiff.configuration.extra_diff_formatter_classes
     end
   end
 end

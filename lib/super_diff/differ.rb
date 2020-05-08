@@ -9,10 +9,6 @@ module SuperDiff
         indent_level: 0,
         index_in_collection: nil,
         omit_empty: false,
-        extra_classes: [],
-        extra_operation_sequence_classes: [],
-        extra_operational_sequencer_classes: [],
-        extra_diff_formatter_classes: [],
       ],
     )
 
@@ -23,9 +19,6 @@ module SuperDiff
           actual,
           indent_level: indent_level,
           index_in_collection: index_in_collection,
-          extra_operation_sequence_classes: extra_operation_sequence_classes,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       else
         raise NoDifferAvailableError.create(expected, actual)
@@ -41,7 +34,7 @@ module SuperDiff
     end
 
     def available_classes
-      classes = extra_classes + Differs::DEFAULTS
+      classes = SuperDiff.configuration.extra_differ_classes + Differs::DEFAULTS
 
       if omit_empty?
         classes - [Differs::Empty]

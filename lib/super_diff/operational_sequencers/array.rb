@@ -17,8 +17,6 @@ module SuperDiff
           operations: operations,
           expected: expected,
           actual: actual,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
           sequence: method(:sequence),
         )
       end
@@ -30,16 +28,7 @@ module SuperDiff
       class LcsCallbacks
         extend AttrExtras.mixin
 
-        pattr_initialize(
-          [
-            :operations!,
-            :expected!,
-            :actual!,
-            :extra_operational_sequencer_classes!,
-            :extra_diff_formatter_classes!,
-            :sequence!
-          ],
-        )
+        pattr_initialize [:operations!, :expected!, :actual!, :sequence!]
         public :operations
 
         def match(event)

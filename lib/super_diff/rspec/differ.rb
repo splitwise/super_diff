@@ -7,31 +7,7 @@ module SuperDiff
 
       def diff
         if worth_diffing?
-          diff = SuperDiff::Differ.call(
-            expected,
-            actual,
-            omit_empty: true,
-            extra_classes: [
-              *RSpec.configuration.extra_differ_classes,
-              Differs::CollectionContainingExactly,
-              Differs::CollectionIncluding,
-              Differs::HashIncluding,
-              Differs::ObjectHavingAttributes,
-            ],
-            extra_operation_sequence_classes: [
-              *RSpec.configuration.extra_operation_sequence_classes,
-            ],
-            extra_operational_sequencer_classes: [
-              *RSpec.configuration.extra_operational_sequencer_classes,
-              OperationalSequencers::CollectionContainingExactly,
-              OperationalSequencers::CollectionIncluding,
-              OperationalSequencers::HashIncluding,
-              OperationalSequencers::ObjectHavingAttributes,
-            ],
-            extra_diff_formatter_classes: [
-              *RSpec.configuration.extra_diff_formatter_classes,
-            ],
-          )
+          diff = SuperDiff::Differ.call(expected, actual, omit_empty: true)
           "\n\n" + diff
         else
           ""

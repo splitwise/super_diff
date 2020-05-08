@@ -33,13 +33,7 @@ module SuperDiff
       protected
 
       def diff
-        Differs::Array.call(
-          expected,
-          actual,
-          indent_level: 0,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
+        Differs::Array.call(expected, actual, indent_level: 0)
       end
     end
   end

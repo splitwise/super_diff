@@ -2,25 +2,13 @@ module SuperDiff
   class OperationalSequencer
     extend AttrExtras.mixin
 
-    method_object(
-      [
-        :expected!,
-        :actual!,
-        :all_or_nothing!,
-        extra_operation_sequence_classes: [],
-        extra_classes: [],
-        extra_diff_formatter_classes: [],
-      ],
-    )
+    method_object [:expected!, :actual!, :all_or_nothing!]
 
     def call
       if resolved_class
         resolved_class.call(
           expected: expected,
           actual: actual,
-          extra_operation_sequence_classes: extra_operation_sequence_classes,
-          extra_operational_sequencer_classes: extra_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       elsif all_or_nothing?
         raise NoOperationalSequencerAvailableError.create(expected, actual)
@@ -38,7 +26,9 @@ module SuperDiff
     end
 
     def available_classes
-      classes = extra_classes + OperationalSequencers::DEFAULTS
+      classes =
+        SuperDiff.configuration.extra_operational_sequencer_classes +
+        OperationalSequencers::DEFAULTS
 
       if all_or_nothing?
         classes + [OperationalSequencers::DefaultObject]

@@ -22,7 +22,7 @@ module SuperDiff
     end
 
     def self.configuration
-      @_configuration ||= Configuration.new
+      SuperDiff.configuration
     end
 
     def self.a_hash_including_something?(value)
@@ -66,6 +66,26 @@ module SuperDiff
     def self.fuzzy_object?(value)
       value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end
+
+    SuperDiff.configuration.tap do |config|
+      config.add_extra_differ_class(Differs::CollectionContainingExactly)
+      config.add_extra_differ_class(Differs::CollectionIncluding)
+      config.add_extra_differ_class(Differs::HashIncluding)
+      config.add_extra_differ_class(Differs::ObjectHavingAttributes)
+
+      config.add_extra_operational_sequencer_class(
+        OperationalSequencers::CollectionContainingExactly,
+      )
+      config.add_extra_operational_sequencer_class(
+        OperationalSequencers::CollectionIncluding,
+      )
+      config.add_extra_operational_sequencer_class(
+        OperationalSequencers::HashIncluding,
+      )
+      config.add_extra_operational_sequencer_class(
+        OperationalSequencers::ObjectHavingAttributes,
+      )
+    end
   end
 end
 
@@ -75,4 +95,4 @@ SuperDiff::ObjectInspection.map.prepend(
   SuperDiff::RSpec::ObjectInspection::MapExtension,
 )
 
-SuperDiff::Csi.color_enabled = RSpec.configuration.color_enabled?
+SuperDiff::Csi.color_enabled = ::RSpec.configuration.color_enabled?

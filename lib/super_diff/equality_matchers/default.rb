@@ -47,13 +47,7 @@ module SuperDiff
       end
 
       def diff
-        Differ.call(
-          expected,
-          actual,
-          indent_level: 0,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
-        )
+        Differ.call(expected, actual, indent_level: 0)
       end
     end
   end

@@ -2,7 +2,7 @@ module SuperDiff
   class OperationSequence
     extend AttrExtras.mixin
 
-    method_object :value, [extra_classes: []]
+    method_object :value
 
     def call
       if resolved_class
@@ -27,7 +27,8 @@ module SuperDiff
     end
 
     def available_classes
-      extra_classes + OperationSequences::DEFAULTS
+      SuperDiff.configuration.extra_operation_sequence_classes +
+        OperationSequences::DEFAULTS
     end
   end
 end

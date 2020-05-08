@@ -7,15 +7,7 @@ module SuperDiff
 
       extend AttrExtras.mixin
 
-      method_object(
-        [
-          :expected!,
-          :actual!,
-          extra_operation_sequence_classes: [],
-          extra_operational_sequencer_classes: [],
-          extra_diff_formatter_classes: [],
-        ],
-      )
+      method_object [:expected!, :actual!]
 
       def call
         i = 0
@@ -81,8 +73,6 @@ module SuperDiff
           expected: expected,
           actual: actual,
           all_or_nothing: false,
-          extra_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end
     end

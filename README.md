@@ -165,14 +165,15 @@ you would add something like this to your test helper file
 (`rails_helper` or `spec_helper`):
 
 ``` ruby
-SuperDiff::RSpec.configure do |config|
+SuperDiff.configure do |config|
   config.add_extra_differ_class(YourDiffer)
   config.add_extra_operational_sequencer_class(YourOperationalSequencer)
+  config.add_extra_operation_sequence_class(YourOperationSequence)
   config.add_extra_diff_formatter_class(YourDiffFormatter)
 end
 ```
 
-*(More info here in the future on adding a custom differ, operational sequencer, and diff formatter.
+*(More info here in the future on adding a custom differ, operational sequencer, operation sequence, and diff formatter.
 Also explanations on what these are.)*
 
 ## Support

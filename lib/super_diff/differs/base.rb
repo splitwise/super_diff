@@ -15,9 +15,6 @@ module SuperDiff
         [
           :indent_level!,
           index_in_collection: nil,
-          extra_operation_sequence_classes: [],
-          extra_operational_sequencer_classes: [],
-          extra_diff_formatter_classes: [],
         ],
       )
 
@@ -45,9 +42,6 @@ module SuperDiff
         operational_sequencer_class.call(
           expected: expected,
           actual: actual,
-          extra_operation_sequence_classes: extra_operation_sequence_classes,
-          extra_operational_sequencer_classes: extra_operational_sequencer_classes,
-          extra_diff_formatter_classes: extra_diff_formatter_classes,
         )
       end
     end

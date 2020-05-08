@@ -7,6 +7,7 @@ module SuperDiff
     :ColorizedDocumentExtensions,
     "super_diff/colorized_document_extensions",
   )
+  autoload :Configuration, "super_diff/configuration"
   autoload :Csi, "super_diff/csi"
   autoload :DiffFormatter, "super_diff/diff_formatter"
   autoload :DiffFormatters, "super_diff/diff_formatters"
@@ -39,4 +40,12 @@ module SuperDiff
     border: :blue,
     header: :white,
   }.freeze
+
+  def self.configure
+    yield configuration
+  end
+
+  def self.configuration
+    @_configuration ||= Configuration.new
+  end
 end

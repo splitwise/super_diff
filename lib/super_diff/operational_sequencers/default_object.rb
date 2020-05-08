@@ -29,10 +29,7 @@ module SuperDiff
       end
 
       def find_operation_sequence_for(value)
-        OperationSequence.call(
-          value,
-          extra_classes: extra_operation_sequence_classes,
-        )
+        OperationSequence.call(value)
       end
 
       def attribute_names
