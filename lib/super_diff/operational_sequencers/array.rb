@@ -32,36 +32,15 @@ module SuperDiff
         public :operations
 
         def match(event)
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
-            name: :noop,
-            collection: actual,
-            key: event.new_position,
-            value: event.new_element,
-            index: event.new_position,
-            index_in_collection: actual.index(event.new_element),
-          )
+          add_noop_operation(event)
         end
 
         def discard_a(event)
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
-            name: :delete,
-            collection: expected,
-            key: event.old_position,
-            value: event.old_element,
-            index: event.old_position,
-            index_in_collection: expected.index(event.old_element),
-          )
+          add_delete_operation(event)
         end
 
         def discard_b(event)
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
-            name: :insert,
-            collection: actual,
-            key: event.new_position,
-            value: event.new_element,
-            index: event.new_position,
-            index_in_collection: actual.index(event.new_element),
-          )
+          add_insert_operation(event)
         end
 
         def change(event)
@@ -76,21 +55,6 @@ module SuperDiff
         end
 
         private
-
-        def add_change_operation(event, child_operations)
-          operations << ::SuperDiff::Operations::BinaryOperation.new(
-            name: :change,
-            left_collection: expected,
-            right_collection: actual,
-            left_key: event.old_position,
-            right_key: event.new_position,
-            left_value: event.old_element,
-            right_value: event.new_element,
-            left_index: event.old_position,
-            right_index: event.new_position,
-            child_operations: child_operations,
-          )
-        end
 
         def add_delete_operation(event)
           operations << Operations::UnaryOperation.new(
@@ -113,6 +77,33 @@ module SuperDiff
             index_in_collection: actual.index(event.new_element),
           )
         end
+
+        def add_noop_operation(event)
+          operations << ::SuperDiff::Operations::UnaryOperation.new(
+            name: :noop,
+            collection: actual,
+            key: event.new_position,
+            value: event.new_element,
+            index: event.new_position,
+            index_in_collection: actual.index(event.new_element),
+          )
+        end
+
+        def add_change_operation(event, child_operations)
+          operations << ::SuperDiff::Operations::BinaryOperation.new(
+            name: :change,
+            left_collection: expected,
+            right_collection: actual,
+            left_key: event.old_position,
+            right_key: event.new_position,
+            left_value: event.old_element,
+            right_value: event.new_element,
+            left_index: event.old_position,
+            right_index: event.new_position,
+            child_operations: child_operations,
+          )
+        end
+
       end
     end
   end

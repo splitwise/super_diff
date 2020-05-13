@@ -8,9 +8,7 @@ module SuperDiff
         end
 
         def initialize(expected:, **rest)
-          super
-
-          @expected = expected.expecteds.first
+          super(expected: expected.expecteds.first, **rest)
         end
 
         private
@@ -20,12 +18,6 @@ module SuperDiff
             actual.include?(key) &&
             expected[key] == actual[key]
           )
-        end
-
-        def should_add_insert_operation?(key)
-          expected.include?(key) &&
-            actual.include?(key) &&
-            expected[key] != actual[key]
         end
       end
     end

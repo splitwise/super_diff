@@ -50,6 +50,8 @@ Metrics/BlockLength:
     - shared_context
     - shared_examples
     - shared_examples_for
+Metrics/BlockNesting:
+  Enabled: false
 Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
@@ -115,9 +117,13 @@ Style/NegatedIf:
   Enabled: false
 Style/NegatedWhile:
   Enabled: false
+Style/Next:
+  Enabled: false
 Style/NumericPredicate:
   Enabled: false
 Style/OneLineConditional:
+  Enabled: false
+Style/ParallelAssignment:
   Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false

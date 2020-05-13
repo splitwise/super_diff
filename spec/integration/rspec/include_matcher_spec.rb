@@ -214,9 +214,9 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               alpha_line %|-   city: "Hill Valley",|
               beta_line  %|+   city: "Burbank",|
               # FIXME
-              # plain_line %|    zip: "90210",|
-              plain_line %|    zip: "90210"|
+              # alpha_line %|-   state: "CA",|
               alpha_line %|-   state: "CA"|
+              plain_line %|    zip: "90210"|
               plain_line %|  }|
             },
           )

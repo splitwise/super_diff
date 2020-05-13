@@ -1056,6 +1056,162 @@ RSpec.describe SuperDiff::EqualityMatcher do
       end
     end
 
+    context "given two equal-size, one-dimensional hashes where there is a mixture of missing and extra keys in relatively the same order" do
+      context "and the actual value is in relatively the same order as the expected" do
+        it "preserves the order of the keys as they are defined" do
+          actual_output = described_class.call(
+            expected: {
+              listed_count: 37_009,
+              created_at: "Tue Jan 13 19:28:24 +0000 2009",
+              favourites_count: 38,
+              geo_enabled: false,
+              verified: true,
+              statuses_count: 273_860,
+              media_count: 51_044,
+              contributors_enabled: false,
+              profile_background_color: "FFF1E0",
+              profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",
+              profile_background_tile: false,
+              profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
+              profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
+              profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+            },
+            actual: {
+              listed_count: 37_009,
+              created_at: "Tue Jan 13 19:28:24 +0000 2009",
+              favourites_count: 38,
+              utc_offset: nil,
+              time_zone: nil,
+              statuses_count: 273_860,
+              media_count: 51_044,
+              contributors_enabled: false,
+              is_translator: false,
+              is_translation_enabled: false,
+              profile_background_color: "FFF1E0",
+              profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",
+              profile_background_tile: false,
+              profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+            }
+          )
+
+          expected_output = <<~STR.strip
+            Differing hashes.
+
+            #{
+              colored do
+                alpha_line %(Expected: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, statuses_count: 273860, media_count: 51044, contributors_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                beta_line  %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, time_zone: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+              end
+            }
+
+            Diff:
+
+            #{
+              colored do
+                plain_line %(  {)
+                plain_line %(    listed_count: 37009,)
+                plain_line %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
+                plain_line %(    favourites_count: 38,)
+                alpha_line %(-   geo_enabled: false,)
+                alpha_line %(-   verified: true,)
+                beta_line  %(+   utc_offset: nil,)
+                beta_line  %(+   time_zone: nil,)
+                plain_line %(    statuses_count: 273860,)
+                plain_line %(    media_count: 51044,)
+                plain_line %(    contributors_enabled: false,)
+                beta_line  %(+   is_translator: false,)
+                beta_line  %(+   is_translation_enabled: false,)
+                plain_line %(    profile_background_color: "FFF1E0",)
+                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
+                plain_line %(    profile_background_tile: false,)
+                alpha_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                alpha_line %(-   profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                plain_line %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
+                plain_line %(  })
+              end
+            }
+          STR
+
+          expect(actual_output).to eq(expected_output)
+        end
+      end
+
+      context "and the actual value is in a different order than the expected" do
+        it "preserves the order of the keys as they are defined" do
+          actual_output = described_class.call(
+            expected: {
+              created_at: "Tue Jan 13 19:28:24 +0000 2009",
+              favourites_count: 38,
+              geo_enabled: false,
+              verified: true,
+              media_count: 51_044,
+              statuses_count: 273_860,
+              contributors_enabled: false,
+              profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",
+              profile_background_color: "FFF1E0",
+              profile_background_tile: false,
+              profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
+              listed_count: 37_009,
+              profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+            },
+            actual: {
+              listed_count: 37_009,
+              created_at: "Tue Jan 13 19:28:24 +0000 2009",
+              favourites_count: 38,
+              utc_offset: nil,
+              statuses_count: 273_860,
+              media_count: 51_044,
+              contributors_enabled: false,
+              is_translator: false,
+              is_translation_enabled: false,
+              profile_background_color: "FFF1E0",
+              profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",
+              profile_background_tile: false,
+              profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+            }
+          )
+
+          expected_output = <<~STR.strip
+            Differing hashes.
+
+            #{
+              colored do
+                alpha_line %(Expected: { created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, media_count: 51044, statuses_count: 273860, contributors_enabled: false, profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_color: "FFF1E0", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", listed_count: 37009, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                beta_line  %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+              end
+            }
+
+            Diff:
+
+            #{
+              colored do
+                plain_line %(  {)
+                plain_line %(    listed_count: 37009,)
+                plain_line %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
+                plain_line %(    favourites_count: 38,)
+                alpha_line %(-   geo_enabled: false,)
+                alpha_line %(-   verified: true,)
+                beta_line  %(+   utc_offset: nil,)
+                plain_line %(    statuses_count: 273860,)
+                plain_line %(    media_count: 51044,)
+                plain_line %(    contributors_enabled: false,)
+                beta_line  %(+   is_translator: false,)
+                beta_line  %(+   is_translation_enabled: false,)
+                plain_line %(    profile_background_color: "FFF1E0",)
+                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
+                plain_line %(    profile_background_tile: false,)
+                alpha_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                plain_line %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
+                plain_line %(  })
+              end
+            }
+          STR
+
+          expect(actual_output).to eq(expected_output)
+        end
+      end
+    end
+
     context "given two hashes containing arrays with differing values" do
       it "returns a message along with the diff" do
         actual_output = described_class.call(

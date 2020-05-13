@@ -6,6 +6,7 @@ module SuperDiff
         :collection,
         :key,
         :value,
+        # TODO: Is this even used??
         :index,
         :index_in_collection,
       )
@@ -15,6 +16,7 @@ module SuperDiff
         collection:,
         key:,
         value:,
+        # TODO: Is this even used??
         index:,
         index_in_collection: index
       )
@@ -22,6 +24,7 @@ module SuperDiff
         @collection = collection
         @key = key
         @value = value
+        # TODO: Is this even used??
         @index = index
         @index_in_collection = index_in_collection
       end

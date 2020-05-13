@@ -10,35 +10,7 @@ module SuperDiff
       method_object [:expected!, :actual!]
 
       def call
-        i = 0
-        operations = build_operation_sequence
-
-        while i < unary_operations.length
-          operation = unary_operations[i]
-          next_operation = unary_operations[i + 1]
-          child_operations = possible_comparison_of(operation, next_operation)
-
-          if child_operations
-            operations << Operations::BinaryOperation.new(
-              name: :change,
-              left_collection: operation.collection,
-              right_collection: next_operation.collection,
-              left_key: operation.key,
-              right_key: operation.key,
-              left_value: operation.collection[operation.key],
-              right_value: next_operation.collection[operation.key],
-              left_index: operation.index,
-              right_index: operation.index,
-              child_operations: child_operations,
-            )
-            i += 2
-          else
-            operations << operation
-            i += 1
-          end
-        end
-
-        operations
+        compressed_operations
       end
 
       protected
@@ -53,6 +25,51 @@ module SuperDiff
 
       private
 
+      def compressed_operations
+        unary_operations = self.unary_operations
+        compressed_operations = build_operation_sequence
+        unmatched_delete_operations = []
+
+        unary_operations.each_with_index do |operation, index|
+          if (
+            operation.name == :insert &&
+            (delete_operation = unmatched_delete_operations.find { |op| op.key == operation.key }) &&
+            (insert_operation = operation)
+          )
+            unmatched_delete_operations.delete(delete_operation)
+
+            if (child_operations = possible_comparison_of(
+              delete_operation,
+              insert_operation,
+            ))
+              compressed_operations.delete(delete_operation)
+              compressed_operations << Operations::BinaryOperation.new(
+                name: :change,
+                left_collection: delete_operation.collection,
+                right_collection: insert_operation.collection,
+                left_key: delete_operation.key,
+                right_key: insert_operation.key,
+                left_value: delete_operation.collection[operation.key],
+                right_value: insert_operation.collection[operation.key],
+                left_index: delete_operation.index_in_collection,
+                right_index: insert_operation.index_in_collection,
+                child_operations: child_operations,
+              )
+            else
+              compressed_operations << insert_operation
+            end
+          else
+            if operation.name == :delete
+              unmatched_delete_operations << operation
+            end
+
+            compressed_operations << operation
+          end
+        end
+
+        compressed_operations
+      end
+
       def possible_comparison_of(operation, next_operation)
         if should_compare?(operation, next_operation)
           sequence(operation.value, next_operation.value)
@@ -65,7 +82,7 @@ module SuperDiff
         next_operation &&
           operation.name == :delete &&
           next_operation.name == :insert &&
-          next_operation.index == operation.index
+          next_operation.key == operation.key
       end
 
       def sequence(expected, actual)
