@@ -1,6 +1,12 @@
 language: ruby
 before_install:
   - "gem install bundler -v '~> 2.0'"
+  - "gem install zeus"
+  - "bundle config set deployment true"
+  - "unset RAILS_ENV"
+install: "bundle install --jobs=3 --retry=3 --path=${BUNDLE_PATH:-vendor/bundle}"
+before_script:
+  - "bin/start-dev --background --debug"
 cache:
   bundler: true
 env:

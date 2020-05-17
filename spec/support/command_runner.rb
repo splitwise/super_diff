@@ -120,6 +120,9 @@ Output:
     @env = extract_env_from(@options)
 
     @process = ChildProcess.build(*command)
+    # @env.each do |key, value|
+      # @process.environment[key] = value
+    # end
     @process.io.stdout = @process.io.stderr = @writer
 
     @wrapper = -> (block) { block.call }

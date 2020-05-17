@@ -8,104 +8,24 @@ module SuperDiff
       end
     end
 
-    def make_plain_test_program(test, color_enabled:)
-      <<~PROGRAM
-        #{set_up_with("super_diff/rspec", color_enabled: color_enabled)}
-        #{describe_block_including(test)}
-      PROGRAM
+    def make_plain_test_program(
+      test,
+      color_enabled:,
+      preserve_as_whole_file: false
+    )
+      TestPrograms::Plain.new(
+        test,
+        color_enabled: color_enabled,
+        preserve_as_whole_file: preserve_as_whole_file,
+      )
     end
 
     def make_rspec_active_record_program(test, color_enabled:)
-      <<~PROGRAM
-        #{
-          set_up_active_record_around do
-            set_up_with(
-              "super_diff/rspec", "super_diff/active_record",
-              color_enabled: color_enabled
-            )
-          end
-        }
-        #{describe_block_including(test)}
-      PROGRAM
+      TestPrograms::RspecActiveRecord.new(test, color_enabled: color_enabled)
     end
 
     def make_rspec_rails_test_program(test, color_enabled:)
-      <<~PROGRAM
-        #{
-          set_up_active_record_around do
-            set_up_with("super_diff/rspec-rails", color_enabled: color_enabled)
-          end
-        }
-        #{describe_block_including(test)}
-      PROGRAM
-    end
-
-    def set_up_active_record_around(&block)
-      <<~PROGRAM
-        require "active_record"
-
-        ActiveRecord::Base.establish_connection(
-          adapter: "sqlite3",
-          database: ":memory:"
-        )
-
-        RSpec.configuration do |config|
-          config.before do
-            SuperDiff::Test::Models::ActiveRecord::Person.delete_all
-            SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
-          end
-        end
-
-        #{block.call}
-
-        Dir.glob(SUPPORT_DIR.join("models/active_record/*.rb")).each do |path|
-          require path
-        end
-      PROGRAM
-    end
-
-    def set_up_with(*libraries, color_enabled:)
-      <<~SETUP
-        PROJECT_DIRECTORY = Pathname.new("#{PROJECT_DIRECTORY}")
-        SUPPORT_DIR = PROJECT_DIRECTORY.join("spec/support")
-        INSIDE_INTEGRATION_TEST = true
-
-        $LOAD_PATH.unshift(PROJECT_DIRECTORY.join("lib"))
-        #\$LOAD_PATH.unshift(PROJECT_DIRECTORY)
-
-        begin
-          require "pry-byebug"
-        rescue LoadError
-          require "pry-nav"
-        end
-
-        module SuperDiff
-          module IntegrationTests; end
-        end
-
-        RSpec.configure do |config|
-          config.color_mode = :#{color_enabled ? "on" : "off"}
-          config.include SuperDiff::IntegrationTests
-        end
-
-#{libraries.map { |library| %(        require "#{library}") }.join("\n")}
-
-        Dir.glob(SUPPORT_DIR.join("{models,matchers}/*.rb")).each do |path|
-          require path
-        end
-
-        require SUPPORT_DIR.join("integration/matchers")
-      SETUP
-    end
-
-    def describe_block_including(test)
-      <<~PROGRAM
-        RSpec.describe "test" do
-          it "passes" do
-        #{reindent(test, level: 2)}
-          end
-        end
-      PROGRAM
+      TestPrograms::RspecRails.new(test, color_enabled: color_enabled)
     end
 
     def build_expected_output(
@@ -178,10 +98,6 @@ module SuperDiff
 
     def colored(color_enabled: true, &block)
       SuperDiff::Helpers.style(color_enabled: color_enabled, &block).to_s.chomp
-    end
-
-    def reindent(code, level: 0)
-      code.strip.split("\n").map { |line| ("  " * level) + line }.join("\n")
     end
   end
 end

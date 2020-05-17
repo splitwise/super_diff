@@ -3,7 +3,7 @@ AllCops:
   Exclude:
     - db/schema.rb
   TargetRubyVersion: 2.4
-Layout/AlignParameters:
+Layout/ParameterAlignment:
   EnforcedStyle: with_fixed_indentation
 Layout/ClassStructure:
   Enabled: true
@@ -13,11 +13,11 @@ Layout/CommentIndentation:
   Enabled: false
 Layout/InitialIndentation:
   Enabled: false
-Layout/IndentFirstArrayElement:
+Layout/FirstArrayElementIndentation:
   EnforcedStyle: "consistent"
-Layout/IndentFirstHashElement:
+Layout/FirstHashElementIndentation:
   EnforcedStyle: "consistent"
-Layout/IndentHeredoc:
+Layout/HeredocIndentation:
   Enabled: false
 Layout/MultilineOperationIndentation:
   EnforcedStyle: indented
@@ -29,7 +29,7 @@ Layout/SpaceInsideStringInterpolation:
   Enabled: false
 Lint/AssignmentInCondition:
   Enabled: false
-Lint/HandleExceptions:
+Lint/SuppressedException:
   Enabled: false
 Lint/RequireParentheses:
   Enabled: false
@@ -56,7 +56,7 @@ Metrics/ClassLength:
   Enabled: false
 Metrics/CyclomaticComplexity:
   Max: 15
-Metrics/LineLength:
+Layout/LineLength:
   Max: 80
   IgnoredPatterns:
     - "^\\s*RSpec.describe"
@@ -77,11 +77,11 @@ Naming/AccessorMethodName:
 Naming/MemoizedInstanceVariableName:
   EnforcedStyleForLeadingUnderscores: required
 Naming/PredicateName:
-  NamePrefixBlacklist:
+  ForbiddenPrefixes:
     - is_
   Exclude:
     - spec/**/*
-Naming/UncommunicativeMethodParamName:
+Naming/MethodParameterName:
   Enabled: false
 Style/AccessModifierDeclarations:
   Enabled: false
@@ -91,6 +91,8 @@ Style/CollectionMethods:
   Enabled: true
 Style/Documentation:
   Enabled: false
+Style/DoubleNegation:
+  Enabled: false
 Style/EachWithObject:
   Enabled: false
 Style/EmptyElse:
@@ -99,6 +101,8 @@ Style/EmptyMethod:
   EnforcedStyle: expanded
 Style/FormatString:
   EnforcedStyle: percent
+Style/FormatStringToken:
+  Enabled: false
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/GuardClause:
@@ -153,7 +157,7 @@ Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: comma
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: comma
-Style/UnneededCondition:
+Style/RedundantCondition:
   Enabled: false
 Style/WhileUntilModifier:
   Enabled: false

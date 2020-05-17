@@ -36,6 +36,26 @@ I may have suggestions about code style or your approach,
 but hopefully everything looks good and your changes get merged!
 Now you're a contributor! 🎉
 
+## Speeding up the integration tests
+
+The integration tests,
+located in `spec/integration`,
+can be quite slow to run.
+If you'd like to speed them up,
+run the following command in a separate tab:
+
+```
+zeus start
+```
+
+Now the next time you run an integration test by saying
+
+```
+bin/rspec spec/integration/...
+```
+
+it should run twice as fast.
+
 ## Understanding the codebase
 
 If you want to make a change

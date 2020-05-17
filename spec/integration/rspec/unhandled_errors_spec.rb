@@ -15,7 +15,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
 
           expected_output = build_expected_output(
             color_enabled: color_enabled,
-            snippet: %|raise "Some kind of error or whatever\\n\\nThis is another line"|,
+            snippet: snippet,
             newline_before_expectation: true,
             indentation: 5,
             expectation: proc {
@@ -25,7 +25,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
                 newline
                 plain_line "This is another line"
               end
-            }
+            },
           )
 
           expect(program).
@@ -48,7 +48,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
 
           expected_output = build_expected_output(
             color_enabled: color_enabled,
-            snippet: %|raise "Some kind of error or whatever"|,
+            snippet: snippet,
             newline_before_expectation: true,
             indentation: 5,
             expectation: proc {
@@ -56,7 +56,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
               indent by: 2 do
                 red_line "Some kind of error or whatever"
               end
-            }
+            },
           )
 
           expect(program).
@@ -67,23 +67,79 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
     end
   end
 
-  context "when multiple exception occur" do
-    it "highlights the first line in red, and then leaves the rest of the message alone" do
+  context "when multiple exceptions occur" do
+    it "displays all exceptions, and for each exception, highlights the first line in red and leaves the rest of the message alone" do
       as_both_colored_and_uncolored do |color_enabled|
-        program = <<~PROGRAM.strip
-          #{set_up_with("super_diff/rspec", color_enabled: color_enabled)}
+        snippet = <<~TEST.strip
+          raise "Some kind of error or whatever\\n\\nThis is another line"
+        TEST
+        code = <<~CODE
           RSpec.describe "test" do
             after(:each) do
-              raise "Some kind of after error or whatever\\n\\nThis is another line"
+              #{snippet}
             end
+
             it "passes" do
-              raise "Some kind of error or whatever\\n\\nThis is another line"
+              #{snippet}
             end
           end
-        PROGRAM
+        CODE
+
+        program = make_plain_test_program(
+          code,
+          color_enabled: color_enabled,
+          preserve_as_whole_file: true,
+        )
+
+        expected_output1 = colored(color_enabled: color_enabled) do
+          indent by: 5 do
+            line do
+              plain "1.1) "
+              bold "Failure/Error: "
+              plain snippet
+            end
+
+            newline
+
+            indent by: 5 do
+              red_line "RuntimeError:"
+              indent by: 2 do
+                red_line "Some kind of error or whatever"
+                newline
+                line "This is another line"
+              end
+            end
+          end
+        end
+
+        expected_output2 = colored(color_enabled: color_enabled) do
+          indent by: 5 do
+            line do
+              plain "1.2) "
+              bold "Failure/Error: "
+              plain snippet
+            end
+
+            newline
+
+            indent by: 5 do
+              red_line "RuntimeError:"
+              indent by: 2 do
+                red_line "Some kind of error or whatever"
+                newline
+                line "This is another line"
+              end
+            end
+          end
+        end
 
         expect(program).
-          to produce_output_when_run('Some kind of after error or whatever')
+          to produce_output_when_run(expected_output1).
+          in_color(color_enabled)
+
+        expect(program).
+          to produce_output_when_run(expected_output2).
+          in_color(color_enabled)
       end
     end
   end

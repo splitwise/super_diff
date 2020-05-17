@@ -3,3 +3,5 @@ Gemfile.lock
 pkg
 spec/examples.txt
 tmp
+zeus.server.log
+zeus.server-start.log

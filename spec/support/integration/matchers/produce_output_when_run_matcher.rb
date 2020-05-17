@@ -5,11 +5,8 @@ module SuperDiff
     end
 
     class ProduceOutputWhenRunMatcher
-      PROJECT_DIRECTORY = Pathname.new("../../../../../").expand_path(__FILE__)
-      TEMP_DIRECTORY = PROJECT_DIRECTORY.join("tmp")
-
       def initialize(expected_output)
-        @expected_output = expected_output.to_s.strip
+        @expected_output = expected_output.to_s
         @output_processor = nil
         @expect_output_to_contain_color = nil
       end
@@ -25,9 +22,7 @@ module SuperDiff
       end
 
       def matches?(program)
-        @program = program.strip
-
-        TEMP_DIRECTORY.mkpath
+        @program = program
 
         output_matches? && presence_of_color_matches?
       end
@@ -81,7 +76,7 @@ module SuperDiff
 
       def actual_output
         @_actual_output ||= begin
-          output = run_command.output.strip
+          output = program.run.output.strip
 
           if output_processor
             output.gsub!(output_processor[0], output_processor[1])
@@ -89,20 +84,6 @@ module SuperDiff
 
           output
         end
-      end
-
-      def run_command
-        CommandRunner.run(
-          "rspec --options /tmp/dummy-rspec-config",
-          tempfile.to_s,
-          env: { "DISABLE_PRY" => "true" },
-        )
-      end
-
-      def tempfile
-        @_tempfile =
-          TEMP_DIRECTORY.join("integration_spec.rb").
-            tap { |tempfile| tempfile.write(program) }
       end
 
       def presence_of_color_matches?

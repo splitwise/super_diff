@@ -9,10 +9,7 @@ gem "childprocess"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
-gem "rspec-core", github: "rspec/rspec-core"
-gem "rspec-expectations", github: "rspec/rspec-expectations"
-gem "rspec-mocks", github: "rspec/rspec-mocks"
-gem "rspec-support", github: "rspec/rspec-support"
+gem "rspec"
 gem "rubocop"
 
 gemspec

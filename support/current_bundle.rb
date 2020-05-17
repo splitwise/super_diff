@@ -1,12 +1,12 @@
 require "bundler"
-require "appraisal"
 require "shellwords"
+require "singleton"
 
 module SuperDiff
   class CurrentBundle
     include Singleton
 
-    ROOT_DIR = Pathname.new("../..").expand_path(__dir__)
+    ROOT_DIR = Pathname.new("..").expand_path(__dir__)
     APPRAISAL_GEMFILES_PATH = ROOT_DIR.join("gemfiles")
 
     def assert_appraisal!
@@ -34,7 +34,7 @@ module SuperDiff
     def current_appraisal
       if path
         available_appraisals.find do |appraisal|
-          appraisal.gemfile_path == path.to_s
+          appraisal.gemfile_path.to_s == path.to_s
         end
       else
         nil
@@ -52,7 +52,15 @@ module SuperDiff
     end
 
     def available_appraisals
-      @_available_appraisals ||= Appraisal::AppraisalFile.new.appraisals
+      @_available_appraisals ||= Dir.glob(
+        APPRAISAL_GEMFILES_PATH.join("*.gemfile").to_s,
+      ).
+        map do |path|
+          FakeAppraisal.new(
+            name: File.basename(path).sub(/\.gemfile$/, ""),
+            gemfile_path: path,
+          )
+        end
     end
 
     def current_command
@@ -61,6 +69,15 @@ module SuperDiff
 
     def shell_arguments
       Shellwords.join(ARGV)
+    end
+
+    class FakeAppraisal
+      attr_reader :name, :gemfile_path
+
+      def initialize(name:, gemfile_path:)
+        @name = name
+        @gemfile_path = gemfile_path
+      end
     end
 
     class AppraisalNotSpecified < ArgumentError; end
