@@ -116,5 +116,8 @@ DEPENDENCIES
   sqlite3 (~> 1.4.0)
   super_diff!
 
+RUBY VERSION
+   ruby 2.7.1p83
+
 BUNDLED WITH
    2.1.4
