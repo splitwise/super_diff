@@ -11,23 +11,20 @@ module SuperDiff
       :OperationalSequences,
       "super_diff/active_support/operational_sequences",
     )
+
+    SuperDiff.configure do |config|
+      config.add_extra_differ_classes(
+        Differs::HashWithIndifferentAccess,
+      )
+      config.add_extra_operational_sequencer_classes(
+        OperationalSequencers::HashWithIndifferentAccess,
+      )
+      config.add_extra_diff_formatter_classes(
+        DiffFormatters::HashWithIndifferentAccess,
+      )
+      config.add_extra_inspector_classes(
+        ObjectInspection::Inspectors::HashWithIndifferentAccess,
+      )
+    end
   end
 end
-
-if defined?(SuperDiff::RSpec)
-  SuperDiff::RSpec.configure do |config|
-    config.add_extra_differ_class(
-      SuperDiff::ActiveSupport::Differs::HashWithIndifferentAccess,
-    )
-    config.add_extra_operational_sequencer_class(
-      SuperDiff::ActiveSupport::OperationalSequencers::HashWithIndifferentAccess,
-    )
-    config.add_extra_diff_formatter_class(
-      SuperDiff::ActiveSupport::DiffFormatters::HashWithIndifferentAccess,
-    )
-  end
-end
-
-SuperDiff::ObjectInspection.map.prepend(
-  SuperDiff::ActiveSupport::ObjectInspection::MapExtension,
-)

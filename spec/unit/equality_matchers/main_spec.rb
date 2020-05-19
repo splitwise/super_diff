@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SuperDiff::EqualityMatcher do
+RSpec.describe SuperDiff::EqualityMatchers::Main do
   describe "#call" do
     context "given the same integers" do
       it "returns an empty string" do

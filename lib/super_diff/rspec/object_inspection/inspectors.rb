@@ -27,6 +27,10 @@ module SuperDiff
           "super_diff/rspec/object_inspection/inspectors/object_having_attributes",
         )
         autoload(
+          :Primitive,
+          "super_diff/rspec/object_inspection/inspectors/primitive",
+        )
+        autoload(
           :ValueWithin,
           "super_diff/rspec/object_inspection/inspectors/value_within",
         )

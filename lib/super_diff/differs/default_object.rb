@@ -8,7 +8,7 @@ module SuperDiff
       private
 
       def operations
-        OperationalSequencer.call(
+        OperationalSequencers::Main.call(
           expected: expected,
           actual: actual,
           all_or_nothing: true,

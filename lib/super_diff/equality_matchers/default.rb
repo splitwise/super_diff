@@ -47,7 +47,7 @@ module SuperDiff
       end
 
       def diff
-        Differ.call(expected, actual, indent_level: 0)
+        Differs::Main.call(expected, actual, indent_level: 0)
       end
     end
   end

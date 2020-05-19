@@ -6,6 +6,7 @@ module SuperDiff
       end
 
       extend AttrExtras.mixin
+      include ImplementationChecks
 
       method_object [:expected!, :actual!]
 
@@ -16,11 +17,11 @@ module SuperDiff
       protected
 
       def unary_operations
-        SuperDiff.unimplemented_instance_method!
+        unimplemented_instance_method!
       end
 
       def build_operation_sequence
-        SuperDiff.unimplemented_instance_method!
+        unimplemented_instance_method!
       end
 
       private
@@ -86,7 +87,7 @@ module SuperDiff
       end
 
       def sequence(expected, actual)
-        OperationalSequencer.call(
+        OperationalSequencers::Main.call(
           expected: expected,
           actual: actual,
           all_or_nothing: false,

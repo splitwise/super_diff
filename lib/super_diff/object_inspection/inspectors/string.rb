@@ -1,12 +1,22 @@
 module SuperDiff
   module ObjectInspection
     module Inspectors
-      String = InspectionTree.new do
-        # rubocop:disable Style/SymbolProc
-        add_text do |string|
-          string.inspect
+      class String < Base
+        def self.applies_to?(value)
+          value.is_a?(::String)
         end
-        # rubocop:enable Style/SymbolProc
+
+        protected
+
+        def inspection_tree
+          InspectionTree.new do
+            # rubocop:disable Style/SymbolProc
+            add_text do |string|
+              string.inspect
+            end
+            # rubocop:enable Style/SymbolProc
+          end
+        end
       end
     end
   end

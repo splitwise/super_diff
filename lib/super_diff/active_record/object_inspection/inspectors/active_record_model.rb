@@ -2,35 +2,45 @@ module SuperDiff
   module ActiveRecord
     module ObjectInspection
       module Inspectors
-        ActiveRecordModel = SuperDiff::ObjectInspection::InspectionTree.new do
-          add_text do |object|
-            "#<#{object.class} "
+        class ActiveRecordModel < SuperDiff::ObjectInspection::Inspectors::Base
+          def self.applies_to?(value)
+            value.is_a?(::ActiveRecord::Base)
           end
 
-          when_multiline do
-            add_text "{"
-          end
+          protected
 
-          nested do |object|
-            add_break
+          def inspection_tree
+            SuperDiff::ObjectInspection::InspectionTree.new do
+              add_text do |object|
+                "#<#{object.class} "
+              end
 
-            insert_separated_list(
-              ["id"] + (object.attributes.keys.sort - ["id"]),
-              separator: ",",
-            ) do |name|
-              add_text name
-              add_text ": "
-              add_inspection_of object.read_attribute(name)
+              when_multiline do
+                add_text "{"
+              end
+
+              nested do |object|
+                add_break
+
+                insert_separated_list(
+                  ["id"] + (object.attributes.keys.sort - ["id"]),
+                  separator: ",",
+                ) do |name|
+                  add_text name
+                  add_text ": "
+                  add_inspection_of object.read_attribute(name)
+                end
+              end
+
+              add_break
+
+              when_multiline do
+                add_text "}"
+              end
+
+              add_text ">"
             end
           end
-
-          add_break
-
-          when_multiline do
-            add_text "}"
-          end
-
-          add_text ">"
         end
       end
     end

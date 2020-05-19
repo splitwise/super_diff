@@ -9,5 +9,6 @@ gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rspec"
 gem "rubocop"
+gem "attr_extras", branch: "pass-kwargs-in-explicit-static-facade", git: "https://github.com/mcmire/attr_extras"
 
 gemspec path: "../"

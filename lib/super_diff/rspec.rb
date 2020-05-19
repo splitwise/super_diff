@@ -11,12 +11,6 @@ module SuperDiff
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
     autoload :OperationalSequencers, "super_diff/rspec/operational_sequencers"
 
-    class << self
-      attr_accessor :extra_differ_classes
-      attr_accessor :extra_operational_sequencer_classes
-      attr_accessor :extra_diff_formatter_classes
-    end
-
     def self.configure
       yield configuration
     end
@@ -68,31 +62,34 @@ module SuperDiff
     end
 
     SuperDiff.configuration.tap do |config|
-      config.add_extra_differ_class(Differs::CollectionContainingExactly)
-      config.add_extra_differ_class(Differs::CollectionIncluding)
-      config.add_extra_differ_class(Differs::HashIncluding)
-      config.add_extra_differ_class(Differs::ObjectHavingAttributes)
+      config.add_extra_differ_classes(
+        Differs::CollectionContainingExactly,
+        Differs::CollectionIncluding,
+        Differs::HashIncluding,
+        Differs::ObjectHavingAttributes,
+      )
 
-      config.add_extra_operational_sequencer_class(
+      config.add_extra_operational_sequencer_classes(
         OperationalSequencers::CollectionContainingExactly,
-      )
-      config.add_extra_operational_sequencer_class(
         OperationalSequencers::CollectionIncluding,
-      )
-      config.add_extra_operational_sequencer_class(
         OperationalSequencers::HashIncluding,
-      )
-      config.add_extra_operational_sequencer_class(
         OperationalSequencers::ObjectHavingAttributes,
+      )
+
+      config.add_extra_inspector_classes(
+        ObjectInspection::Inspectors::CollectionContainingExactly,
+        ObjectInspection::Inspectors::CollectionIncluding,
+        ObjectInspection::Inspectors::HashIncluding,
+        ObjectInspection::Inspectors::InstanceOf,
+        ObjectInspection::Inspectors::KindOf,
+        ObjectInspection::Inspectors::ObjectHavingAttributes,
+        ObjectInspection::Inspectors::Primitive,
+        ObjectInspection::Inspectors::ValueWithin,
       )
     end
   end
 end
 
 require_relative "rspec/monkey_patches"
-
-SuperDiff::ObjectInspection.map.prepend(
-  SuperDiff::RSpec::ObjectInspection::MapExtension,
-)
 
 SuperDiff::Csi.color_enabled = ::RSpec.configuration.color_enabled?

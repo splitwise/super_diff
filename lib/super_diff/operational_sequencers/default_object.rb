@@ -29,7 +29,7 @@ module SuperDiff
       end
 
       def find_operation_sequence_for(value)
-        OperationSequence.call(value)
+        OperationSequences::Main.call(value)
       end
 
       def attribute_names

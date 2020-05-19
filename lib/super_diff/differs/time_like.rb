@@ -1,8 +1,8 @@
 module SuperDiff
   module Differs
-    class Time < Base
+    class TimeLike < Base
       def self.applies_to?(expected, actual)
-        OperationalSequencers::TimeLike.applies_to?(expected, actual)
+        SuperDiff.time_like?(expected) && SuperDiff.time_like?(actual)
       end
 
       private

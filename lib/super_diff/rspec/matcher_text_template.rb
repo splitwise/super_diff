@@ -3,7 +3,7 @@ module SuperDiff
     class MatcherTextTemplate
       MAX_LINE_LENGTH = 100
 
-      def self.generate(&block)
+      def self.render(&block)
         new(&block).to_s
       end
 

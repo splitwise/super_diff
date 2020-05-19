@@ -2,19 +2,25 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module Inspectors
-        CollectionIncluding = SuperDiff::ObjectInspection::InspectionTree.new do
-          def self.applies_to?(object)
-            SuperDiff::RSpec.a_collection_including?(object)
+        class CollectionIncluding < SuperDiff::ObjectInspection::Inspectors::Base
+          def self.applies_to?(value)
+            SuperDiff::RSpec.a_collection_including_something?(value)
           end
 
-          add_text "#<a collection including ("
+          protected
 
-          nested do |aliased_matcher|
-            insert_array_inspection_of(aliased_matcher.expecteds)
+          def inspection_tree
+            SuperDiff::ObjectInspection::InspectionTree.new do
+              add_text "#<a collection including ("
+
+              nested do |aliased_matcher|
+                insert_array_inspection_of(aliased_matcher.expecteds)
+              end
+
+              add_break
+              add_text ")>"
+            end
           end
-
-          add_break
-          add_text ")>"
         end
       end
     end

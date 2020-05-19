@@ -7,12 +7,16 @@ module SuperDiff
 
       def diff
         if worth_diffing?
-          diff = SuperDiff::Differ.call(expected, actual, omit_empty: true)
+          diff = SuperDiff::Differs::Main.call(
+            expected,
+            actual,
+            omit_empty: true,
+          )
           "\n\n" + diff
         else
           ""
         end
-      rescue NoDifferAvailableError
+      rescue SuperDiff::Errors::NoDifferAvailableError
         ""
       end
 

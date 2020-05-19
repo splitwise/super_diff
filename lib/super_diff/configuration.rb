@@ -5,6 +5,7 @@ module SuperDiff
       :extra_operation_sequence_classes,
       :extra_operational_sequencer_classes,
       :extra_diff_formatter_classes,
+      :extra_inspector_classes,
     )
 
     def initialize
@@ -12,25 +13,48 @@ module SuperDiff
       @extra_operation_sequence_classes = [].freeze
       @extra_operational_sequencer_classes = [].freeze
       @extra_diff_formatter_classes = [].freeze
+      @extra_inspector_classes = [].freeze
     end
 
-    def add_extra_differ_class(klass)
-      @extra_differ_classes = (@extra_differ_classes + [klass]).freeze
+    def add_extra_differ_classes(*classes)
+      @extra_differ_classes = (@extra_differ_classes + classes).freeze
     end
+    alias_method :add_extra_differ_class, :add_extra_differ_classes
 
-    def add_extra_operation_sequence_class(klass)
-      @extra_operation_sequence_classes =
-        (@extra_operation_sequence_classes + [klass]).freeze
-    end
-
-    def add_extra_operational_sequencer_class(klass)
+    def add_extra_operational_sequencer_classes(*classes)
       @extra_operational_sequencer_classes =
-        (@extra_operational_sequencer_classes + [klass]).freeze
+        (@extra_operational_sequencer_classes + classes).freeze
     end
+    alias_method(
+      :add_extra_operational_sequencer_class,
+      :add_extra_operational_sequencer_classes,
+    )
 
-    def add_extra_diff_formatter_class(klass)
-      @extra_diff_formatter_classes =
-        (@extra_diff_formatter_classes + [klass]).freeze
+    def add_extra_operation_sequence_classes(*classes)
+      @extra_operation_sequence_classes =
+        (@extra_operation_sequence_classes + classes).freeze
     end
+    alias_method(
+      :add_extra_operation_sequence_class,
+      :add_extra_operation_sequence_classes,
+    )
+
+    def add_extra_diff_formatter_classes(*classes)
+      @extra_diff_formatter_classes =
+        (@extra_diff_formatter_classes + classes).freeze
+    end
+    alias_method(
+      :add_extra_diff_formatter_class,
+      :add_extra_diff_formatter_classes,
+    )
+
+    def add_extra_inspector_classes(*classes)
+      @extra_inspector_classes =
+        (@extra_inspector_classes + classes).freeze
+    end
+    alias_method(
+      :add_extra_inspector_class,
+      :add_extra_inspector_classes,
+    )
   end
 end

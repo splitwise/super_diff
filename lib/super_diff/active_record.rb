@@ -16,28 +16,24 @@ module SuperDiff
       :OperationalSequencers,
       "super_diff/active_record/operational_sequencers",
     )
-  end
-end
 
-if defined?(SuperDiff::RSpec)
-  SuperDiff::RSpec.configure do |config|
-    config.add_extra_differ_class(
-      SuperDiff::ActiveRecord::Differs::ActiveRecordRelation,
-    )
-    config.add_extra_operational_sequencer_class(
-      SuperDiff::ActiveRecord::OperationalSequencers::ActiveRecordModel,
-    )
-    config.add_extra_operational_sequencer_class(
-      SuperDiff::ActiveRecord::OperationalSequencers::ActiveRecordRelation,
-    )
-    config.add_extra_diff_formatter_class(
-      SuperDiff::ActiveRecord::DiffFormatters::ActiveRecordRelation,
-    )
+    SuperDiff.configure do |config|
+      config.add_extra_differ_classes(
+        Differs::ActiveRecordRelation,
+      )
+      config.add_extra_operational_sequencer_classes(
+        OperationalSequencers::ActiveRecordModel,
+        OperationalSequencers::ActiveRecordRelation,
+      )
+      config.add_extra_diff_formatter_classes(
+        DiffFormatters::ActiveRecordRelation,
+      )
+      config.add_extra_inspector_classes(
+        ObjectInspection::Inspectors::ActiveRecordModel,
+        ObjectInspection::Inspectors::ActiveRecordRelation,
+      )
+    end
   end
 end
 
 require "super_diff/active_record/monkey_patches"
-
-SuperDiff::ObjectInspection.map.prepend(
-  SuperDiff::ActiveRecord::ObjectInspection::MapExtension,
-)

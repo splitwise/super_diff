@@ -9,6 +9,7 @@ gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rspec"
 gem "rubocop"
+gem "attr_extras", branch: "pass-kwargs-in-explicit-static-facade", git: "https://github.com/mcmire/attr_extras"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
 gem "activerecord", "~> 5.1.0"

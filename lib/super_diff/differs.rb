@@ -6,17 +6,10 @@ module SuperDiff
     autoload :DefaultObject, "super_diff/differs/default_object"
     autoload :Empty, "super_diff/differs/empty"
     autoload :Hash, "super_diff/differs/hash"
+    autoload :Main, "super_diff/differs/main"
     autoload :MultilineString, "super_diff/differs/multiline_string"
-    autoload :Time, "super_diff/differs/time"
-
-    DEFAULTS = [
-      Array,
-      Hash,
-      Time,
-      MultilineString,
-      CustomObject,
-      DefaultObject,
-      Empty,
-    ].freeze
+    autoload :TimeLike, "super_diff/differs/time_like"
   end
 end
+
+require "super_diff/differs/defaults"
