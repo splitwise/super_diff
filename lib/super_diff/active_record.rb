@@ -9,21 +9,21 @@ module SuperDiff
       "super_diff/active_record/object_inspection",
     )
     autoload(
-      :OperationSequences,
-      "super_diff/active_record/operation_sequences",
+      :OperationTrees,
+      "super_diff/active_record/operation_trees",
     )
     autoload(
-      :OperationalSequencers,
-      "super_diff/active_record/operational_sequencers",
+      :OperationTreeBuilders,
+      "super_diff/active_record/operation_tree_builders",
     )
 
     SuperDiff.configure do |config|
       config.add_extra_differ_classes(
         Differs::ActiveRecordRelation,
       )
-      config.add_extra_operational_sequencer_classes(
-        OperationalSequencers::ActiveRecordModel,
-        OperationalSequencers::ActiveRecordRelation,
+      config.add_extra_operation_tree_builder_classes(
+        OperationTreeBuilders::ActiveRecordModel,
+        OperationTreeBuilders::ActiveRecordRelation,
       )
       config.add_extra_diff_formatter_classes(
         DiffFormatters::ActiveRecordRelation,

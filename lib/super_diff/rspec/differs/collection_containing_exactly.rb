@@ -9,8 +9,8 @@ module SuperDiff
 
         private
 
-        def operational_sequencer_class
-          OperationalSequencers::CollectionContainingExactly
+        def operation_tree_builder_class
+          OperationTreeBuilders::CollectionContainingExactly
         end
       end
     end

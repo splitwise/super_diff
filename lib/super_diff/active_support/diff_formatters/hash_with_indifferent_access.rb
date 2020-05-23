@@ -2,8 +2,8 @@ module SuperDiff
   module ActiveSupport
     module DiffFormatters
       class HashWithIndifferentAccess < SuperDiff::DiffFormatters::Base
-        def self.applies_to?(operations)
-          operations.is_a?(OperationSequences::HashWithIndifferentAccess)
+        def self.applies_to?(operation_tree)
+          operation_tree.is_a?(OperationTrees::HashWithIndifferentAccess)
         end
 
         def call
@@ -25,7 +25,7 @@ module SuperDiff
                 "#{key.inspect} => "
               end
             },
-            operations: operations,
+            operation_tree: operation_tree,
             indent_level: indent_level,
             add_comma: add_comma?,
           )

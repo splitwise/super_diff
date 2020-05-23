@@ -4,7 +4,7 @@ module SuperDiff
       extend AttrExtras.mixin
 
       method_object(
-        :operations,
+        :operation_tree,
         [
           :indent_level!,
           add_comma: false,
@@ -15,13 +15,13 @@ module SuperDiff
       def call
         if resolved_class
           resolved_class.call(
-            operations,
+            operation_tree,
             indent_level: indent_level,
             add_comma: add_comma?,
             value_class: value_class,
           )
         else
-          raise NoDiffFormatterAvailableError.create(operations)
+          raise NoDiffFormatterAvailableError.create(operation_tree)
         end
       end
 
@@ -30,7 +30,7 @@ module SuperDiff
       attr_query :add_comma?
 
       def resolved_class
-        available_classes.find { |klass| klass.applies_to?(operations) }
+        available_classes.find { |klass| klass.applies_to?(operation_tree) }
       end
 
       def available_classes

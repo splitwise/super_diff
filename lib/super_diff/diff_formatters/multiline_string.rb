@@ -1,8 +1,8 @@
 module SuperDiff
   module DiffFormatters
     class MultilineString < Base
-      def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::MultilineString)
+      def self.applies_to?(operation_tree)
+        operation_tree.is_a?(OperationTrees::MultilineString)
       end
 
       def call
@@ -12,7 +12,7 @@ module SuperDiff
       private
 
       def lines
-        operations.reduce([]) do |array, operation|
+        operation_tree.reduce([]) do |array, operation|
           case operation.name
           when :change
             array << Helpers.style(:alpha, "- #{operation.left_value}")

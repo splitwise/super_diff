@@ -1,12 +1,12 @@
 module SuperDiff
   module DiffFormatters
     class DefaultObject < Base
-      def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::DefaultObject)
+      def self.applies_to?(operation_tree)
+        operation_tree.is_a?(OperationTrees::DefaultObject)
       end
 
-      def initialize(operations, value_class: nil, **rest)
-        super(operations, **rest)
+      def initialize(operation_tree, value_class: nil, **rest)
+        super(operation_tree, **rest)
 
         @value_class = value_class
       end
@@ -26,7 +26,7 @@ module SuperDiff
 
             "@#{key}="
           },
-          operations: operations,
+          operation_tree: operation_tree,
           indent_level: indent_level,
           add_comma: add_comma?,
         )

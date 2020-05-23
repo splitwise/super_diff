@@ -19,7 +19,7 @@ module SuperDiff
       )
 
       def call
-        operations.to_diff(
+        operation_tree.to_diff(
           indent_level: indent_level,
           collection_prefix: nil,
           add_comma: false,
@@ -32,14 +32,14 @@ module SuperDiff
         " " * (indent_level * 2)
       end
 
-      def operational_sequencer_class
+      def operation_tree_builder_class
         unimplemented_instance_method!
       end
 
       private
 
-      def operations
-        operational_sequencer_class.call(
+      def operation_tree
+        operation_tree_builder_class.call(
           expected: expected,
           actual: actual,
         )

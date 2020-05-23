@@ -11,7 +11,7 @@ module SuperDiff
         [
           :expected!,
           :actual!,
-          extra_operational_sequencer_classes: [],
+          extra_operation_tree_builder_classes: [],
           extra_diff_formatter_classes: [],
         ]
       )

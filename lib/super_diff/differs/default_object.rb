@@ -7,8 +7,8 @@ module SuperDiff
 
       private
 
-      def operations
-        OperationalSequencers::Main.call(
+      def operation_tree
+        OperationTreeBuilders::Main.call(
           expected: expected,
           actual: actual,
           all_or_nothing: true,

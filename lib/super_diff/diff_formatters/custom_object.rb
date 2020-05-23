@@ -1,8 +1,8 @@
 module SuperDiff
   module DiffFormatters
     class CustomObject < DefaultObject
-      def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::CustomObject)
+      def self.applies_to?(operation_tree)
+        operation_tree.is_a?(OperationTrees::CustomObject)
       end
 
       def call
@@ -20,7 +20,7 @@ module SuperDiff
 
             "#{key}: "
           },
-          operations: operations,
+          operation_tree: operation_tree,
           indent_level: indent_level,
           add_comma: add_comma?,
         )

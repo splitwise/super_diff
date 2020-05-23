@@ -15,15 +15,15 @@ module SuperDiff
 
         def call
           DiffFormatters::HashWithIndifferentAccess.call(
-            operations,
+            operation_tree,
             indent_level: indent_level,
           )
         end
 
         private
 
-        def operations
-          OperationalSequencers::HashWithIndifferentAccess.call(
+        def operation_tree
+          OperationTreeBuilders::HashWithIndifferentAccess.call(
             expected: expected,
             actual: actual,
           )

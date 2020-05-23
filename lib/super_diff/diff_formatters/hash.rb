@@ -1,8 +1,8 @@
 module SuperDiff
   module DiffFormatters
     class Hash < Base
-      def self.applies_to?(operations)
-        operations.is_a?(OperationSequences::Hash)
+      def self.applies_to?(operation_tree)
+        operation_tree.is_a?(OperationTrees::Hash)
       end
 
       def call
@@ -24,7 +24,7 @@ module SuperDiff
               "#{key.inspect} => "
             end
           },
-          operations: operations,
+          operation_tree: operation_tree,
           indent_level: indent_level,
           add_comma: add_comma?,
         )

@@ -1,7 +1,7 @@
 module SuperDiff
   module DiffFormatters
     class Base
-      def self.applies_to?(_operations)
+      def self.applies_to?(*)
         raise NotImplementedError
       end
 
@@ -9,7 +9,7 @@ module SuperDiff
       extend AttrExtras.mixin
 
       method_object(
-        :operations,
+        :operation_tree,
         [
           :indent_level!,
           collection_prefix: "",

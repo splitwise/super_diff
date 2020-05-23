@@ -167,13 +167,16 @@ you would add something like this to your test helper file
 ``` ruby
 SuperDiff.configure do |config|
   config.add_extra_differ_class(YourDiffer)
-  config.add_extra_operational_sequencer_class(YourOperationalSequencer)
-  config.add_extra_operation_sequence_class(YourOperationSequence)
+  config.add_extra_operation_tree_builder_class(YourOperationTreeBuilder)
+  config.add_extra_operation_tree_class(YourOperationTree)
   config.add_extra_diff_formatter_class(YourDiffFormatter)
 end
 ```
 
-*(More info here in the future on adding a custom differ, operational sequencer, operation sequence, and diff formatter.
+*(More info here in the future on adding a custom differ,
+operation tree builder,
+operation tree,
+and diff formatter.
 Also explanations on what these are.)*
 
 ## Support

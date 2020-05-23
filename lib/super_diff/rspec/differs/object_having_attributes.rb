@@ -8,8 +8,8 @@ module SuperDiff
 
         private
 
-        def operational_sequencer_class
-          OperationalSequencers::ObjectHavingAttributes
+        def operation_tree_builder_class
+          OperationTreeBuilders::ObjectHavingAttributes
         end
       end
     end

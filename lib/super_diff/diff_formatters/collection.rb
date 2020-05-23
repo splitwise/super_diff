@@ -10,7 +10,7 @@ module SuperDiff
         [
           :open_token!,
           :close_token!,
-          :operations!,
+          :operation_tree!,
           :indent_level!,
           :add_comma!,
           :collection_prefix!,
@@ -35,7 +35,7 @@ module SuperDiff
       end
 
       def contents
-        operations.map do |operation|
+        operation_tree.map do |operation|
           if operation.name == :change
             handle_change_operation(operation)
           else

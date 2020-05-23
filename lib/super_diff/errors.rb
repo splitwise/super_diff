@@ -9,8 +9,8 @@ module SuperDiff
       "super_diff/errors/no_differ_available_error",
     )
     autoload(
-      :NoOperationalSequenceAvailableError,
-      "super_diff/errors/no_operational_sequencer_available_error",
+      :NoOperationTreeBuilderAvailableError,
+      "super_diff/errors/no_operation_tree_builder_available_error",
     )
   end
 end

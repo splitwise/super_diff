@@ -8,8 +8,8 @@ module SuperDiff
 
       private
 
-      def operational_sequencer_class
-        OperationalSequencers::MultilineString
+      def operation_tree_builder_class
+        OperationTreeBuilders::MultilineString
       end
     end
   end

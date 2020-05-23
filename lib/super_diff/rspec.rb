@@ -9,7 +9,7 @@ module SuperDiff
     autoload :MatcherTextBuilders, "super_diff/rspec/matcher_text_builders"
     autoload :MatcherTextTemplate, "super_diff/rspec/matcher_text_template"
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
-    autoload :OperationalSequencers, "super_diff/rspec/operational_sequencers"
+    autoload :OperationTreeBuilders, "super_diff/rspec/operation_tree_builders"
 
     def self.configure
       yield configuration
@@ -69,11 +69,11 @@ module SuperDiff
         Differs::ObjectHavingAttributes,
       )
 
-      config.add_extra_operational_sequencer_classes(
-        OperationalSequencers::CollectionContainingExactly,
-        OperationalSequencers::CollectionIncluding,
-        OperationalSequencers::HashIncluding,
-        OperationalSequencers::ObjectHavingAttributes,
+      config.add_extra_operation_tree_builder_classes(
+        OperationTreeBuilders::CollectionContainingExactly,
+        OperationTreeBuilders::CollectionIncluding,
+        OperationTreeBuilders::HashIncluding,
+        OperationTreeBuilders::ObjectHavingAttributes,
       )
 
       config.add_extra_inspector_classes(

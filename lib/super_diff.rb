@@ -16,8 +16,8 @@ module SuperDiff
   autoload :Helpers, "super_diff/helpers"
   autoload :ImplementationChecks, "super_diff/implementation_checks"
   autoload :ObjectInspection, "super_diff/object_inspection"
-  autoload :OperationSequences, "super_diff/operation_sequences"
-  autoload :OperationalSequencers, "super_diff/operational_sequencers"
+  autoload :OperationTrees, "super_diff/operation_trees"
+  autoload :OperationTreeBuilders, "super_diff/operation_tree_builders"
   autoload :Operations, "super_diff/operations"
   autoload :RecursionGuard, "super_diff/recursion_guard"
 

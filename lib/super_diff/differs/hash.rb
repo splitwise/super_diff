@@ -7,8 +7,8 @@ module SuperDiff
 
       private
 
-      def operational_sequencer_class
-        OperationalSequencers::Hash
+      def operation_tree_builder_class
+        OperationTreeBuilders::Hash
       end
     end
   end

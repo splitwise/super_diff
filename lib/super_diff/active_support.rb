@@ -4,8 +4,8 @@ module SuperDiff
     autoload :Differs, "super_diff/active_support/differs"
     autoload :ObjectInspection, "super_diff/active_support/object_inspection"
     autoload(
-      :OperationalSequencers,
-      "super_diff/active_support/operational_sequencers",
+      :OperationTreeBuilders,
+      "super_diff/active_support/operation_tree_builders",
     )
     autoload(
       :OperationalSequences,
@@ -16,8 +16,8 @@ module SuperDiff
       config.add_extra_differ_classes(
         Differs::HashWithIndifferentAccess,
       )
-      config.add_extra_operational_sequencer_classes(
-        OperationalSequencers::HashWithIndifferentAccess,
+      config.add_extra_operation_tree_builder_classes(
+        OperationTreeBuilders::HashWithIndifferentAccess,
       )
       config.add_extra_diff_formatter_classes(
         DiffFormatters::HashWithIndifferentAccess,

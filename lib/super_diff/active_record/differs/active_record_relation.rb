@@ -9,15 +9,15 @@ module SuperDiff
 
         def call
           DiffFormatters::ActiveRecordRelation.call(
-            operations,
+            operation_tree,
             indent_level: indent_level,
           )
         end
 
         private
 
-        def operations
-          OperationalSequencers::ActiveRecordRelation.call(
+        def operation_tree
+          OperationTreeBuilders::ActiveRecordRelation.call(
             expected: expected,
             actual: actual,
           )
