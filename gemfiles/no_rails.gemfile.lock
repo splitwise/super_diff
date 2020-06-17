@@ -1,9 +1,8 @@
 GIT
-  remote: https://github.com/mcmire/attr_extras
-  revision: 6073a1d6c7ac2d1b7331a34a09ed2779c4fec83c
-  branch: pass-kwargs-in-explicit-static-facade
+  remote: https://github.com/barsoom/attr_extras
+  revision: 7bdf20ac699967610ad8e6c910eff27ead8d135c
   specs:
-    attr_extras (6.2.3)
+    attr_extras (6.2.4)
 
 PATH
   remote: ..

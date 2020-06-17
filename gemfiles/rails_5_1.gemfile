@@ -3,13 +3,13 @@
 source "https://rubygems.org"
 
 gem "appraisal"
+gem "attr_extras", git: "https://github.com/barsoom/attr_extras"
 gem "childprocess"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rspec"
 gem "rubocop"
-gem "attr_extras", branch: "pass-kwargs-in-explicit-static-facade", git: "https://github.com/mcmire/attr_extras"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
 gem "activerecord", "~> 5.1.0"
