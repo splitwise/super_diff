@@ -3,7 +3,6 @@
 source "https://rubygems.org"
 
 gem "appraisal"
-gem "attr_extras", git: "https://github.com/barsoom/attr_extras"
 gem "childprocess"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
