@@ -1,5 +1,83 @@
 # Changelog
 
+## 0.5.0 - 2020-06-18
+
+### Breaking changes
+
+* Do some reorganizing and rename some concepts in the code: "operational
+  sequencer" changes to "operation tree builder" and "operation sequence"
+  changes to "operation tree". Although super_diff is not yet at 1.0, this does
+  result in breaking changes to the API, so:
+
+  * If you are inheriting from `SuperDiff::OperationalSequencers::*`, you will
+    want to now inherit from `SuperDiff::OperationTreeBuilders::*`.
+  * If you are inheriting from `SuperDiff::OperationSequence::*`, you will
+    want to now inherit from `SuperDiff::OperationTrees::*`.
+  * If you are configuring the gem by saying:
+
+    ``` ruby
+    SuperDiff::RSpec.configuration do |config|
+      config.add_extra_operational_sequencer_class(SomeClass)
+      config.add_extra_operation_sequence_class(SomeClass)
+    end
+    ```
+
+    you will want to change this to:
+
+    ``` ruby
+    SuperDiff::RSpec.configuration do |config|
+      config.add_extra_operation_tree_builder_class(SomeClass)
+      config.add_extra_operation_tree_class(SomeClass)
+    end
+    ```
+
+  ([#84], [#85])
+
+[#84]: https://github.com/mcmire/super_diff/pull/84
+[#85]: https://github.com/mcmire/super_diff/pull/85
+
+### Features
+
+* Add inspectors for `an_instance_of`, `a_kind_of`, and `a_value_within`.
+  ([#74])
+
+[#74]: https://github.com/mcmire/super_diff/pull/74
+
+### Bug fixes
+
+* Get rid of warnings produced on Ruby 2.7.1. ([#71])
+* Fix diff produced by (incorrect) usage of `have_attributes` with a hash as the
+  actual value. ([#76])
+
+[#71]: https://github.com/mcmire/super_diff/pull/71
+[#76]: https://github.com/mcmire/super_diff/pull/76
+
+### Improvements
+
+* Move configuration so that instead of using
+
+  ``` ruby
+  SuperDiff::RSpec.configure do |config|
+    # ...
+  end
+  ```
+
+  you can now say:
+
+  ``` ruby
+  SuperDiff.configure do |config|
+    # ...
+  end
+  ```
+
+  ([#80])
+
+* Update diff between two hashes so that original ordering of keys is preserved.
+  ([#81])
+
+[#80]: https://github.com/mcmire/super_diff/pull/81
+[#81]: https://github.com/mcmire/super_diff/pull/81
+
 ## 0.4.2 - 2020-02-11
 
 ### Bug fixes
