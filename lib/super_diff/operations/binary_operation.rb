@@ -14,14 +14,9 @@ module SuperDiff
           :right_value!,
           :left_index!,
           :right_index!,
-          child_operations: [],
+          children: [],
         ],
       )
-
-      def should_add_comma_after_displaying?
-        left_index < left_collection.size - 1 ||
-          right_index < right_collection.size - 1
-      end
     end
   end
 end

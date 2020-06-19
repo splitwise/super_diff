@@ -7,20 +7,10 @@ module SuperDiff
             actual.is_a?(::ActiveRecord::Relation)
         end
 
-        def call
-          DiffFormatters::ActiveRecordRelation.call(
-            operation_tree,
-            indent_level: indent_level,
-          )
-        end
+        protected
 
-        private
-
-        def operation_tree
-          OperationTreeBuilders::ActiveRecordRelation.call(
-            expected: expected,
-            actual: actual,
-          )
+        def operation_tree_builder_class
+          OperationTreeBuilders::ActiveRecordRelation
         end
       end
     end

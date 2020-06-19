@@ -8,19 +8,13 @@ module SuperDiff
         :actual,
         [
           indent_level: 0,
-          index_in_collection: nil,
           omit_empty: false,
         ],
       )
 
       def call
         if resolved_class
-          resolved_class.call(
-            expected,
-            actual,
-            indent_level: indent_level,
-            index_in_collection: index_in_collection,
-          )
+          resolved_class.call(expected, actual, indent_level: indent_level)
         else
           raise Errors::NoDifferAvailableError.create(expected, actual)
         end

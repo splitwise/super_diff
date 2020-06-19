@@ -14,14 +14,14 @@ module SuperDiff
             Helpers.style(
               :expected,
               "Expected: " +
-              SuperDiff.inspect_object(expected, as_single_line: true),
+              SuperDiff.inspect_object(expected, as_lines: false),
             )
           }
           #{
             Helpers.style(
               :actual,
               "  Actual: " +
-              SuperDiff.inspect_object(actual, as_single_line: true),
+              SuperDiff.inspect_object(actual, as_lines: false),
             )
           }
 

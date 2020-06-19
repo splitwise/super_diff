@@ -7,9 +7,12 @@ module SuperDiff
           actual.respond_to?(:attributes_for_super_diff)
       end
 
+      protected
+
       def build_operation_tree
-        # XXX This assumes that `expected` and `actual` are the same
-        OperationTrees::CustomObject.new([], value_class: expected.class)
+        # NOTE: It doesn't matter whether we use expected or actual here,
+        # because all we care about is the name of the class
+        OperationTrees::CustomObject.new([], underlying_object: actual)
       end
 
       def attribute_names

@@ -5,7 +5,7 @@ module SuperDiff
         expected.is_a?(::Hash) && actual.is_a?(::Hash)
       end
 
-      private
+      protected
 
       def operation_tree_builder_class
         OperationTreeBuilders::Hash

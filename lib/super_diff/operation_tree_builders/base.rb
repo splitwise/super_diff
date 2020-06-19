@@ -39,7 +39,7 @@ module SuperDiff
           )
             unmatched_delete_operations.delete(delete_operation)
 
-            if (child_operations = possible_comparison_of(
+            if (children = possible_comparison_of(
               delete_operation,
               insert_operation,
             ))
@@ -52,9 +52,9 @@ module SuperDiff
                 right_key: insert_operation.key,
                 left_value: delete_operation.collection[operation.key],
                 right_value: insert_operation.collection[operation.key],
-                left_index: delete_operation.index_in_collection,
-                right_index: insert_operation.index_in_collection,
-                child_operations: child_operations,
+                left_index: delete_operation.index,
+                right_index: insert_operation.index,
+                children: children,
               )
             else
               operation_tree << insert_operation
@@ -73,7 +73,7 @@ module SuperDiff
 
       def possible_comparison_of(operation, next_operation)
         if should_compare?(operation, next_operation)
-          sequence(operation.value, next_operation.value)
+          compare(operation.value, next_operation.value)
         else
           nil
         end
@@ -86,7 +86,7 @@ module SuperDiff
           next_operation.key == operation.key
       end
 
-      def sequence(expected, actual)
+      def compare(expected, actual)
         OperationTreeBuilders::Main.call(
           expected: expected,
           actual: actual,

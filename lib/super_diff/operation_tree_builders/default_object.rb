@@ -25,7 +25,7 @@ module SuperDiff
       def build_operation_tree
         # XXX This assumes that `expected` and `actual` are the same
         # TODO: Does this need to be find_operation_tree_for?
-        OperationTrees::DefaultObject.new([], value_class: expected.class)
+        OperationTrees::DefaultObject.new([], underlying_object: actual)
       end
 
       def find_operation_tree_for(value)

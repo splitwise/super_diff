@@ -1,26 +1,41 @@
 module SuperDiff
   module OperationTrees
     class DefaultObject < Base
-      def self.applies_to?(_value)
+      def self.applies_to?(*)
         true
       end
 
-      attr_reader :value_class
+      attr_reader :underlying_object
 
-      # TODO: Default this to collection.class?
-      def initialize(collection, value_class:)
-        super(collection)
-
-        @value_class = value_class
+      def initialize(operations, underlying_object:)
+        super(operations)
+        @underlying_object = underlying_object
       end
 
-      def to_diff(indent_level:, add_comma: false, **_rest)
-        DiffFormatters::Main.call(
-          self,
-          indent_level: indent_level,
-          add_comma: add_comma,
-          value_class: value_class,
-        )
+      def pretty_print(pp)
+        pp.text "#<#{self.class.name} "
+        pp.nest(1) do
+          pp.breakable
+          pp.text ":operations=>"
+          pp.group(1, "[", "]") do
+            pp.breakable
+            pp.seplist(self) do |value|
+              pp.pp value
+            end
+          end
+          pp.comma_breakable
+          pp.text ":underlying_object=>"
+          pp.object_address_group underlying_object do
+            # do nothing
+          end
+        end
+        pp.text ">"
+      end
+
+      protected
+
+      def operation_tree_flattener_class
+        OperationTreeFlatteners::DefaultObject
       end
     end
   end

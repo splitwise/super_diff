@@ -266,14 +266,14 @@ module RSpec
       SuperDiff.insert_singleton_overrides(self) do
         # Override to use our formatting algorithm
         def format(value)
-          SuperDiff.inspect_object(value, as_single_line: true)
+          SuperDiff.inspect_object(value, as_lines: false)
         end
       end
 
       SuperDiff.insert_overrides(self) do
         # Override to use our formatting algorithm
         def format(value)
-          SuperDiff.inspect_object(value, as_single_line: true)
+          SuperDiff.inspect_object(value, as_lines: false)
         end
       end
     end

@@ -2,15 +2,30 @@ module SuperDiff
   module ObjectInspection
     module Nodes
       class WhenNonEmpty < Base
-        def evaluate(object, indent_level:, as_single_line:)
+        def self.node_name
+          :when_non_empty
+        end
+
+        def self.method_name
+          :when_non_empty
+        end
+
+        def render_to_string(object)
           if empty?(object)
             ""
           else
-            evaluate_in_subtree(
+            render_to_string_in_subtree(object)
+          end
+        end
+
+        def render_to_lines(object, type:, indentation_level:)
+          if empty?(object)
+            []
+          else
+            render_to_lines_in_subtree(
               object,
-              indent_level: indent_level,
-              as_single_line: as_single_line,
-              &block
+              type: type,
+              indentation_level: indentation_level,
             )
           end
         end

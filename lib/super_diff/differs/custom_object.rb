@@ -7,7 +7,7 @@ module SuperDiff
           actual.respond_to?(:attributes_for_super_diff)
       end
 
-      private
+      protected
 
       def operation_tree_builder_class
         OperationTreeBuilders::CustomObject

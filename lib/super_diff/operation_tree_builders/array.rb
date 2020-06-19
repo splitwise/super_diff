@@ -17,7 +17,7 @@ module SuperDiff
           operation_tree: operation_tree,
           expected: expected,
           actual: actual,
-          sequence: method(:sequence),
+          compare: method(:compare),
         )
       end
 
@@ -28,7 +28,7 @@ module SuperDiff
       class LcsCallbacks
         extend AttrExtras.mixin
 
-        pattr_initialize [:operation_tree!, :expected!, :actual!, :sequence!]
+        pattr_initialize [:operation_tree!, :expected!, :actual!, :compare!]
         public :operation_tree
 
         def match(event)
@@ -44,10 +44,10 @@ module SuperDiff
         end
 
         def change(event)
-          child_operations = sequence.call(event.old_element, event.new_element)
+          children = compare.(event.old_element, event.new_element)
 
-          if child_operations
-            add_change_operation(event, child_operations)
+          if children
+            add_change_operation(event, children)
           else
             add_delete_operation(event)
             add_insert_operation(event)
@@ -63,7 +63,6 @@ module SuperDiff
             key: event.old_position,
             value: event.old_element,
             index: event.old_position,
-            index_in_collection: expected.index(event.old_element),
           )
         end
 
@@ -74,7 +73,6 @@ module SuperDiff
             key: event.new_position,
             value: event.new_element,
             index: event.new_position,
-            index_in_collection: actual.index(event.new_element),
           )
         end
 
@@ -85,11 +83,10 @@ module SuperDiff
             key: event.new_position,
             value: event.new_element,
             index: event.new_position,
-            index_in_collection: actual.index(event.new_element),
           )
         end
 
-        def add_change_operation(event, child_operations)
+        def add_change_operation(event, children)
           operation_tree << Operations::BinaryOperation.new(
             name: :change,
             left_collection: expected,
@@ -100,7 +97,7 @@ module SuperDiff
             right_value: event.new_element,
             left_index: event.old_position,
             right_index: event.new_position,
-            child_operations: child_operations,
+            children: children,
           )
         end
       end

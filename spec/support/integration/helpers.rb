@@ -11,11 +11,13 @@ module SuperDiff
     def make_plain_test_program(
       test,
       color_enabled:,
+      configuration: {},
       preserve_as_whole_file: false
     )
       TestPrograms::Plain.new(
         test,
         color_enabled: color_enabled,
+        configuration: configuration,
         preserve_as_whole_file: preserve_as_whole_file,
       )
     end

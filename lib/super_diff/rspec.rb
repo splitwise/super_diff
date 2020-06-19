@@ -11,8 +11,8 @@ module SuperDiff
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
     autoload :OperationTreeBuilders, "super_diff/rspec/operation_tree_builders"
 
-    def self.configure
-      yield configuration
+    def self.configure(&block)
+      SuperDiff.configure(&block)
     end
 
     def self.configuration
@@ -105,20 +105,19 @@ module SuperDiff
         OperationTreeBuilders::ObjectHavingAttributes,
       )
 
-      config.add_extra_inspector_classes(
-        ObjectInspection::Inspectors::CollectionContainingExactly,
-        ObjectInspection::Inspectors::CollectionIncluding,
-        ObjectInspection::Inspectors::HashIncluding,
-        ObjectInspection::Inspectors::InstanceOf,
-        ObjectInspection::Inspectors::KindOf,
-        ObjectInspection::Inspectors::ObjectHavingAttributes,
-        ObjectInspection::Inspectors::Primitive,
-        ObjectInspection::Inspectors::ValueWithin,
+      config.add_extra_inspection_tree_builder_classes(
+        ObjectInspection::InspectionTreeBuilders::Double,
+        ObjectInspection::InspectionTreeBuilders::CollectionContainingExactly,
+        ObjectInspection::InspectionTreeBuilders::CollectionIncluding,
+        ObjectInspection::InspectionTreeBuilders::HashIncluding,
+        ObjectInspection::InspectionTreeBuilders::InstanceOf,
+        ObjectInspection::InspectionTreeBuilders::KindOf,
+        ObjectInspection::InspectionTreeBuilders::ObjectHavingAttributes,
+        # ObjectInspection::InspectionTreeBuilders::Primitive,
+        ObjectInspection::InspectionTreeBuilders::ValueWithin,
       )
     end
   end
 end
 
 require_relative "rspec/monkey_patches"
-
-SuperDiff::Csi.color_enabled = ::RSpec.configuration.color_enabled?

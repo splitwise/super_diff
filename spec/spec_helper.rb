@@ -43,6 +43,7 @@ Dir.glob(File.expand_path("support/**/*.rb", __dir__)).
   end
 
 RSpec.configure do |config|
+  config.include(SuperDiff::UnitTests, type: :unit)
   config.include(SuperDiff::IntegrationTests, type: :integration)
 
   config.expect_with :rspec do |expectations|

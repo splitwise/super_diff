@@ -1,7 +1,10 @@
 module SuperDiff
   module RSpec
     module ObjectInspection
-      autoload :Inspectors, "super_diff/rspec/object_inspection/inspectors"
+      autoload(
+        :InspectionTreeBuilders,
+        "super_diff/rspec/object_inspection/inspection_tree_builders",
+      )
     end
   end
 end

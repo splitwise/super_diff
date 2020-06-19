@@ -8,9 +8,16 @@ class TestPlan
   SUPPORT_DIR = PROJECT_DIRECTORY.join("spec/support")
   INSIDE_INTEGRATION_TEST = true
 
-  def initialize(using_outside_of_zeus: false, color_enabled: false)
+  def initialize(
+    using_outside_of_zeus: false,
+    color_enabled: false,
+    configuration: {}
+  )
     @using_outside_of_zeus = using_outside_of_zeus
     @color_enabled = color_enabled
+    @configuration = configuration
+
+    @pry_enabled = true
     @libraries = []
   end
 
@@ -29,6 +36,13 @@ class TestPlan
       require "pry-byebug"
     rescue LoadError
       require "pry-nav"
+    end
+
+    # Fix Zeus for 0.13.0+
+    Pry::Pager.class_eval do
+      def best_available
+        Pry::Pager::NullPager.new(pry_instance.output)
+      end
     end
 
     if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?("no_rails_")
@@ -107,7 +121,7 @@ class TestPlan
 
   private
 
-  attr_reader :libraries
+  attr_reader :libraries, :configuration
 
   def using_outside_of_zeus?
     @using_outside_of_zeus
@@ -115,6 +129,10 @@ class TestPlan
 
   def color_enabled?
     @color_enabled
+  end
+
+  def pry_enabled?
+    @pry_enabled
   end
 
   def reconnect_activerecord
@@ -136,10 +154,16 @@ class TestPlan
       option_parser.parse!
     end
 
-    SuperDiff::Csi.color_enabled = color_enabled?
-
     RSpec.configure do |config|
       config.color_mode = color_enabled? ? :on : :off
+    end
+
+    SuperDiff.configuration.merge!(
+      configuration.merge(color_enabled: color_enabled?)
+    )
+
+    if !pry_enabled?
+      ENV["DISABLE_PRY"] = "true"
     end
 
     yield if block_given?
@@ -155,6 +179,14 @@ class TestPlan
     @_option_parser ||= OptionParser.new do |opts|
       opts.on("--[no-]color", "Enable or disable color.") do |value|
         @color_enabled = value
+      end
+
+      opts.on("--[no-]pry", "Disable Pry.") do |value|
+        @pry_enabled = value
+      end
+
+      opts.on("--configuration CONFIG", String, "Configure SuperDiff.") do |json|
+        @configuration = JSON.parse(json).transform_keys(&:to_sym)
       end
     end
   end

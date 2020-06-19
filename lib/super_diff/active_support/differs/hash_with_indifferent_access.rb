@@ -13,20 +13,10 @@ module SuperDiff
           )
         end
 
-        def call
-          DiffFormatters::HashWithIndifferentAccess.call(
-            operation_tree,
-            indent_level: indent_level,
-          )
-        end
+        protected
 
-        private
-
-        def operation_tree
-          OperationTreeBuilders::HashWithIndifferentAccess.call(
-            expected: expected,
-            actual: actual,
-          )
+        def operation_tree_builder_class
+          OperationTreeBuilders::HashWithIndifferentAccess
         end
       end
     end
