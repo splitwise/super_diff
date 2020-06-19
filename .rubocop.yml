@@ -36,6 +36,7 @@ Lint/RequireParentheses:
 Metrics/AbcSize:
   Max: 32
 Metrics/BlockLength:
+  Max: 50
   ExcludedMethods:
     - as_both_colored_and_uncolored
     - build_expected_output
@@ -85,7 +86,11 @@ Naming/MethodParameterName:
   Enabled: false
 Style/AccessModifierDeclarations:
   Enabled: false
+Style/AsciiComments:
+  Enabled: false
 Style/Alias:
+  Enabled: false
+Style/BlockComments:
   Enabled: false
 Style/CollectionMethods:
   Enabled: true
@@ -114,7 +119,7 @@ Style/Lambda:
 Style/LineEndConcatenation:
   Enabled: false
 Style/MethodCalledOnDoEndBlock:
-  Enabled: true
+  Enabled: false
 Style/MultilineBlockChain:
   Enabled: false
 Style/NegatedIf:
@@ -129,11 +134,15 @@ Style/OneLineConditional:
   Enabled: false
 Style/ParallelAssignment:
   Enabled: false
+Style/ParenthesesAroundCondition:
+  Enabled: false
 Style/PercentLiteralDelimiters:
   Enabled: false
 Style/PreferredHashMethods:
   Enabled: false
 Style/RaiseArgs:
+  Enabled: false
+Style/RegexpLiteral:
   Enabled: false
 Style/SafeNavigation:
   Enabled: false
