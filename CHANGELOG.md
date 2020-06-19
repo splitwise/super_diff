@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.1 - 2020-06-19
+
+### Bug fixes
+
+* Add dependency on `attr_extras` back as it was mistakenly removed in the
+  previous release. ([#92])
+
+[#92]: https://github.com/mcmire/super_diff/pull/92
+
 ## 0.5.0 - 2020-06-18
 
 ### Breaking changes
