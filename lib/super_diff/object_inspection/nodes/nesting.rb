@@ -2,12 +2,23 @@ module SuperDiff
   module ObjectInspection
     module Nodes
       class Nesting < Base
-        def evaluate(object, indent_level:, as_single_line:)
-          evaluate_in_subtree(
+        def self.node_name
+          :nesting
+        end
+
+        def self.method_name
+          :nested
+        end
+
+        def render_to_string(object)
+          render_to_string_in_subtree(object)
+        end
+
+        def render_to_lines(object, type:, indentation_level:)
+          render_to_lines_in_subtree(
             object,
-            indent_level: indent_level + 1,
-            as_single_line: as_single_line,
-            &block
+            type: type,
+            indentation_level: indentation_level + 1,
           )
         end
       end

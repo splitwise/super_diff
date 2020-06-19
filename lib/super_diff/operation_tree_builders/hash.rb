@@ -65,7 +65,6 @@ module SuperDiff
                     key: ek,
                     value: ev2,
                     index: ei2,
-                    index_in_collection: ei2,
                   )
                 end
               end
@@ -77,7 +76,6 @@ module SuperDiff
               key: ak,
               value: av,
               index: ai,
-              index_in_collection: ai,
             )
           else
             # (If we're here, it probably means that the key in 'actual' isn't
@@ -133,7 +131,6 @@ module SuperDiff
                     key: ek,
                     value: ev,
                     index: ei2,
-                    index_in_collection: ei2,
                   )
                 end
 
@@ -148,7 +145,6 @@ module SuperDiff
                     key: ak,
                     value: av,
                     index: ai,
-                    index_in_collection: ai,
                   )
                 end
               end
@@ -169,7 +165,6 @@ module SuperDiff
                 key: ak,
                 value: expected[ak],
                 index: ei,
-                index_in_collection: ei,
               )
             end
 
@@ -184,7 +179,6 @@ module SuperDiff
                 key: ak,
                 value: av,
                 index: ai,
-                index_in_collection: ai,
               )
             end
           end
@@ -207,7 +201,6 @@ module SuperDiff
             key: ek,
             value: ev,
             index: ei,
-            index_in_collection: ei,
           )
         end
 

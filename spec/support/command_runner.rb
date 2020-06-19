@@ -5,24 +5,6 @@ require "shellwords"
 require "timeout"
 
 class CommandRunner
-  module OutputHelpers
-    def self.bookended(text)
-      divider("START") + text + "\n" + divider("END")
-    end
-
-    def self.divider(title = "")
-      total_length = 72
-      start_length = 3
-
-      string = ""
-      string << ("-" * start_length)
-      string << title
-      string << "-" * (total_length - start_length - title.length)
-      string << "\n"
-      string
-    end
-  end
-
   class CommandFailedError < StandardError
     def self.create(command:, exit_status:, output:, message: nil)
       allocate.tap do |error|
@@ -49,7 +31,11 @@ Command #{command.inspect} failed, exiting with status #{exit_status}.
       if output
         message << <<-MESSAGE
 Output:
-#{OutputHelpers.divider("START") + output + OutputHelpers.divider("END")}
+#{
+  SuperDiff::Test::OutputHelpers.divider("START") +
+  output +
+  SuperDiff::Test::OutputHelpers.divider("END")
+}
         MESSAGE
       end
 
@@ -83,7 +69,11 @@ Command #{formatted_command.inspect} timed out after #{timeout} seconds.
       if output
         message << <<-MESSAGE
 Output:
-#{OutputHelpers.divider("START") + output + OutputHelpers.divider("END")}
+#{
+  SuperDiff::Test::OutputHelpers.divider("START") +
+  output +
+  SuperDiff::Test::OutputHelpers.divider("END")
+}
         MESSAGE
       end
 
@@ -120,9 +110,9 @@ Output:
     @env = extract_env_from(@options)
 
     @process = ChildProcess.build(*command)
-    # @env.each do |key, value|
-      # @process.environment[key] = value
-    # end
+    @env.each do |key, value|
+      @process.environment[key] = value
+    end
     @process.io.stdout = @process.io.stderr = @writer
 
     @wrapper = -> (block) { block.call }
@@ -250,9 +240,9 @@ Output:
 
     debug do
       "\n" +
-        OutputHelpers.divider("START") +
+        SuperDiff::Test::OutputHelpers.divider("START") +
         output +
-        OutputHelpers.divider("END")
+        SuperDiff::Test::OutputHelpers.divider("END")
     end
   end
 

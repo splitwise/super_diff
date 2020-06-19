@@ -202,7 +202,6 @@ SuperDiff.configure do |config|
   config.add_extra_differ_class(YourDiffer)
   config.add_extra_operation_tree_builder_class(YourOperationTreeBuilder)
   config.add_extra_operation_tree_class(YourOperationTree)
-  config.add_extra_diff_formatter_class(YourDiffFormatter)
 end
 ```
 

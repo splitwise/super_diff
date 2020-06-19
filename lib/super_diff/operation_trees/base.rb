@@ -1,33 +1,56 @@
-require 'delegate'
+require "forwardable"
 
 module SuperDiff
   module OperationTrees
-    class Base < SimpleDelegator
-      def self.applies_to?(_value)
+    class Base
+      def self.applies_to?(*)
         unimplemented_class_method!
       end
 
+      include Enumerable
+      include ImplementationChecks
       extend ImplementationChecks
+      extend Forwardable
 
-      # rubocop:disable Lint/UnusedMethodArgument
-      def to_diff(indent_level:, add_comma: false, collection_prefix: nil)
-        raise NotImplementedError
+      def_delegators :operations, :<<, :delete, :each
+
+      def initialize(operations)
+        @operations = operations
       end
-      # rubocop:enable Lint/UnusedMethodArgument
+
+      def to_diff(indentation_level:)
+        TieredLinesFormatter.call(
+          perhaps_elide(flatten(indentation_level: indentation_level)),
+        )
+      end
+
+      def flatten(indentation_level:)
+        operation_tree_flattener_class.call(
+          self,
+          indentation_level: indentation_level,
+        )
+      end
 
       def pretty_print(pp)
-        pp.text "#{self.class.name}.new(["
-        pp.group_sub do
-          pp.nest(2) do
-            pp.breakable
-            pp.seplist(self) do |value|
-              pp.pp value
-            end
+        pp.group(1, "#<#{self.class.name} [", "]>") do
+          pp.breakable
+          pp.seplist(self) do |value|
+            pp.pp value
           end
         end
-        pp.breakable
-        pp.text("])")
       end
+
+      def perhaps_elide(tiered_lines)
+        if SuperDiff.configuration.diff_elision_enabled?
+          TieredLinesElider.call(tiered_lines)
+        else
+          tiered_lines
+        end
+      end
+
+      private
+
+      attr_reader :operations
     end
   end
 end

@@ -3,11 +3,18 @@ module SuperDiff
     class InspectionTree
       include Enumerable
 
-      def initialize(&block)
+      def initialize(disallowed_node_names: [], &block)
+        @disallowed_node_names = disallowed_node_names
         @nodes = []
 
         if block
           instance_eval(&block)
+        end
+      end
+
+      Nodes.registry.each do |node_class|
+        define_method(node_class.method_name) do |*args, **options, &block|
+          add_node(node_class, *args, **options, &block)
         end
       end
 
@@ -19,129 +26,224 @@ module SuperDiff
         @_before_each_callbacks ||= Hash.new { |h, k| h[k] = [] }
       end
 
-      def evaluate(object, as_single_line:, indent_level:)
-        nodes.reduce("") do |str, node|
-          str << node.evaluate(
-            object,
-            as_single_line: as_single_line,
-            indent_level: indent_level,
-          )
+      def render_to_string(object)
+        nodes.reduce("") do |string, node|
+          result = node.render_to_string(object)
+          string + result
         end
+      end
+
+      def render_to_lines(object, type:, indentation_level:)
+        nodes.
+          each_with_index.
+          reduce([TieredLines.new, "", ""]) do |
+            (tiered_lines, prelude, prefix),
+            (node, index)
+          |
+            UpdateTieredLines.call(
+              object: object,
+              type: type,
+              indentation_level: indentation_level,
+              nodes: nodes,
+              tiered_lines: tiered_lines,
+              prelude: prelude,
+              prefix: prefix,
+              node: node,
+              index: index,
+            )
+          end.
+          first
       end
 
       def evaluate_block(object, &block)
         instance_exec(object, &block)
       end
 
-      def add_text(*args, &block)
-        add_node :text, *args, &block
-      end
-
-      def when_multiline(&block)
-        add_node :when_multiline, &block
-      end
-
-      def when_singleline(&block)
-        add_node :when_singleline, &block
-      end
-
-      def add_break(*args, &block)
-        add_node :break, *args, &block
-      end
-
-      def nested(&block)
-        add_node :nesting, &block
-      end
-
-      def when_empty(&block)
-        add_node :when_empty, &block
-      end
-
-      def when_non_empty(&block)
-        add_node :when_non_empty, &block
-      end
-
       def insert_array_inspection_of(array)
-        # FIXME: why must this be inside the `nested`?
-        add_break
-
         insert_separated_list(array) do |value|
-          add_inspection_of value
+          # Have to do these shenanigans so that if value is a hash, Ruby
+          # doesn't try to interpret it as keyword args
+          if SuperDiff::Helpers.ruby_version_matches?(">= 2.7.1")
+            add_inspection_of(value, **{})
+          else
+            add_inspection_of(*[value, {}])
+          end
         end
       end
 
-      def insert_hash_inspection_of(hash, initial_break: " ")
-        # FIXME: why must this be inside the `nested`?
-        add_break initial_break
+      def insert_hash_inspection_of(hash)
+        keys = hash.keys
 
-        format_keys_as_kwargs = hash.keys.all? do |key|
+        format_keys_as_kwargs = keys.all? do |key|
           key.is_a?(Symbol)
         end
 
-        insert_separated_list(hash) do |(key, value)|
+        insert_separated_list(keys) do |key|
           if format_keys_as_kwargs
-            add_text key
-            add_text ": "
+            as_prefix_when_rendering_to_lines do
+              add_text "#{key}: "
+            end
           else
-            add_inspection_of key
-            add_text " => "
+            as_prefix_when_rendering_to_lines do
+              add_inspection_of key, as_lines: false
+              add_text " => "
+            end
           end
 
-          add_inspection_of value
+          # Have to do these shenanigans so that if hash[key] is a hash, Ruby
+          # doesn't try to interpret it as keyword args
+          if SuperDiff::Helpers.ruby_version_matches?(">= 2.7.1")
+            add_inspection_of(hash[key], **{})
+          else
+            add_inspection_of(*[hash[key], {}])
+          end
         end
       end
 
-      def insert_separated_list(enumerable, separator: ",")
+      def insert_separated_list(enumerable, &block)
         enumerable.each_with_index do |value, index|
-          if index > 0
-            if separator.is_a?(Nodes::Base)
-              append_node separator
-            else
-              add_text separator
+          as_lines_when_rendering_to_lines(
+            add_comma: index < enumerable.size - 1,
+          ) do
+            if index > 0
+              when_rendering_to_string do
+                add_text " "
+              end
             end
 
-            add_break " "
+            evaluate_block(value, &block)
           end
-
-          yield value
-        end
-      end
-
-      def add_inspection_of(value = nil, &block)
-        if block
-          add_node :inspection, &block
-        else
-          add_node :inspection, value
-        end
-      end
-
-      def apply_tree(tree)
-        tree.each do |node|
-          append_node(node.clone_with(tree: self))
         end
       end
 
       private
 
-      attr_reader :nodes
+      attr_reader :disallowed_node_names, :nodes
 
-      def add_node(type, *args, &block)
-        append_node(build_node(type, *args, &block))
+      def add_node(node_class, *args, **options, &block)
+        if disallowed_node_names.include?(node_class.name)
+          raise DisallowedNodeError.create(node_name: node_class.name)
+        end
+
+        append_node(build_node(node_class, *args, **options, &block))
       end
 
       def append_node(node)
         nodes.push(node)
       end
 
-      def build_node(type, *args, &block)
-        Nodes.fetch(type).new(self, *args, &block)
+      def build_node(node_class, *args, **options, &block)
+        node_class.new(self, *args, **options, &block)
       end
 
-      class BlockArgument
+      class UpdateTieredLines
         extend AttrExtras.mixin
 
-        rattr_initialize [:object!, :as_single_line!]
-        attr_query :as_single_line?
+        method_object [
+          :object!,
+          :type!,
+          :indentation_level!,
+          :nodes!,
+          :tiered_lines!,
+          :prelude!,
+          :prefix!,
+          :node!,
+          :index!
+        ]
+
+        def call
+          if rendering.is_a?(Array)
+            concat_with_lines
+          elsif rendering.is_a?(PrefixForNextNode)
+            add_to_prefix
+          elsif tiered_lines.any?
+            add_to_last_line
+          elsif index < nodes.size - 1 || rendering.is_a?(PreludeForNextNode)
+            add_to_prelude
+          else
+            add_to_lines
+          end
+        end
+
+        private
+
+        def concat_with_lines
+          additional_lines = prefix_with(
+            prefix,
+            prepend_with(prelude, rendering),
+          )
+          [tiered_lines + additional_lines, "", ""]
+        end
+
+        def prefix_with(prefix, text)
+          if prefix.empty?
+            text
+          else
+            [text[0].prefixed_with(prefix)] + text[1..-1]
+          end
+        end
+
+        def prepend_with(prelude, text)
+          if prelude.empty?
+            text
+          else
+            [text[0].with_value_prepended(prelude)] + text[1..-1]
+          end
+        end
+
+        def add_to_prefix
+          [tiered_lines, prelude, rendering + prefix]
+        end
+
+        def add_to_last_line
+          new_lines = tiered_lines[0..-2] + [
+            tiered_lines[-1].with_value_appended(rendering),
+          ]
+          [new_lines, prelude, prefix]
+        end
+
+        def add_to_prelude
+          [tiered_lines, prelude + rendering, prefix]
+        end
+
+        def add_to_lines
+          new_lines = tiered_lines + [
+            Line.new(
+              type: type,
+              indentation_level: indentation_level,
+              value: rendering,
+            ),
+          ]
+          [new_lines, prelude, prefix]
+        end
+
+        def rendering
+          if defined?(@_rendering)
+            @_rendering
+          else
+            @_rendering = node.render(
+              object,
+              preferably_as_lines: true,
+              type: type,
+              indentation_level: indentation_level,
+            )
+          end
+        end
+      end
+
+      class DisallowedNodeError < StandardError
+        def self.create(node_name:)
+          allocate.tap do |error|
+            error.node_name = node_name
+            error.__send__(:initialize)
+          end
+        end
+
+        attr_accessor :node_name
+
+        def initialize(_message = nil)
+          super("#{node_name} is not allowed to be used here!")
+        end
       end
     end
   end

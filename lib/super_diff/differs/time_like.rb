@@ -5,7 +5,7 @@ module SuperDiff
         SuperDiff.time_like?(expected) && SuperDiff.time_like?(actual)
       end
 
-      private
+      protected
 
       def operation_tree_builder_class
         OperationTreeBuilders::TimeLike

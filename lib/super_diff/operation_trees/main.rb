@@ -8,7 +8,7 @@ module SuperDiff
       def call
         if resolved_class
           begin
-            resolved_class.new([], value_class: value.class)
+            resolved_class.new([], underlying_object: value)
           rescue ArgumentError
             resolved_class.new([])
           end

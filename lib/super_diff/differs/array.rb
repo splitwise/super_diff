@@ -5,7 +5,7 @@ module SuperDiff
         expected.is_a?(::Array) && actual.is_a?(::Array)
       end
 
-      private
+      protected
 
       def operation_tree_builder_class
         OperationTreeBuilders::Array

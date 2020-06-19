@@ -6,7 +6,7 @@ module SuperDiff
           (expected.include?("\n") || actual.include?("\n"))
       end
 
-      private
+      protected
 
       def operation_tree_builder_class
         OperationTreeBuilders::MultilineString

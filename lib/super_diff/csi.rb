@@ -58,7 +58,6 @@ module SuperDiff
         end
     end
 
-    self.color_enabled = ENV["CI"] == "true" || STDOUT.tty?
-    # puts "(SuperDiff::Csi) Super::Csi.color_enabled: #{color_enabled?}"
+    self.color_enabled = false
   end
 end

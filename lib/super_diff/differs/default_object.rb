@@ -5,7 +5,7 @@ module SuperDiff
         expected.class == actual.class
       end
 
-      private
+      protected
 
       def operation_tree
         OperationTreeBuilders::Main.call(

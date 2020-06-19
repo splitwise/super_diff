@@ -87,8 +87,6 @@ module SuperDiff
       def interpret_sequence!(sequence)
         match = sequence.match(OPENING_REGEX)
 
-        # binding.pry
-
         if match
           interpret_code!(match[1].to_i)
         end

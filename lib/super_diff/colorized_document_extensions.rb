@@ -6,12 +6,15 @@ module SuperDiff
       end
     end
 
-    def expected(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff.configuration.expected_color, &block)
-    end
-
-    def actual(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff.configuration.actual_color, &block)
+    [:actual, :border, :elision_marker, :expected, :header].each do |method_name|
+      define_method(method_name) do |*args, **opts, &block|
+        colorize(
+          *args,
+          **opts,
+          fg: SuperDiff.configuration.public_send("#{method_name}_color"),
+          &block
+        )
+      end
     end
   end
 end

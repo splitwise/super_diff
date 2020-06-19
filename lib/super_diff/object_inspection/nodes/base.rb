@@ -2,7 +2,18 @@ module SuperDiff
   module ObjectInspection
     module Nodes
       class Base
-        def initialize(tree, *args, &block)
+        def self.node_name
+          unimplemented_class_method!
+        end
+
+        def self.method_name
+          unimplemented_class_method!
+        end
+
+        include ImplementationChecks
+        extend ImplementationChecks
+
+        def initialize(tree, *args, **options, &block)
           if !args.empty? && block
             raise ArgumentError.new(
               "You cannot provide both an immediate value and a lazy value. " +
@@ -13,35 +24,40 @@ module SuperDiff
           @tree = tree
           @immediate_value = args.first
           @block = block
+          @options = options
         end
 
         def clone_with(
           tree: @tree,
           immediate_value: @immediate_value,
-          block: @block
+          block: @block,
+          **rest
         )
           if block
-            self.class.new(tree, &block)
+            self.class.new(tree, **options, **rest, &block)
           else
-            self.class.new(tree, immediate_value)
+            self.class.new(tree, immediate_value, **options, **rest)
           end
         end
 
-        def type
-          self.class.name.
-            sub(/^(.+)::(.+?)$/, '\2').
-            gsub(/([a-z])([A-Z])/, '\1_\2').
-            downcase.
-            to_sym
+        def render(object, preferably_as_lines:, **rest)
+          if options[:as_lines] || preferably_as_lines
+            render_to_lines(object, **rest)
+          else
+            render_to_string(object)
+          end
         end
 
         # rubocop:disable Lint/UnusedMethodArgument
-        def evaluate(object, indent_level:, as_single_line:)
+        def render_to_string(object)
         # rubocop:enable Lint/UnusedMethodArgument
-          raise NotImplementedError.new(
-            "Your node must provide an #evaluate method. " +
-            "(Keep in mind #evaluate may be called more than once for a node!)",
-          )
+          unimplemented_instance_method!
+        end
+
+        # rubocop:disable Lint/UnusedMethodArgument
+        def render_to_lines(object, type:, indentation_level:)
+        # rubocop:enable Lint/UnusedMethodArgument
+          unimplemented_instance_method!
         end
 
         def pretty_print(pp)
@@ -61,7 +77,7 @@ module SuperDiff
 
         private
 
-        attr_reader :tree, :immediate_value, :block
+        attr_reader :tree, :immediate_value, :block, :options
 
         def pretty_print_variables
           if block
@@ -71,13 +87,32 @@ module SuperDiff
           end
         end
 
-        def evaluate_in_subtree(object, indent_level:, as_single_line:)
+        def evaluate_block(object)
+          tree.evaluate_block(object, &block)
+        end
+
+        def render_to_string_in_subtree(object)
           subtree = InspectionTree.new
           subtree.evaluate_block(object, &block)
-          subtree.evaluate(
+          subtree.render_to_string(object)
+        end
+
+        def render_to_lines_in_subtree(
+          object,
+          type:,
+          indentation_level:,
+          disallowed_node_names: [],
+          **rest
+        )
+          subtree = InspectionTree.new(
+            disallowed_node_names: disallowed_node_names,
+          )
+          subtree.evaluate_block(object, &block)
+          subtree.render_to_lines(
             object,
-            indent_level: indent_level,
-            as_single_line: as_single_line,
+            type: type,
+            indentation_level: indentation_level,
+            **rest,
           )
         end
       end

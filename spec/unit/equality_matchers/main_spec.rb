@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe SuperDiff::EqualityMatchers::Main do
+RSpec.describe SuperDiff::EqualityMatchers::Main, type: :unit do
   describe "#call" do
     context "given the same integers" do
       it "returns an empty string" do
@@ -33,7 +33,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -60,7 +60,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -90,7 +90,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -112,7 +112,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -134,7 +134,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -189,7 +189,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -222,7 +222,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -288,7 +288,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -335,7 +335,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -371,7 +371,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -406,7 +406,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -453,7 +453,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -487,7 +487,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -521,7 +521,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -555,7 +555,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -589,7 +589,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -629,7 +629,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -668,7 +668,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -713,7 +713,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -776,7 +776,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
               plain_line    %(        data: {)
               expected_line %(-         "sticky" => true)
               actual_line   %(+         "sticky" => false,)
-              actual_line   %(+         role: "deprecated")
+              actual_line   %(+         :role => "deprecated")
               plain_line    %(        })
               plain_line    %(      })
               plain_line    %(    ],)
@@ -786,7 +786,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -832,7 +832,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -867,7 +867,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -902,7 +902,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -937,7 +937,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -984,7 +984,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1018,7 +1018,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1052,7 +1052,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1132,7 +1132,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
             }
           STR
 
-          expect(actual_output).to eq(expected_output)
+          expect(actual_output).to match_output(expected_output)
         end
       end
 
@@ -1207,7 +1207,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
             }
           STR
 
-          expect(actual_output).to eq(expected_output)
+          expect(actual_output).to match_output(expected_output)
         end
       end
     end
@@ -1255,7 +1255,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1310,7 +1310,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1357,7 +1357,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1450,7 +1450,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1499,7 +1499,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1528,17 +1528,9 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           Differing objects.
 
           #{
-            if SuperDiff::Test.jruby?
-              # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
-              colored do
-                expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
-                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
-              end
-            else
-              colored do
-                expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
-                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
-              end
+            colored do
+              expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(expected)} @character="mirage", @handle="martymcfly", @health=0.3, @inventory=["flatline", "purple body shield"], @shields=0.6, @ultimate=0.8>)
+              actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} @character="lifeline", @handle="docbrown", @health=0.3, @inventory=["wingman", "mastiff"], @shields=0.6, @ultimate=0.8>)
             end
           }
 
@@ -1546,7 +1538,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line    %(  #<SuperDiff::Test::Player {)
+              plain_line    %(  #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} {)
               expected_line %(-   @character="mirage",)
               actual_line   %(+   @character="lifeline",)
               expected_line %(-   @handle="martymcfly",)
@@ -1565,7 +1557,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1594,7 +1586,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1619,22 +1611,14 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           Differing objects.
 
           #{
-            if SuperDiff::Test.jruby?
-              # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
-              colored do
-                expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
-                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
-              end
-            else
-              colored do
-                expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
-                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
-              end
+            colored do
+              expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Helpers.object_address_for(expected)} @name="camera", @quantity=3>)
+              actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} @character="Jon", @handle="mcmire", @health=4, @inventory=["sword"], @shields=11.4, @ultimate=true>)
             end
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1671,7 +1655,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1708,7 +1692,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1747,7 +1731,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
 
@@ -1786,12 +1770,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
           }
         STR
 
-        expect(actual_output).to eq(expected_output)
+        expect(actual_output).to match_output(expected_output)
       end
     end
-  end
-
-  def colored(*args, **opts, &block)
-    SuperDiff::Helpers.style(*args, **opts, &block).to_s.chomp
   end
 end

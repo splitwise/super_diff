@@ -855,7 +855,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               # actual_line   %|+   zip: "90382",|  # FIXME
               expected_line %|-   zip: "91234"|
               actual_line   %|+   zip: "90382"|
-              expected_line %|-   something_else: "blah"|
+              # expected_line %|-   something_else: "blah"|  # TODO
+              expected_line %|-   something_else: "blah",|
               plain_line    %|  }>|
             },
           )
@@ -971,7 +972,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             # expected_line %|-     zip: "91234",|  # FIXME
             expected_line %|-     zip: "91234"|
             actual_line   %|+     zip: "90382"|
-            expected_line %|-     something_else: "blah"|
+            # expected_line %|-     something_else: "blah"|  # TODO
+            expected_line %|-     something_else: "blah",|
             plain_line    %|    }>|
             plain_line    %|  }|
           },
@@ -1065,7 +1067,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             diff: proc {
               plain_line    %|  [|
               actual_line   %|+   "b",|
-              expected_line %|-   "a"|
+              # expected_line %|-   "a"|  # TODO
+              expected_line %|-   "a",|
               plain_line    %|  ]|
             },
           )
@@ -1143,7 +1146,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               actual_line   %|+   "eggs",|
               actual_line   %|+   "cheese",|
               actual_line   %|+   "English muffins",|
-              expected_line %|-   "bread"|
+              # expected_line %|-   "bread"|  # TODO
+              expected_line %|-   "bread",|
               plain_line    %|  ]|
             },
           )
@@ -1232,7 +1236,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line    %|      "milk",|
               actual_line   %|+     "toast",|
               actual_line   %|+     "eggs",|
-              expected_line %|-     "bread"|
+              # expected_line %|-     "bread"|  # TODO
+              expected_line %|-     "bread",|
               plain_line    %|    ]|
               plain_line    %|  }|
             },

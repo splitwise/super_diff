@@ -12,7 +12,7 @@ module SuperDiff
       end
 
       def removing_object_ids
-        first_replacing(/#<([\w:]+):0x[a-z0-9]+(.*?)>/, '#<\1\2>')
+        first_replacing(/#<([\w:]+):0x[a-f0-9]+/, '#<\1')
         self
       end
 
@@ -38,10 +38,10 @@ module SuperDiff
           message =
             "Expected test to produce #{expect_output_to_contain_color? ? "colored" : "uncolored"} output, but it did not.\n\n" +
             "Expected output to contain:\n\n" +
-            CommandRunner::OutputHelpers.bookended(expected_output) +
+            SuperDiff::Test::OutputHelpers.bookended(expected_output) +
             "\n" +
             "Actual output:\n\n" +
-            CommandRunner::OutputHelpers.bookended(actual_output)
+            SuperDiff::Test::OutputHelpers.bookended(actual_output)
 
           if ["1", "true"].include?(ENV["SHOW_DIFF"])
             ::RSpec::Matchers::ExpectedsForMultipleDiffs.

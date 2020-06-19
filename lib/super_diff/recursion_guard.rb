@@ -7,7 +7,7 @@ module SuperDiff
 
     def self.guarding_recursion_of(*objects, &block)
       already_seen_objects, first_seen_objects = objects.partition do |object|
-        already_seen_object_ids.include?(object.object_id)
+        !SuperDiff.primitive?(object) && already_seen?(object)
       end
 
       first_seen_objects.each do |object|
@@ -38,8 +38,8 @@ module SuperDiff
       end
     end
 
-    def self.already_seen_objects
-      already_seen_object_ids.map { |object_id| ObjectSpace._id2ref(object_id) }
+    def self.already_seen?(object)
+      already_seen_object_ids.include?(object.object_id)
     end
 
     def self.already_seen_object_ids

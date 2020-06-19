@@ -1,5 +1,55 @@
 # Changelog
 
+## Unreleased
+
+### Breaking changes
+
+* Diff formatters are now gone in favor of operation tree flatteners. If you
+  have a custom diff formatter, you will want to inherit from
+  SuperDiff::OperationTreeFlatteners::Base (or an appropriate subclass).
+  Additionally, the `add_extra_diff_formatter_class` configuration option has
+  disappeared; instead, operation tree classes are expected to have an
+  `operation_tree_flattener_class` method, which should return your custom
+  operation tree flattener class.
+
+### Features
+
+* Add the ability to compress long diffs by eliding sections of unchanged data
+  (data which is present in both "expected" and "actual" values). This
+  functionality is not enabled by default; rather, you will need to activate it.
+  At a minimum, you will want to add this to your test helper:
+
+  ``` ruby
+  SuperDiff.configure do |config|
+    config.diff_elision_enabled = true
+  end
+  ```
+
+  By default the elision will be pretty aggressive, but if you want to preserve
+  more of the unchanged lines in the diff, you can set `diff_elision_maximum`:
+
+  ``` ruby
+  SuperDiff.configure do |config|
+    config.diff_elision_enabled = true
+    config.diff_elision_maximum = 10
+  end
+  ```
+
+  Here, the gem will try to keep at least 10 unchanged lines in between changed
+  lines.
+
+### Features
+
+* Update inspection of Doubles to include stubbed methods and their values.
+
+### Improvements
+
+* Change how objects are inspected on a single line so that instance variables
+  are always sorted.
+* Make a tweak to how hashes are presented in diffs and inspections: a hash that
+  has a mixture of symbols and strings will be presented as though all keys are
+  strings (i.e. hashrocket syntax).
+
 ## 0.7.0 - 2021-05-07
 
 ### Features
