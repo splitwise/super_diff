@@ -18,13 +18,11 @@ gemfile:
   - gemfiles/rails_5_2.gemfile
   - gemfiles/rails_6_0.gemfile
   - gemfiles/no_rails.gemfile
-matrix:
-  exclude:
-    - rvm: 2.4
-      gemfile: gemfiles/rails_6_0.gemfile
 rvm:
   - 2.7
   - 2.6
   - 2.5
-  - 2.4
   #- jruby-9.2.7.0
+branches:
+  only:
+    - master

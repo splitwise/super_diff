@@ -205,7 +205,7 @@ I'll get notified right away!
 ## Compatibility
 
 `super_diff` is [tested][travis] to work with
-Ruby >= 2.4.x,
+Ruby >= 2.5.x,
 RSpec 3.x,
 and Rails >= 5.x.
 
