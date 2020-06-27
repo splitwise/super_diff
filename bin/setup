@@ -1,9 +1,272 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-if ! bundle -v &>/dev/null; then
-  echo "You don't seem to have Bundler installed. Install it first and then re-run this script."
-  exit 1
-fi
+set -euo pipefail
 
-bundle install
-bundle exec appraisal install
+### PROJECT SETUP ##############################################################
+
+provision-project() {
+  bundle exec appraisal install
+}
+
+### DON'T MODIFY ANYTHING BELOW THIS LINE! #####################################
+
+# This setup script was generated with setup_script_generator 0.2.4,
+# available on RubyGems.
+#
+# To regenerate this section, install the gem and run:
+#
+#     generate-setup -p ruby
+#
+
+# --- SETUP --------------------------------------------------------------------
+
+something_already_printed=0
+
+determine-platform() {
+  local uname=$(uname)
+
+  if [[ $uname == 'Darwin' ]]; then
+    echo 'mac'
+  else
+    echo 'linux'
+  fi
+}
+
+banner() {
+  print-with-color 34 "== $@ =="
+}
+
+success() {
+  print-with-color 32 "$@"
+}
+
+warning() {
+  print-with-color 33 "$@"
+}
+
+error() {
+  print-with-color 31 "$@"
+}
+
+print-with-color() {
+  pad-from-existing-output
+  echo -ne "\033[${1}m"
+  echo -n "${@:2}"
+  echo -e "\033[0m"
+  something_already_printed=1
+}
+
+print-wrapped() {
+  pad-from-existing-output
+  echo -n "$@" | fmt -w 80 | cat
+  something_already_printed=1
+}
+
+pad-from-existing-output() {
+  if [[ $something_already_printed -eq 1 ]]; then
+    echo
+  fi
+}
+
+print() {
+  pad-from-existing-output
+  echo "$@"
+  something_already_printed=1
+}
+
+has-executable() {
+  type "$1" &>/dev/null
+}
+
+is-running() {
+  pgrep "$1" >/dev/null
+}
+
+start() {
+  if has-executable brew; then
+    brew services start "$1"
+  else
+    sudo service "${2:-$1}" start
+  fi
+}
+
+install() {
+  local apt_package=""
+  local rpm_package=""
+  local brew_package=""
+  local default_package=""
+  local package=""
+
+  for arg in "$@"; do
+    case $arg in
+      apt=*)
+        apt_package="${arg#apt=}"
+        ;;
+      rpm=*)
+        rpm_package="${arg#rpm=}"
+        ;;
+      brew=*)
+        brew_package="${arg#brew=}"
+        ;;
+      *)
+        default_package="$arg"
+        ;;
+    esac
+  done
+
+  if has-executable brew; then
+    package="${brew_package:-$default_package}"
+
+    if [[ -n $package ]]; then
+      brew install "$package"
+    fi
+  elif has-executable apt-get; then
+    package="${apt_package:-$default_package}"
+
+    if [[ -n $package ]]; then
+      sudo apt-get install -y "$package"
+    fi
+  elif has-executable yum; then
+    package="${rpm_package:-$default_package}"
+
+    if [[ -n $package ]]; then
+      sudo yum install -y "$package"
+    fi
+  else
+    error "Sorry, I'm not sure how to install $default_package."
+    exit 1
+  fi
+}
+
+check-for-package-manager() {
+  local platform=$(determine-platform)
+
+  if [[ $platform == "linux" ]] && ! has-executable apt-get && ! has-executable yum; then
+    # TODO: Check if build-essential is installed on Debian?
+    # TODO: Check if 'Development Tools' group is installed on RedHat?
+
+    error "You don't seem to have a package manager installed."
+    print-wrapped "\
+This setup script assumes you're using a flavor of Linux derived from Debian or
+RedHat (i.e. something with Apt or Yum). If this is not the case, then we would
+gladly take a PR fixing this!"
+    exit 1
+  elif [[ $platform == "mac" ]] && ! has-executable brew; then
+    # TODO: Check that OS X Command Line Tools are installed?
+
+    error "You don't seem to have Homebrew installed."
+    print-wrapped "\
+Visit <https://brew.sh> and follow the instructions there, then re-run this
+script."
+    exit 1
+  fi
+}
+
+install-development-libraries() {
+  install rpm=zlib-devel
+}
+
+setup() {
+  cd "$(dirname "$(dirname "$0")")"
+  check-for-package-manager
+  install-development-libraries
+  run-provisions
+  if type provision-project &>/dev/null; then
+    provision-project
+  fi
+  success "Setup complete!"
+}
+
+# --- RUBY ---------------------------------------------------------------------
+
+provision-ruby() {
+  USE_BUNDLER_1=0
+
+  if [[ -f .tool-versions ]]; then
+    REQUIRED_RUBY_VERSION=$(cat .tool-versions | grep '^ruby ' | sed -Ee 's/^ruby (.+)$/\1/')
+  elif [[ -f .ruby-version ]]; then
+    REQUIRED_RUBY_VERSION=$(cat .ruby-version)
+  else
+    error "You don't seem to have a Ruby version set in your project."
+    print-wrapped "\
+You'll need to create either a .tool-versions file or .ruby-version file in your
+project before you can run this script."
+    exit 1
+  fi
+
+  ensure-ruby-development-libraries-installed
+  ensure-ruby-installed
+  ensure-project-ruby-dependencies-installed
+}
+
+ensure-ruby-development-libraries-installed() {
+  local platform=$(determine-platform)
+
+  if [[ $platform == "linux" ]]; then
+    banner "Installing Ruby development libraries"
+    install apt=ruby-dev rpm=ruby-devel
+  fi
+}
+
+ensure-ruby-installed() {
+  if has-executable asdf; then
+    if ! (asdf current ruby | grep $REQUIRED_RUBY_VERSION'\>' &>/dev/null); then
+      banner "Installing Ruby $REQUIRED_RUBY_VERSION with asdf"
+      asdf install ruby $REQUIRED_RUBY_VERSION
+    fi
+  elif has-executable rbenv; then
+    if ! (rbenv versions | grep $REQUIRED_RUBY_VERSION'\>' &>/dev/null); then
+      banner "Installing Ruby $REQUIRED_RUBY_VERSION with rbenv"
+      rbenv install --skip-existing "$REQUIRED_RUBY_VERSION"
+    fi
+  elif has-executable chruby-exec; then
+    PREFIX='' source /usr/local/share/chruby/chruby.sh
+    if ! (chruby '' | grep $REQUIRED_RUBY_VERSION'\>' &>/dev/null); then
+      if has-executable install-ruby; then
+        banner "Installing Ruby $REQUIRED_RUBY_VERSION with install-ruby"
+        install-ruby "$REQUIRED_RUBY_VERSION"
+      else
+        error "Please use chruby to install Ruby $REQUIRED_RUBY_VERSION!"
+      fi
+    fi
+  elif has-executable rvm; then
+    if ! (rvm list | grep $required_ruby_version'\>' &>/dev/null); then
+      banner "Installing Ruby $required_ruby_version with rvm"
+      rvm install $required_ruby_version
+      rvm use $required_ruby_version
+    fi
+  else
+    error "You don't seem to have a Ruby manager installed."
+    print-wrapped "\
+We recommend using asdf. You can find instructions to install it here:
+
+    https://asdf-vm.com
+
+When you're done, close and re-open this terminal tab and re-run this script."
+    exit 1
+  fi
+}
+
+has-bundler() {
+  has-executable bundle && bundle -v &>/dev/null
+}
+
+ensure-project-ruby-dependencies-installed() {
+  banner 'Installing Ruby dependencies'
+
+  if [[ $USE_BUNDLER_1 -eq 1 ]] && (! has-bundler || [[ $(bundle -v) =~ '^1\.' ]]); then
+    gem install bundler -v '~> 1.0'
+  elif ! has-bundler; then
+    gem install bundler
+  fi
+
+  bundle check || bundle install
+}
+
+run-provisions() {
+  provision-ruby
+}
+
+# --- FIN ----------------------------------------------------------------------
+
+setup
