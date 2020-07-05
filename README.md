@@ -199,7 +199,7 @@ Please see the [contributing](./CONTRIBUTING.md) document for more on how to do 
 If there's a change you want implemented, you can choose to sponsor that change!
 `super_diff` is set up on IssueHunt,
 so feel free to search for an existing issue (or make your own)
-and [add a bounty](https://issuehunt.io/r/mcmire/super_diff/issues).
+and [add a bounty](https://issuehunt.io/r/mcmire/super_diff).
 I'll get notified right away!
 
 ## Compatibility
