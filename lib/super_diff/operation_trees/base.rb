@@ -1,3 +1,5 @@
+require 'delegate'
+
 module SuperDiff
   module OperationTrees
     class Base < SimpleDelegator
