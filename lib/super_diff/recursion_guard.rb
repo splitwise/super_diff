@@ -1,3 +1,5 @@
+require 'set'
+
 module SuperDiff
   module RecursionGuard
     RECURSION_GUARD_KEY = "super_diff_recursion_guard_key".freeze
