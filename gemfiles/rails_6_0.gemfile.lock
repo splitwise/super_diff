@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    super_diff (0.5.1)
+    super_diff (0.5.2)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
