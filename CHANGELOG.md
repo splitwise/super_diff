@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.5.2 - 2020-09-04
+
+### Bug fixes
+
+* Add missing standard library requires. ([#98])
+
+[#98]: https://github.com/mcmire/super_diff/pull/98
+
+### Other notable changes
+
+* Drop support for Ruby 2.4.
+
 ## 0.5.1 - 2020-06-19
 
 ### Bug fixes
