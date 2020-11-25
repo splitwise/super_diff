@@ -31,8 +31,8 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           diff: proc {
             plain_line %|  [|
             plain_line %|    "Marty",|
-            plain_line %|    "Jennifer",|
-            plain_line %|    "Doc",|
+            beta_line  %|+   "Jennifer",|
+            beta_line  %|+   "Doc",|
             alpha_line %|-   "Einie"|
             plain_line %|  ]|
           },
@@ -129,8 +129,8 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|  [|
               plain_line %|    "Marty McFly",|
               plain_line %|    "Doc Brown",|
-              plain_line %|    "Einie",|
               plain_line %|    "Lorraine McFly",|
+              beta_line  %|+   "Einie",|
               alpha_line %|-   "Biff Tannen",|
               alpha_line %|-   "George McFly"|
               plain_line %|  ]|
@@ -239,8 +239,8 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|  [|
               plain_line %|    "Marty McFly",|
               plain_line %|    "Doc Brown",|
-              plain_line %|    "Einie",|
-              plain_line %|    "Lorraine McFly",|
+              beta_line  %|+   "Einie",|
+              beta_line  %|+   "Lorraine McFly",|
               alpha_line %|-   "Biff Tannen",|
               alpha_line %|-   /Georg McFly/,|
               alpha_line %|-   /Lorrain McFly/|
@@ -348,9 +348,9 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               plain_line %|      foo: "bar"|
               plain_line %|    },|
               plain_line %|    #<Double (anonymous)>,|
-              plain_line %|    {|
-              plain_line %|      blargh: "riddle"|
-              plain_line %|    },|
+              beta_line  %|+   {|
+              beta_line  %|+     blargh: "riddle"|
+              beta_line  %|+   },|
               alpha_line %|-   #<a collection containing exactly (|
               alpha_line %|-     "zing"|
               alpha_line %|-   )>|
