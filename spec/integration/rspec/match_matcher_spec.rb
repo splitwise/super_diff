@@ -981,7 +981,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             },
             diff: proc {
               plain_line %|  [|
-              plain_line %|    "b",|
+              beta_line  %|+   "b",|
               alpha_line %|-   "a"|
               plain_line %|  ]|
             },
@@ -1056,10 +1056,10 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             diff: proc {
               plain_line %|  [|
               plain_line %|    "milk",|
-              plain_line %|    "toast",|
-              plain_line %|    "eggs",|
-              plain_line %|    "cheese",|
-              plain_line %|    "English muffins",|
+              beta_line  %|+   "toast",|
+              beta_line  %|+   "eggs",|
+              beta_line  %|+   "cheese",|
+              beta_line  %|+   "English muffins",|
               alpha_line %|-   "bread"|
               plain_line %|  ]|
             },
@@ -1147,8 +1147,8 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               plain_line %|    name: "shopping list",|
               plain_line %|    contents: [|
               plain_line %|      "milk",|
-              plain_line %|      "toast",|
-              plain_line %|      "eggs",|
+              beta_line  %|+     "toast",|
+              beta_line  %|+     "eggs",|
               alpha_line %|-     "bread"|
               plain_line %|    ]|
               plain_line %|  }|
