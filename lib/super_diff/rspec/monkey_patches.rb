@@ -272,34 +272,34 @@ module RSpec
         return expected if self === expected
 
         text =
-          colorizer.wrap("Diff:", SuperDiff::COLORS.fetch(:header)) +
+          colorizer.wrap("Diff:", SuperDiff.configuration.header_color) +
           "\n\n" +
           colorizer.wrap(
             "┌ (Key) ──────────────────────────┐",
-            SuperDiff::COLORS.fetch(:border)
+            SuperDiff.configuration.border_color
           ) +
           "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
           colorizer.wrap(
             "‹-› in expected, not in actual",
-            SuperDiff::COLORS.fetch(:alpha)
+            SuperDiff.configuration.alpha_color
           ) +
-          colorizer.wrap("  │", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap("  │", SuperDiff.configuration.border_color) +
           "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
           colorizer.wrap(
             "‹+› in actual, not in expected",
-            SuperDiff::COLORS.fetch(:beta)
+            SuperDiff.configuration.beta_color
           ) +
-          colorizer.wrap("  │", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap("  │", SuperDiff.configuration.border_color) +
           "\n" +
-          colorizer.wrap("│ ", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
           "‹ › in both expected and actual" +
-          colorizer.wrap(" │", SuperDiff::COLORS.fetch(:border)) +
+          colorizer.wrap(" │", SuperDiff.configuration.border_color) +
           "\n" +
           colorizer.wrap(
             "└─────────────────────────────────┘",
-            SuperDiff::COLORS.fetch(:border)
+            SuperDiff.configuration.border_color
           )
 
         new([[expected, text]])

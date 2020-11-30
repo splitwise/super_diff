@@ -7,11 +7,11 @@ module SuperDiff
     end
 
     def alpha(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:alpha), &block)
+      colorize(*args, **opts, fg: SuperDiff.configuration.alpha_color, &block)
     end
 
     def beta(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff::COLORS.fetch(:beta), &block)
+      colorize(*args, **opts, fg: SuperDiff.configuration.beta_color, &block)
     end
   end
 end
