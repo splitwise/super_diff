@@ -155,6 +155,26 @@ require "super_diff/rspec"
 
 ## Configuration
 
+### Custom colors
+
+If you want to use something other than the default colors, you can
+configure them by adding them to your test helper file
+(`rails_helper` or `spec_helper`):
+
+``` ruby
+SuperDiff.configure do |config|
+  config.set_actual_color(:green)
+  config.set_expected_color(:red)
+  config.set_border_color(:yellow)
+  config.set_header_color(:yellow)
+end
+```
+
+See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb) for the list
+of available colors.
+
+### Diffing custom objects
+
 As capable as this library is,
 it doesn't know how to deal with every kind of object out there.
 If you have a custom class,

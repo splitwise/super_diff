@@ -21,13 +21,6 @@ module SuperDiff
   autoload :Operations, "super_diff/operations"
   autoload :RecursionGuard, "super_diff/recursion_guard"
 
-  COLORS = {
-    alpha: :magenta,
-    beta: :yellow,
-    border: :blue,
-    header: :white,
-  }.freeze
-
   def self.configure
     yield configuration
   end

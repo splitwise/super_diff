@@ -46,11 +46,11 @@ module SuperDiff
         end
 
         def beta_color
-          SuperDiff::COLORS.fetch(:beta)
+          SuperDiff.configuration.beta_color
         end
 
         def alpha_color
-          SuperDiff::COLORS.fetch(:alpha)
+          SuperDiff.configuration.alpha_color
         end
 
         private
