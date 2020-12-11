@@ -369,4 +369,46 @@ RSpec.describe "Integration with RSpec's #match_array matcher", type: :integrati
       end
     end
   end
+
+  context "when the input value is a string" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = "Einie"
+          actual = ["Marty", "Jennifer", "Doc"]
+          expect(actual).to match_array(expected)
+        TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match_array(expected)|,
+          expectation: proc {
+            line do
+              plain "Expected "
+              beta %|["Marty", "Jennifer", "Doc"]|
+              plain " to match array with "
+              alpha %|"Einie"|
+              plain "."
+            end
+          },
+          diff: proc {
+            plain_line %|  [|
+            plain_line %|    "Marty",|
+            plain_line %|    "Jennifer",|
+            plain_line %|    "Doc",|
+            alpha_line %|-   "Einie"|
+            plain_line %|  ]|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
 end

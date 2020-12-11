@@ -729,7 +729,7 @@ module RSpec
     end
 
     def match_array(items)
-      BuiltIn::MatchArray.new(items)
+      BuiltIn::MatchArray.new(items.is_a?(String) ? [items] : items)
     end
     alias_matcher :an_array_matching, :match_array
   end
