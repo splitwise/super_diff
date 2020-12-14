@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.email       = ["elliot.winkler@gmail.com"]
   s.homepage    = "https://github.com/mcmire/super_diff"
   s.summary     = "A better way to view differences between complex data structures in RSpec."
+  s.license     = "MIT"
   s.description = <<~DESC
     SuperDiff is a gem that hooks into RSpec to intelligently display the
     differences between two data structures of any type.
