@@ -1,3 +1,5 @@
+require "active_record"
+
 # rubocop:disable Style/BracesAroundHashParameters, Style/ClassAndModuleChildren
 class ActiveRecord::Base
   def attributes_for_super_diff
