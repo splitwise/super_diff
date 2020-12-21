@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.3 - 2020-12-21
+
+### Bug fixes
+
+* Fix `match_array` so that it works when given a string. ([#110])
+
+[#110]: https://github.com/mcmire/super_diff/pull/110
+
+### Improvements
+
+* Include the license in the gemspec so that it is visible via tools such as
+  `license_finder`. ([#111])
+
+[#111]: https://github.com/mcmire/super_diff/pull/111
+
 ## 0.5.2 - 2020-09-04
 
 ### Bug fixes
