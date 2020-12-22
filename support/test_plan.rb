@@ -46,8 +46,48 @@ class TestPlan
     end
   end
 
+  def boot_active_support
+    require "active_support"
+    require "active_support/core_ext/hash/indifferent_access"
+  rescue LoadError
+    # active_support may not be in the Gemfile, so that's okay
+    puts "Error in TestPlan#boot_active_support: #{e.message}"
+  end
+
+  def boot_active_record
+    require "active_record"
+
+    ActiveRecord::Base.establish_connection(
+      adapter: "sqlite3",
+      database: ":memory:",
+    )
+
+    RSpec.configuration do |config|
+      config.before do
+        SuperDiff::Test::Models::ActiveRecord::Person.delete_all
+        SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
+      end
+    end
+
+    Dir.glob(SUPPORT_DIR.join("models/active_record/*.rb")).sort.each do |path|
+      require path
+    end
+  rescue LoadError => e
+    # active_record may not be in the Gemfile, so that's okay
+    puts "Error in TestPlan#boot_active_record: #{e.message}"
+  end
+
+  def boot_rails
+    boot_active_support
+    boot_active_record
+  end
+
   def run_plain_test
     run_test("super_diff/rspec")
+  end
+
+  def run_rspec_active_support_test
+    run_test("super_diff/rspec", "super_diff/active_support")
   end
 
   def run_rspec_active_record_test
@@ -56,10 +96,6 @@ class TestPlan
 
   def run_rspec_rails_test
     run_test("super_diff/rspec-rails")
-  end
-
-  def confirm_started
-    puts "Zeus server started!"
   end
 
   private
@@ -93,6 +129,7 @@ class TestPlan
       option_parser.parse!
     end
 
+    SuperDiff::Csi.color_enabled = color_enabled?
     RSpec.configure do |config|
       config.color_mode = color_enabled? ? :on : :off
     end
@@ -106,28 +143,6 @@ class TestPlan
     if !using_outside_of_zeus?
       RSpec::Core::Runner.invoke
     end
-  end
-
-  def boot_active_record
-    require "active_record"
-
-    ActiveRecord::Base.establish_connection(
-      adapter: "sqlite3",
-      database: ":memory:",
-    )
-
-    RSpec.configuration do |config|
-      config.before do
-        SuperDiff::Test::Models::ActiveRecord::Person.delete_all
-        SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
-      end
-    end
-
-    Dir.glob(SUPPORT_DIR.join("models/active_record/*.rb")).sort.each do |path|
-      require path
-    end
-  rescue LoadError
-    # active_record may not be in the Gemfile, so that's okay
   end
 
   def option_parser

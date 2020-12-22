@@ -20,10 +20,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 })
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -77,10 +74,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 })
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -138,10 +132,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -195,10 +186,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -262,10 +250,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -329,10 +314,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to eq(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -394,10 +376,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 })
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -451,10 +430,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 })
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -512,10 +488,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -569,10 +542,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -636,10 +606,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,
@@ -703,10 +670,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 }
                 expect(actual).to match(expected)
               TEST
-              program = make_rspec_rails_test_program(
-                snippet,
-                color_enabled: color_enabled,
-              )
+              program = make_program(snippet, color_enabled: color_enabled)
 
               expected_output = build_expected_output(
                 color_enabled: color_enabled,

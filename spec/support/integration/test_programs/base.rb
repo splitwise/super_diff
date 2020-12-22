@@ -1,3 +1,5 @@
+require "attr_extras/explicit"
+
 module SuperDiff
   module IntegrationTests
     module TestPrograms

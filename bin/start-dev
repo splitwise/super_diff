@@ -43,7 +43,7 @@ done
 if [[ -S .zeus.sock ]]; then
   error "It looks like Zeus is already running."
   echo "Try running 'pkill zeus' to stop it, then run this again."
-  exit 1
+  exit 2
 fi
 
 if [[ $background -eq 1 ]]; then
@@ -69,7 +69,10 @@ if [[ $background -eq 1 ]]; then
     fi
   fi
 
-  exec zeus confirm_started
+  if ! [[ -S .zeus.sock ]]; then
+    echo "It looks like Zeus failed to run. Bummer."
+    exit 3
+  fi
 else
   if [[ $debug -eq 1 ]]; then
     exec zeus --log zeus.server.log start

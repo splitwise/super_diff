@@ -21,11 +21,15 @@ module SuperDiff
     end
 
     def make_rspec_active_record_program(test, color_enabled:)
-      TestPrograms::RspecActiveRecord.new(test, color_enabled: color_enabled)
+      TestPrograms::RSpecActiveRecord.new(test, color_enabled: color_enabled)
+    end
+
+    def make_rspec_active_support_program(test, color_enabled:)
+      TestPrograms::RSpecActiveSupport.new(test, color_enabled: color_enabled)
     end
 
     def make_rspec_rails_test_program(test, color_enabled:)
-      TestPrograms::RspecRails.new(test, color_enabled: color_enabled)
+      TestPrograms::RSpecRails.new(test, color_enabled: color_enabled)
     end
 
     def build_expected_output(

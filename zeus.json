@@ -3,9 +3,13 @@
   "plan": {
     "boot": {
       "run_plain_test": [],
+      "boot_active_support": {
+        "run_rspec_active_support_test": []
+      },
       "boot_active_record": {
-        "confirm_started": [],
-        "run_rspec_active_record_test": [],
+        "run_rspec_active_record_test": []
+      },
+      "boot_rails": {
         "run_rspec_rails_test": []
       }
     }

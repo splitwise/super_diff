@@ -8,6 +8,8 @@ begin
 rescue LoadError
 end
 
+require "pp"
+
 #---
 
 require_relative "../support/current_bundle"
@@ -18,26 +20,25 @@ SuperDiff::CurrentBundle.instance.assert_appraisal!
 
 begin
   require "active_record"
-  active_record_available = true
-rescue LoadError
-  active_record_available = false
-end
 
-if active_record_available
+  active_record_available = true
+
   ActiveRecord::Base.establish_connection(
     adapter: "sqlite3",
     database: ":memory:",
   )
-
-  require "super_diff/rspec-rails"
-else
-  require "super_diff/rspec"
+rescue LoadError
+  active_record_available = false
 end
 
-Dir.glob(File.expand_path("support/**/*.rb", __dir__)).each do |file|
-  next if !active_record_available && file.include?('models/active_record')
-  require file
-end
+Dir.glob(File.expand_path("support/**/*.rb", __dir__)).
+  sort.
+  reject do |file|
+    file.include?("/models/active_record/") && !active_record_available
+  end.
+  each do |file|
+    require file
+  end
 
 RSpec.configure do |config|
   config.include(SuperDiff::IntegrationTests, type: :integration)
@@ -65,6 +66,14 @@ RSpec.configure do |config|
 
   config.order = :random
   Kernel.srand config.seed
+
+  if ENV["CI"] == "true"
+    config.color_mode = :on
+  end
 end
 
-require "pp"
+if active_record_available
+  require "super_diff/rspec-rails"
+else
+  require "super_diff/rspec"
+end

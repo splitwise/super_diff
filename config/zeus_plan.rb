@@ -11,11 +11,13 @@ class CustomZeusPlan < Zeus::Plan
     :@test_plan,
     :after_fork,
     :boot,
+    :boot_active_support,
     :boot_active_record,
+    :boot_rails,
     :run_plain_test,
+    :run_rspec_active_support_test,
     :run_rspec_active_record_test,
     :run_rspec_rails_test,
-    :confirm_started,
   )
 
   def initialize(using_outside_of_zeus: false, color_enabled: false)

@@ -1,0 +1,4 @@
+#!/bin/sh
+
+bin/start-dev --background --debug
+bundle exec rake --trace

@@ -36,7 +36,7 @@ module SuperDiff
             "."
         else
           message =
-            "Expected test to produce output, but it did not.\n\n" +
+            "Expected test to produce #{expect_output_to_contain_color? ? "colored" : "uncolored"} output, but it did not.\n\n" +
             "Expected output to contain:\n\n" +
             CommandRunner::OutputHelpers.bookended(expected_output) +
             "\n" +

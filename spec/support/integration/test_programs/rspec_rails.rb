@@ -1,7 +1,7 @@
 module SuperDiff
   module IntegrationTests
     module TestPrograms
-      class RspecRails < Base
+      class RSpecRails < Base
         protected
 
         def test_plan_prelude
