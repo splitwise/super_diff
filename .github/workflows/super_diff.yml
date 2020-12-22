@@ -9,14 +9,17 @@ jobs:
           - 2.5
           - 2.6
           - 2.7
-        gemfile:
-          - gemfiles/rails_5_0.gemfile
-          - gemfiles/rails_5_1.gemfile
-          - gemfiles/rails_5_2.gemfile
-          - gemfiles/rails_6_0.gemfile
-          - gemfiles/no_rails.gemfile
+        rails_appraisal:
+          - rails_5_0
+          - rails_5_1
+          - rails_5_2
+          - rails_6_0
+          - no_rails
+        rspec_appraisal:
+          - rspec_lt_3_10
+          - rspec_gte_3_10
     env:
-      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
       JAVA_OPTS: "--add-opens java.base/sun.nio.ch=org.jruby.dist --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.security.cert=ALL-UNNAMED --add-opens=java.base/java.util.zip=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util.regex=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/javax.crypto=ALL-UNNAMED --add-opens=java.management/sun.management=ALL-UNNAMED --add-opens=java.base/java.io=org.jruby.dist"
     steps:
       - uses: actions/checkout@v2
@@ -28,7 +31,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: vendor/bundle
-          key: v1-rubygems-local-${{ runner.os }}-${{ matrix.ruby }}-${{ hashFiles(format('{0}.lock', matrix.gemfile)) }}
+          key: v1-rubygems-local-${{ runner.os }}-${{ matrix.ruby }}-${{ hashFiles(format('gemfiles/{0}_{1}.gemfile.lock', matrix.rails_appraisal, matrix.rspec_appraisal)) }}
       - name: Install dependencies
         run: bin/ci/install
       - name: Run tests

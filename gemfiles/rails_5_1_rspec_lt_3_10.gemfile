@@ -7,11 +7,11 @@ gem "childprocess"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
-gem "rspec"
 gem "rubocop"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
-gem "activerecord", "~> 5.0.0"
+gem "activerecord", "~> 5.1.0"
 gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
+gem "rspec", "< 3.10"
 
 gemspec path: "../"

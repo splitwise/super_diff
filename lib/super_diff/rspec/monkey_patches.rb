@@ -9,6 +9,7 @@ require "rspec/matchers/built_in/eq"
 require "rspec/matchers/built_in/have_attributes"
 require "rspec/matchers/built_in/include"
 require "rspec/matchers/built_in/match"
+require "rspec/version"
 
 module RSpec
   module Expectations
@@ -394,7 +395,11 @@ module RSpec
           end
 
           def expected_for_matcher_text
-            expected
+            if SuperDiff::RSpec.rspec_version < "3.10"
+              expected
+            else
+              predicate.to_s.chomp('?')
+            end
           end
 
           def expected_action_for_matcher_text
@@ -545,7 +550,11 @@ module RSpec
           end
 
           def expected_for_matcher_text
-            "#{predicate}#{failure_message_args_description}"
+            if SuperDiff::RSpec.rspec_version < "3.10"
+              "#{predicate}#{failure_message_args_description}"
+            else
+              "#{predicate}#{args_to_s}"
+            end
           end
 
           def expected_action_for_matcher_text

@@ -61,6 +61,10 @@ module SuperDiff
       value.is_a?(::RSpec::Matchers::AliasedMatcher)
     end
 
+    def self.rspec_version
+      GemVersion.new(::RSpec::Version::STRING)
+    end
+
     SuperDiff.configuration.tap do |config|
       config.add_extra_differ_classes(
         Differs::CollectionContainingExactly,

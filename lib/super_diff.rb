@@ -13,6 +13,7 @@ module SuperDiff
   autoload :Differs, "super_diff/differs"
   autoload :EqualityMatchers, "super_diff/equality_matchers"
   autoload :Errors, "super_diff/errors"
+  autoload :GemVersion, "super_diff/gem_version"
   autoload :Helpers, "super_diff/helpers"
   autoload :ImplementationChecks, "super_diff/implementation_checks"
   autoload :ObjectInspection, "super_diff/object_inspection"
