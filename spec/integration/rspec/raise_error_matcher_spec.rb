@@ -20,11 +20,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 snippet: %|expect { raise StandardError.new('boo') }.to raise_error(RuntimeError)|,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<StandardError "boo">|
-                    plain " to match "
-                    alpha %|#<RuntimeError>|
-                    plain "."
+                    plain    %|Expected raised exception |
+                    actual   %|#<StandardError "boo">|
+                    plain    %| to match |
+                    expected %|#<RuntimeError>|
+                    plain    %|.|
                   end
                 },
               )
@@ -53,13 +53,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<StandardError "this is a super super super long message">|
+                    plain    %|Expected raised exception |
+                    actual   %|#<StandardError "this is a super super super long message">|
                   end
 
                   line do
-                    plain "                 to match "
-                    alpha %|#<RuntimeError>|
+                    plain    %|                 to match |
+                    expected %|#<RuntimeError>|
                   end
                 },
               )
@@ -88,9 +88,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               snippet: %|expect { }.to raise_error(RuntimeError)|,
               expectation: proc {
                 line do
-                  plain "Expected block to raise error "
-                  alpha %|#<RuntimeError>|
-                  plain "."
+                  plain    %|Expected block to raise error |
+                  expected %|#<RuntimeError>|
+                  plain    %|.|
                 end
               },
             )
@@ -120,11 +120,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               snippet: %|expect { raise StandardError.new('boo') }.not_to raise_error(StandardError)|,
               expectation: proc {
                 line do
-                  plain "Expected raised exception "
-                  beta  %|#<StandardError "boo">|
-                  plain " not to match "
-                  alpha %|#<StandardError>|
-                  plain "."
+                  plain    %|Expected raised exception |
+                  actual   %|#<StandardError "boo">|
+                  plain    %| not to match |
+                  expected %|#<StandardError>|
+                  plain    %|.|
                 end
               },
             )
@@ -153,13 +153,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               newline_before_expectation: true,
               expectation: proc {
                 line do
-                  plain "Expected raised exception "
-                  beta  %|#<StandardError "this is a super super long message">|
+                  plain    %|Expected raised exception |
+                  actual   %|#<StandardError "this is a super super long message">|
                 end
 
                 line do
-                  plain "             not to match "
-                  alpha %|#<StandardError>|
+                  plain    %|             not to match |
+                  expected %|#<StandardError>|
                 end
               },
             )
@@ -192,11 +192,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 snippet: %|expect { raise 'boo' }.to raise_error('hell')|,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<RuntimeError "boo">|
-                    plain " to match "
-                    alpha %|#<Exception "hell">|
-                    plain "."
+                    plain    %|Expected raised exception |
+                    actual   %|#<RuntimeError "boo">|
+                    plain    %| to match |
+                    expected %|#<Exception "hell">|
+                    plain    %|.|
                   end
                 },
               )
@@ -228,13 +228,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "Expected raised exception "
-                      beta  %|#<RuntimeError "some really really really long message">|
+                      plain    %|Expected raised exception |
+                      actual   %|#<RuntimeError "some really really really long message">|
                     end
 
                     line do
-                      plain "                 to match "
-                      alpha %|#<Exception "whatever">|
+                      plain    %|                 to match |
+                      expected %|#<Exception "whatever">|
                     end
                   },
                 )
@@ -270,19 +270,19 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                   snippet: %|expect { raise(actual_message) }.to raise_error(expected_message)|,
                   expectation: proc {
                     line do
-                      plain "Expected raised exception "
-                      beta  %|#<RuntimeError "This is fun\\nSo is this">|
+                      plain    %|Expected raised exception |
+                      actual   %|#<RuntimeError "This is fun\\nSo is this">|
                     end
 
                     line do
-                      plain "                 to match "
-                      alpha %|#<Exception "This is fun\\nAnd so is this">|
+                      plain    %|                 to match |
+                      expected %|#<Exception "This is fun\\nAnd so is this">|
                     end
                   },
                   diff: proc {
-                    plain_line %|  This is fun\\n|
-                    alpha_line %|- And so is this|
-                    beta_line  %|+ So is this|
+                    plain_line    %|  This is fun\\n|
+                    expected_line %|- And so is this|
+                    actual_line   %|+ So is this|
                   },
                 )
 
@@ -312,9 +312,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 snippet: %|expect { }.to raise_error('hell')|,
                 expectation: proc {
                   line do
-                    plain "Expected block to raise error "
-                    alpha %|#<Exception "hell">|
-                    plain "."
+                    plain    %|Expected block to raise error |
+                    expected %|#<Exception "hell">|
+                    plain    %|.|
                   end
                 },
               )
@@ -345,13 +345,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "      Expected "
-                      plain "block"
+                      plain    %|      Expected |
+                      plain    %|block|
                     end
 
                     line do
-                      plain "to raise error "
-                      alpha %|#<Exception "this is a super super super super super super long message">|
+                      plain    %|to raise error |
+                      expected %|#<Exception "this is a super super super super super super long message">|
                     end
                   },
                 )
@@ -381,13 +381,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "Expected raised exception "
-                      beta  %|#<RuntimeError "some really long message">|
+                      plain    %|Expected raised exception |
+                      actual   %|#<RuntimeError "some really long message">|
                     end
 
                     line do
-                      plain "             not to match "
-                      alpha %|#<Exception "some really long message">|
+                      plain    %|             not to match |
+                      expected %|#<Exception "some really long message">|
                     end
                   },
                 )
@@ -419,11 +419,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               snippet: %|expect { raise 'boo' }.not_to raise_error('boo')|,
               expectation: proc {
                 line do
-                  plain "Expected raised exception "
-                  beta  %|#<RuntimeError "boo">|
-                  plain " not to match "
-                  alpha %|#<Exception "boo">|
-                  plain "."
+                  plain    %|Expected raised exception |
+                  actual   %|#<RuntimeError "boo">|
+                  plain    %| not to match |
+                  expected %|#<Exception "boo">|
+                  plain    %|.|
                 end
               },
             )
@@ -454,13 +454,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<RuntimeError "some really long message">|
+                    plain    %|Expected raised exception |
+                    actual   %|#<RuntimeError "some really long message">|
                   end
 
                   line do
-                    plain "             not to match "
-                    alpha %|#<Exception "some really long message">|
+                    plain    %|             not to match |
+                    expected %|#<Exception "some really long message">|
                   end
                 },
               )
@@ -493,13 +493,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<RuntimeError "This is fun\\nSo is this">|
+                    plain    %|Expected raised exception |
+                    actual   %|#<RuntimeError "This is fun\\nSo is this">|
                   end
 
                   line do
-                    plain "             not to match "
-                    alpha %|#<Exception "This is fun\\nSo is this">|
+                    plain    %|             not to match |
+                    expected %|#<Exception "This is fun\\nSo is this">|
                   end
                 },
               )
@@ -534,11 +534,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 snippet: %|expect(&block).to raise_error(RuntimeError, 'b')|,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<StandardError "a">|
-                    plain " to match "
-                    alpha %|#<RuntimeError "b">|
-                    plain "."
+                    plain    %|Expected raised exception |
+                    actual   %|#<StandardError "a">|
+                    plain    %| to match |
+                    expected %|#<RuntimeError "b">|
+                    plain    %|.|
                   end
                 },
               )
@@ -568,13 +568,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "Expected raised exception "
-                    beta  %|#<StandardError "this is a long message">|
+                    plain    %|Expected raised exception |
+                    actual   %|#<StandardError "this is a long message">|
                   end
 
                   line do
-                    plain "                 to match "
-                    alpha %|#<RuntimeError "this is another long message">|
+                    plain    %|                 to match |
+                    expected %|#<RuntimeError "this is another long message">|
                   end
                 },
               )
@@ -604,9 +604,9 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 snippet: %|expect { }.to raise_error(RuntimeError, 'b')|,
                 expectation: proc {
                   line do
-                    plain "Expected block to raise error "
-                    alpha %|#<RuntimeError "b">|
-                    plain "."
+                    plain    %|Expected block to raise error |
+                    expected %|#<RuntimeError "b">|
+                    plain    %|.|
                   end
                 },
               )
@@ -635,13 +635,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "      Expected "
-                    plain "block"
+                    plain    %|      Expected |
+                    plain    %|block|
                   end
 
                   line do
-                    plain "to raise error "
-                    alpha %|#<RuntimeError "this is a super super super super super super long message">|
+                    plain    %|to raise error |
+                    expected %|#<RuntimeError "this is a super super super super super super long message">|
                   end
                 },
               )
@@ -673,11 +673,11 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               snippet: %|expect(&block).not_to raise_error(StandardError, 'a')|,
               expectation: proc {
                 line do
-                  plain "Expected raised exception "
-                  beta  %|#<StandardError "a">|
-                  plain " not to match "
-                  alpha %|#<StandardError "a">|
-                  plain "."
+                  plain    %|Expected raised exception |
+                  actual   %|#<StandardError "a">|
+                  plain    %| not to match |
+                  expected %|#<StandardError "a">|
+                  plain    %|.|
                 end
               },
             )
@@ -707,13 +707,13 @@ RSpec.describe "Integration with RSpec's #raise_error matcher", type: :integrati
               newline_before_expectation: true,
               expectation: proc {
                 line do
-                  plain "Expected raised exception "
-                  beta  %|#<StandardError "this is a long message">|
+                  plain    %|Expected raised exception |
+                  actual   %|#<StandardError "this is a long message">|
                 end
 
                 line do
-                  plain "             not to match "
-                  alpha %|#<StandardError "this is a long message">|
+                  plain    %|             not to match |
+                  expected %|#<StandardError "this is a long message">|
                 end
               },
             )

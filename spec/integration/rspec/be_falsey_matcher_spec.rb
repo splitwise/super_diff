@@ -11,11 +11,11 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher", type: :integration
         snippet: snippet,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|:foo|
-            plain " to be "
-            alpha %|falsey|
-            plain "."
+            plain    %|Expected |
+            actual   %|:foo|
+            plain    %| to be |
+            expected %|falsey|
+            plain    %|.|
           end
         },
       )
@@ -36,11 +36,11 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher", type: :integration
         snippet: snippet,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|false|
-            plain " not to be "
-            alpha %|falsey|
-            plain "."
+            plain    %|Expected |
+            actual   %|false|
+            plain    %| not to be |
+            expected %|falsey|
+            plain    %|.|
           end
         },
       )

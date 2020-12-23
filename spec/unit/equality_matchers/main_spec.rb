@@ -27,8 +27,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: 42)
-              beta_line  %(  Actual: 1)
+              expected_line %(Expected: 42)
+              actual_line   %(  Actual: 1)
             end
           }
         STR
@@ -54,8 +54,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: :foo)
-              beta_line  %(  Actual: :bar)
+              expected_line %(Expected: :foo)
+              actual_line   %(  Actual: :bar)
             end
           }
         STR
@@ -84,8 +84,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "Marty")
-              beta_line  %(  Actual: "Jennifer")
+              expected_line %(Expected: "Marty")
+              actual_line   %(  Actual: "Jennifer")
             end
           }
         STR
@@ -106,8 +106,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "Marty")
-              beta_line  %(  Actual: "Marty McFly")
+              expected_line %(Expected: "Marty")
+              actual_line   %(  Actual: "Marty McFly")
             end
           }
         STR
@@ -128,8 +128,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "Something entirely different")
-              beta_line  %(  Actual: "This is a line\\nAnd that's another line\\n")
+              expected_line %(Expected: "Something entirely different")
+              actual_line   %(  Actual: "This is a line\\nAnd that's another line\\n")
             end
           }
         STR
@@ -150,8 +150,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "This is a line\\nAnd that's another line\\n")
-              beta_line  %(  Actual: "Something entirely different")
+              expected_line %(Expected: "This is a line\\nAnd that's another line\\n")
+              actual_line   %(  Actual: "Something entirely different")
             end
           }
         STR
@@ -172,8 +172,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "This is a line\\nAnd that's a line\\nAnd there's a line too")
-              beta_line  %(  Actual: "This is a line\\nSomething completely different\\nAnd there's a line too")
+              expected_line %(Expected: "This is a line\\nAnd that's a line\\nAnd there's a line too")
+              actual_line   %(  Actual: "This is a line\\nSomething completely different\\nAnd there's a line too")
             end
           }
 
@@ -181,10 +181,10 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  This is a line\\n)
-              alpha_line %(- And that's a line\\n)
-              beta_line  %(+ Something completely different\\n)
-              plain_line %(  And there's a line too)
+              plain_line    %(  This is a line\\n)
+              expected_line %(- And that's a line\\n)
+              actual_line   %(+ Something completely different\\n)
+              plain_line    %(  And there's a line too)
             end
           }
         STR
@@ -205,8 +205,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: "This is a line\\nAnd that's a line\\n")
-              beta_line  %(  Actual: "Something completely different\\nAnd something else too\\n")
+              expected_line %(Expected: "This is a line\\nAnd that's a line\\n")
+              actual_line   %(  Actual: "Something completely different\\nAnd something else too\\n")
             end
           }
 
@@ -214,10 +214,10 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(- This is a line\\n)
-              alpha_line %(- And that's a line\\n)
-              beta_line  %(+ Something completely different\\n)
-              beta_line  %(+ And something else too\\n)
+              expected_line %(- This is a line\\n)
+              expected_line %(- And that's a line\\n)
+              actual_line   %(+ Something completely different\\n)
+              actual_line   %(+ And something else too\\n)
             end
           }
         STR
@@ -264,12 +264,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line do
+              expected_line do
                 text "Expected: "
                 text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mAnd that's a line\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
               end
 
-              beta_line do
+              actual_line   do
                 text "  Actual: "
                 text %("\\e[34mThis is a line\\e[0m\\n\\e[38;5;176mSomething completely different\\e[0m\\n\\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n")
               end
@@ -280,10 +280,10 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  \\e[34mThis is a line\\e[0m\\n)
-              alpha_line %(- \\e[38;5;176mAnd that's a line\\e[0m\\n)
-              beta_line  %(+ \\e[38;5;176mSomething completely different\\e[0m\\n)
-              plain_line %(  \\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n)
+              plain_line    %(  \\e[34mThis is a line\\e[0m\\n)
+              expected_line %(- \\e[38;5;176mAnd that's a line\\e[0m\\n)
+              actual_line   %(+ \\e[38;5;176mSomething completely different\\e[0m\\n)
+              plain_line    %(  \\e[38;2;47;59;164mAnd there's a line too\\e[0m\\n)
             end
           }
         STR
@@ -315,8 +315,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [1, 2, 3, 4])
-              beta_line  %(  Actual: [1, 2, 99, 4])
+              expected_line %(Expected: [1, 2, 3, 4])
+              actual_line   %(  Actual: [1, 2, 99, 4])
             end
           }
 
@@ -324,13 +324,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    1,)
-              plain_line %(    2,)
-              alpha_line %(-   3,)
-              beta_line  %(+   99,)
-              plain_line %(    4)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    1,)
+              plain_line    %(    2,)
+              expected_line %(-   3,)
+              actual_line   %(+   99,)
+              plain_line    %(    4)
+              plain_line    %(  ])
             end
           }
         STR
@@ -351,8 +351,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [:one, :fish, :two, :fish])
-              beta_line  %(  Actual: [:one, :FISH, :two, :fish])
+              expected_line %(Expected: [:one, :fish, :two, :fish])
+              actual_line   %(  Actual: [:one, :FISH, :two, :fish])
             end
           }
 
@@ -360,13 +360,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    :one,)
-              alpha_line %(-   :fish,)
-              beta_line  %(+   :FISH,)
-              plain_line %(    :two,)
-              plain_line %(    :fish)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    :one,)
+              expected_line %(-   :fish,)
+              actual_line   %(+   :FISH,)
+              plain_line    %(    :two,)
+              plain_line    %(    :fish)
+              plain_line    %(  ])
             end
           }
         STR
@@ -387,8 +387,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["sausage", "egg", "cheese"])
-              beta_line  %(  Actual: ["bacon", "egg", "cheese"])
+              expected_line %(Expected: ["sausage", "egg", "cheese"])
+              actual_line   %(  Actual: ["bacon", "egg", "cheese"])
             end
           }
 
@@ -396,12 +396,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              alpha_line %(-   "sausage",)
-              beta_line  %(+   "bacon",)
-              plain_line %(    "egg",)
-              plain_line %(    "cheese")
-              plain_line %(  ])
+              plain_line    %(  [)
+              expected_line %(-   "sausage",)
+              actual_line   %(+   "bacon",)
+              plain_line    %(    "egg",)
+              plain_line    %(    "cheese")
+              plain_line    %(  ])
             end
           }
         STR
@@ -428,8 +428,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Jennifer", age: 17>])
-              beta_line  %(  Actual: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Doc", age: 50>])
+              expected_line %(Expected: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Jennifer", age: 17>])
+              actual_line   %(  Actual: [#<SuperDiff::Test::Person name: "Marty", age: 18>, #<SuperDiff::Test::Person name: "Doc", age: 50>])
             end
           }
 
@@ -437,18 +437,18 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    #<SuperDiff::Test::Person {)
-              plain_line %(      name: "Marty",)
-              plain_line %(      age: 18)
-              plain_line %(    }>,)
-              plain_line %(    #<SuperDiff::Test::Person {)
-              alpha_line %(-     name: "Jennifer",)
-              beta_line  %(+     name: "Doc",)
-              alpha_line %(-     age: 17)
-              beta_line  %(+     age: 50)
-              plain_line %(    }>)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    #<SuperDiff::Test::Person {)
+              plain_line    %(      name: "Marty",)
+              plain_line    %(      age: 18)
+              plain_line    %(    }>,)
+              plain_line    %(    #<SuperDiff::Test::Person {)
+              expected_line %(-     name: "Jennifer",)
+              actual_line   %(+     name: "Doc",)
+              expected_line %(-     age: 17)
+              actual_line   %(+     age: 50)
+              plain_line    %(    }>)
+              plain_line    %(  ])
             end
           }
         STR
@@ -469,8 +469,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["bread"])
-              beta_line  %(  Actual: ["bread", "eggs", "milk"])
+              expected_line %(Expected: ["bread"])
+              actual_line   %(  Actual: ["bread", "eggs", "milk"])
             end
           }
 
@@ -478,11 +478,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    "bread",)
-              beta_line  %(+   "eggs",)
-              beta_line  %(+   "milk")
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    "bread",)
+              actual_line   %(+   "eggs",)
+              actual_line   %(+   "milk")
+              plain_line    %(  ])
             end
           }
         STR
@@ -503,8 +503,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["bread", "eggs", "milk"])
-              beta_line  %(  Actual: ["bread"])
+              expected_line %(Expected: ["bread", "eggs", "milk"])
+              actual_line   %(  Actual: ["bread"])
             end
           }
 
@@ -512,11 +512,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    "bread")
-              alpha_line %(-   "eggs",)
-              alpha_line %(-   "milk")
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    "bread")
+              expected_line %(-   "eggs",)
+              expected_line %(-   "milk")
+              plain_line    %(  ])
             end
           }
         STR
@@ -537,8 +537,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["milk"])
-              beta_line  %(  Actual: ["bread", "eggs", "milk"])
+              expected_line %(Expected: ["milk"])
+              actual_line   %(  Actual: ["bread", "eggs", "milk"])
             end
           }
 
@@ -546,11 +546,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              beta_line  %(+   "bread",)
-              beta_line  %(+   "eggs",)
-              plain_line %(    "milk")
-              plain_line %(  ])
+              plain_line    %(  [)
+              actual_line   %(+   "bread",)
+              actual_line   %(+   "eggs",)
+              plain_line    %(    "milk")
+              plain_line    %(  ])
             end
           }
         STR
@@ -571,8 +571,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["bread", "eggs", "milk"])
-              beta_line  %(  Actual: ["milk"])
+              expected_line %(Expected: ["bread", "eggs", "milk"])
+              actual_line   %(  Actual: ["milk"])
             end
           }
 
@@ -580,11 +580,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              alpha_line %(-   "bread",)
-              alpha_line %(-   "eggs",)
-              plain_line %(    "milk")
-              plain_line %(  ])
+              plain_line    %(  [)
+              expected_line %(-   "bread",)
+              expected_line %(-   "eggs",)
+              plain_line    %(    "milk")
+              plain_line    %(  ])
             end
           }
         STR
@@ -605,8 +605,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [1, 2, [:a, :b, :c], 4])
-              beta_line  %(  Actual: [1, 2, [:a, :x, :c], 4])
+              expected_line %(Expected: [1, 2, [:a, :b, :c], 4])
+              actual_line   %(  Actual: [1, 2, [:a, :x, :c], 4])
             end
           }
 
@@ -614,17 +614,17 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    1,)
-              plain_line %(    2,)
-              plain_line %(    [)
-              plain_line %(      :a,)
-              alpha_line %(-     :b,)
-              beta_line  %(+     :x,)
-              plain_line %(      :c)
-              plain_line %(    ],)
-              plain_line %(    4)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    1,)
+              plain_line    %(    2,)
+              plain_line    %(    [)
+              plain_line    %(      :a,)
+              expected_line %(-     :b,)
+              actual_line   %(+     :x,)
+              plain_line    %(      :c)
+              plain_line    %(    ],)
+              plain_line    %(    4)
+              plain_line    %(  ])
             end
           }
         STR
@@ -645,8 +645,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [1, 2, { foo: "bar", baz: "qux" }, 4])
-              beta_line  %(  Actual: [1, 2, { foo: "bar", baz: "qox" }, 4])
+              expected_line %(Expected: [1, 2, { foo: "bar", baz: "qux" }, 4])
+              actual_line   %(  Actual: [1, 2, { foo: "bar", baz: "qox" }, 4])
             end
           }
 
@@ -654,16 +654,16 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    1,)
-              plain_line %(    2,)
-              plain_line %(    {)
-              plain_line %(      foo: "bar",)
-              alpha_line %(-     baz: "qux")
-              beta_line  %(+     baz: "qox")
-              plain_line %(    },)
-              plain_line %(    4)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    1,)
+              plain_line    %(    2,)
+              plain_line    %(    {)
+              plain_line    %(      foo: "bar",)
+              expected_line %(-     baz: "qux")
+              actual_line   %(+     baz: "qox")
+              plain_line    %(    },)
+              plain_line    %(    4)
+              plain_line    %(  ])
             end
           }
         STR
@@ -689,8 +689,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty", age: 18>, 4])
-              beta_line  %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc", age: 50>, 4])
+              expected_line %(Expected: [1, 2, #<SuperDiff::Test::Person name: "Marty", age: 18>, 4])
+              actual_line   %(  Actual: [1, 2, #<SuperDiff::Test::Person name: "Doc", age: 50>, 4])
             end
           }
 
@@ -698,17 +698,17 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    1,)
-              plain_line %(    2,)
-              plain_line %(    #<SuperDiff::Test::Person {)
-              alpha_line %(-     name: "Marty",)
-              beta_line  %(+     name: "Doc",)
-              alpha_line %(-     age: 18)
-              beta_line  %(+     age: 50)
-              plain_line %(    }>,)
-              plain_line %(    4)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    1,)
+              plain_line    %(    2,)
+              plain_line    %(    #<SuperDiff::Test::Person {)
+              expected_line %(-     name: "Marty",)
+              actual_line   %(+     name: "Doc",)
+              expected_line %(-     age: 18)
+              actual_line   %(+     age: 50)
+              plain_line    %(    }>,)
+              plain_line    %(    4)
+              plain_line    %(  ])
             end
           }
         STR
@@ -749,8 +749,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
-              beta_line  %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated" } }], :br])
+              expected_line %(Expected: [[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true } }]])
+              actual_line   %(  Actual: [[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated" } }], :br])
             end
           }
 
@@ -758,30 +758,30 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    [)
-              alpha_line %(-     :h1,)
-              beta_line  %(+     :h2,)
-              plain_line %(      [)
-              plain_line %(        :span,)
-              plain_line %(        [)
-              plain_line %(          :text,)
-              alpha_line %(-         "Hello world")
-              beta_line  %(+         "Goodbye world")
-              plain_line %(        ])
-              plain_line %(      ],)
-              plain_line %(      {)
-              beta_line  %(+       id: "hero",)
-              plain_line %(        class: "header",)
-              plain_line %(        data: {)
-              alpha_line %(-         "sticky" => true)
-              beta_line  %(+         "sticky" => false,)
-              beta_line  %(+         role: "deprecated")
-              plain_line %(        })
-              plain_line %(      })
-              plain_line %(    ],)
-              beta_line  %(+   :br)
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    [)
+              expected_line %(-     :h1,)
+              actual_line   %(+     :h2,)
+              plain_line    %(      [)
+              plain_line    %(        :span,)
+              plain_line    %(        [)
+              plain_line    %(          :text,)
+              expected_line %(-         "Hello world")
+              actual_line   %(+         "Goodbye world")
+              plain_line    %(        ])
+              plain_line    %(      ],)
+              plain_line    %(      {)
+              actual_line   %(+       id: "hero",)
+              plain_line    %(        class: "header",)
+              plain_line    %(        data: {)
+              expected_line %(-         "sticky" => true)
+              actual_line   %(+         "sticky" => false,)
+              actual_line   %(+         role: "deprecated")
+              plain_line    %(        })
+              plain_line    %(      })
+              plain_line    %(    ],)
+              actual_line   %(+   :br)
+              plain_line    %(  ])
             end
           }
         STR
@@ -813,8 +813,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { tall: 12, grande: 19, venti: 20 })
-              beta_line  %(  Actual: { tall: 12, grande: 16, venti: 20 })
+              expected_line %(Expected: { tall: 12, grande: 19, venti: 20 })
+              actual_line   %(  Actual: { tall: 12, grande: 16, venti: 20 })
             end
           }
 
@@ -822,12 +822,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    tall: 12,)
-              alpha_line %(-   grande: 19,)
-              beta_line  %(+   grande: 16,)
-              plain_line %(    venti: 20)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    tall: 12,)
+              expected_line %(-   grande: 19,)
+              actual_line   %(+   grande: 16,)
+              plain_line    %(    venti: 20)
+              plain_line    %(  })
             end
           }
         STR
@@ -848,8 +848,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { "tall" => 12, "grande" => 19, "venti" => 20 })
-              beta_line  %(  Actual: { "tall" => 12, "grande" => 16, "venti" => 20 })
+              expected_line %(Expected: { "tall" => 12, "grande" => 19, "venti" => 20 })
+              actual_line   %(  Actual: { "tall" => 12, "grande" => 16, "venti" => 20 })
             end
           }
 
@@ -857,12 +857,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    "tall" => 12,)
-              alpha_line %(-   "grande" => 19,)
-              beta_line  %(+   "grande" => 16,)
-              plain_line %(    "venti" => 20)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    "tall" => 12,)
+              expected_line %(-   "grande" => 19,)
+              actual_line   %(+   "grande" => 16,)
+              plain_line    %(    "venti" => 20)
+              plain_line    %(  })
             end
           }
         STR
@@ -883,8 +883,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { tall: :small, grande: :grand, venti: :large })
-              beta_line  %(  Actual: { tall: :small, grande: :medium, venti: :large })
+              expected_line %(Expected: { tall: :small, grande: :grand, venti: :large })
+              actual_line   %(  Actual: { tall: :small, grande: :medium, venti: :large })
             end
           }
 
@@ -892,12 +892,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    tall: :small,)
-              alpha_line %(-   grande: :grand,)
-              beta_line  %(+   grande: :medium,)
-              plain_line %(    venti: :large)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    tall: :small,)
+              expected_line %(-   grande: :grand,)
+              actual_line   %(+   grande: :medium,)
+              plain_line    %(    venti: :large)
+              plain_line    %(  })
             end
           }
         STR
@@ -918,8 +918,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { tall: "small", grande: "grand", venti: "large" })
-              beta_line  %(  Actual: { tall: "small", grande: "medium", venti: "large" })
+              expected_line %(Expected: { tall: "small", grande: "grand", venti: "large" })
+              actual_line   %(  Actual: { tall: "small", grande: "medium", venti: "large" })
             end
           }
 
@@ -927,12 +927,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    tall: "small",)
-              alpha_line %(-   grande: "grand",)
-              beta_line  %(+   grande: "medium",)
-              plain_line %(    venti: "large")
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    tall: "small",)
+              expected_line %(-   grande: "grand",)
+              actual_line   %(+   grande: "medium",)
+              plain_line    %(    venti: "large")
+              plain_line    %(  })
             end
           }
         STR
@@ -959,8 +959,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs", age: 30>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
-              beta_line  %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak", age: 33>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
+              expected_line %(Expected: { steve: #<SuperDiff::Test::Person name: "Jobs", age: 30>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
+              actual_line   %(  Actual: { steve: #<SuperDiff::Test::Person name: "Wozniak", age: 33>, susan: #<SuperDiff::Test::Person name: "Kare", age: 27> })
             end
           }
 
@@ -968,18 +968,18 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    steve: #<SuperDiff::Test::Person {)
-              alpha_line %(-     name: "Jobs",)
-              beta_line  %(+     name: "Wozniak",)
-              alpha_line %(-     age: 30)
-              beta_line  %(+     age: 33)
-              plain_line %(    }>,)
-              plain_line %(    susan: #<SuperDiff::Test::Person {)
-              plain_line %(      name: "Kare",)
-              plain_line %(      age: 27)
-              plain_line %(    }>)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    steve: #<SuperDiff::Test::Person {)
+              expected_line %(-     name: "Jobs",)
+              actual_line   %(+     name: "Wozniak",)
+              expected_line %(-     age: 30)
+              actual_line   %(+     age: 33)
+              plain_line    %(    }>,)
+              plain_line    %(    susan: #<SuperDiff::Test::Person {)
+              plain_line    %(      name: "Kare",)
+              plain_line    %(      age: 27)
+              plain_line    %(    }>)
+              plain_line    %(  })
             end
           }
         STR
@@ -1000,8 +1000,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { latte: 4.5 })
-              beta_line  %(  Actual: { latte: 4.5, mocha: 3.5, cortado: 3 })
+              expected_line %(Expected: { latte: 4.5 })
+              actual_line   %(  Actual: { latte: 4.5, mocha: 3.5, cortado: 3 })
             end
           }
 
@@ -1009,11 +1009,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    latte: 4.5,)
-              beta_line  %(+   mocha: 3.5,)
-              beta_line  %(+   cortado: 3)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    latte: 4.5,)
+              actual_line   %(+   mocha: 3.5,)
+              actual_line   %(+   cortado: 3)
+              plain_line    %(  })
             end
           }
         STR
@@ -1034,8 +1034,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { latte: 4.5, mocha: 3.5, cortado: 3 })
-              beta_line  %(  Actual: { latte: 4.5 })
+              expected_line %(Expected: { latte: 4.5, mocha: 3.5, cortado: 3 })
+              actual_line   %(  Actual: { latte: 4.5 })
             end
           }
 
@@ -1043,11 +1043,11 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    latte: 4.5)
-              alpha_line %(-   mocha: 3.5,)
-              alpha_line %(-   cortado: 3)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    latte: 4.5)
+              expected_line %(-   mocha: 3.5,)
+              expected_line %(-   cortado: 3)
+              plain_line    %(  })
             end
           }
         STR
@@ -1099,8 +1099,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
             #{
               colored do
-                alpha_line %(Expected: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, statuses_count: 273860, media_count: 51044, contributors_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
-                beta_line  %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, time_zone: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                expected_line %(Expected: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, statuses_count: 273860, media_count: 51044, contributors_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                actual_line   %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, time_zone: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
               end
             }
 
@@ -1108,26 +1108,26 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
             #{
               colored do
-                plain_line %(  {)
-                plain_line %(    listed_count: 37009,)
-                plain_line %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
-                plain_line %(    favourites_count: 38,)
-                alpha_line %(-   geo_enabled: false,)
-                alpha_line %(-   verified: true,)
-                beta_line  %(+   utc_offset: nil,)
-                beta_line  %(+   time_zone: nil,)
-                plain_line %(    statuses_count: 273860,)
-                plain_line %(    media_count: 51044,)
-                plain_line %(    contributors_enabled: false,)
-                beta_line  %(+   is_translator: false,)
-                beta_line  %(+   is_translation_enabled: false,)
-                plain_line %(    profile_background_color: "FFF1E0",)
-                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
-                plain_line %(    profile_background_tile: false,)
-                alpha_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
-                alpha_line %(-   profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
-                plain_line %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
-                plain_line %(  })
+                plain_line    %(  {)
+                plain_line    %(    listed_count: 37009,)
+                plain_line    %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
+                plain_line    %(    favourites_count: 38,)
+                expected_line %(-   geo_enabled: false,)
+                expected_line %(-   verified: true,)
+                actual_line   %(+   utc_offset: nil,)
+                actual_line   %(+   time_zone: nil,)
+                plain_line    %(    statuses_count: 273860,)
+                plain_line    %(    media_count: 51044,)
+                plain_line    %(    contributors_enabled: false,)
+                actual_line   %(+   is_translator: false,)
+                actual_line   %(+   is_translation_enabled: false,)
+                plain_line    %(    profile_background_color: "FFF1E0",)
+                plain_line    %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
+                plain_line    %(    profile_background_tile: false,)
+                expected_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                expected_line %(-   profile_image_url_https: "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                plain_line    %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
+                plain_line    %(  })
               end
             }
           STR
@@ -1176,8 +1176,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
             #{
               colored do
-                alpha_line %(Expected: { created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, media_count: 51044, statuses_count: 273860, contributors_enabled: false, profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_color: "FFF1E0", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", listed_count: 37009, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
-                beta_line  %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                expected_line %(Expected: { created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, media_count: 51044, statuses_count: 273860, contributors_enabled: false, profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_color: "FFF1E0", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", listed_count: 37009, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                actual_line   %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
               end
             }
 
@@ -1185,24 +1185,24 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
             #{
               colored do
-                plain_line %(  {)
-                plain_line %(    listed_count: 37009,)
-                plain_line %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
-                plain_line %(    favourites_count: 38,)
-                alpha_line %(-   geo_enabled: false,)
-                alpha_line %(-   verified: true,)
-                beta_line  %(+   utc_offset: nil,)
-                plain_line %(    statuses_count: 273860,)
-                plain_line %(    media_count: 51044,)
-                plain_line %(    contributors_enabled: false,)
-                beta_line  %(+   is_translator: false,)
-                beta_line  %(+   is_translation_enabled: false,)
-                plain_line %(    profile_background_color: "FFF1E0",)
-                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
-                plain_line %(    profile_background_tile: false,)
-                alpha_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
-                plain_line %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
-                plain_line %(  })
+                plain_line    %(  {)
+                plain_line    %(    listed_count: 37009,)
+                plain_line    %(    created_at: "Tue Jan 13 19:28:24 +0000 2009",)
+                plain_line    %(    favourites_count: 38,)
+                expected_line %(-   geo_enabled: false,)
+                expected_line %(-   verified: true,)
+                actual_line   %(+   utc_offset: nil,)
+                plain_line    %(    statuses_count: 273860,)
+                plain_line    %(    media_count: 51044,)
+                plain_line    %(    contributors_enabled: false,)
+                actual_line   %(+   is_translator: false,)
+                actual_line   %(+   is_translation_enabled: false,)
+                plain_line    %(    profile_background_color: "FFF1E0",)
+                plain_line    %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
+                plain_line    %(    profile_background_tile: false,)
+                expected_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                plain_line    %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
+                plain_line    %(  })
               end
             }
           STR
@@ -1232,8 +1232,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { name: "Elliot", interests: ["music", "football", "programming"], age: 30 })
-              beta_line  %(  Actual: { name: "Elliot", interests: ["music", "travel", "programming"], age: 30 })
+              expected_line %(Expected: { name: "Elliot", interests: ["music", "football", "programming"], age: 30 })
+              actual_line   %(  Actual: { name: "Elliot", interests: ["music", "travel", "programming"], age: 30 })
             end
           }
 
@@ -1241,16 +1241,16 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    name: "Elliot",)
-              plain_line %(    interests: [)
-              plain_line %(      "music",)
-              alpha_line %(-     "football",)
-              beta_line  %(+     "travel",)
-              plain_line %(      "programming")
-              plain_line %(    ],)
-              plain_line %(    age: 30)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    name: "Elliot",)
+              plain_line    %(    interests: [)
+              plain_line    %(      "music",)
+              expected_line %(-     "football",)
+              actual_line   %(+     "travel",)
+              plain_line    %(      "programming")
+              plain_line    %(    ],)
+              plain_line    %(    age: 30)
+              plain_line    %(  })
             end
           }
         STR
@@ -1287,8 +1287,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Buns, ribs, and bacon", "YMMV" => "Your mileage may vary" }, check_grammar: false })
-              beta_line  %(  Actual: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Be right back", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+              expected_line %(Expected: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Buns, ribs, and bacon", "YMMV" => "Your mileage may vary" }, check_grammar: false })
+              actual_line   %(  Actual: { check_spelling: true, substitutions: { "YOLO" => "You only live once", "BRB" => "Be right back", "YMMV" => "Your mileage may vary" }, check_grammar: false })
             end
           }
 
@@ -1296,16 +1296,16 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    check_spelling: true,)
-              plain_line %(    substitutions: {)
-              plain_line %(      "YOLO" => "You only live once",)
-              alpha_line %(-     "BRB" => "Buns, ribs, and bacon",)
-              beta_line  %(+     "BRB" => "Be right back",)
-              plain_line %(      "YMMV" => "Your mileage may vary")
-              plain_line %(    },)
-              plain_line %(    check_grammar: false)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    check_spelling: true,)
+              plain_line    %(    substitutions: {)
+              plain_line    %(      "YOLO" => "You only live once",)
+              expected_line %(-     "BRB" => "Buns, ribs, and bacon",)
+              actual_line   %(+     "BRB" => "Be right back",)
+              plain_line    %(      "YMMV" => "Your mileage may vary")
+              plain_line    %(    },)
+              plain_line    %(    check_grammar: false)
+              plain_line    %(  })
             end
           }
         STR
@@ -1334,8 +1334,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty", age: 18>, amount: 35000 })
-              beta_line  %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc", age: 50>, amount: 35000 })
+              expected_line %(Expected: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Marty", age: 18>, amount: 35000 })
+              actual_line   %(  Actual: { order_id: 1234, person: #<SuperDiff::Test::Person name: "Doc", age: 50>, amount: 35000 })
             end
           }
 
@@ -1343,16 +1343,16 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    order_id: 1234,)
-              plain_line %(    person: #<SuperDiff::Test::Person {)
-              alpha_line %(-     name: "Marty",)
-              beta_line  %(+     name: "Doc",)
-              alpha_line %(-     age: 18)
-              beta_line  %(+     age: 50)
-              plain_line %(    }>,)
-              plain_line %(    amount: 35000)
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    order_id: 1234,)
+              plain_line    %(    person: #<SuperDiff::Test::Person {)
+              expected_line %(-     name: "Marty",)
+              actual_line   %(+     name: "Doc",)
+              expected_line %(-     age: 18)
+              actual_line   %(+     age: 50)
+              plain_line    %(    }>,)
+              plain_line    %(    amount: 35000)
+              plain_line    %(  })
             end
           }
         STR
@@ -1409,8 +1409,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { customer: { name: "Marty McFly", shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] })
-              beta_line  %(  Actual: { customer: { name: "Marty McFly, Jr.", shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] })
+              expected_line %(Expected: { customer: { name: "Marty McFly", shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] })
+              actual_line   %(  Actual: { customer: { name: "Marty McFly, Jr.", shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] })
             end
           }
 
@@ -1418,34 +1418,34 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    customer: {)
-              alpha_line %(-     name: "Marty McFly",)
-              beta_line  %(+     name: "Marty McFly, Jr.",)
-              plain_line %(      shipping_address: {)
-              alpha_line %(-       line_1: "123 Main St.",)
-              beta_line  %(+       line_1: "456 Ponderosa Ct.",)
-              plain_line %(        city: "Hill Valley",)
-              plain_line %(        state: "CA",)
-              plain_line %(        zip: "90382")
-              plain_line %(      })
-              plain_line %(    },)
-              plain_line %(    items: [)
-              plain_line %(      {)
-              plain_line %(        name: "Fender Stratocaster",)
-              plain_line %(        cost: 100000,)
-              plain_line %(        options: [)
-              plain_line %(          "red",)
-              plain_line %(          "blue",)
-              plain_line %(          "green")
-              plain_line %(        ])
-              plain_line %(      },)
-              plain_line %(      {)
-              alpha_line %(-       name: "Chevy 4x4")
-              beta_line  %(+       name: "Mattel Hoverboard")
-              plain_line %(      })
-              plain_line %(    ])
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    customer: {)
+              expected_line %(-     name: "Marty McFly",)
+              actual_line   %(+     name: "Marty McFly, Jr.",)
+              plain_line    %(      shipping_address: {)
+              expected_line %(-       line_1: "123 Main St.",)
+              actual_line   %(+       line_1: "456 Ponderosa Ct.",)
+              plain_line    %(        city: "Hill Valley",)
+              plain_line    %(        state: "CA",)
+              plain_line    %(        zip: "90382")
+              plain_line    %(      })
+              plain_line    %(    },)
+              plain_line    %(    items: [)
+              plain_line    %(      {)
+              plain_line    %(        name: "Fender Stratocaster",)
+              plain_line    %(        cost: 100000,)
+              plain_line    %(        options: [)
+              plain_line    %(          "red",)
+              plain_line    %(          "blue",)
+              plain_line    %(          "green")
+              plain_line    %(        ])
+              plain_line    %(      },)
+              plain_line    %(      {)
+              expected_line %(-       name: "Chevy 4x4")
+              actual_line   %(+       name: "Mattel Hoverboard")
+              plain_line    %(      })
+              plain_line    %(    ])
+              plain_line    %(  })
             end
           }
         STR
@@ -1480,8 +1480,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 18>)
-              beta_line  %(  Actual: #<SuperDiff::Test::Person name: "Doc", age: 50>)
+              expected_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 18>)
+              actual_line   %(  Actual: #<SuperDiff::Test::Person name: "Doc", age: 50>)
             end
           }
 
@@ -1489,12 +1489,12 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  #<SuperDiff::Test::Person {)
-              alpha_line %(-   name: "Marty",)
-              beta_line  %(+   name: "Doc",)
-              alpha_line %(-   age: 18)
-              beta_line  %(+   age: 50)
-              plain_line %(  }>)
+              plain_line    %(  #<SuperDiff::Test::Person {)
+              expected_line %(-   name: "Marty",)
+              actual_line   %(+   name: "Doc",)
+              expected_line %(-   age: 18)
+              actual_line   %(+   age: 50)
+              plain_line    %(  }>)
             end
           }
         STR
@@ -1531,13 +1531,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
             if SuperDiff::Test.jruby?
               # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
               colored do
-                alpha_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
-                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
+                expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @inventory=["flatline", "purple body shield"], @character="mirage", @handle="martymcfly", @ultimate=0.8, @shields=0.6, @health=0.3>)
+                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["wingman", "mastiff"], @character="lifeline", @handle="docbrown", @ultimate=0.8, @shields=0.6, @health=0.3>)
               end
             else
               colored do
-                alpha_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
-                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+                expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(expected)} @handle="martymcfly", @character="mirage", @inventory=["flatline", "purple body shield"], @shields=0.6, @health=0.3, @ultimate=0.8>)
+                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="docbrown", @character="lifeline", @inventory=["wingman", "mastiff"], @shields=0.6, @health=0.3, @ultimate=0.8>)
               end
             end
           }
@@ -1546,21 +1546,21 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  #<SuperDiff::Test::Player {)
-              alpha_line %(-   @character="mirage",)
-              beta_line  %(+   @character="lifeline",)
-              alpha_line %(-   @handle="martymcfly",)
-              beta_line  %(+   @handle="docbrown",)
-              plain_line %(    @health=0.3,)
-              plain_line %(    @inventory=[)
-              alpha_line %(-     "flatline",)
-              beta_line  %(+     "wingman",)
-              alpha_line %(-     "purple body shield")
-              beta_line  %(+     "mastiff")
-              plain_line %(    ],)
-              plain_line %(    @shields=0.6,)
-              plain_line %(    @ultimate=0.8)
-              plain_line %(  }>)
+              plain_line    %(  #<SuperDiff::Test::Player {)
+              expected_line %(-   @character="mirage",)
+              actual_line   %(+   @character="lifeline",)
+              expected_line %(-   @handle="martymcfly",)
+              actual_line   %(+   @handle="docbrown",)
+              plain_line    %(    @health=0.3,)
+              plain_line    %(    @inventory=[)
+              expected_line %(-     "flatline",)
+              actual_line   %(+     "wingman",)
+              expected_line %(-     "purple body shield")
+              actual_line   %(+     "mastiff")
+              plain_line    %(    ],)
+              plain_line    %(    @shields=0.6,)
+              plain_line    %(    @ultimate=0.8)
+              plain_line    %(  }>)
             end
           }
         STR
@@ -1588,8 +1588,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 31>)
-              beta_line  %(  Actual: #<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">)
+              expected_line %(Expected: #<SuperDiff::Test::Person name: "Marty", age: 31>)
+              actual_line   %(  Actual: #<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">)
             end
           }
         STR
@@ -1622,13 +1622,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
             if SuperDiff::Test.jruby?
               # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
               colored do
-                alpha_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
-                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
+                expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
+                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @inventory=["sword"], @character="Jon", @handle="mcmire", @ultimate=true, @shields=11.4, @health=4>)
               end
             else
               colored do
-                alpha_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
-                beta_line  %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
+                expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Test.object_id_hex(expected)} @name="camera", @quantity=3>)
+                actual_line   %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Test.object_id_hex(actual)} @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>)
               end
             end
           }
@@ -1651,8 +1651,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["a", ∙∙∙, "b", "c"])
-              beta_line  %(  Actual: ["a", "x", "b", "c"])
+              expected_line %(Expected: ["a", ∙∙∙, "b", "c"])
+              actual_line   %(  Actual: ["a", "x", "b", "c"])
             end
           }
 
@@ -1660,13 +1660,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    "a",)
-              alpha_line %(-   ∙∙∙,)
-              beta_line  %(+   "x",)
-              plain_line %(    "b",)
-              plain_line %(    "c")
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    "a",)
+              expected_line %(-   ∙∙∙,)
+              actual_line   %(+   "x",)
+              plain_line    %(    "b",)
+              plain_line    %(    "c")
+              plain_line    %(  ])
             end
           }
         STR
@@ -1688,8 +1688,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: ["a", "x", "b", "c"])
-              beta_line  %(  Actual: ["a", ∙∙∙, "b", "c"])
+              expected_line %(Expected: ["a", "x", "b", "c"])
+              actual_line   %(  Actual: ["a", ∙∙∙, "b", "c"])
             end
           }
 
@@ -1697,13 +1697,13 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  [)
-              plain_line %(    "a",)
-              alpha_line %(-   "x",)
-              beta_line  %(+   ∙∙∙,)
-              plain_line %(    "b",)
-              plain_line %(    "c")
-              plain_line %(  ])
+              plain_line    %(  [)
+              plain_line    %(    "a",)
+              expected_line %(-   "x",)
+              actual_line   %(+   ∙∙∙,)
+              plain_line    %(    "b",)
+              plain_line    %(    "c")
+              plain_line    %(  ])
             end
           }
         STR
@@ -1725,8 +1725,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { foo: ["a", "x", "b", "c"] })
-              beta_line  %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+              expected_line %(Expected: { foo: ["a", "x", "b", "c"] })
+              actual_line   %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
             end
           }
 
@@ -1734,15 +1734,15 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    foo: [)
-              plain_line %(      "a",)
-              alpha_line %(-     "x",)
-              beta_line  %(+     ∙∙∙,)
-              plain_line %(      "b",)
-              plain_line %(      "c")
-              plain_line %(    ])
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    foo: [)
+              plain_line    %(      "a",)
+              expected_line %(-     "x",)
+              actual_line   %(+     ∙∙∙,)
+              plain_line    %(      "b",)
+              plain_line    %(      "c")
+              plain_line    %(    ])
+              plain_line    %(  })
             end
           }
         STR
@@ -1764,8 +1764,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              alpha_line %(Expected: { foo: ["a", "x", "b", "c"] })
-              beta_line  %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
+              expected_line %(Expected: { foo: ["a", "x", "b", "c"] })
+              actual_line   %(  Actual: { foo: ["a", ∙∙∙, "b", "c"] })
             end
           }
 
@@ -1773,15 +1773,15 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
 
           #{
             colored do
-              plain_line %(  {)
-              plain_line %(    foo: [)
-              plain_line %(      "a",)
-              alpha_line %(-     "x",)
-              beta_line  %(+     ∙∙∙,)
-              plain_line %(      "b",)
-              plain_line %(      "c")
-              plain_line %(    ])
-              plain_line %(  })
+              plain_line    %(  {)
+              plain_line    %(    foo: [)
+              plain_line    %(      "a",)
+              expected_line %(-     "x",)
+              actual_line   %(+     ∙∙∙,)
+              plain_line    %(      "b",)
+              plain_line    %(      "c")
+              plain_line    %(    ])
+              plain_line    %(  })
             end
           }
         STR

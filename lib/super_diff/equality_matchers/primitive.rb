@@ -15,14 +15,14 @@ module SuperDiff
 
           #{
             Helpers.style(
-              :alpha,
+              :expected,
               "Expected: " +
               ObjectInspection.inspect(expected, as_single_line: true),
             )
           }
           #{
             Helpers.style(
-              :beta,
+              :actual,
               "  Actual: " +
               ObjectInspection.inspect(actual, as_single_line: true),
             )

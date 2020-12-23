@@ -12,11 +12,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: snippet,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|1|
-              plain " to eq "
-              alpha %|42|
-              plain "."
+              plain    %|Expected |
+              actual   %|1|
+              plain    %| to eq |
+              expected %|42|
+              plain    %|.|
             end
           },
         )
@@ -37,11 +37,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: snippet,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|42|
-              plain " not to eq "
-              alpha %|42|
-              plain "."
+              plain    %|Expected |
+              actual   %|42|
+              plain    %| not to eq |
+              expected %|42|
+              plain    %|.|
             end
           },
         )
@@ -67,11 +67,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: snippet,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|:bar|
-              plain " to eq "
-              alpha %|:foo|
-              plain "."
+              plain    %|Expected |
+              actual   %|:bar|
+              plain    %| to eq |
+              expected %|:foo|
+              plain    %|.|
             end
           },
         )
@@ -95,11 +95,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: snippet,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|:foo|
-              plain " not to eq "
-              alpha %|:foo|
-              plain "."
+              plain    %|Expected |
+              actual   %|:foo|
+              plain    %| not to eq |
+              expected %|:foo|
+              plain    %|.|
             end
           },
         )
@@ -125,11 +125,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect("Jennifer").to eq("Marty")|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"Jennifer"|
-              plain " to eq "
-              alpha %|"Marty"|
-              plain "."
+              plain    %|Expected |
+              actual   %|"Jennifer"|
+              plain    %| to eq |
+              expected %|"Marty"|
+              plain    %|.|
             end
           },
         )
@@ -153,11 +153,11 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect("Jennifer").not_to eq("Jennifer")|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"Jennifer"|
-              plain " not to eq "
-              alpha %|"Jennifer"|
-              plain "."
+              plain    %|Expected |
+              actual   %|"Jennifer"|
+              plain    %| not to eq |
+              expected %|"Jennifer"|
+              plain    %|.|
             end
           },
         )
@@ -174,7 +174,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
           expected = Time.utc(2011, 12, 13, 14, 15, 16)
-          actual = Time.utc(2011, 12, 13, 14, 15, 16, 500_000)
+          actual   = Time.utc(2011, 12, 13, 14, 15, 16, 500_000)
           expect(expected).to eq(actual)
         RUBY
         program = make_plain_test_program(
@@ -187,26 +187,26 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(expected).to eq(actual)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
-              plain " to eq "
-              alpha %|2011-12-13 14:15:16.500 UTC +00:00 (Time)|
-              plain "."
+              plain    %|Expected |
+              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              plain    %| to eq |
+              expected %|2011-12-13 14:15:16.500 UTC +00:00 (Time)|
+              plain    %|.|
             end
           },
           diff: proc {
-            plain_line "  #<Time {"
-            plain_line "    year: 2011,"
-            plain_line "    month: 12,"
-            plain_line "    day: 13,"
-            plain_line "    hour: 14,"
-            plain_line "    min: 15,"
-            plain_line "    sec: 16,"
-            alpha_line "-   nsec: 500000000,"
-            beta_line  "+   nsec: 0,"
-            plain_line "    zone: \"UTC\","
-            plain_line "    gmt_offset: 0"
-            plain_line "  }>"
+            plain_line    "  #<Time {"
+            plain_line    "    year: 2011,"
+            plain_line    "    month: 12,"
+            plain_line    "    day: 13,"
+            plain_line    "    hour: 14,"
+            plain_line    "    min: 15,"
+            plain_line    "    sec: 16,"
+            expected_line "-   nsec: 500000000,"
+            actual_line   "+   nsec: 0,"
+            plain_line    "    zone: \"UTC\","
+            plain_line    "    gmt_offset: 0"
+            plain_line    "  }>"
           },
         )
 
@@ -233,13 +233,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain " Expected "
-              beta %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              plain    %| Expected |
+              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
             end
 
             line do
-              plain "not to eq "
-              alpha %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              plain    %|not to eq |
+              expected %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
             end
           },
         )
@@ -256,7 +256,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
           expected = Time.utc(2011, 12, 13, 14, 15, 16)
-          actual = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
+          actual   = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
           expect(expected).to eq(actual)
         RUBY
         program = make_rspec_rails_test_program(
@@ -269,32 +269,32 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(expected).to eq(actual)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              plain    %|Expected |
+              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
             end
 
             line do
-              plain "   to eq "
-              alpha %|2011-12-13 16:15:16.000 CET +01:00 (ActiveSupport::TimeWithZone)|
+              plain    %|   to eq |
+              expected %|2011-12-13 16:15:16.000 CET +01:00 (ActiveSupport::TimeWithZone)|
             end
           },
           diff: proc {
-            plain_line "  #<ActiveSupport::TimeWithZone {"
-            plain_line "    year: 2011,"
-            plain_line "    month: 12,"
-            plain_line "    day: 13,"
-            alpha_line "-   hour: 16,"
-            beta_line  "+   hour: 14,"
-            plain_line "    min: 15,"
-            plain_line "    sec: 16,"
-            plain_line "    nsec: 0,"
-            alpha_line "-   zone: \"CET\","
-            beta_line  "+   zone: \"UTC\","
-            alpha_line "-   gmt_offset: 3600,"
-            beta_line  "+   gmt_offset: 0,"
-            alpha_line "-   utc: 2011-12-13 15:15:16.000 UTC +00:00 (Time)"
-            beta_line  "+   utc: 2011-12-13 14:15:16.000 UTC +00:00 (Time)"
-            plain_line "  }>"
+            plain_line    "  #<ActiveSupport::TimeWithZone {"
+            plain_line    "    year: 2011,"
+            plain_line    "    month: 12,"
+            plain_line    "    day: 13,"
+            expected_line "-   hour: 16,"
+            actual_line   "+   hour: 14,"
+            plain_line    "    min: 15,"
+            plain_line    "    sec: 16,"
+            plain_line    "    nsec: 0,"
+            expected_line "-   zone: \"CET\","
+            actual_line   "+   zone: \"UTC\","
+            expected_line "-   gmt_offset: 3600,"
+            actual_line   "+   gmt_offset: 0,"
+            expected_line "-   utc: 2011-12-13 15:15:16.000 UTC +00:00 (Time)"
+            actual_line   "+   utc: 2011-12-13 14:15:16.000 UTC +00:00 (Time)"
+            plain_line    "  }>"
           },
         )
 
@@ -310,7 +310,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "Something entirely different"
-          actual = "This is a line\\nAnd that's another line\\n"
+          actual   = "This is a line\\nAnd that's another line\\n"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -320,17 +320,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"This is a line\\nAnd that's another line\\n"|
-              plain " to eq "
-              alpha %|"Something entirely different"|
-              plain "."
+              plain    %|Expected |
+              actual   %|"This is a line\\nAnd that's another line\\n"|
+              plain    %| to eq |
+              expected %|"Something entirely different"|
+              plain    %|.|
             end
           },
           diff: proc {
-            alpha_line %|- Something entirely different|
-            beta_line  %|+ This is a line\\n|
-            beta_line  %|+ And that's another line\\n|
+            expected_line %|- Something entirely different|
+            actual_line   %|+ This is a line\\n|
+            actual_line   %|+ And that's another line\\n|
           },
         )
 
@@ -346,7 +346,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's another line\\n"
-          actual = "Something entirely different"
+          actual   = "Something entirely different"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -356,17 +356,17 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"Something entirely different"|
-              plain " to eq "
-              alpha %|"This is a line\\nAnd that's another line\\n"|
-              plain "."
+              plain    %|Expected |
+              actual   %|"Something entirely different"|
+              plain    %| to eq |
+              expected %|"This is a line\\nAnd that's another line\\n"|
+              plain    %|.|
             end
           },
           diff: proc {
-            alpha_line %|- This is a line\\n|
-            alpha_line %|- And that's another line\\n|
-            beta_line  %|+ Something entirely different|
+            expected_line %|- This is a line\\n|
+            expected_line %|- And that's another line\\n|
+            actual_line   %|+ Something entirely different|
           },
         )
 
@@ -382,7 +382,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
-          actual = "This is a line\\nSomething completely different\\nAnd there's a line too\\n"
+          actual   = "This is a line\\nSomething completely different\\nAnd there's a line too\\n"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -392,20 +392,20 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"This is a line\\nSomething completely different\\nAnd there's a line too\\n"|
+              plain    %|Expected |
+              actual   %|"This is a line\\nSomething completely different\\nAnd there's a line too\\n"|
             end
 
             line do
-              plain "   to eq "
-              alpha %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
+              plain    %|   to eq |
+              expected %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
             end
           },
           diff: proc {
-            plain_line %|  This is a line\\n|
-            alpha_line %|- And that's a line\\n|
-            beta_line  %|+ Something completely different\\n|
-            plain_line %|  And there's a line too\\n|
+            plain_line    %|  This is a line\\n|
+            expected_line %|- And that's a line\\n|
+            actual_line   %|+ Something completely different\\n|
+            plain_line    %|  And there's a line too\\n|
           },
         )
 
@@ -429,13 +429,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain " Expected "
-              beta %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
+              plain    %| Expected |
+              actual   %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
             end
 
             line do
-              plain "not to eq "
-              alpha %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
+              plain    %|not to eq |
+              expected %|"This is a line\\nAnd that's a line\\nAnd there's a line too\\n"|
             end
           },
         )
@@ -464,7 +464,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
               }
             ]
           ]
-          actual = [
+          actual   = [
             [
               :h2,
               [:span, [:text, "Goodbye world"]],
@@ -489,45 +489,45 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|[[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated", :person => #<SuperDiff::Test::Person name: "Doc", age: 60> } }], :br]|
+              plain    %|Expected |
+              actual   %|[[:h2, [:span, [:text, "Goodbye world"]], { id: "hero", class: "header", data: { "sticky" => false, :role => "deprecated", :person => #<SuperDiff::Test::Person name: "Doc", age: 60> } }], :br]|
             end
 
             line do
-              plain "   to eq "
-              alpha %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
+              plain    %|   to eq |
+              expected %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
             end
           },
           diff: proc {
-            plain_line %|  [|
-            plain_line %|    [|
-            alpha_line %|-     :h1,|
-            beta_line  %|+     :h2,|
-            plain_line %|      [|
-            plain_line %|        :span,|
-            plain_line %|        [|
-            plain_line %|          :text,|
-            alpha_line %|-         "Hello world"|
-            beta_line  %|+         "Goodbye world"|
-            plain_line %|        ]|
-            plain_line %|      ],|
-            plain_line %|      {|
-            beta_line  %|+       id: "hero",|
-            plain_line %|        class: "header",|
-            plain_line %|        data: {|
-            alpha_line %|-         "sticky" => true,|
-            beta_line  %|+         "sticky" => false,|
-            beta_line  %|+         role: "deprecated",|
-            plain_line %|          person: #<SuperDiff::Test::Person {|
-            alpha_line %|-           name: "Marty",|
-            beta_line  %|+           name: "Doc",|
-            plain_line %|            age: 60|
-            plain_line %|          }>|
-            plain_line %|        }|
-            plain_line %|      }|
-            plain_line %|    ],|
-            beta_line  %|+   :br|
-            plain_line %|  ]|
+            plain_line    %|  [|
+            plain_line    %|    [|
+            expected_line %|-     :h1,|
+            actual_line   %|+     :h2,|
+            plain_line    %|      [|
+            plain_line    %|        :span,|
+            plain_line    %|        [|
+            plain_line    %|          :text,|
+            expected_line %|-         "Hello world"|
+            actual_line   %|+         "Goodbye world"|
+            plain_line    %|        ]|
+            plain_line    %|      ],|
+            plain_line    %|      {|
+            actual_line   %|+       id: "hero",|
+            plain_line    %|        class: "header",|
+            plain_line    %|        data: {|
+            expected_line %|-         "sticky" => true,|
+            actual_line   %|+         "sticky" => false,|
+            actual_line   %|+         role: "deprecated",|
+            plain_line    %|          person: #<SuperDiff::Test::Person {|
+            expected_line %|-           name: "Marty",|
+            actual_line   %|+           name: "Doc",|
+            plain_line    %|            age: 60|
+            plain_line    %|          }>|
+            plain_line    %|        }|
+            plain_line    %|      }|
+            plain_line    %|    ],|
+            actual_line   %|+   :br|
+            plain_line    %|  ]|
           },
         )
 
@@ -563,13 +563,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain " Expected "
-              beta %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
+              plain    %| Expected |
+              actual   %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
             end
 
             line do
-              plain "not to eq "
-              alpha %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
+              plain    %|not to eq |
+              expected %|[[:h1, [:span, [:text, "Hello world"]], { class: "header", data: { "sticky" => true, :person => #<SuperDiff::Test::Person name: "Marty", age: 60> } }]]|
             end
           },
         )
@@ -604,7 +604,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
               { name: "Chevy 4x4" }
             ]
           }
-          actual = {
+          actual   = {
             customer: {
               person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr.", age: 17),
               shipping_address: {
@@ -632,47 +632,47 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           snippet: %|expect(actual).to eq(expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly, Jr.", age: 17>, shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] }|
+              plain    %|Expected |
+              actual   %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly, Jr.", age: 17>, shipping_address: { line_1: "456 Ponderosa Ct.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Mattel Hoverboard" }] }|
             end
 
             line do
-              plain "   to eq "
-              alpha %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
+              plain    %|   to eq |
+              expected %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
             end
           },
           diff: proc {
-            plain_line %|  {|
-            plain_line %|    customer: {|
-            plain_line %|      person: #<SuperDiff::Test::Person {|
-            alpha_line %|-       name: "Marty McFly",|
-            beta_line  %|+       name: "Marty McFly, Jr.",|
-            plain_line %|        age: 17|
-            plain_line %|      }>,|
-            plain_line %|      shipping_address: {|
-            alpha_line %|-       line_1: "123 Main St.",|
-            beta_line  %|+       line_1: "456 Ponderosa Ct.",|
-            plain_line %|        city: "Hill Valley",|
-            plain_line %|        state: "CA",|
-            plain_line %|        zip: "90382"|
-            plain_line %|      }|
-            plain_line %|    },|
-            plain_line %|    items: [|
-            plain_line %|      {|
-            plain_line %|        name: "Fender Stratocaster",|
-            plain_line %|        cost: 100000,|
-            plain_line %|        options: [|
-            plain_line %|          "red",|
-            plain_line %|          "blue",|
-            plain_line %|          "green"|
-            plain_line %|        ]|
-            plain_line %|      },|
-            plain_line %|      {|
-            alpha_line %|-       name: "Chevy 4x4"|
-            beta_line  %|+       name: "Mattel Hoverboard"|
-            plain_line %|      }|
-            plain_line %|    ]|
-            plain_line %|  }|
+            plain_line    %|  {|
+            plain_line    %|    customer: {|
+            plain_line    %|      person: #<SuperDiff::Test::Person {|
+            expected_line %|-       name: "Marty McFly",|
+            actual_line   %|+       name: "Marty McFly, Jr.",|
+            plain_line    %|        age: 17|
+            plain_line    %|      }>,|
+            plain_line    %|      shipping_address: {|
+            expected_line %|-       line_1: "123 Main St.",|
+            actual_line   %|+       line_1: "456 Ponderosa Ct.",|
+            plain_line    %|        city: "Hill Valley",|
+            plain_line    %|        state: "CA",|
+            plain_line    %|        zip: "90382"|
+            plain_line    %|      }|
+            plain_line    %|    },|
+            plain_line    %|    items: [|
+            plain_line    %|      {|
+            plain_line    %|        name: "Fender Stratocaster",|
+            plain_line    %|        cost: 100000,|
+            plain_line    %|        options: [|
+            plain_line    %|          "red",|
+            plain_line    %|          "blue",|
+            plain_line    %|          "green"|
+            plain_line    %|        ]|
+            plain_line    %|      },|
+            plain_line    %|      {|
+            expected_line %|-       name: "Chevy 4x4"|
+            actual_line   %|+       name: "Mattel Hoverboard"|
+            plain_line    %|      }|
+            plain_line    %|    ]|
+            plain_line    %|  }|
           },
         )
 
@@ -714,13 +714,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain " Expected "
-              beta %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
+              plain    %| Expected |
+              actual   %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
             end
 
             line do
-              plain "not to eq "
-              alpha %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
+              plain    %|not to eq |
+              expected %|{ customer: { person: #<SuperDiff::Test::Person name: "Marty McFly", age: 17>, shipping_address: { line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" } }, items: [{ name: "Fender Stratocaster", cost: 100000, options: ["red", "blue", "green"] }, { name: "Chevy 4x4" }] }|
             end
           },
         )
@@ -740,7 +740,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             name: "Marty",
             age: 31,
           )
-          actual = SuperDiff::Test::Customer.new(
+          actual   = SuperDiff::Test::Customer.new(
             name: "Doc",
             shipping_address: :some_shipping_address,
             phone: "1234567890",
@@ -755,13 +755,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|#<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">|
+              plain    %|Expected |
+              actual   %|#<SuperDiff::Test::Customer name: "Doc", shipping_address: :some_shipping_address, phone: "1234567890">|
             end
 
             line do
-              plain "   to eq "
-              alpha %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+              plain    %|   to eq |
+              expected %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
             end
           },
         )
@@ -789,13 +789,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain " Expected "
-              beta %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+              plain    %| Expected |
+              actual   %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
             end
 
             line do
-              plain "not to eq "
-              alpha %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
+              plain    %|not to eq |
+              expected %|#<SuperDiff::Test::Person name: "Marty", age: 31>|
             end
           },
         )
@@ -815,7 +815,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             name: "camera",
             quantity: 3,
           )
-          actual = SuperDiff::Test::Player.new(
+          actual   = SuperDiff::Test::Player.new(
             handle: "mcmire",
             character: "Jon",
             inventory: ["sword"],
@@ -835,13 +835,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             if SuperDiff::Test.jruby?
             else
               line do
-                plain "Expected "
-                beta %|#<SuperDiff::Test::Player @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>|
+                plain    %|Expected |
+                actual   %|#<SuperDiff::Test::Player @handle="mcmire", @character="Jon", @inventory=["sword"], @shields=11.4, @health=4, @ultimate=true>|
               end
 
               line do
-                plain "   to eq "
-                alpha %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+                plain    %|   to eq |
+                expected %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
               end
             end
           },
@@ -873,13 +873,13 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             if SuperDiff::Test.jruby?
             else
               line do
-                plain " Expected "
-                beta %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+                plain    %| Expected |
+                actual   %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
               end
 
               line do
-                plain "not to eq "
-                alpha %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
+                plain    %|not to eq |
+                expected %|#<SuperDiff::Test::Item @name="camera", @quantity=3>|
               end
             end
           },
@@ -898,7 +898,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = { foo: nil }
-          actual = { foo: [] }
+          actual   = { foo: [] }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -909,18 +909,18 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|{ foo: [] }|
-              plain " to eq "
-              alpha %|{ foo: nil }|
-              plain "."
+              plain    %|Expected |
+              actual   %|{ foo: [] }|
+              plain    %| to eq |
+              expected %|{ foo: nil }|
+              plain    %|.|
             end
           },
           diff: proc {
-            plain_line %|  {|
-            alpha_line %|-   foo: nil|
-            beta_line  %|+   foo: []|
-            plain_line %|  }|
+            plain_line    %|  {|
+            expected_line %|-   foo: nil|
+            actual_line   %|+   foo: []|
+            plain_line    %|  }|
           }
         )
 
@@ -936,7 +936,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = { foo: nil }
-          actual = { foo: {} }
+          actual   = { foo: {} }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -947,18 +947,18 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|{ foo: {} }|
-              plain " to eq "
-              alpha %|{ foo: nil }|
-              plain "."
+              plain    %|Expected |
+              actual   %|{ foo: {} }|
+              plain    %| to eq |
+              expected %|{ foo: nil }|
+              plain    %|.|
             end
           },
           diff: proc {
-            plain_line %|  {|
-            alpha_line %|-   foo: nil|
-            beta_line  %|+   foo: {}|
-            plain_line %|  }|
+            plain_line    %|  {|
+            expected_line %|-   foo: nil|
+            actual_line   %|+   foo: {}|
+            plain_line    %|  }|
           }
         )
 
@@ -974,7 +974,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = { foo: nil }
-          actual = { foo: SuperDiff::Test::EmptyClass.new }
+          actual   = { foo: SuperDiff::Test::EmptyClass.new }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -985,18 +985,18 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|{ foo: #<SuperDiff::Test::EmptyClass> }|
-              plain " to eq "
-              alpha %|{ foo: nil }|
-              plain "."
+              plain    %|Expected |
+              actual   %|{ foo: #<SuperDiff::Test::EmptyClass> }|
+              plain    %| to eq |
+              expected %|{ foo: nil }|
+              plain    %|.|
             end
           },
           diff: proc {
-            plain_line %|  {|
-            alpha_line %|-   foo: nil|
-            beta_line  %|+   foo: #<SuperDiff::Test::EmptyClass>|
-            plain_line %|  }|
+            plain_line    %|  {|
+            expected_line %|-   foo: nil|
+            actual_line   %|+   foo: #<SuperDiff::Test::EmptyClass>|
+            plain_line    %|  }|
           }
         )
 

@@ -17,11 +17,11 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: snippet,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " to respond to "
-                alpha %|:foo|
-                plain "."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| to respond to |
+                expected %|:foo|
+                plain    %|.|
               end
             },
           )
@@ -45,11 +45,11 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: snippet,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " not to respond to "
-                alpha %|:inspect|
-                plain "."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| not to respond to |
+                expected %|:inspect|
+                plain    %|.|
               end
             },
           )
@@ -78,25 +78,25 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|#<Double :something_really_long>|
+                plain    %|     Expected |
+                actual   %|#<Double :something_really_long>|
               end
 
               line do
-                plain "to respond to "
-                alpha %|:foo|
-                plain ", "
-                alpha %|:bar|
-                plain ", "
-                alpha %|:baz|
-                plain ", "
-                alpha %|:qux|
-                plain ", "
-                alpha %|:fizz|
-                plain ", "
-                alpha %|:buzz|
-                plain " and "
-                alpha %|:zing|
+                plain    %|to respond to |
+                expected %|:foo|
+                plain    %|, |
+                expected %|:bar|
+                plain    %|, |
+                expected %|:baz|
+                plain    %|, |
+                expected %|:qux|
+                plain    %|, |
+                expected %|:fizz|
+                plain    %|, |
+                expected %|:buzz|
+                plain    %| and |
+                expected %|:zing|
               end
             },
           )
@@ -128,15 +128,15 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "         Expected "
-                beta %|#<B>|
+                plain    %|         Expected |
+                actual   %|#<B>|
               end
 
               line do
-                plain "not to respond to "
-                alpha %|:some_really_long_method_and_stuff|
-                plain " and "
-                alpha %|:another_method_or_whatever|
+                plain    %|not to respond to |
+                expected %|:some_really_long_method_and_stuff|
+                plain    %| and |
+                expected %|:another_method_or_whatever|
               end
             },
           )
@@ -167,13 +167,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(double).to respond_to(:foo).with(3).arguments|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|3|
-                plain " arguments."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|3|
+                plain    %| arguments.|
               end
             },
           )
@@ -203,13 +203,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(B.new).not_to respond_to(:foo).with(3).arguments|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<B>|
-                plain " not to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|3|
-                plain " arguments."
+                plain    %|Expected |
+                actual   %|#<B>|
+                plain    %| not to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|3|
+                plain    %| arguments.|
               end
             },
           )
@@ -239,24 +239,24 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|#<Double :something_really_long>|
+                plain    %|     Expected |
+                actual   %|#<Double :something_really_long>|
               end
 
               line do
-                plain "to respond to "
-                alpha %|:foo|
-                plain ", "
-                alpha %|:bar|
-                plain ", "
-                alpha %|:baz|
-                plain ", "
-                alpha %|:fizz|
-                plain " and "
-                alpha %|:buzz|
-                plain " with "
-                alpha %|3|
-                plain " arguments"
+                plain    %|to respond to |
+                expected %|:foo|
+                plain    %|, |
+                expected %|:bar|
+                plain    %|, |
+                expected %|:baz|
+                plain    %|, |
+                expected %|:fizz|
+                plain    %| and |
+                expected %|:buzz|
+                plain    %| with |
+                expected %|3|
+                plain    %| arguments|
               end
             },
           )
@@ -288,18 +288,18 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "         Expected "
-                beta %|#<B>|
+                plain    %|         Expected |
+                actual   %|#<B>|
               end
 
               line do
-                plain "not to respond to "
-                alpha %|:some_really_long_method_and_stuff|
-                plain " and "
-                alpha %|:another_method_or_whatever|
-                plain " with "
-                alpha %|3|
-                plain " arguments"
+                plain    %|not to respond to |
+                expected %|:some_really_long_method_and_stuff|
+                plain    %| and |
+                expected %|:another_method_or_whatever|
+                plain    %| with |
+                expected %|3|
+                plain    %| arguments|
               end
             },
           )
@@ -330,13 +330,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(double).to respond_to(:foo).with_keywords(:bar)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " to respond to "
-                alpha %|:foo|
-                plain " with keyword "
-                alpha %|:bar|
-                plain "."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| to respond to |
+                expected %|:foo|
+                plain    %| with keyword |
+                expected %|:bar|
+                plain    %|.|
               end
             },
           )
@@ -366,13 +366,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(B.new).not_to respond_to(:foo).with_keywords(:bar)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<B>|
-                plain " not to respond to "
-                alpha %|:foo|
-                plain " with keyword "
-                alpha %|:bar|
-                plain "."
+                plain    %|Expected |
+                actual   %|#<B>|
+                plain    %| not to respond to |
+                expected %|:foo|
+                plain    %| with keyword |
+                expected %|:bar|
+                plain    %|.|
               end
             },
           )
@@ -402,25 +402,25 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|#<Double :something_really_long>|
+                plain    %|     Expected |
+                actual   %|#<Double :something_really_long>|
               end
 
               line do
-                plain "to respond to "
-                alpha %|:foo|
-                plain ", "
-                alpha %|:bar|
-                plain ", "
-                alpha %|:baz|
-                plain ", "
-                alpha %|:fizz|
-                plain " and "
-                alpha %|:buzz|
-                plain " with keywords "
-                alpha %|:qux|
-                plain " and "
-                alpha %|:blargh|
+                plain    %|to respond to |
+                expected %|:foo|
+                plain    %|, |
+                expected %|:bar|
+                plain    %|, |
+                expected %|:baz|
+                plain    %|, |
+                expected %|:fizz|
+                plain    %| and |
+                expected %|:buzz|
+                plain    %| with keywords |
+                expected %|:qux|
+                plain    %| and |
+                expected %|:blargh|
               end
             },
           )
@@ -452,19 +452,19 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "         Expected "
-                beta %|#<B>|
+                plain    %|         Expected |
+                actual   %|#<B>|
               end
 
               line do
-                plain "not to respond to "
-                alpha %|:some_really_long_method_and_stuff|
-                plain " and "
-                alpha %|:another_method_or_whatever|
-                plain " with keywords "
-                alpha %|:foo|
-                plain " and "
-                alpha %|:bar|
+                plain    %|not to respond to |
+                expected %|:some_really_long_method_and_stuff|
+                plain    %| and |
+                expected %|:another_method_or_whatever|
+                plain    %| with keywords |
+                expected %|:foo|
+                plain    %| and |
+                expected %|:bar|
               end
             },
           )
@@ -495,13 +495,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(double).to respond_to(:foo).with_any_keywords|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|any|
-                plain " keywords."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|any|
+                plain    %| keywords.|
               end
             },
           )
@@ -531,13 +531,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(B.new).not_to respond_to(:foo).with_any_keywords|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<B>|
-                plain " not to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|any|
-                plain " keywords."
+                plain    %|Expected |
+                actual   %|#<B>|
+                plain    %| not to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|any|
+                plain    %| keywords.|
               end
             },
           )
@@ -567,26 +567,26 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|#<Double :something_really_long>|
+                plain    %|     Expected |
+                actual   %|#<Double :something_really_long>|
               end
 
               line do
-                plain "to respond to "
-                alpha %|:foo|
-                plain ", "
-                alpha %|:bar|
-                plain ", "
-                alpha %|:baz|
-                plain ", "
-                alpha %|:qux|
-                plain ", "
-                alpha %|:fizz|
-                plain " and "
-                alpha %|:buzz|
-                plain " with "
-                alpha %|any|
-                plain " keywords "
+                plain    %|to respond to |
+                expected %|:foo|
+                plain    %|, |
+                expected %|:bar|
+                plain    %|, |
+                expected %|:baz|
+                plain    %|, |
+                expected %|:qux|
+                plain    %|, |
+                expected %|:fizz|
+                plain    %| and |
+                expected %|:buzz|
+                plain    %| with |
+                expected %|any|
+                plain    %| keywords |
               end
             },
           )
@@ -618,18 +618,18 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "         Expected "
-                beta %|#<B>|
+                plain    %|         Expected |
+                actual   %|#<B>|
               end
 
               line do
-                plain "not to respond to "
-                alpha %|:some_really_long_method_and_stuff|
-                plain " and "
-                alpha %|:another_method_or_whatever|
-                plain " with "
-                alpha %|any|
-                plain " keywords "
+                plain    %|not to respond to |
+                expected %|:some_really_long_method_and_stuff|
+                plain    %| and |
+                expected %|:another_method_or_whatever|
+                plain    %| with |
+                expected %|any|
+                plain    %| keywords |
               end
             },
           )
@@ -660,13 +660,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(double).to respond_to(:foo).with_unlimited_arguments|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<Double (anonymous)>|
-                plain " to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|unlimited|
-                plain " arguments."
+                plain    %|Expected |
+                actual   %|#<Double (anonymous)>|
+                plain    %| to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|unlimited|
+                plain    %| arguments.|
               end
             },
           )
@@ -696,13 +696,13 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             snippet: %|expect(B.new).not_to respond_to(:foo).with_unlimited_arguments|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|#<B>|
-                plain " not to respond to "
-                alpha %|:foo|
-                plain " with "
-                alpha %|unlimited|
-                plain " arguments."
+                plain    %|Expected |
+                actual   %|#<B>|
+                plain    %| not to respond to |
+                expected %|:foo|
+                plain    %| with |
+                expected %|unlimited|
+                plain    %| arguments.|
               end
             },
           )
@@ -732,20 +732,20 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|#<Double :something_really_long>|
+                plain    %|     Expected |
+                actual   %|#<Double :something_really_long>|
               end
 
               line do
-                plain "to respond to "
-                alpha %|:foo|
-                plain ", "
-                alpha %|:bar|
-                plain " and "
-                alpha %|:baz|
-                plain " with "
-                alpha %|unlimited|
-                plain " arguments"
+                plain    %|to respond to |
+                expected %|:foo|
+                plain    %|, |
+                expected %|:bar|
+                plain    %| and |
+                expected %|:baz|
+                plain    %| with |
+                expected %|unlimited|
+                plain    %| arguments|
               end
             },
           )
@@ -777,18 +777,18 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "         Expected "
-                beta %|#<B>|
+                plain    %|         Expected |
+                actual   %|#<B>|
               end
 
               line do
-                plain "not to respond to "
-                alpha %|:some_really_long_method_and_stuff|
-                plain " and "
-                alpha %|:another_method_or_whatever|
-                plain " with "
-                alpha %|unlimited|
-                plain " arguments"
+                plain    %|not to respond to |
+                expected %|:some_really_long_method_and_stuff|
+                plain    %| and |
+                expected %|:another_method_or_whatever|
+                plain    %| with |
+                expected %|unlimited|
+                plain    %| arguments|
               end
             },
           )
@@ -819,22 +819,22 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "     Expected "
-              beta %|#<Double :something_really_long>|
+              plain    %|     Expected |
+              actual   %|#<Double :something_really_long>|
             end
 
             line do
-              plain "to respond to "
-              alpha %|:foo|
-              plain ", "
-              alpha %|:bar|
-              plain " and "
-              alpha %|:baz|
-              plain " with "
-              alpha %|any|
-              plain " keywords and "
-              alpha %|unlimited|
-              plain " arguments"
+              plain    %|to respond to |
+              expected %|:foo|
+              plain    %|, |
+              expected %|:bar|
+              plain    %| and |
+              expected %|:baz|
+              plain    %| with |
+              expected %|any|
+              plain    %| keywords and |
+              expected %|unlimited|
+              plain    %| arguments|
             end
           },
         )
@@ -867,22 +867,22 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "         Expected "
-              beta %|#<B>|
+              plain    %|         Expected |
+              actual   %|#<B>|
             end
 
             line do
-              plain "not to respond to "
-              alpha %|:foo|
-              plain ", "
-              alpha %|:bar|
-              plain " and "
-              alpha %|:baz|
-              plain " with "
-              alpha %|any|
-              plain " keywords and "
-              alpha %|unlimited|
-              plain " arguments"
+              plain    %|not to respond to |
+              expected %|:foo|
+              plain    %|, |
+              expected %|:bar|
+              plain    %| and |
+              expected %|:baz|
+              plain    %| with |
+              expected %|any|
+              plain    %| keywords and |
+              expected %|unlimited|
+              plain    %| arguments|
             end
           },
         )
@@ -912,24 +912,24 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "     Expected "
-              beta %|#<Double :something_really_long>|
+              plain    %|     Expected |
+              actual   %|#<Double :something_really_long>|
             end
 
             line do
-              plain "to respond to "
-              alpha %|:foo|
-              plain ", "
-              alpha %|:bar|
-              plain " and "
-              alpha %|:baz|
-              plain " with keywords "
-              alpha %|:qux|
-              plain " and "
-              alpha %|:blargh|
-              plain " and "
-              alpha %|unlimited|
-              plain " arguments"
+              plain    %|to respond to |
+              expected %|:foo|
+              plain    %|, |
+              expected %|:bar|
+              plain    %| and |
+              expected %|:baz|
+              plain    %| with keywords |
+              expected %|:qux|
+              plain    %| and |
+              expected %|:blargh|
+              plain    %| and |
+              expected %|unlimited|
+              plain    %| arguments|
             end
           },
         )
@@ -962,24 +962,24 @@ RSpec.describe "Integration with RSpec's #respond_to matcher", type: :integratio
           newline_before_expectation: true,
           expectation: proc {
             line do
-              plain "         Expected "
-              beta %|#<B>|
+              plain    %|         Expected |
+              actual   %|#<B>|
             end
 
             line do
-              plain "not to respond to "
-              alpha %|:foo|
-              plain ", "
-              alpha %|:bar|
-              plain " and "
-              alpha %|:baz|
-              plain " with keywords "
-              alpha %|:qux|
-              plain " and "
-              alpha %|:blargh|
-              plain " and "
-              alpha %|unlimited|
-              plain " arguments"
+              plain    %|not to respond to |
+              expected %|:foo|
+              plain    %|, |
+              expected %|:bar|
+              plain    %| and |
+              expected %|:baz|
+              plain    %| with keywords |
+              expected %|:qux|
+              plain    %| and |
+              expected %|:blargh|
+              plain    %| and |
+              expected %|unlimited|
+              plain    %| arguments|
             end
           },
         )

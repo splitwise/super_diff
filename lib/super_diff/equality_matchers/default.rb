@@ -19,7 +19,7 @@ module SuperDiff
 
       def expected_line
         Helpers.style(
-          :alpha,
+          :expected,
           "Expected: " +
           ObjectInspection.inspect(expected, as_single_line: true),
         )
@@ -27,7 +27,7 @@ module SuperDiff
 
       def actual_line
         Helpers.style(
-          :beta,
+          :actual,
           "  Actual: " +
           ObjectInspection.inspect(actual, as_single_line: true),
         )

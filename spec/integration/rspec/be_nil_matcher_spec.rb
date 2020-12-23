@@ -11,11 +11,11 @@ RSpec.describe "Integration with RSpec's #be_nil matcher", type: :integration do
         snippet: %|expect(:foo).to be_nil|,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|:foo|
-            plain " to be "
-            alpha %|nil|
-            plain "."
+            plain    %|Expected |
+            actual   %|:foo|
+            plain    %| to be |
+            expected %|nil|
+            plain    %|.|
           end
         },
       )
@@ -36,11 +36,11 @@ RSpec.describe "Integration with RSpec's #be_nil matcher", type: :integration do
         snippet: %|expect(nil).not_to be_nil|,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|nil|
-            plain " not to be "
-            alpha %|nil|
-            plain "."
+            plain    %|Expected |
+            actual   %|nil|
+            plain    %| not to be |
+            expected %|nil|
+            plain    %|.|
           end
         },
       )

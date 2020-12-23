@@ -14,7 +14,7 @@ module SuperDiff
 
         def add_actual_value
           if actual
-            template.add_text_in_color(beta_color) { actual }
+            template.add_text_in_color(actual_color) { actual }
           else
             template.add_text("block")
           end

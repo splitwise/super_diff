@@ -6,12 +6,12 @@ module SuperDiff
       end
     end
 
-    def alpha(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff.configuration.alpha_color, &block)
+    def expected(*args, **opts, &block)
+      colorize(*args, **opts, fg: SuperDiff.configuration.expected_color, &block)
     end
 
-    def beta(*args, **opts, &block)
-      colorize(*args, **opts, fg: SuperDiff.configuration.beta_color, &block)
+    def actual(*args, **opts, &block)
+      colorize(*args, **opts, fg: SuperDiff.configuration.actual_color, &block)
     end
   end
 end

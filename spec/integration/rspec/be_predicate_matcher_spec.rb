@@ -6,7 +6,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
   # rubocop:enable Metrics/BlockLength
     context "using #{prefix}_<predicate>" do
       context "when the predicate method doesn't exist on the object" do
-        context "when the inspected version of the actual value is short" do
+        context "when the inspected version of the actual   value is short" do
           it "produces the correct failure message" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = %|expect(:foo).to #{prefix}_strong|
@@ -20,13 +20,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                 snippet: snippet,
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|:foo|
-                    plain " to respond to "
-                    alpha %|strong?|
-                    plain " or "
-                    alpha %|strongs?|
-                    plain "."
+                    plain    %|Expected |
+                    actual   %|:foo|
+                    plain    %| to respond to |
+                    expected %|strong?|
+                    plain    %| or |
+                    expected %|strongs?|
+                    plain    %|.|
                   end
                 },
               )
@@ -38,7 +38,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
           end
         end
 
-        context "when the inspected version of the actual value is long" do
+        context "when the inspected version of the actual   value is long" do
           it "produces the correct failure message" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -56,15 +56,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                 newline_before_expectation: true,
                 expectation: proc {
                   line do
-                    plain "     Expected "
-                    beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                    plain    %|     Expected |
+                    actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                   end
 
                   line do
-                    plain "to respond to "
-                    alpha %|strong?|
-                    plain " or "
-                    alpha %|strongs?|
+                    plain    %|to respond to |
+                    expected %|strong?|
+                    plain    %| or |
+                    expected %|strongs?|
                   end
                 },
               )
@@ -79,7 +79,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
 
       context "when the predicate method exists on the object" do
         context "but is private" do
-          context "when the inspected version of the actual value is short" do
+          context "when the inspected version of the actual   value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -99,13 +99,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                   snippet: %|expect(Foo.new).to #{prefix}_strong|,
                   expectation: proc {
                     line do
-                      plain "Expected "
-                      beta %|#<Foo>|
-                      plain " to have a public method "
-                      alpha %|strong?|
-                      plain " or "
-                      alpha %|strongs?|
-                      plain "."
+                      plain    %|Expected |
+                      actual   %|#<Foo>|
+                      plain    %| to have a public method |
+                      expected %|strong?|
+                      plain    %| or |
+                      expected %|strongs?|
+                      plain    %|.|
                     end
                   },
                 )
@@ -118,7 +118,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
             end
           end
 
-          context "when the inspected version of the actual value is long" do
+          context "when the inspected version of the actual   value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -141,15 +141,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "               Expected "
-                      beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                      plain    %|               Expected |
+                      actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
                     end
 
                     line do
-                      plain "to have a public method "
-                      alpha %|strong?|
-                      plain " or "
-                      alpha %|strongs?|
+                      plain    %|to have a public method |
+                      expected %|strong?|
+                      plain    %| or |
+                      expected %|strongs?|
                     end
                   },
                 )
@@ -166,7 +166,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
         context "and is public" do
           context "and returns false" do
             context "but is called #true?" do
-              context "when the inspected version of the actual value is short" do
+              context "when the inspected version of the actual   value is short" do
                 it "produces the correct failure message" do
                   as_both_colored_and_uncolored do |color_enabled|
                     snippet = <<~TEST.strip
@@ -187,23 +187,23 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                       newline_before_expectation: true,
                       expectation: proc {
                         line do
-                          plain "Expected "
-                          beta %|#<Foo>|
-                          plain " to return a truthy result for "
-                          alpha %|true?|
-                          plain " or "
-                          alpha %|trues?|
-                          plain "."
+                          plain    %|Expected |
+                          actual   %|#<Foo>|
+                          plain    %| to return a truthy result for |
+                          expected %|true?|
+                          plain    %| or |
+                          expected %|trues?|
+                          plain    %|.|
                         end
 
                         newline
 
                         line do
-                          plain "(Perhaps you want to use "
+                          plain    %|(Perhaps you want to use |
                           blue "be(true)"
-                          plain " or "
+                          plain    %| or |
                           blue "be_truthy"
-                          plain " instead?)"
+                          plain    %| instead?)|
                         end
                       },
                     )
@@ -216,7 +216,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                 end
               end
 
-              context "when the inspected version of the actual value is long" do
+              context "when the inspected version of the actual   value is long" do
                 it "produces the correct failure message" do
                   as_both_colored_and_uncolored do |color_enabled|
                     snippet = <<~TEST.strip
@@ -244,25 +244,25 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                       newline_before_expectation: true,
                       expectation: proc {
                         line do
-                          plain "                     Expected "
-                          beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                          plain    %|                     Expected |
+                          actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
                         end
 
                         line do
-                          plain "to return a truthy result for "
-                          alpha %|true?|
-                          plain " or "
-                          alpha %|trues?|
+                          plain    %|to return a truthy result for |
+                          expected %|true?|
+                          plain    %| or |
+                          expected %|trues?|
                         end
 
                         newline
 
                         line do
-                          plain "(Perhaps you want to use "
+                          plain    %|(Perhaps you want to use |
                           blue "be(true)"
-                          plain " or "
+                          plain    %| or |
                           blue "be_truthy"
-                          plain " instead?)"
+                          plain    %| instead?)|
                         end
                       },
                     )
@@ -297,13 +297,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                     newline_before_expectation: true,
                     expectation: proc {
                       line do
-                        plain "Expected "
-                        beta %|#<X>|
-                        plain " to return a truthy result for "
-                        alpha %|false?|
-                        plain " or "
-                        alpha %|falses?|
-                        plain "."
+                        plain    %|Expected |
+                        actual   %|#<X>|
+                        plain    %| to return a truthy result for |
+                        expected %|false?|
+                        plain    %| or |
+                        expected %|falses?|
+                        plain    %|.|
                       end
                     },
                   )
@@ -318,7 +318,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
 
             context "and is called neither #true? nor #false?" do
               context "and is singular" do
-                context "when the inspected version of the actual value is short" do
+                context "when the inspected version of the actual   value is short" do
                   it "produces the correct failure message" do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
@@ -338,13 +338,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                         snippet: %|expect(X.new).to #{prefix}_y|,
                         expectation: proc {
                           line do
-                            plain "Expected "
-                            beta %|#<X>|
-                            plain " to return a truthy result for "
-                            alpha %|y?|
-                            plain " or "
-                            alpha %|ys?|
-                            plain "."
+                            plain    %|Expected |
+                            actual   %|#<X>|
+                            plain    %| to return a truthy result for |
+                            expected %|y?|
+                            plain    %| or |
+                            expected %|ys?|
+                            plain    %|.|
                           end
                         },
                       )
@@ -357,7 +357,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                   end
                 end
 
-                context "when the inspected version of the actual value is long" do
+                context "when the inspected version of the actual   value is long" do
                   it "produces the correct failure message" do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
@@ -386,15 +386,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                         newline_before_expectation: true,
                         expectation: proc {
                           line do
-                            plain "                     Expected "
-                            beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                            plain    %|                     Expected |
+                            actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                           end
 
                           line do
-                            plain "to return a truthy result for "
-                            alpha %|y?|
-                            plain " or "
-                            alpha %|ys?|
+                            plain    %|to return a truthy result for |
+                            expected %|y?|
+                            plain    %| or |
+                            expected %|ys?|
                           end
                         },
                       )
@@ -409,7 +409,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
               end
 
               context "and is plural" do
-                context "when the inspected version of the actual value is short" do
+                context "when the inspected version of the actual   value is short" do
                   it "produces the correct failure message" do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
@@ -429,13 +429,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                         snippet: %|expect(X.new).to #{prefix}_y|,
                         expectation: proc {
                           line do
-                            plain "Expected "
-                            beta %|#<X>|
-                            plain " to return a truthy result for "
-                            alpha %|y?|
-                            plain " or "
-                            alpha %|ys?|
-                            plain "."
+                            plain    %|Expected |
+                            actual   %|#<X>|
+                            plain    %| to return a truthy result for |
+                            expected %|y?|
+                            plain    %| or |
+                            expected %|ys?|
+                            plain    %|.|
                           end
                         },
                       )
@@ -448,7 +448,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                   end
                 end
 
-                context "when the inspected version of the actual value is long" do
+                context "when the inspected version of the actual   value is long" do
                   it "produces the correct failure message" do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
@@ -477,15 +477,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                         newline_before_expectation: true,
                         expectation: proc {
                           line do
-                            plain "                     Expected "
-                            beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                            plain    %|                     Expected |
+                            actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                           end
 
                           line do
-                            plain "to return a truthy result for "
-                            alpha %|y?|
-                            plain " or "
-                            alpha %|ys?|
+                            plain    %|to return a truthy result for |
+                            expected %|y?|
+                            plain    %| or |
+                            expected %|ys?|
                           end
                         },
                       )
@@ -502,7 +502,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
           end
 
           context "and returns true" do
-            context "when the inspected version of the actual value is short" do
+            context "when the inspected version of the actual   value is short" do
               it "produces the correct failure message when used in the negative" do
                 as_both_colored_and_uncolored do |color_enabled|
                   snippet = <<~TEST.strip
@@ -522,13 +522,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                     snippet: %|expect(Foo.new).not_to #{prefix}_strong|,
                     expectation: proc {
                       line do
-                        plain "Expected "
-                        beta %|#<Foo>|
-                        plain " not to return a truthy result for "
-                        alpha %|strong?|
-                        plain " or "
-                        alpha %|strongs?|
-                        plain "."
+                        plain    %|Expected |
+                        actual   %|#<Foo>|
+                        plain    %| not to return a truthy result for |
+                        expected %|strong?|
+                        plain    %| or |
+                        expected %|strongs?|
+                        plain    %|.|
                       end
                     },
                   )
@@ -541,7 +541,7 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
               end
             end
 
-            context "when the inspected version of the actual value is long" do
+            context "when the inspected version of the actual   value is long" do
               it "produces the correct failure message when used in the negative" do
                 as_both_colored_and_uncolored do |color_enabled|
                   snippet = <<~TEST.strip
@@ -570,15 +570,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher", type: :integr
                     newline_before_expectation: true,
                     expectation: proc {
                       line do
-                        plain "                         Expected "
-                        beta %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                        plain    %|                         Expected |
+                        actual   %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
                       end
 
                       line do
-                        plain "not to return a truthy result for "
-                        alpha %|y?|
-                        plain " or "
-                        alpha %|ys?|
+                        plain    %|not to return a truthy result for |
+                        expected %|y?|
+                        plain    %| or |
+                        expected %|ys?|
                       end
                     },
                   )
