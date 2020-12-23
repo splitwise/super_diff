@@ -4,7 +4,7 @@ module SuperDiff
       extend AttrExtras.mixin
 
       ICONS = { delete: "-", insert: "+" }.freeze
-      STYLES = { insert: :beta, delete: :alpha, noop: :plain }.freeze
+      STYLES = { insert: :actual, delete: :expected, noop: :plain }.freeze
 
       method_object(
         [

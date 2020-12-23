@@ -13,11 +13,11 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration
         snippet: %|expect(nil).to be_truthy|,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|nil|
-            plain " to be "
-            alpha %|truthy|
-            plain "."
+            plain    %|Expected |
+            actual   %|nil|
+            plain    %| to be |
+            expected %|truthy|
+            plain    %|.|
           end
         },
       )
@@ -40,11 +40,11 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher", type: :integration
         snippet: %|expect(true).not_to be_truthy|,
         expectation: proc {
           line do
-            plain "Expected "
-            beta %|true|
-            plain " not to be "
-            alpha %|truthy|
-            plain "."
+            plain    %|Expected |
+            actual   %|true|
+            plain    %| not to be |
+            expected %|truthy|
+            plain    %|.|
           end
         },
       )

@@ -21,7 +21,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
             expectation: proc {
               red_line "RuntimeError:"
               indent by: 2 do
-                red_line "Some kind of error or whatever"
+                red_line   "Some kind of error or whatever"
                 newline
                 plain_line "This is another line"
               end
@@ -95,7 +95,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
           indent by: 5 do
             line do
               plain "1.1) "
-              bold "Failure/Error: "
+              bold  "Failure/Error: "
               plain snippet
             end
 
@@ -106,7 +106,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
               indent by: 2 do
                 red_line "Some kind of error or whatever"
                 newline
-                line "This is another line"
+                line     "This is another line"
               end
             end
           end
@@ -116,7 +116,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
           indent by: 5 do
             line do
               plain "1.2) "
-              bold "Failure/Error: "
+              bold  "Failure/Error: "
               plain snippet
             end
 
@@ -127,7 +127,7 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
               indent by: 2 do
                 red_line "Some kind of error or whatever"
                 newline
-                line "This is another line"
+                line     "This is another line"
               end
             end
           end

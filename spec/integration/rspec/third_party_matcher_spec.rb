@@ -23,7 +23,7 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
                 red_line   "Here is the next line."
                 plain_line "  This part is indented, for whatever reason. It just kinda keeps"
                 plain_line "  going until we finish saying whatever it is we want to say."
-              }
+              },
             )
 
             expect(program).
@@ -50,10 +50,10 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
                 snippet: %|expect(:anything).to fail_with_paragraphed_failure_message|,
                 newline_before_expectation: true,
                 expectation: proc {
-                  red_line "This is a message that spans multiple paragraphs."
+                  red_line   "This is a message that spans multiple paragraphs."
                   newline
                   plain_line "Here is the next paragraph."
-                }
+                },
               )
 
               expect(program).
@@ -81,7 +81,7 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
                 expectation: proc {
                   red_line "This is a message that spans multiple lines."
                   red_line "Here is the next line."
-                }
+                },
               )
 
               expect(program).
@@ -142,7 +142,7 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
                 red_line   "Here is the next line."
                 plain_line "  This part is indented, for whatever reason. It just kinda keeps"
                 plain_line "  going until we finish saying whatever it is we want to say."
-              }
+              },
             )
 
             expect(program).
@@ -171,8 +171,8 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
                 expectation: proc {
                   red_line "This is a message that spans multiple paragraphs."
                   newline
-                  plain_line "Here is the next paragraph."
-                }
+                  plain_line    "Here is the next paragraph."
+                },
               )
 
               expect(program).
@@ -228,7 +228,7 @@ RSpec.describe "Integration with a third-party matcher", type: :integration do
             snippet: %|expect(:anything).not_to pass_with_singleline_failure_message|,
             expectation: proc {
               red_line "This is a message that spans only one line."
-            }
+            },
           )
 
           expect(program).

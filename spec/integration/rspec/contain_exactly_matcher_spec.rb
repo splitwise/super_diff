@@ -6,7 +6,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = ["Einie", "Marty"]
-          actual = ["Marty", "Jennifer", "Doc"]
+          actual   = ["Marty", "Jennifer", "Doc"]
           expect(actual).to contain_exactly(*expected)
         TEST
         program = make_plain_test_program(
@@ -19,22 +19,22 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           snippet: %|expect(actual).to contain_exactly(*expected)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|["Marty", "Jennifer", "Doc"]|
-              plain " to contain exactly "
-              alpha %|"Einie"|
-              plain " and "
-              alpha %|"Marty"|
-              plain "."
+              plain    %|Expected |
+              actual   %|["Marty", "Jennifer", "Doc"]|
+              plain    %| to contain exactly |
+              expected %|"Einie"|
+              plain    %| and |
+              expected %|"Marty"|
+              plain    %|.|
             end
           },
           diff: proc {
-            plain_line %|  [|
-            plain_line %|    "Marty",|
-            beta_line  %|+   "Jennifer",|
-            beta_line  %|+   "Doc",|
-            alpha_line %|-   "Einie"|
-            plain_line %|  ]|
+            plain_line    %|  [|
+            plain_line    %|    "Marty",|
+            actual_line   %|+   "Jennifer",|
+            actual_line   %|+   "Doc",|
+            expected_line %|-   "Einie"|
+            plain_line    %|  ]|
           },
         )
 
@@ -60,13 +60,13 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
           snippet: %|expect(values).not_to contain_exactly(*values)|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|["Einie", "Marty"]|
-              plain " not to contain exactly "
-              alpha %|"Einie"|
-              plain " and "
-              alpha %|"Marty"|
-              plain "."
+              plain    %|Expected |
+              actual   %|["Einie", "Marty"]|
+              plain    %| not to contain exactly |
+              expected %|"Einie"|
+              plain    %| and |
+              expected %|"Marty"|
+              plain    %|.|
             end
           },
         )
@@ -90,7 +90,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               "George McFly",
               "Lorraine McFly"
             ]
-            actual = [
+            actual   = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -108,32 +108,32 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
-                plain "          Expected "
-                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                plain    %|          Expected |
+                actual   %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
-                plain "to contain exactly "
-                alpha %|"Doc Brown"|
-                plain ", "
-                alpha %|"Marty McFly"|
-                plain ", "
-                alpha %|"Biff Tannen"|
-                plain ", "
-                alpha %|"George McFly"|
-                plain " and "
-                alpha %|"Lorraine McFly"|
+                plain    %|to contain exactly |
+                expected %|"Doc Brown"|
+                plain    %|, |
+                expected %|"Marty McFly"|
+                plain    %|, |
+                expected %|"Biff Tannen"|
+                plain    %|, |
+                expected %|"George McFly"|
+                plain    %| and |
+                expected %|"Lorraine McFly"|
               end
             },
             diff: proc {
-              plain_line %|  [|
-              plain_line %|    "Marty McFly",|
-              plain_line %|    "Doc Brown",|
-              plain_line %|    "Lorraine McFly",|
-              beta_line  %|+   "Einie",|
-              alpha_line %|-   "Biff Tannen",|
-              alpha_line %|-   "George McFly"|
-              plain_line %|  ]|
+              plain_line    %|  [|
+              plain_line    %|    "Marty McFly",|
+              plain_line    %|    "Doc Brown",|
+              plain_line    %|    "Lorraine McFly",|
+              actual_line   %|+   "Einie",|
+              expected_line %|-   "Biff Tannen",|
+              expected_line %|-   "George McFly"|
+              plain_line    %|  ]|
             },
           )
 
@@ -165,19 +165,19 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "              Expected "
-                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                plain    %|              Expected |
+                actual   %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
-                plain "not to contain exactly "
-                alpha %|"Marty McFly"|
-                plain ", "
-                alpha %|"Doc Brown"|
-                plain ", "
-                alpha %|"Einie"|
-                plain " and "
-                alpha %|"Lorraine McFly"|
+                plain    %|not to contain exactly |
+                expected %|"Marty McFly"|
+                plain    %|, |
+                expected %|"Doc Brown"|
+                plain    %|, |
+                expected %|"Einie"|
+                plain    %| and |
+                expected %|"Lorraine McFly"|
               end
             },
           )
@@ -200,7 +200,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               /Georg McFly/,
               /Lorrain McFly/
             ]
-            actual = [
+            actual   = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -218,33 +218,33 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
-                plain "          Expected "
-                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                plain    %|          Expected |
+                actual   %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
-                plain "to contain exactly "
-                alpha %|/ Brown$/|
-                plain ", "
-                alpha %|"Marty McFly"|
-                plain ", "
-                alpha %|"Biff Tannen"|
-                plain ", "
-                alpha %|/Georg McFly/|
-                plain " and "
-                alpha %|/Lorrain McFly/|
+                plain    %|to contain exactly |
+                expected %|/ Brown$/|
+                plain    %|, |
+                expected %|"Marty McFly"|
+                plain    %|, |
+                expected %|"Biff Tannen"|
+                plain    %|, |
+                expected %|/Georg McFly/|
+                plain    %| and |
+                expected %|/Lorrain McFly/|
               end
             },
             diff: proc {
-              plain_line %|  [|
-              plain_line %|    "Marty McFly",|
-              plain_line %|    "Doc Brown",|
-              beta_line  %|+   "Einie",|
-              beta_line  %|+   "Lorraine McFly",|
-              alpha_line %|-   "Biff Tannen",|
-              alpha_line %|-   /Georg McFly/,|
-              alpha_line %|-   /Lorrain McFly/|
-              plain_line %|  ]|
+              plain_line    %|  [|
+              plain_line    %|    "Marty McFly",|
+              plain_line    %|    "Doc Brown",|
+              actual_line   %|+   "Einie",|
+              actual_line   %|+   "Lorraine McFly",|
+              expected_line %|-   "Biff Tannen",|
+              expected_line %|-   /Georg McFly/,|
+              expected_line %|-   /Lorrain McFly/|
+              plain_line    %|  ]|
             },
           )
 
@@ -277,21 +277,21 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "              Expected "
-                beta %|[/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/]|
+                plain    %|              Expected |
+                actual   %|[/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/]|
               end
 
               line do
-                plain "not to contain exactly "
-                alpha %|/ Brown$/|
-                plain ", "
-                alpha %|"Marty McFly"|
-                plain ", "
-                alpha %|"Biff Tannen"|
-                plain ", "
-                alpha %|/Georg McFly/|
-                plain " and "
-                alpha %|/Lorrain McFly/|
+                plain    %|not to contain exactly |
+                expected %|/ Brown$/|
+                plain    %|, |
+                expected %|"Marty McFly"|
+                plain    %|, |
+                expected %|"Biff Tannen"|
+                plain    %|, |
+                expected %|/Georg McFly/|
+                plain    %| and |
+                expected %|/Lorrain McFly/|
               end
             },
           )
@@ -312,7 +312,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
               a_collection_containing_exactly("zing"),
               an_object_having_attributes(baz: "qux"),
             ]
-            actual = [
+            actual   = [
               { foo: "bar" },
               double(baz: "qux"),
               { blargh: "riddle" }
@@ -329,32 +329,32 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher", type: :integ
             snippet: %|expect(actual).to contain_exactly(*expected)|,
             expectation: proc {
               line do
-                plain "          Expected "
-                beta %|[{ foo: "bar" }, #<Double (anonymous)>, { blargh: "riddle" }]|
+                plain    %|          Expected |
+                actual   %|[{ foo: "bar" }, #<Double (anonymous)>, { blargh: "riddle" }]|
               end
 
               line do
-                plain "to contain exactly "
-                alpha %|#<a hash including (foo: "bar")>|
-                plain ", "
-                alpha %|#<a collection containing exactly ("zing")>|
-                plain " and "
-                alpha %|#<an object having attributes (baz: "qux")>|
+                plain    %|to contain exactly |
+                expected %|#<a hash including (foo: "bar")>|
+                plain    %|, |
+                expected %|#<a collection containing exactly ("zing")>|
+                plain    %| and |
+                expected %|#<an object having attributes (baz: "qux")>|
               end
             },
             diff: proc {
-              plain_line %|  [|
-              plain_line %|    {|
-              plain_line %|      foo: "bar"|
-              plain_line %|    },|
-              plain_line %|    #<Double (anonymous)>,|
-              beta_line  %|+   {|
-              beta_line  %|+     blargh: "riddle"|
-              beta_line  %|+   },|
-              alpha_line %|-   #<a collection containing exactly (|
-              alpha_line %|-     "zing"|
-              alpha_line %|-   )>|
-              plain_line %|  ]|
+              plain_line    %|  [|
+              plain_line    %|    {|
+              plain_line    %|      foo: "bar"|
+              plain_line    %|    },|
+              plain_line    %|    #<Double (anonymous)>,|
+              actual_line   %|+   {|
+              actual_line   %|+     blargh: "riddle"|
+              actual_line   %|+   },|
+              expected_line %|-   #<a collection containing exactly (|
+              expected_line %|-     "zing"|
+              expected_line %|-   )>|
+              plain_line    %|  ]|
             },
           )
 
