@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+gem "rails"
+
+group :test do
+  gem "combustion"
+  gem "rspec-rails"
+
+  # Use this one to see the problem
+  gem "super_diff", "0.5.3"
+
+  # Use this one to see it fixed
+  # gem "super_diff", path: "../../"
+end
