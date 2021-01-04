@@ -36,3 +36,33 @@ jobs:
         run: bin/ci/install
       - name: Run tests
         run: bin/ci/run-tests
+  test_ruby_3:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        ruby:
+          - 3.0
+        rails_appraisal:
+          - rails_6_0
+          - no_rails
+        rspec_appraisal:
+          - rspec_lt_3_10
+          - rspec_gte_3_10
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
+      JAVA_OPTS: "--add-opens java.base/sun.nio.ch=org.jruby.dist --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.security.cert=ALL-UNNAMED --add-opens=java.base/java.util.zip=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util.regex=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/javax.crypto=ALL-UNNAMED --add-opens=java.management/sun.management=ALL-UNNAMED --add-opens=java.base/java.io=org.jruby.dist"
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Ruby
+        id: set-up-ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+      - uses: actions/cache@v2
+        with:
+          path: vendor/bundle
+          key: v1-rubygems-local-${{ runner.os }}-${{ matrix.ruby }}-${{ hashFiles(format('gemfiles/{0}_{1}.gemfile.lock', matrix.rails_appraisal, matrix.rspec_appraisal)) }}
+      - name: Install dependencies
+        run: bin/ci/install
+      - name: Run tests
+        run: bin/ci/run-tests
