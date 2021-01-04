@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
     SuperDiff is a gem that hooks into RSpec to intelligently display the
     differences between two data structures of any type.
   DESC
-  s.required_ruby_version = "~> 2.4"
+  s.required_ruby_version = [">= 2.4", "< 4"]
 
   s.files         = ["README.md", "super_diff.gemspec"] + Dir["lib/**/*"]
   s.test_files    = Dir["spec/**/*"]
