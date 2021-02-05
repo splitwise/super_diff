@@ -7,7 +7,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = ["Marty", "Einie"]
-            actual = ["Marty", "Jennifer", "Doc"]
+            actual   = ["Marty", "Jennifer", "Doc"]
             expect(actual).to include(*expected)
           TEST
           program = make_plain_test_program(
@@ -20,21 +20,21 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|["Marty", "Jennifer", "Doc"]|
-                plain " to include "
-                alpha %|"Einie"|
-                plain "."
+                plain    %|Expected |
+                actual   %|["Marty", "Jennifer", "Doc"]|
+                plain    %| to include |
+                expected %|"Einie"|
+                plain    %|.|
               end
             },
             diff: proc {
-              plain_line %|  [|
-              plain_line %|    "Marty",|
-              plain_line %|    "Jennifer",|
-              # plain_line %|    "Doc",|   # FIXME
-              plain_line %|    "Doc"|
-              alpha_line %|-   "Einie"|
-              plain_line %|  ]|
+              plain_line    %|  [|
+              plain_line    %|    "Marty",|
+              plain_line    %|    "Jennifer",|
+              # plain_line    %|    "Doc",|   # FIXME
+              plain_line    %|    "Doc"|
+              expected_line %|-   "Einie"|
+              plain_line    %|  ]|
             },
           )
 
@@ -60,11 +60,11 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(values).not_to include(*values)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|["Marty", "Einie"]|
-                plain " not to include "
-                alpha %|"Marty" and "Einie"|
-                plain "."
+                plain    %|Expected |
+                actual   %|["Marty", "Einie"]|
+                plain    %| not to include |
+                expected %|"Marty" and "Einie"|
+                plain    %|.|
               end
             },
           )
@@ -88,7 +88,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               "George McFly",
               "Lorraine McFly"
             ]
-            actual = [
+            actual   = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -106,25 +106,25 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(actual).to include(*expected)|,
             expectation: proc {
               line do
-                plain "  Expected "
-                beta %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                plain    %|  Expected |
+                actual   %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
               end
 
               line do
-                plain "to include "
-                alpha %|"Biff Tannen" and "George McFly"|
+                plain    %|to include |
+                expected %|"Biff Tannen" and "George McFly"|
               end
             },
             diff: proc {
-              plain_line %|  [|
-              plain_line %|    "Marty McFly",|
-              plain_line %|    "Doc Brown",|
-              plain_line %|    "Einie",|
-              # plain_line %|    "Lorraine McFly",|   # FIXME
-              plain_line %|    "Lorraine McFly"|
-              alpha_line %|-   "Biff Tannen",|
-              alpha_line %|-   "George McFly"|
-              plain_line %|  ]|
+              plain_line    %|  [|
+              plain_line    %|    "Marty McFly",|
+              plain_line    %|    "Doc Brown",|
+              plain_line    %|    "Einie",|
+              # plain_line    %|    "Lorraine McFly",|   # FIXME
+              plain_line    %|    "Lorraine McFly"|
+              expected_line %|-   "Biff Tannen",|
+              expected_line %|-   "George McFly"|
+              plain_line    %|  ]|
             },
           )
 
@@ -143,7 +143,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               "Einie",
               "Lorraine McFly"
             ]
-            actual = [
+            actual   = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -164,13 +164,13 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "      Expected "
-                beta %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
+                plain    %|      Expected |
+                actual   %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
               end
 
               line do
-                plain "not to include "
-                alpha %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
+                plain    %|not to include |
+                expected %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
               end
             },
           )
@@ -189,7 +189,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
-            actual = { city: "Burbank", zip: "90210" }
+            actual   = { city: "Burbank", zip: "90210" }
             expect(actual).to include(expected)
           TEST
           program = make_plain_test_program(
@@ -202,22 +202,22 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|{ city: "Burbank", zip: "90210" }|
-                plain " to include "
-                alpha %|(city: "Hill Valley", state: "CA")|
-                plain "."
+                plain    %|Expected |
+                actual   %|{ city: "Burbank", zip: "90210" }|
+                plain    %| to include |
+                expected %|(city: "Hill Valley", state: "CA")|
+                plain    %|.|
               end
             },
             diff: proc {
-              plain_line %|  {|
-              alpha_line %|-   city: "Hill Valley",|
-              beta_line  %|+   city: "Burbank",|
+              plain_line    %|  {|
+              expected_line %|-   city: "Hill Valley",|
+              actual_line   %|+   city: "Burbank",|
               # FIXME
-              # alpha_line %|-   state: "CA",|
-              alpha_line %|-   state: "CA"|
-              plain_line %|    zip: "90210"|
-              plain_line %|  }|
+              # expected_line %|-   state: "CA",|
+              expected_line %|-   state: "CA"|
+              plain_line    %|    zip: "90210"|
+              plain_line    %|  }|
             },
           )
 
@@ -231,7 +231,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Burbank" }
-            actual = { city: "Burbank", zip: "90210" }
+            actual   = { city: "Burbank", zip: "90210" }
             expect(actual).not_to include(expected)
           TEST
           program = make_plain_test_program(
@@ -244,11 +244,11 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(actual).not_to include(expected)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|{ city: "Burbank", zip: "90210" }|
-                plain " not to include "
-                alpha %|(city: "Burbank")|
-                plain "."
+                plain    %|Expected |
+                actual   %|{ city: "Burbank", zip: "90210" }|
+                plain    %| not to include |
+                expected %|(city: "Burbank")|
+                plain    %|.|
               end
             },
           )
@@ -268,7 +268,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
               city: "Hill Valley",
               zip: "90382"
             }
-            actual = {
+            actual   = {
               city: "Burbank",
               state: "CA",
               zip: "90210"
@@ -285,23 +285,23 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             snippet: %|expect(actual).to include(expected)|,
             expectation: proc {
               line do
-                plain "  Expected "
-                beta %|{ city: "Burbank", state: "CA", zip: "90210" }|
+                plain    %|  Expected |
+                actual   %|{ city: "Burbank", state: "CA", zip: "90210" }|
               end
 
               line do
-                plain "to include "
-                alpha %|(city: "Hill Valley", zip: "90382")|
+                plain    %|to include |
+                expected %|(city: "Hill Valley", zip: "90382")|
               end
             },
             diff: proc {
-              plain_line %|  {|
-              alpha_line %|-   city: "Hill Valley",|
-              beta_line  %|+   city: "Burbank",|
-              plain_line %|    state: "CA",|
-              alpha_line %|-   zip: "90382"|
-              beta_line  %|+   zip: "90210"|
-              plain_line %|  }|
+              plain_line    %|  {|
+              expected_line %|-   city: "Hill Valley",|
+              actual_line   %|+   city: "Burbank",|
+              plain_line    %|    state: "CA",|
+              expected_line %|-   zip: "90382"|
+              actual_line   %|+   zip: "90210"|
+              plain_line    %|  }|
             },
           )
 
@@ -315,7 +315,7 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
-            actual = { city: "Hill Valley", state: "CA", zip: "90210" }
+            actual   = { city: "Hill Valley", state: "CA", zip: "90210" }
             expect(actual).not_to include(expected)
           TEST
           program = make_plain_test_program(
@@ -329,13 +329,13 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "      Expected "
-                beta %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
+                plain    %|      Expected |
+                actual   %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
               end
 
               line do
-                plain "not to include "
-                alpha %|(city: "Hill Valley", state: "CA")|
+                plain    %|not to include |
+                expected %|(city: "Hill Valley", state: "CA")|
               end
             },
           )

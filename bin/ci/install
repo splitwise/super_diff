@@ -2,7 +2,3 @@
 
 bundle config set path $PWD/vendor/bundle
 bundle install --jobs=3 --retry=3
-
-if ! which zeus &>/dev/null; then
-  gem install zeus
-fi

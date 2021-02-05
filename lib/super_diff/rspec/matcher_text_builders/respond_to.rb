@@ -20,7 +20,7 @@ module SuperDiff
 
         def add_expected_value_to(template, expected)
           template.add_text " "
-          template.add_list_in_color(alpha_color, expected)
+          template.add_list_in_color(expected_color, expected)
         end
 
         def add_extra_after_expected_to(template)
@@ -57,14 +57,14 @@ module SuperDiff
 
         def add_arity_clause_to(template)
           template.add_text " with "
-          template.add_text_in_color alpha_color, expected_arity
+          template.add_text_in_color expected_color, expected_arity
           template.add_text " "
           template.add_text pluralize("argument", expected_arity)
         end
 
         def add_arbitrary_keywords_clause_to(template)
           template.add_text " with "
-          template.add_text_in_color alpha_color, "any"
+          template.add_text_in_color expected_color, "any"
           template.add_text " keywords"
         end
 
@@ -72,7 +72,7 @@ module SuperDiff
           template.add_text " with "
           template.add_text pluralize("keyword", expected_keywords.length)
           template.add_text " "
-          template.add_list_in_color alpha_color, expected_keywords
+          template.add_list_in_color expected_color, expected_keywords
         end
 
         def add_unlimited_arguments_clause_to(template)
@@ -82,7 +82,7 @@ module SuperDiff
             template.add_text " with "
           end
 
-          template.add_text_in_color alpha_color, "unlimited"
+          template.add_text_in_color expected_color, "unlimited"
           template.add_text " arguments"
         end
 

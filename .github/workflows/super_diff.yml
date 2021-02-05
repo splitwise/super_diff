@@ -1,5 +1,17 @@
 name: SuperDiff
-on: [pull_request]
+on:
+  push:
+    branches:
+      - master
+      - ci-*
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    types:
+      - opened
+      - synchronize
+    paths-ignore:
+      - '**.md'
 jobs:
   test:
     runs-on: ubuntu-20.04

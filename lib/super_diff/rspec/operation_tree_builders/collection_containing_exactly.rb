@@ -17,8 +17,14 @@ module SuperDiff
         def unary_operations
           operations = []
 
-          (0...actual.length).each do |index|
+          (0...actual.length).reject do |index|
+            indexes_in_actual_but_not_in_expected.include?(index)
+          end.each do |index|
             add_noop_to(operations, index)
+          end
+
+          indexes_in_actual_but_not_in_expected.each do |index|
+            add_insert_to(operations, index)
           end
 
           indexes_in_expected_but_not_in_actual.each do |index|
@@ -82,6 +88,11 @@ module SuperDiff
           indexes_in_expected_but_not_in_actual.map do |index|
             expected.expected[index]
           end
+        end
+
+        def indexes_in_actual_but_not_in_expected
+          @indexes_in_actual_but_not_in_expected ||=
+            pairings_maximizer_best_solution.unmatched_actual_indexes
         end
 
         def indexes_in_expected_but_not_in_actual

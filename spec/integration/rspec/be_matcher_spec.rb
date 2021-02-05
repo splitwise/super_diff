@@ -15,11 +15,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             snippet: %|expect(true).to be(false)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|true|
-                plain " to equal "
-                alpha %|false|
-                plain "."
+                plain    %|Expected |
+                actual   %|true|
+                plain    %| to equal |
+                expected %|false|
+                plain    %|.|
               end
             },
           )
@@ -42,11 +42,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             snippet: %|expect(false).not_to be(false)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|false|
-                plain " not to equal "
-                alpha %|false|
-                plain "."
+                plain    %|Expected |
+                actual   %|false|
+                plain    %| not to equal |
+                expected %|false|
+                plain    %|.|
               end
             },
           )
@@ -71,11 +71,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             snippet: %|expect(false).to be(true)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|false|
-                plain " to equal "
-                alpha %|true|
-                plain "."
+                plain    %|Expected |
+                actual   %|false|
+                plain    %| to equal |
+                expected %|true|
+                plain    %|.|
               end
             },
           )
@@ -98,11 +98,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             snippet: %|expect(true).not_to be(true)|,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|true|
-                plain " not to equal "
-                alpha %|true|
-                plain "."
+                plain    %|Expected |
+                actual   %|true|
+                plain    %| not to equal |
+                expected %|true|
+                plain    %|.|
               end
             },
           )
@@ -128,11 +128,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(nil).to be|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|nil|
-              plain " to be "
-              alpha %|truthy|
-              plain "."
+              plain    %|Expected |
+              actual   %|nil|
+              plain    %| to be |
+              expected %|truthy|
+              plain    %|.|
             end
           },
         )
@@ -155,11 +155,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(:something).not_to be|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|:something|
-              plain " not to be "
-              alpha %|truthy|
-              plain "."
+              plain    %|Expected |
+              actual   %|:something|
+              plain    %| not to be |
+              expected %|truthy|
+              plain    %|.|
             end
           },
         )
@@ -184,11 +184,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(nil).to be == :foo|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|nil|
-              plain " to == "
-              alpha %|:foo|
-              plain "."
+              plain    %|Expected |
+              actual   %|nil|
+              plain    %| to == |
+              expected %|:foo|
+              plain    %|.|
             end
           },
         )
@@ -211,11 +211,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(:foo).not_to be == :foo|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|:foo|
-              plain " not to == "
-              alpha %|:foo|
-              plain "."
+              plain    %|Expected |
+              actual   %|:foo|
+              plain    %| not to == |
+              expected %|:foo|
+              plain    %|.|
             end
           },
         )
@@ -240,11 +240,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(1).to be < 1|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|1|
-              plain " to be < "
-              alpha %|1|
-              plain "."
+              plain    %|Expected |
+              actual   %|1|
+              plain    %| to be < |
+              expected %|1|
+              plain    %|.|
             end
           },
         )
@@ -267,11 +267,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(0).not_to be < 1|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|0|
-              plain " not to be < "
-              alpha %|1|
-              plain "."
+              plain    %|Expected |
+              actual   %|0|
+              plain    %| not to be < |
+              expected %|1|
+              plain    %|.|
             end
           },
         )
@@ -296,11 +296,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(1).to be <= 0|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|1|
-              plain " to be <= "
-              alpha %|0|
-              plain "."
+              plain    %|Expected |
+              actual   %|1|
+              plain    %| to be <= |
+              expected %|0|
+              plain    %|.|
             end
           },
         )
@@ -323,11 +323,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(0).not_to be <= 0|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|0|
-              plain " not to be <= "
-              alpha %|0|
-              plain "."
+              plain    %|Expected |
+              actual   %|0|
+              plain    %| not to be <= |
+              expected %|0|
+              plain    %|.|
             end
           },
         )
@@ -352,11 +352,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(1).to be >= 2|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|1|
-              plain " to be >= "
-              alpha %|2|
-              plain "."
+              plain    %|Expected |
+              actual   %|1|
+              plain    %| to be >= |
+              expected %|2|
+              plain    %|.|
             end
           },
         )
@@ -379,11 +379,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(2).not_to be >= 2|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|2|
-              plain " not to be >= "
-              alpha %|2|
-              plain "."
+              plain    %|Expected |
+              actual   %|2|
+              plain    %| not to be >= |
+              expected %|2|
+              plain    %|.|
             end
           },
         )
@@ -408,11 +408,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(1).to be > 2|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|1|
-              plain " to be > "
-              alpha %|2|
-              plain "."
+              plain    %|Expected |
+              actual   %|1|
+              plain    %| to be > |
+              expected %|2|
+              plain    %|.|
             end
           },
         )
@@ -435,11 +435,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(3).not_to be > 2|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|3|
-              plain " not to be > "
-              alpha %|2|
-              plain "."
+              plain    %|Expected |
+              actual   %|3|
+              plain    %| not to be > |
+              expected %|2|
+              plain    %|.|
             end
           },
         )
@@ -464,11 +464,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(String).to be === :foo|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|String|
-              plain " to === "
-              alpha %|:foo|
-              plain "."
+              plain    %|Expected |
+              actual   %|String|
+              plain    %| to === |
+              expected %|:foo|
+              plain    %|.|
             end
           },
         )
@@ -491,11 +491,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect(String).not_to be === "foo"|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|String|
-              plain " not to === "
-              alpha %|"foo"|
-              plain "."
+              plain    %|Expected |
+              actual   %|String|
+              plain    %| not to === |
+              expected %|"foo"|
+              plain    %|.|
             end
           },
         )
@@ -520,11 +520,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect("foo").to be =~ /bar/|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"foo"|
-              plain " to =~ "
-              alpha %|/bar/|
-              plain "."
+              plain    %|Expected |
+              actual   %|"foo"|
+              plain    %| to =~ |
+              expected %|/bar/|
+              plain    %|.|
             end
           },
         )
@@ -547,11 +547,11 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
           snippet: %|expect("bar").not_to be =~ /bar/|,
           expectation: proc {
             line do
-              plain "Expected "
-              beta %|"bar"|
-              plain " not to =~ "
-              alpha %|/bar/|
-              plain "."
+              plain    %|Expected |
+              actual   %|"bar"|
+              plain    %| not to =~ |
+              expected %|/bar/|
+              plain    %|.|
             end
           },
         )

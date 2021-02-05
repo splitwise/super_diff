@@ -16,11 +16,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             snippet: snippet,
             expectation: proc {
               line do
-                plain "Expected "
-                beta %|:words|
-                plain " to respond to "
-                alpha %|has_power?|
-                plain "."
+                plain    %|Expected |
+                actual   %|:words|
+                plain    %| to respond to |
+                expected %|has_power?|
+                plain    %|.|
               end
             },
           )
@@ -32,7 +32,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
       end
     end
 
-    context "when the inspected version of the actual value is long" do
+    context "when the inspected version of the actual   value is long" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -50,13 +50,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             newline_before_expectation: true,
             expectation: proc {
               line do
-                plain "     Expected "
-                beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                plain    %|     Expected |
+                actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
               end
 
               line do
-                plain "to respond to "
-                alpha %|has_mapping?|
+                plain    %|to respond to |
+                expected %|has_mapping?|
               end
             },
           )
@@ -71,7 +71,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
   context "when the predicate method exists on the object" do
     context "but is private" do
-      context "when the inspected version of the actual value is short" do
+      context "when the inspected version of the actual   value is short" do
         it "produces the correct failure message" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -91,11 +91,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
               snippet: %|expect(Robot.new).to have_arms|,
               expectation: proc {
                 line do
-                  plain "Expected "
-                  beta %|#<Robot>|
-                  plain " to have a public method "
-                  alpha %|has_arms?|
-                  plain "."
+                  plain    %|Expected |
+                  actual   %|#<Robot>|
+                  plain    %| to have a public method |
+                  expected %|has_arms?|
+                  plain    %|.|
                 end
               },
             )
@@ -108,7 +108,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
         end
       end
 
-      context "when the inspected version of the actual value is long" do
+      context "when the inspected version of the actual   value is long" do
         it "produces the correct failure message" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -131,13 +131,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
               newline_before_expectation: true,
               expectation: proc {
                 line do
-                  plain "               Expected "
-                  beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                  plain    %|               Expected |
+                  actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
                 end
 
                 line do
-                  plain "to have a public method "
-                  alpha %|has_mapping?|
+                  plain    %|to have a public method |
+                  expected %|has_mapping?|
                 end
               },
             )
@@ -154,7 +154,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
     context "and is public" do
       context "and returns false" do
         context "and takes arguments" do
-          context "when the inspected version of the actual value is short" do
+          context "when the inspected version of the actual   value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -174,11 +174,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   snippet: %|expect(Drink.new).to have_ingredients(:vodka)|,
                   expectation: proc {
                     line do
-                      plain "Expected "
-                      beta %|#<Drink>|
-                      plain " to return a truthy result for "
-                      alpha %|has_ingredients?(:vodka)|
-                      plain "."
+                      plain    %|Expected |
+                      actual   %|#<Drink>|
+                      plain    %| to return a truthy result for |
+                      expected %|has_ingredients?(:vodka)|
+                      plain    %|.|
                     end
                   },
                 )
@@ -191,7 +191,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             end
           end
 
-          context "when the inspected version of the actual value is long" do
+          context "when the inspected version of the actual   value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -214,13 +214,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "                     Expected "
-                      beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                      plain    %|                     Expected |
+                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
                     end
 
                     line do
-                      plain "to return a truthy result for "
-                      alpha %|has_contents?("keys", "upon", "keys")|
+                      plain    %|to return a truthy result for |
+                      expected %|has_contents?("keys", "upon", "keys")|
                     end
                   },
                 )
@@ -235,7 +235,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
         end
 
         context "and takes no arguments" do
-          context "when the inspected version of the actual value is short" do
+          context "when the inspected version of the actual   value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -255,11 +255,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   snippet: %|expect(Robot.new).to have_arms|,
                   expectation: proc {
                     line do
-                      plain "Expected "
-                      beta %|#<Robot>|
-                      plain " to return a truthy result for "
-                      alpha %|has_arms?|
-                      plain "."
+                      plain    %|Expected |
+                      actual   %|#<Robot>|
+                      plain    %| to return a truthy result for |
+                      expected %|has_arms?|
+                      plain    %|.|
                     end
                   },
                 )
@@ -272,7 +272,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             end
           end
 
-          context "when the inspected version of the actual value is long" do
+          context "when the inspected version of the actual   value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -295,13 +295,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "                     Expected "
-                      beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                      plain    %|                     Expected |
+                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
                     end
 
                     line do
-                      plain "to return a truthy result for "
-                      alpha %|has_mapping?|
+                      plain    %|to return a truthy result for |
+                      expected %|has_mapping?|
                     end
                   },
                 )
@@ -318,7 +318,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
       context "and returns true" do
         context "and takes arguments" do
-          context "when the inspected version of the actual value is short" do
+          context "when the inspected version of the actual   value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -338,11 +338,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   snippet: %|expect(Drink.new).not_to have_ingredients(:vodka)|,
                   expectation: proc {
                     line do
-                      plain "Expected "
-                      beta %|#<Drink>|
-                      plain " not to return a truthy result for "
-                      alpha %|has_ingredients?(:vodka)|
-                      plain "."
+                      plain    %|Expected |
+                      actual   %|#<Drink>|
+                      plain    %| not to return a truthy result for |
+                      expected %|has_ingredients?(:vodka)|
+                      plain    %|.|
                     end
                   },
                 )
@@ -355,7 +355,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             end
           end
 
-          context "when the inspected version of the actual value is long" do
+          context "when the inspected version of the actual   value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -378,13 +378,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "                         Expected "
-                      beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                      plain    %|                         Expected |
+                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
                     end
 
                     line do
-                      plain "not to return a truthy result for "
-                      alpha %|has_contents?("keys", "upon", "keys")|
+                      plain    %|not to return a truthy result for |
+                      expected %|has_contents?("keys", "upon", "keys")|
                     end
                   },
                 )
@@ -399,7 +399,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
         end
 
         context "and takes no arguments" do
-          context "when the inspected version of the actual value is short" do
+          context "when the inspected version of the actual   value is short" do
             it "produces the correct failure message when used in the negative" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -419,11 +419,11 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   snippet: %|expect(Robot.new).not_to have_arms|,
                   expectation: proc {
                     line do
-                      plain "Expected "
-                      beta %|#<Robot>|
-                      plain " not to return a truthy result for "
-                      alpha %|has_arms?|
-                      plain "."
+                      plain    %|Expected |
+                      actual   %|#<Robot>|
+                      plain    %| not to return a truthy result for |
+                      expected %|has_arms?|
+                      plain    %|.|
                     end
                   },
                 )
@@ -436,7 +436,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             end
           end
 
-          context "when the inspected version of the actual value is long" do
+          context "when the inspected version of the actual   value is long" do
             it "produces the correct failure message when used in the negative" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -459,13 +459,13 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
                   newline_before_expectation: true,
                   expectation: proc {
                     line do
-                      plain "                         Expected "
-                      beta %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                      plain    %|                         Expected |
+                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
                     end
 
                     line do
-                      plain "not to return a truthy result for "
-                      alpha %|has_mapping?|
+                      plain    %|not to return a truthy result for |
+                      expected %|has_mapping?|
                     end
                   },
                 )

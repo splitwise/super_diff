@@ -1,6 +1,6 @@
 shared_examples_for "integration with HashWithIndifferentAccess" do
   describe "and RSpec's #eq matcher" do
-    context "when the actual value is a HashWithIndifferentAccess" do
+    context "when the actual   value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
         context "and the expected hash contains symbol keys" do
           it "produces the correct output" do
@@ -12,7 +12,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "90382",
                 }
-                actual = HashWithIndifferentAccess.new({
+                actual   = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -27,25 +27,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|Expected |
+                    actual   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                    plain    %|   to eq |
+                    expected %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "123 Main St.",|
-                  beta_line  %|+   "line_1" => "456 Ponderosa Ct.",|
-                  alpha_line %|-   "city" => "Hill Valley",|
-                  beta_line  %|+   "city" => "Oakland",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "90382"|
-                  beta_line  %|+   "zip" => "91234"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "123 Main St.",|
+                  actual_line   %|+   "line_1" => "456 Ponderosa Ct.",|
+                  expected_line %|-   "city" => "Hill Valley",|
+                  actual_line   %|+   "city" => "Oakland",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "90382"|
+                  actual_line   %|+   "zip" => "91234"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -66,7 +66,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   "state" => "CA",
                   "zip" => "90382",
                 }
-                actual = HashWithIndifferentAccess.new({
+                actual   = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -81,25 +81,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|Expected |
+                    actual   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
+                    plain    %|   to eq |
+                    expected %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "123 Main St.",|
-                  beta_line  %|+   "line_1" => "456 Ponderosa Ct.",|
-                  alpha_line %|-   "city" => "Hill Valley",|
-                  beta_line  %|+   "city" => "Oakland",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "90382"|
-                  beta_line  %|+   "zip" => "91234"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "123 Main St.",|
+                  actual_line   %|+   "line_1" => "456 Ponderosa Ct.",|
+                  expected_line %|-   "city" => "Hill Valley",|
+                  actual_line   %|+   "city" => "Oakland",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "90382"|
+                  actual_line   %|+   "zip" => "91234"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -124,7 +124,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual = {
+                actual   = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
@@ -139,25 +139,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                    plain    %|Expected |
+                    actual   %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|   to eq |
+                    expected %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
-                  beta_line  %|+   "line_1" => "123 Main St.",|
-                  alpha_line %|-   "city" => "Oakland",|
-                  beta_line  %|+   "city" => "Hill Valley",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "91234"|
-                  beta_line  %|+   "zip" => "90382"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "456 Ponderosa Ct.",|
+                  actual_line   %|+   "line_1" => "123 Main St.",|
+                  expected_line %|-   "city" => "Oakland",|
+                  actual_line   %|+   "city" => "Hill Valley",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "91234"|
+                  actual_line   %|+   "zip" => "90382"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -168,7 +168,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual hash contains string keys" do
+        context "and the actual   hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -178,7 +178,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual = {
+                actual   = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
@@ -193,25 +193,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
+                    plain    %|Expected |
+                    actual   %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|   to eq |
+                    expected %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
-                  beta_line  %|+   "line_1" => "123 Main St.",|
-                  alpha_line %|-   "city" => "Oakland",|
-                  beta_line  %|+   "city" => "Hill Valley",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "91234"|
-                  beta_line  %|+   "zip" => "90382"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "456 Ponderosa Ct.",|
+                  actual_line   %|+   "line_1" => "123 Main St.",|
+                  expected_line %|-   "city" => "Oakland",|
+                  actual_line   %|+   "city" => "Hill Valley",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "91234"|
+                  actual_line   %|+   "zip" => "90382"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -238,7 +238,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual = {
+                actual   = {
                   shipments: [
                     {
                       estimated_delivery: {
@@ -257,27 +257,27 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ shipments: [{ estimated_delivery: { from: "2019-05-06", to: "2019-05-09" } }] }|
+                    plain    %|Expected |
+                    actual   %|{ shipments: [{ estimated_delivery: { from: "2019-05-06", to: "2019-05-09" } }] }|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
+                    plain    %|   to eq |
+                    expected %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  plain_line %|    "shipments" => [|
-                  plain_line %|      {|
-                  plain_line %|        "estimated_delivery" => {|
-                  plain_line %|          "from" => "2019-05-06",|
-                  alpha_line %|-         "to" => "2019-05-06"|
-                  beta_line  %|+         "to" => "2019-05-09"|
-                  plain_line %|        }|
-                  plain_line %|      }|
-                  plain_line %|    ]|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  plain_line    %|    "shipments" => [|
+                  plain_line    %|      {|
+                  plain_line    %|        "estimated_delivery" => {|
+                  plain_line    %|          "from" => "2019-05-06",|
+                  expected_line %|-         "to" => "2019-05-06"|
+                  actual_line   %|+         "to" => "2019-05-09"|
+                  plain_line    %|        }|
+                  plain_line    %|      }|
+                  plain_line    %|    ]|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -288,7 +288,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual hash contains string keys" do
+        context "and the actual   hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -302,7 +302,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual = {
+                actual   = {
                   'shipments' => [
                     {
                       'estimated_delivery' => {
@@ -321,27 +321,27 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to eq(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ "shipments" => [{ "estimated_delivery" => { "from" => "2019-05-06", "to" => "2019-05-09" } }] }|
+                    plain    %|Expected |
+                    actual   %|{ "shipments" => [{ "estimated_delivery" => { "from" => "2019-05-06", "to" => "2019-05-09" } }] }|
                   end
 
                   line do
-                    plain "   to eq "
-                    alpha %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
+                    plain    %|   to eq |
+                    expected %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  plain_line %|    "shipments" => [|
-                  plain_line %|      {|
-                  plain_line %|        "estimated_delivery" => {|
-                  plain_line %|          "from" => "2019-05-06",|
-                  alpha_line %|-         "to" => "2019-05-06"|
-                  beta_line  %|+         "to" => "2019-05-09"|
-                  plain_line %|        }|
-                  plain_line %|      }|
-                  plain_line %|    ]|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  plain_line    %|    "shipments" => [|
+                  plain_line    %|      {|
+                  plain_line    %|        "estimated_delivery" => {|
+                  plain_line    %|          "from" => "2019-05-06",|
+                  expected_line %|-         "to" => "2019-05-06"|
+                  actual_line   %|+         "to" => "2019-05-09"|
+                  plain_line    %|        }|
+                  plain_line    %|      }|
+                  plain_line    %|    ]|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -356,7 +356,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
   end
 
   describe "and RSpec's #match matcher" do
-    context "when the actual value is a HashWithIndifferentAccess" do
+    context "when the actual   value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
         context "and the expected hash contains symbol keys" do
           it "produces the correct output" do
@@ -368,7 +368,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "90382",
                 }
-                actual = HashWithIndifferentAccess.new({
+                actual   = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -383,25 +383,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|Expected |
+                    actual   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                    plain    %|to match |
+                    expected %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "123 Main St.",|
-                  beta_line  %|+   "line_1" => "456 Ponderosa Ct.",|
-                  alpha_line %|-   "city" => "Hill Valley",|
-                  beta_line  %|+   "city" => "Oakland",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "90382"|
-                  beta_line  %|+   "zip" => "91234"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "123 Main St.",|
+                  actual_line   %|+   "line_1" => "456 Ponderosa Ct.",|
+                  expected_line %|-   "city" => "Hill Valley",|
+                  actual_line   %|+   "city" => "Oakland",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "90382"|
+                  actual_line   %|+   "zip" => "91234"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -422,7 +422,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   "state" => "CA",
                   "zip" => "90382",
                 }
-                actual = HashWithIndifferentAccess.new({
+                actual   = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -437,25 +437,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|Expected |
+                    actual   %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
+                    plain    %|to match |
+                    expected %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "123 Main St.",|
-                  beta_line  %|+   "line_1" => "456 Ponderosa Ct.",|
-                  alpha_line %|-   "city" => "Hill Valley",|
-                  beta_line  %|+   "city" => "Oakland",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "90382"|
-                  beta_line  %|+   "zip" => "91234"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "123 Main St.",|
+                  actual_line   %|+   "line_1" => "456 Ponderosa Ct.",|
+                  expected_line %|-   "city" => "Hill Valley",|
+                  actual_line   %|+   "city" => "Oakland",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "90382"|
+                  actual_line   %|+   "zip" => "91234"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -470,7 +470,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
 
     context "when the expected value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
-        context "and the actual hash contains symbol keys" do
+        context "and the actual   hash contains symbol keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -480,7 +480,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual = {
+                actual   = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
@@ -495,25 +495,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
+                    plain    %|Expected |
+                    actual   %|{ line_1: "123 Main St.", city: "Hill Valley", state: "CA", zip: "90382" }|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|to match |
+                    expected %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
-                  beta_line  %|+   "line_1" => "123 Main St.",|
-                  alpha_line %|-   "city" => "Oakland",|
-                  beta_line  %|+   "city" => "Hill Valley",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "91234"|
-                  beta_line  %|+   "zip" => "90382"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "456 Ponderosa Ct.",|
+                  actual_line   %|+   "line_1" => "123 Main St.",|
+                  expected_line %|-   "city" => "Oakland",|
+                  actual_line   %|+   "city" => "Hill Valley",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "91234"|
+                  actual_line   %|+   "zip" => "90382"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -524,7 +524,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual hash contains string keys" do
+        context "and the actual   hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -534,7 +534,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual = {
+                actual   = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
@@ -549,25 +549,25 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
+                    plain    %|Expected |
+                    actual   %|{ "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
+                    plain    %|to match |
+                    expected %|#<HashWithIndifferentAccess { "line_1" => "456 Ponderosa Ct.", "city" => "Oakland", "state" => "CA", "zip" => "91234" }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  alpha_line %|-   "line_1" => "456 Ponderosa Ct.",|
-                  beta_line  %|+   "line_1" => "123 Main St.",|
-                  alpha_line %|-   "city" => "Oakland",|
-                  beta_line  %|+   "city" => "Hill Valley",|
-                  plain_line %|    "state" => "CA",|
-                  alpha_line %|-   "zip" => "91234"|
-                  beta_line  %|+   "zip" => "90382"|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  expected_line %|-   "line_1" => "456 Ponderosa Ct.",|
+                  actual_line   %|+   "line_1" => "123 Main St.",|
+                  expected_line %|-   "city" => "Oakland",|
+                  actual_line   %|+   "city" => "Hill Valley",|
+                  plain_line    %|    "state" => "CA",|
+                  expected_line %|-   "zip" => "91234"|
+                  actual_line   %|+   "zip" => "90382"|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -580,7 +580,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
       end
 
       context "and both hashes are multi-dimensional" do
-        context "and the actual hash contains symbol keys" do
+        context "and the actual   hash contains symbol keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -594,7 +594,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual = {
+                actual   = {
                   shipments: [
                     {
                       estimated_delivery: {
@@ -613,27 +613,27 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ shipments: [{ estimated_delivery: { from: "2019-05-06", to: "2019-05-09" } }] }|
+                    plain    %|Expected |
+                    actual   %|{ shipments: [{ estimated_delivery: { from: "2019-05-06", to: "2019-05-09" } }] }|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
+                    plain    %|to match |
+                    expected %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  plain_line %|    "shipments" => [|
-                  plain_line %|      {|
-                  plain_line %|        "estimated_delivery" => {|
-                  plain_line %|          "from" => "2019-05-06",|
-                  alpha_line %|-         "to" => "2019-05-06"|
-                  beta_line  %|+         "to" => "2019-05-09"|
-                  plain_line %|        }|
-                  plain_line %|      }|
-                  plain_line %|    ]|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  plain_line    %|    "shipments" => [|
+                  plain_line    %|      {|
+                  plain_line    %|        "estimated_delivery" => {|
+                  plain_line    %|          "from" => "2019-05-06",|
+                  expected_line %|-         "to" => "2019-05-06"|
+                  actual_line   %|+         "to" => "2019-05-09"|
+                  plain_line    %|        }|
+                  plain_line    %|      }|
+                  plain_line    %|    ]|
+                  plain_line    %|  }>|
                 },
               )
 
@@ -644,7 +644,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual hash contains string keys" do
+        context "and the actual   hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -658,7 +658,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual = {
+                actual   = {
                   'shipments' => [
                     {
                       'estimated_delivery' => {
@@ -677,27 +677,27 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                 snippet: "expect(actual).to match(expected)",
                 expectation: proc {
                   line do
-                    plain "Expected "
-                    beta %|{ "shipments" => [{ "estimated_delivery" => { "from" => "2019-05-06", "to" => "2019-05-09" } }] }|
+                    plain    %|Expected |
+                    actual   %|{ "shipments" => [{ "estimated_delivery" => { "from" => "2019-05-06", "to" => "2019-05-09" } }] }|
                   end
 
                   line do
-                    plain "to match "
-                    alpha %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
+                    plain    %|to match |
+                    expected %|#<HashWithIndifferentAccess { "shipments" => [#<HashWithIndifferentAccess { "estimated_delivery" => #<HashWithIndifferentAccess { "from" => "2019-05-06", "to" => "2019-05-06" }> }>] }>|
                   end
                 },
                 diff: proc {
-                  plain_line %|  #<HashWithIndifferentAccess {|
-                  plain_line %|    "shipments" => [|
-                  plain_line %|      {|
-                  plain_line %|        "estimated_delivery" => {|
-                  plain_line %|          "from" => "2019-05-06",|
-                  alpha_line %|-         "to" => "2019-05-06"|
-                  beta_line  %|+         "to" => "2019-05-09"|
-                  plain_line %|        }|
-                  plain_line %|      }|
-                  plain_line %|    ]|
-                  plain_line %|  }>|
+                  plain_line    %|  #<HashWithIndifferentAccess {|
+                  plain_line    %|    "shipments" => [|
+                  plain_line    %|      {|
+                  plain_line    %|        "estimated_delivery" => {|
+                  plain_line    %|          "from" => "2019-05-06",|
+                  expected_line %|-         "to" => "2019-05-06"|
+                  actual_line   %|+         "to" => "2019-05-09"|
+                  plain_line    %|        }|
+                  plain_line    %|      }|
+                  plain_line    %|    ]|
+                  plain_line    %|  }>|
                 },
               )
 

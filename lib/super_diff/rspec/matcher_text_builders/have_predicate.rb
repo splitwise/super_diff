@@ -20,12 +20,12 @@ module SuperDiff
           end
         end
 
-        def beta_color
+        def actual_color
           :yellow
         end
 
         def add_actual_value
-          template.add_text_in_color(beta_color) do
+          template.add_text_in_color(actual_color) do
             description_of(actual)
           end
         end
@@ -33,7 +33,7 @@ module SuperDiff
         def add_expected_value_to_failure_message(template)
           template.add_text " "
           template.add_text_in_color(
-            alpha_color,
+            expected_color,
             expected_for_failure_message,
           )
         end
@@ -41,7 +41,7 @@ module SuperDiff
         def add_expected_value_to_description(template)
           template.add_text " "
           template.add_text_in_color(
-            alpha_color,
+            expected_color,
             "`#{expected_for_description}`",
           )
         end

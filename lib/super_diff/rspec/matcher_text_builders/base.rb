@@ -45,12 +45,12 @@ module SuperDiff
         def add_extra_after_error
         end
 
-        def beta_color
-          SuperDiff.configuration.beta_color
+        def actual_color
+          SuperDiff.configuration.actual_color
         end
 
-        def alpha_color
-          SuperDiff.configuration.alpha_color
+        def expected_color
+          SuperDiff.configuration.expected_color
         end
 
         private
@@ -91,7 +91,7 @@ module SuperDiff
         end
 
         def add_actual_value
-          template.add_text_in_color(beta_color) { actual }
+          template.add_text_in_color(actual_color) { actual }
         end
 
         def expected_section
@@ -110,7 +110,7 @@ module SuperDiff
           else
             template.add_text " "
             template.add_text_in_color(
-              alpha_color,
+              expected_color,
               expected_for_failure_message,
             )
           end
@@ -121,7 +121,7 @@ module SuperDiff
             add_expected_value_to(template, expected_for_description)
           else
             template.add_text " "
-            template.add_text_in_color(alpha_color, expected_for_description)
+            template.add_text_in_color(expected_color, expected_for_description)
           end
         end
 

@@ -283,14 +283,14 @@ module RSpec
           colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
           colorizer.wrap(
             "‹-› in expected, not in actual",
-            SuperDiff.configuration.alpha_color
+            SuperDiff.configuration.expected_color
           ) +
           colorizer.wrap("  │", SuperDiff.configuration.border_color) +
           "\n" +
           colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
           colorizer.wrap(
             "‹+› in actual, not in expected",
-            SuperDiff.configuration.beta_color
+            SuperDiff.configuration.actual_color
           ) +
           colorizer.wrap("  │", SuperDiff.configuration.border_color) +
           "\n" +
