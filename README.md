@@ -1,8 +1,8 @@
-# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][travis-badge]][travis] ![Downloads][downloads-badge] [![IssueHunt][issuehunt-badge]][issuehunt]
+# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][gh-actions-badge]][gh-actions] ![Downloads][downloads-badge] [![IssueHunt][issuehunt-badge]][issuehunt]
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
-[travis-badge]: http://img.shields.io/travis/mcmire/super_diff/master.svg
+[gh-actions-badge]: http://img.shields.io/github/workflow/status/mcmire/super_diff/SuperDiff/master
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
 [issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
@@ -224,12 +224,12 @@ I'll get notified right away!
 
 ## Compatibility
 
-`super_diff` is [tested][travis] to work with
+`super_diff` is [tested][gh-actions] to work with
 Ruby >= 2.5.x,
 RSpec 3.x,
 and Rails >= 5.x.
 
-[travis]: http://travis-ci.org/mcmire/super_diff
+[gh-actions]: https://github.com/mcmire/super_diff/actions?query=workflow%3ASuperDiff
 
 ## Inspiration/Thanks
 
