@@ -155,34 +155,47 @@ require "super_diff/rspec"
 
 ## Configuration
 
-### Custom colors
-
-If you want to use something other than the default colors, you can
-configure them by adding them to your test helper file
-(`rails_helper` or `spec_helper`):
+You can customize the behavior of the gem
+by adding a configuration block
+to your test helper file
+(`rails_helper` or `spec_helper`)
+which looks something like this:
 
 ``` ruby
 SuperDiff.configure do |config|
-  config.set_actual_color(:green)
-  config.set_expected_color(:red)
-  config.set_border_color(:yellow)
-  config.set_header_color(:yellow)
+  # ...
 end
 ```
 
-See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb) for the list
-of available colors.
+### Customizing colors
+
+If you don't like the colors that SuperDiff uses,
+you can change them like this:
+
+``` ruby
+SuperDiff.configure do |config|
+  config.actual_color = :green
+  config.expected_color = :red
+  config.border_color = :yellow
+  config.header_color = :yellow
+end
+```
+
+See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
+for the list of available colors.
 
 ### Diffing custom objects
 
-As capable as this library is,
-it doesn't know how to deal with every kind of object out there.
-If you have a custom class,
-and instances of your class aren't appearing in diffs like you like,
-you might find it necessary to instruct the gem on how to handle them.
-In that case
-you would add something like this to your test helper file
-(`rails_helper` or `spec_helper`):
+If you are comparing two data structures
+that involve a class that is specific to your project,
+the resulting diff may not look as good as diffs involving native or primitive objects.
+This happens because if SuperDiff doesn't recognize a class,
+it will fall back to a generic representation when diffing instances of that class.
+Fortunately, the gem has a pluggable interface
+that allows you to insert your own implementations
+of key pieces involved in the diffing process.
+I'll have more about how that works soon,
+but here is what such a configuration would look like:
 
 ``` ruby
 SuperDiff.configure do |config|
@@ -192,12 +205,6 @@ SuperDiff.configure do |config|
   config.add_extra_diff_formatter_class(YourDiffFormatter)
 end
 ```
-
-*(More info here in the future on adding a custom differ,
-operation tree builder,
-operation tree,
-and diff formatter.
-Also explanations on what these are.)*
 
 ## Support
 
@@ -252,5 +259,5 @@ Thank you to the authors of these libraries!
 
 ## Author/License
 
-`super_diff` was created and is maintained by Elliot Winkler.
+SuperDiff was created and is maintained by Elliot Winkler.
 It is released under the [MIT license](LICENSE).

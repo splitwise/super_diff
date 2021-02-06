@@ -1,5 +1,25 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+* Allow users to customize colors. ([#107], [042e8ec])
+
+### Bug fixes
+
+* Resolve compatibility issues with RSpec 3.10. ([#114])
+* Fix diffs involving `contain_exactly` and `a_collection_containing_exactly`
+  so that if there are extra items in the actual value,
+  they are shown with `+`s. ([#106])
+* Fix reliability issues with CI.
+* Fix `rake spec` so that it works when run locally again.
+
+[#107]: https://github.com/mcmire/super_diff/pull/107
+[042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
+[#114]: https://github.com/mcmire/super_diff/pull/114
+[#106]: https://github.com/mcmire/super_diff/pull/106
+
 ## 0.5.3 - 2020-12-21
 
 ### Bug fixes
