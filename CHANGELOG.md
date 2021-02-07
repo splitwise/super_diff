@@ -18,8 +18,11 @@
 
   ([#107], [042e8ec])
 
+* Ruby 3.0 is now supported. ([#118])
+
 [#107]: https://github.com/mcmire/super_diff/pull/107
 [042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
+[#118]: https://github.com/mcmire/super_diff/pull/118
 
 ### Bug fixes
 
@@ -35,9 +38,6 @@
 
 * Fix reliability issues with CI.
 * Fix `rake spec` so that it works when run locally again.
-* SuperDiff is now being tested against Ruby 3.0. ([#118])
-
-[#118]: https://github.com/mcmire/super_diff/pull/118
 
 ## 0.5.3 - 2020-12-21
 
