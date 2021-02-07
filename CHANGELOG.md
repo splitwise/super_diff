@@ -4,7 +4,22 @@
 
 ### Features
 
-* Allow users to customize colors. ([#107], [042e8ec])
+* You can now customize the colors that SuperDiff uses
+  by adding this to your test setup:
+
+  ``` ruby
+  SuperDiff.configure do |config|
+    config.actual_color = :green
+    config.expected_color = :red
+    config.border_color = :yellow
+    config.header_color = :yellow
+  end
+  ```
+
+  ([#107], [042e8ec])
+
+[#107]: https://github.com/mcmire/super_diff/pull/107
+[042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
 
 ### Bug fixes
 
@@ -12,13 +27,17 @@
 * Fix diffs involving `contain_exactly` and `a_collection_containing_exactly`
   so that if there are extra items in the actual value,
   they are shown with `+`s. ([#106])
-* Fix reliability issues with CI.
-* Fix `rake spec` so that it works when run locally again.
 
-[#107]: https://github.com/mcmire/super_diff/pull/107
-[042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
 [#114]: https://github.com/mcmire/super_diff/pull/114
 [#106]: https://github.com/mcmire/super_diff/pull/106
+
+### Other notable changes
+
+* Fix reliability issues with CI.
+* Fix `rake spec` so that it works when run locally again.
+* SuperDiff is now being tested against Ruby 3.0. ([#118])
+
+[#118]: https://github.com/mcmire/super_diff/pull/118
 
 ## 0.5.3 - 2020-12-21
 
