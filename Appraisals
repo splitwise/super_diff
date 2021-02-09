@@ -8,32 +8,56 @@ appraisals = {
     instance_eval(&rails_dependencies)
 
     gem "activerecord", "~> 5.0.0"
+    gem "railties", "~> 5.0.0"
     gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
   },
   rails_5_1: proc {
     instance_eval(&rails_dependencies)
 
     gem "activerecord", "~> 5.1.0"
+    gem "railties", "~> 5.1.0"
     gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
   },
   rails_5_2: proc {
     instance_eval(&rails_dependencies)
 
     gem "activerecord", "~> 5.2.0"
+    gem "railties", "~> 5.2.0"
     gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
   },
   rails_6_0: proc {
     instance_eval(&rails_dependencies)
 
     gem "activerecord", "~> 6.0"
+    gem "railties", "~> 6.0"
     gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
   },
   no_rails: proc {},
-  rspec_lt_3_10: proc {
-    gem "rspec", "< 3.10"
+  rspec_lt_3_10: proc { |with_rails|
+    version = "< 3.10"
+
+    if with_rails
+      gem "rspec-core", version
+      gem "rspec-expectations", version
+      gem "rspec-mocks", version
+      gem "rspec-support", version
+      gem "rspec-rails"
+    else
+      gem "rspec", version
+    end
   },
-  rspec_gte_3_10: proc {
-    gem "rspec", ">= 3.10", "< 4"
+  rspec_gte_3_10: proc { |with_rails|
+    version = [">= 3.10", "< 4"]
+
+    if with_rails
+      gem "rspec-core", *version
+      gem "rspec-expectations", *version
+      gem "rspec-mocks", *version
+      gem "rspec-support", *version
+      gem "rspec-rails"
+    else
+      gem "rspec", *version
+    end
   },
 }
 
@@ -54,9 +78,16 @@ rspec_appraisals = [
 
 rails_appraisals.each do |rails_appraisal|
   rspec_appraisals.each do |rspec_appraisal|
-    appraise "#{rails_appraisal}_#{rspec_appraisal}" do
-      instance_eval(&appraisals.fetch(rails_appraisal))
-      instance_eval(&appraisals.fetch(rspec_appraisal))
+    if rails_appraisal == :no_rails
+      appraise "#{rails_appraisal}_#{rspec_appraisal}" do
+        instance_eval(&appraisals.fetch(rails_appraisal))
+        instance_exec(false, &appraisals.fetch(rspec_appraisal))
+      end
+    else
+      appraise "#{rails_appraisal}_#{rspec_appraisal}" do
+        instance_eval(&appraisals.fetch(rails_appraisal))
+        instance_exec(true, &appraisals.fetch(rspec_appraisal))
+      end
     end
   end
 end

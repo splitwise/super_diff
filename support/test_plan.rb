@@ -30,8 +30,6 @@ class TestPlan
       require "pry-nav"
     end
 
-    require "rspec"
-
     require "super_diff"
     SuperDiff.const_set(:IntegrationTests, Module.new)
 
@@ -83,19 +81,19 @@ class TestPlan
   end
 
   def run_plain_test
-    run_test("super_diff/rspec")
+    run_test_with_libraries("super_diff/rspec")
   end
 
   def run_rspec_active_support_test
-    run_test("super_diff/rspec", "super_diff/active_support")
+    run_test_with_libraries("super_diff/rspec", "super_diff/active_support")
   end
 
   def run_rspec_active_record_test
-    run_test("super_diff/rspec", "super_diff/active_record")
+    run_test_with_libraries("super_diff/rspec", "super_diff/active_record")
   end
 
   def run_rspec_rails_test
-    run_test("super_diff/rspec-rails")
+    run_test_with_libraries("super_diff/rspec-rails")
   end
 
   private
@@ -124,21 +122,27 @@ class TestPlan
     end
   end
 
-  def run_test(*libraries)
+  def run_test_with_libraries(*libraries)
     if !using_outside_of_zeus?
       option_parser.parse!
     end
 
     SuperDiff::Csi.color_enabled = color_enabled?
+
+    if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?("no_rails_")
+      require "rspec"
+    else
+      require "rails"
+      require "rspec-rails"
+    end
+
     RSpec.configure do |config|
       config.color_mode = color_enabled? ? :on : :off
     end
 
     yield if block_given?
 
-    libraries.each do |library|
-      require library
-    end
+    libraries.each { |library| require library }
 
     if !using_outside_of_zeus?
       RSpec::Core::Runner.invoke
