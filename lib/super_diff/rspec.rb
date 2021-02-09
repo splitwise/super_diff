@@ -62,7 +62,10 @@ module SuperDiff
     end
 
     def self.rspec_version
-      GemVersion.new(::RSpec::Version::STRING)
+      @_rspec_version ||= begin
+        require "rspec/core/version"
+        GemVersion.new(::RSpec::Core::Version::STRING)
+      end
     end
 
     SuperDiff.configuration.tap do |config|

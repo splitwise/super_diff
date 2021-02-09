@@ -9,7 +9,6 @@ require "rspec/matchers/built_in/eq"
 require "rspec/matchers/built_in/have_attributes"
 require "rspec/matchers/built_in/include"
 require "rspec/matchers/built_in/match"
-require "rspec/version"
 
 module RSpec
   module Expectations
