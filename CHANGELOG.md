@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.1 - 2021-02-10
+
+### Bug fixes
+
+* Fix compatibility issues with newer versions of `rspec-rails`
+  which prevented the gem from being loaded. ([#121])
+
+[#121]: https://github.com/mcmire/super_diff/pull/121
+
 ## 0.6.0 - 2021-02-07
 
 ### Features
