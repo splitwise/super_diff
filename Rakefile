@@ -8,7 +8,7 @@ begin
 rescue LoadError
   task :spec do
     appraisal = SuperDiff::CurrentBundle.instance.latest_appraisal
-    exec "appraisal install && appraisal #{appraisal.name} rake spec --trace"
+    exec "appraisal #{appraisal.name} rake spec --trace"
   end
 end
 
@@ -16,9 +16,9 @@ task :default do
   if SuperDiff::CurrentBundle.instance.appraisal_in_use?
     sh "rake spec"
   elsif ENV["CI"]
-    exec "appraisal install && appraisal rake --trace"
+    exec "appraisal rake --trace"
   else
     appraisal = SuperDiff::CurrentBundle.instance.latest_appraisal
-    exec "appraisal install && appraisal #{appraisal.name} rake --trace"
+    exec "appraisal #{appraisal.name} rake --trace"
   end
 end
