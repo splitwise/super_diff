@@ -36,27 +36,31 @@ appraisals = {
   rspec_lt_3_10: proc { |with_rails|
     version = "< 3.10"
 
+    gem "rspec", version
+
     if with_rails
-      gem "rspec-core", version
-      gem "rspec-expectations", version
-      gem "rspec-mocks", version
-      gem "rspec-support", version
+      # gem "rspec-core", version
+      # gem "rspec-expectations", version
+      # gem "rspec-mocks", version
+      # gem "rspec-support", version
       gem "rspec-rails"
-    else
-      gem "rspec", version
+    # else
+      # gem "rspec", version
     end
   },
   rspec_gte_3_10: proc { |with_rails|
     version = [">= 3.10", "< 4"]
 
+    gem "rspec", *version
+
     if with_rails
-      gem "rspec-core", *version
-      gem "rspec-expectations", *version
-      gem "rspec-mocks", *version
-      gem "rspec-support", *version
+      # gem "rspec-core", *version
+      # gem "rspec-expectations", *version
+      # gem "rspec-mocks", *version
+      # gem "rspec-support", *version
       gem "rspec-rails"
-    else
-      gem "rspec", *version
+    # else
+      # gem "rspec", *version
     end
   },
 }

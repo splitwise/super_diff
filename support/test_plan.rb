@@ -1,4 +1,5 @@
 require "pathname"
+require "optparse"
 
 require_relative "../support/current_bundle"
 
@@ -28,6 +29,14 @@ class TestPlan
       require "pry-byebug"
     rescue LoadError
       require "pry-nav"
+    end
+
+    if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?("no_rails_")
+      require "rspec"
+    else
+      require "rails"
+      require "rspec"
+      require "rspec-rails"
     end
 
     require "super_diff"
@@ -128,13 +137,6 @@ class TestPlan
     end
 
     SuperDiff::Csi.color_enabled = color_enabled?
-
-    if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?("no_rails_")
-      require "rspec"
-    else
-      require "rails"
-      require "rspec-rails"
-    end
 
     RSpec.configure do |config|
       config.color_mode = color_enabled? ? :on : :off

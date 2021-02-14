@@ -1,5 +1,5 @@
 {
-  "command": "ruby -r ./config/zeus_plan.rb -e Zeus.go",
+  "command": "ruby -r rubygems -r ./config/zeus_plan.rb -e Zeus.go",
   "plan": {
     "boot": {
       "run_plain_test": [],

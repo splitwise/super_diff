@@ -86,6 +86,10 @@ GEM
     rake (13.0.1)
     regexp_parser (1.7.1)
     rexml (3.2.4)
+    rspec (3.10.0)
+      rspec-core (~> 3.10.0)
+      rspec-expectations (~> 3.10.0)
+      rspec-mocks (~> 3.10.0)
     rspec-core (3.10.0)
       rspec-support (~> 3.10.0)
     rspec-expectations (3.10.0)
@@ -137,11 +141,8 @@ DEPENDENCIES
   pry-nav
   railties (~> 6.0)
   rake
-  rspec-core (>= 3.10, < 4)
-  rspec-expectations (>= 3.10, < 4)
-  rspec-mocks (>= 3.10, < 4)
+  rspec (>= 3.10, < 4)
   rspec-rails
-  rspec-support (>= 3.10, < 4)
   rubocop
   sqlite3 (~> 1.4.0)
   super_diff!
