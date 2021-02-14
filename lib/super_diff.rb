@@ -44,4 +44,20 @@ module SuperDiff
     (value.respond_to?(:acts_like_time?) && value.acts_like_time?) ||
       value.is_a?(Time)
   end
+
+  def self.insert_overrides(target_module, mod = nil, &block)
+    if mod
+      target_module.prepend(mod)
+    else
+      target_module.prepend(Module.new(&block))
+    end
+  end
+
+  def self.insert_singleton_overrides(target_module, mod = nil, &block)
+    if mod
+      target_module.singleton_class.prepend(mod)
+    else
+      target_module.singleton_class.prepend(Module.new(&block))
+    end
+  end
 end

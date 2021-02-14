@@ -63,6 +63,7 @@ GEM
     thor (1.0.1)
     trollop (1.16.2)
     unicode-display_width (1.7.0)
+    warnings_logger (0.1.1)
 
 PLATFORMS
   ruby
@@ -76,6 +77,7 @@ DEPENDENCIES
   rspec (>= 3.10, < 4)
   rubocop
   super_diff!
+  warnings_logger
 
 BUNDLED WITH
    2.1.4

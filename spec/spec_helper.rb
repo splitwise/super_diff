@@ -72,6 +72,14 @@ RSpec.configure do |config|
   end
 end
 
+require "warnings_logger"
+$VERBOSE = true
+WarningsLogger.configure do |config|
+  config.project_name = "super_diff"
+  config.project_directory = Pathname.new("..").expand_path(__dir__)
+end
+WarningsLogger.enable
+
 if active_record_available
   require "super_diff/rspec-rails"
 else

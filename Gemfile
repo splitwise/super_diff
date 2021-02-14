@@ -10,5 +10,6 @@ gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rubocop"
+gem "warnings_logger"
 
 gemspec
