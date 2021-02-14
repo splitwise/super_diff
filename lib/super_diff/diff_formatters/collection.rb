@@ -94,7 +94,7 @@ module SuperDiff
       end
 
       def build_chunk_by_inspecting(value, prefix:, icon:)
-        inspection = ObjectInspection.inspect(
+        inspection = SuperDiff.inspect_object(
           value,
           as_single_line: false,
         )

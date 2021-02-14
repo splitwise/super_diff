@@ -1,18 +1,24 @@
 require "spec_helper"
 
-RSpec.describe SuperDiff::ObjectInspection do
-  describe ".inspect" do
+RSpec.describe SuperDiff do
+  describe ".inspect_object" do
     context "given nil" do
       context "given as_single_line: true" do
         it "returns nil, inspected" do
-          inspection = described_class.inspect(nil, as_single_line: true)
+          inspection = described_class.inspect_object(
+            nil,
+            as_single_line: true,
+          )
           expect(inspection).to eq("nil")
         end
       end
 
       context "given as_single_line: false" do
         it "returns nil, inspected" do
-          inspection = described_class.inspect(nil, as_single_line: false)
+          inspection = described_class.inspect_object(
+            nil,
+            as_single_line: false,
+          )
           expect(inspection).to eq("nil")
         end
       end
@@ -21,14 +27,20 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given true" do
       context "given as_single_line: true" do
         it "returns nil, inspected" do
-          inspection = described_class.inspect(nil, as_single_line: true)
+          inspection = described_class.inspect_object(
+            nil,
+            as_single_line: true,
+          )
           expect(inspection).to eq("nil")
         end
       end
 
       context "given as_single_line: false" do
         it "returns nil, inspected" do
-          inspection = described_class.inspect(nil, as_single_line: false)
+          inspection = described_class.inspect_object(
+            nil,
+            as_single_line: false,
+          )
           expect(inspection).to eq("nil")
         end
       end
@@ -37,14 +49,20 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given false" do
       context "given as_single_line: false" do
         it "returns false, inspected" do
-          inspection = described_class.inspect(false, as_single_line: false)
+          inspection = described_class.inspect_object(
+            false,
+            as_single_line: false,
+          )
           expect(inspection).to eq("false")
         end
       end
 
       context "given as_single_line: false" do
         it "returns false, inspected" do
-          inspection = described_class.inspect(false, as_single_line: false)
+          inspection = described_class.inspect_object(
+            false,
+            as_single_line: false,
+          )
           expect(inspection).to eq("false")
         end
       end
@@ -53,14 +71,20 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a number" do
       context "given as_single_line: true" do
         it "returns the number as a string" do
-          inspection = described_class.inspect(3, as_single_line: true)
+          inspection = described_class.inspect_object(
+            3,
+            as_single_line: true,
+          )
           expect(inspection).to eq("3")
         end
       end
 
       context "given as_single_line: false" do
         it "returns the number as a string" do
-          inspection = described_class.inspect(3, as_single_line: false)
+          inspection = described_class.inspect_object(
+            3,
+            as_single_line: false,
+          )
           expect(inspection).to eq("3")
         end
       end
@@ -69,14 +93,20 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a symbol" do
       context "given as_single_line: true" do
         it "returns the symbol, inspected" do
-          inspection = described_class.inspect(:foo, as_single_line: true)
+          inspection = described_class.inspect_object(
+            :foo,
+            as_single_line: true,
+          )
           expect(inspection).to eq(":foo")
         end
       end
 
       context "given as_single_line: false" do
         it "returns the symbol, inspected" do
-          inspection = described_class.inspect(:foo, as_single_line: false)
+          inspection = described_class.inspect_object(
+            :foo,
+            as_single_line: false,
+          )
           expect(inspection).to eq(":foo")
         end
       end
@@ -85,14 +115,20 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a regex" do
       context "given as_single_line: true" do
         it "returns the regex, inspected" do
-          inspection = described_class.inspect(/foo/, as_single_line: true)
+          inspection = described_class.inspect_object(
+            /foo/,
+            as_single_line: true,
+          )
           expect(inspection).to eq("/foo/")
         end
       end
 
       context "given as_single_line: false" do
         it "returns the regex, inspected" do
-          inspection = described_class.inspect(/foo/, as_single_line: false)
+          inspection = described_class.inspect_object(
+            /foo/,
+            as_single_line: false,
+          )
           expect(inspection).to eq("/foo/")
         end
       end
@@ -100,7 +136,10 @@ RSpec.describe SuperDiff::ObjectInspection do
 
     context "given a single-line string" do
       it "returns the string surrounded by quotes" do
-        inspection = described_class.inspect("Marty", as_single_line: true)
+        inspection = described_class.inspect_object(
+          "Marty",
+          as_single_line: true,
+        )
         expect(inspection).to eq('"Marty"')
       end
     end
@@ -108,7 +147,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a multi-line string" do
       context "that does not contain color codes" do
         it "returns the string surrounded by quotes, with newline characters escaped" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             "This is a line\nAnd that's a line\nAnd there's a line too",
             as_single_line: true,
           )
@@ -141,7 +180,7 @@ RSpec.describe SuperDiff::ObjectInspection do
             colorize("And there's a line too", colors[2]),
           ].join("\n")
 
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             string_to_inspect,
             as_single_line: true,
           )
@@ -158,7 +197,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing only primitive values" do
         context "given as_single_line: true" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               ["foo", 2, :baz],
               as_single_line: true,
             )
@@ -168,7 +207,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the array across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               ["foo", 2, :baz],
               as_single_line: false,
             )
@@ -186,7 +225,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing other arrays" do
         context "given as_single_line: true" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               [
                 "foo",
                 ["bar", "baz"],
@@ -200,7 +239,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the array across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               [
                 "foo",
                 ["bar", "baz"],
@@ -225,14 +264,20 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "which is empty" do
         context "given as_single_line: true" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect([], as_single_line: true)
+            inspection = described_class.inspect_object(
+              [],
+              as_single_line: true,
+            )
             expect(inspection).to eq(%([]))
           end
         end
 
         context "given as_single_line: false" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect([], as_single_line: false)
+            inspection = described_class.inspect_object(
+              [],
+              as_single_line: false,
+            )
             expect(inspection).to eq(%([]))
           end
         end
@@ -244,7 +289,7 @@ RSpec.describe SuperDiff::ObjectInspection do
         context "where all of the keys are symbols" do
           context "given as_single_line: true" do
             it "returns a representation of the hash on a single line" do
-              inspection = described_class.inspect(
+              inspection = described_class.inspect_object(
                 # rubocop:disable Style/HashSyntax
                 { :foo => "bar", :baz => "qux" },
                 # rubocop:enable Style/HashSyntax
@@ -256,7 +301,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
           context "given as_single_line: false" do
             it "returns a representation of the hash across multiple lines" do
-              inspection = described_class.inspect(
+              inspection = described_class.inspect_object(
                 # rubocop:disable Style/HashSyntax
                 { :foo => "bar", :baz => "qux" },
                 # rubocop:enable Style/HashSyntax
@@ -275,7 +320,7 @@ RSpec.describe SuperDiff::ObjectInspection do
         context "where only some of the keys are symbols" do
           context "given as_single_line: true" do
             it "returns a representation of the hash on a single line" do
-              inspection = described_class.inspect(
+              inspection = described_class.inspect_object(
                 { :foo => "bar", 2 => "baz" },
                 as_single_line: true,
               )
@@ -285,7 +330,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
           context "given as_single_line: false" do
             it "returns a representation of the hash across multiple lines" do
-              inspection = described_class.inspect(
+              inspection = described_class.inspect_object(
                 { :foo => "bar", 2 => "baz" },
                 as_single_line: false,
               )
@@ -314,7 +359,7 @@ RSpec.describe SuperDiff::ObjectInspection do
               :number_of_products => 2,
               # rubocop:enable Style/HashSyntax
             }
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               value_to_inspect,
               as_single_line: true,
             )
@@ -338,7 +383,7 @@ RSpec.describe SuperDiff::ObjectInspection do
               :number_of_products => 2,
               # rubocop:enable Style/HashSyntax
             }
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               value_to_inspect,
               as_single_line: false,
             )
@@ -365,14 +410,20 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "which is empty" do
         context "given as_single_line: true" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect({}, as_single_line: true)
+            inspection = described_class.inspect_object(
+              {},
+              as_single_line: true,
+            )
             expect(inspection).to eq(%({}))
           end
         end
 
         context "given as_single_line: false" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect({}, as_single_line: false)
+            inspection = described_class.inspect_object(
+              {},
+              as_single_line: false,
+            )
             expect(inspection).to eq(%({}))
           end
         end
@@ -382,7 +433,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a class" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Person,
             as_single_line: true,
           )
@@ -392,7 +443,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Person,
             as_single_line: false,
           )
@@ -405,7 +456,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing only primitive values" do
         context "given as_single_line: true" do
           it "returns a representation of the object on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Person.new(name: "Doc", age: 58),
               as_single_line: true,
             )
@@ -417,7 +468,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the object across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Person.new(name: "Doc", age: 58),
               as_single_line: false,
             )
@@ -434,7 +485,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing other custom objects" do
         context "given as_single_line: true" do
           it "returns a representation of the object on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Customer.new(
                 name: "Marty McFly",
                 shipping_address: SuperDiff::Test::ShippingAddress.new(
@@ -458,7 +509,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the object across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Customer.new(
                 name: "Marty McFly",
                 shipping_address: SuperDiff::Test::ShippingAddress.new(
@@ -494,7 +545,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing only primitive values" do
         context "given as_single_line: true" do
           it "returns a representation of the object on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Item.new(
                 name: "mac and cheese",
                 quantity: 2,
@@ -511,7 +562,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the object across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Item.new(
                 name: "mac and cheese",
                 quantity: 2,
@@ -519,10 +570,10 @@ RSpec.describe SuperDiff::ObjectInspection do
               as_single_line: false,
             )
             regexp = <<~INSPECTION.rstrip
-              #<SuperDiff::Test::Item:0x[a-z0-9]+ \\{
+              #<SuperDiff::Test::Item:0x[a-z0-9]+ \{
                 @name="mac and cheese",
                 @quantity=2
-              \\}>
+              \}>
             INSPECTION
             expect(inspection).to match(/\A#{regexp}\Z/)
           end
@@ -532,7 +583,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "containing other custom objects" do
         context "given as_single_line: true" do
           it "returns a representation of the object on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Order.new([
                 SuperDiff::Test::Item.new(name: "ham", quantity: 1),
                 SuperDiff::Test::Item.new(name: "eggs", quantity: 2),
@@ -550,7 +601,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the object across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::Order.new([
                 SuperDiff::Test::Item.new(name: "ham", quantity: 1),
                 SuperDiff::Test::Item.new(name: "eggs", quantity: 2),
@@ -574,7 +625,7 @@ RSpec.describe SuperDiff::ObjectInspection do
                     @quantity=1
                   \\}>
                 \\]
-              }>
+              \\}>
             INSPECTION
             expect(inspection).to match(/\A#{regexp}\Z/)
           end
@@ -584,19 +635,19 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "which is empty" do
         context "given as_single_line: true" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::EmptyClass.new,
               as_single_line: true,
             )
             expect(inspection).to match(
-              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/
+              /#<SuperDiff::Test::EmptyClass:0x[a-z0-9]+>/,
             )
           end
         end
 
         context "given as_single_line: false" do
           it "returns a representation of the array on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               SuperDiff::Test::EmptyClass.new,
               as_single_line: false,
             )
@@ -611,7 +662,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a hash-including-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_hash_including(foo: "bar", baz: "qux"),
             as_single_line: true,
           )
@@ -624,7 +675,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_hash_including(foo: "bar", baz: "qux"),
             as_single_line: false,
           )
@@ -642,7 +693,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a collection-including-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_collection_including(1, 2, 3),
             as_single_line: true,
           )
@@ -655,7 +706,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_collection_including(1, 2, 3),
             as_single_line: false,
           )
@@ -674,7 +725,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a fuzzy object" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             an_object_having_attributes(foo: "bar", baz: "qux"),
             as_single_line: true,
           )
@@ -687,7 +738,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             an_object_having_attributes(foo: "bar", baz: "qux"),
             as_single_line: false,
           )
@@ -705,7 +756,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a collection-containing-exactly-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_collection_containing_exactly("foo", "bar", "baz"),
             as_single_line: true,
           )
@@ -718,7 +769,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_collection_containing_exactly("foo", "bar", "baz"),
             as_single_line: false,
           )
@@ -737,7 +788,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a kind-of-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_kind_of(Symbol),
             as_single_line: true,
           )
@@ -748,7 +799,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_kind_of(Symbol),
             as_single_line: false,
           )
@@ -761,7 +812,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given an-instance-of-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             an_instance_of(Symbol),
             as_single_line: true,
           )
@@ -772,7 +823,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             an_instance_of(Symbol),
             as_single_line: false,
           )
@@ -785,7 +836,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a-value-within-<something>" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_value_within(1).of(Time.utc(2020, 4, 9)),
             as_single_line: true,
           )
@@ -798,7 +849,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             a_value_within(1).of(Time.utc(2020, 4, 9)),
             as_single_line: false,
           )
@@ -814,7 +865,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       context "that is anonymous" do
         context "given as_single_line: true" do
           it "returns a representation of the object on a single line" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               double(foo: "bar", baz: "qux"),
               as_single_line: true,
             )
@@ -825,7 +876,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
         context "given as_single_line: false" do
           it "returns a representation of the object across multiple lines" do
-            inspection = described_class.inspect(
+            inspection = described_class.inspect_object(
               double(foo: "bar", baz: "qux"),
               as_single_line: false,
             )
@@ -839,7 +890,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given an ActiveRecord object", active_record: true do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Models::ActiveRecord::Person.new(
               name: "Elliot",
               age: 31,
@@ -847,15 +898,17 @@ RSpec.describe SuperDiff::ObjectInspection do
             as_single_line: true,
           )
 
+          # rubocop:disable Metrics/LineLength
           expect(inspection).to eq(
-            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">)
+            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">),
           )
+          # rubocop:enable Metrics/LineLength
         end
       end
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Models::ActiveRecord::Person.new(
               name: "Elliot",
               age: 31,
@@ -886,14 +939,16 @@ RSpec.describe SuperDiff::ObjectInspection do
             age: 17,
           )
 
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Models::ActiveRecord::Person.all,
             as_single_line: true,
           )
 
+          # rubocop:disable Metrics/LineLength
           expect(inspection).to eq(
-            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>)
+            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>),
           )
+          # rubocop:enable Metrics/LineLength
         end
       end
 
@@ -908,7 +963,7 @@ RSpec.describe SuperDiff::ObjectInspection do
             age: 17,
           )
 
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             SuperDiff::Test::Models::ActiveRecord::Person.all,
             as_single_line: false,
           )
@@ -934,7 +989,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a HashWithIndifferentAccess", active_record: true do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             HashWithIndifferentAccess.new({
               line_1: "123 Main St.",
               city: "Hill Valley",
@@ -944,15 +999,17 @@ RSpec.describe SuperDiff::ObjectInspection do
             as_single_line: true,
           )
 
+          # rubocop:disable Metrics/LineLength
           expect(inspection).to eq(
-            %(#<HashWithIndifferentAccess { "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }>)
+            %(#<HashWithIndifferentAccess { "line_1" => "123 Main St.", "city" => "Hill Valley", "state" => "CA", "zip" => "90382" }>),
           )
+          # rubocop:enable Metrics/LineLength
         end
       end
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             HashWithIndifferentAccess.new({
               line_1: "123 Main St.",
               city: "Hill Valley",
@@ -977,7 +1034,7 @@ RSpec.describe SuperDiff::ObjectInspection do
     context "given a combination of all kinds of values" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             {
               state: :down,
               errors: [
@@ -1031,7 +1088,7 @@ RSpec.describe SuperDiff::ObjectInspection do
 
       context "given as_single_line: false" do
         it "returns a representation of the object across multiple lines" do
-          inspection = described_class.inspect(
+          inspection = described_class.inspect_object(
             {
               state: :down,
               errors: [
@@ -1140,7 +1197,7 @@ RSpec.describe SuperDiff::ObjectInspection do
       it "replaces the reference with ∙∙∙" do
         value = ["a", "b", "c"]
         value.insert(1, value)
-        inspection = described_class.inspect(value, as_single_line: true)
+        inspection = described_class.inspect_object(value, as_single_line: true)
         expect(inspection).to eq(%(["a", ∙∙∙, "b", "c"]))
       end
     end
@@ -1149,7 +1206,10 @@ RSpec.describe SuperDiff::ObjectInspection do
       it "replaces the reference with ∙∙∙" do
         value = ["a", "b", "c"]
         value.insert(1, value)
-        inspection = described_class.inspect(value, as_single_line: false)
+        inspection = described_class.inspect_object(
+          value,
+          as_single_line: false,
+        )
         expect(inspection).to eq(<<~INSPECTION.rstrip)
           [
             "a",

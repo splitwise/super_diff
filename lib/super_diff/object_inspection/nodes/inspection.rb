@@ -10,7 +10,7 @@ module SuperDiff
               immediate_value
             end
 
-          SuperDiff::ObjectInspection.inspect(
+          SuperDiff.inspect_object(
             value,
             indent_level: indent_level,
             as_single_line: as_single_line,

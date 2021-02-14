@@ -30,6 +30,14 @@ module SuperDiff
     @_configuration ||= Configuration.new
   end
 
+  def self.inspect_object(object, as_single_line:, indent_level: 0)
+    ObjectInspection::Inspectors::Main.call(
+      object,
+      as_single_line: as_single_line,
+      indent_level: indent_level,
+    )
+  end
+
   def self.time_like?(value)
     # Check for ActiveSupport's #acts_like_time? for their time-like objects
     # (like ActiveSupport::TimeWithZone).
