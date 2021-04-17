@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    super_diff (0.6.1)
+    super_diff (0.6.2)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
@@ -56,11 +56,12 @@ GEM
     minitest (5.14.2)
     nokogiri (1.11.1-x86_64-darwin)
       racc (~> 1.4)
+    optimist (3.0.1)
     parallel (1.19.2)
     parser (2.7.1.4)
       ast (~> 2.4.1)
-    patience_diff (1.1.0)
-      trollop (~> 1.16)
+    patience_diff (1.2.0)
+      optimist (~> 3.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -122,7 +123,6 @@ GEM
     sqlite3 (1.4.2)
     thor (1.0.1)
     thread_safe (0.3.6)
-    trollop (1.16.2)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.7.0)

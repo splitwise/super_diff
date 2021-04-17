@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.6.2 - 2021-04-16
+
+### Improvements
+
+* Rename SuperDiff::ObjectInspection.inspect to something less collision-y
+  so that it can be inspected in IRB sessions. ([#123])
+
+* Silence warnings. ([#124])
+
+[#123]: https://github.com/mcmire/super_diff/pull/123
+[#124]: https://github.com/mcmire/super_diff/pull/124
+
 ## 0.6.1 - 2021-02-10
 
 ### Bug fixes
