@@ -68,6 +68,12 @@ module SuperDiff
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeAnInstanceOf)
     end
 
+    # HINT: `an_instance_of` is a matcher in the rspec-expectations gem.
+    #       `instance_of` is an argument matcher in the rspec-mocks gem.
+    def self.instance_of_something?(value)
+      value.is_a?(::RSpec::Mocks::ArgumentMatchers::InstanceOf)
+    end
+
     def self.a_value_within_something?(value)
       fuzzy_object?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeWithin)
