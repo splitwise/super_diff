@@ -38,6 +38,10 @@ module SuperDiff
         !(value.expecteds.one? && value.expecteds.first.is_a?(::Hash))
     end
 
+    def self.array_including_something?(value)
+      value.is_a?(::RSpec::Mocks::ArgumentMatchers::ArrayIncludingMatcher)
+    end
+
     def self.an_object_having_some_attributes?(value)
       fuzzy_object?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::HaveAttributes)
