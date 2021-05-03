@@ -57,6 +57,12 @@ module SuperDiff
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeAKindOf)
     end
 
+    # HINT: `a_kind_of` is a matcher in the rspec-expectations gem.
+    #       `kind_of` is an argument matcher in the rspec-mocks gem.
+    def self.kind_of_something?(value)
+      value.is_a?(::RSpec::Mocks::ArgumentMatchers::KindOf)
+    end
+
     def self.an_instance_of_something?(value)
       fuzzy_object?(value) &&
         value.base_matcher.is_a?(::RSpec::Matchers::BuiltIn::BeAnInstanceOf)
