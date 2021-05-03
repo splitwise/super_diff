@@ -4,7 +4,7 @@ module SuperDiff
       module Inspectors
         class CollectionIncluding < SuperDiff::ObjectInspection::Inspectors::Base
           def self.applies_to?(value)
-            SuperDiff::RSpec.a_collection_including_something?(value)
+            SuperDiff::RSpec.a_collection_including_something?(value) || SuperDiff::RSpec.array_including_something?(value)
           end
 
           protected
@@ -13,8 +13,13 @@ module SuperDiff
             SuperDiff::ObjectInspection::InspectionTree.new do
               add_text "#<a collection including ("
 
-              nested do |aliased_matcher|
-                insert_array_inspection_of(aliased_matcher.expecteds)
+              nested do |value|
+                array = if SuperDiff::RSpec.a_collection_including_something?(value)
+                          value.expecteds
+                        else
+                          value.instance_variable_get(:@expected)
+                        end
+                insert_array_inspection_of(array)
               end
 
               add_break

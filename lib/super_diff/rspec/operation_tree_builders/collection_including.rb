@@ -3,8 +3,10 @@ module SuperDiff
     module OperationTreeBuilders
       class CollectionIncluding < SuperDiff::OperationTreeBuilders::Array
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.a_collection_including_something?(expected) &&
-            actual.is_a?(::Array)
+          (
+            SuperDiff::RSpec.a_collection_including_something?(expected) ||
+            SuperDiff::RSpec.array_including_something?(expected)
+          ) && actual.is_a?(::Array)
         end
 
         def initialize(expected:, actual:, **rest)
@@ -16,7 +18,12 @@ module SuperDiff
         private
 
         def actual_with_extra_items_in_expected_at_end
-          actual + (expected.expecteds - actual)
+          value = if SuperDiff::RSpec.a_collection_including_something?(expected)
+                    expected.expecteds
+                  else
+                    expected.instance_variable_get(:@expected)
+                  end
+          actual + (value - actual)
         end
       end
     end

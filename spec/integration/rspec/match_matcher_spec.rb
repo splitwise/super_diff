@@ -689,6 +689,47 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
+  context "when the expected value is an array-including-<something>" do
+    it "produces the correct failure message" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = array_including("a")
+          actual   = ["b"]
+          expect(actual).to match(expected)
+        TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match(expected)|,
+          expectation: proc {
+            line do
+              plain    %|Expected |
+              actual   %|["b"]|
+              plain    %| to match |
+              expected %|#<a collection including ("a")>|
+              plain    %|.|
+            end
+          },
+          diff: proc {
+            plain_line    %|  [|
+            plain_line    %|    "b"|
+            # expected_line %|-   "a",|   # FIXME
+            expected_line %|-   "a"|
+            plain_line    %|  ]|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
+
   context "when the expected value is an object-having-attributes" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do
