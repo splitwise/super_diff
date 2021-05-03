@@ -26,6 +26,12 @@ module SuperDiff
         value.expecteds.first.is_a?(::Hash)
     end
 
+    # HINT: `a_hash_including` is an alias of `include` in the rspec-expectations gem.
+    #       `hash_including` is an argument matcher in the rspec-mocks gem.
+    def self.hash_including_something?(value)
+      value.is_a?(::RSpec::Mocks::ArgumentMatchers::HashIncludingMatcher)
+    end
+
     def self.a_collection_including_something?(value)
       fuzzy_object?(value) &&
         value.respond_to?(:expecteds) &&

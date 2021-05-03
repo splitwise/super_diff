@@ -3,12 +3,19 @@ module SuperDiff
     module OperationTreeBuilders
       class HashIncluding < SuperDiff::OperationTreeBuilders::Hash
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.a_hash_including_something?(expected) &&
-            actual.is_a?(::Hash)
+          (
+            SuperDiff::RSpec.a_hash_including_something?(expected) ||
+            SuperDiff::RSpec.hash_including_something?(expected)
+          ) && actual.is_a?(::Hash)
         end
 
         def initialize(expected:, **rest)
-          super(expected: expected.expecteds.first, **rest)
+          hash = if SuperDiff::RSpec.a_hash_including_something?(expected)
+                   expected.expecteds.first
+                 else
+                   expected.instance_variable_get(:@expected)
+                 end
+          super(expected: hash, **rest)
         end
 
         private
