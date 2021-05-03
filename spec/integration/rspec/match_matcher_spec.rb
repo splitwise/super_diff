@@ -341,6 +341,48 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
     end
   end
 
+  # HINT: `a_hash_including` is an alias of `include` in the rspec-expectations gem.
+  #       `hash_including` is an argument matcher in the rspec-mocks gem.
+  context "when the expected value is `hash-including-<something>`, not `a-hash-including-<something>`" do
+    it "produces the correct failure message" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = hash_including(city: "Hill Valley")
+          actual   = { city: "Burbank" }
+          expect(actual).to match(expected)
+        TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match(expected)|,
+          expectation: proc {
+            line do
+              plain    %|Expected |
+              actual   %|{ city: "Burbank" }|
+              plain    %| to match |
+              expected %|#<a hash including (city: "Hill Valley")>|
+              plain    %|.|
+            end
+          },
+          diff: proc {
+            plain_line    %|  {|
+            expected_line %|-   city: "Hill Valley"|
+            actual_line   %|+   city: "Burbank"|
+            plain_line    %|  }|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
+
   context "when the expected value is a collection-including-<something>" do
     context "that is small" do
       it "produces the correct failure message when used in the positive" do

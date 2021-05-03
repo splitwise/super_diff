@@ -4,7 +4,7 @@ module SuperDiff
       module Inspectors
         class HashIncluding < SuperDiff::ObjectInspection::Inspectors::Base
           def self.applies_to?(value)
-            SuperDiff::RSpec.a_hash_including_something?(value)
+            SuperDiff::RSpec.a_hash_including_something?(value) || SuperDiff::RSpec.hash_including_something?(value)
           end
 
           protected
@@ -13,9 +13,14 @@ module SuperDiff
             SuperDiff::ObjectInspection::InspectionTree.new do
               add_text "#<a hash including ("
 
-              nested do |aliased_matcher|
+              nested do |value|
+                hash = if SuperDiff::RSpec.a_hash_including_something?(value)
+                         value.expecteds.first
+                       else
+                         value.instance_variable_get(:@expected)
+                       end
                 insert_hash_inspection_of(
-                  aliased_matcher.expecteds.first,
+                  hash,
                   initial_break: nil,
                 )
               end
