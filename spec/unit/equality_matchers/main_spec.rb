@@ -1166,8 +1166,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
               is_translation_enabled: false,
               profile_background_color: "FFF1E0",
               profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",
-              profile_background_tile: false,
               profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+              profile_background_tile: false,
             }
           )
 
@@ -1177,7 +1177,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
             #{
               colored do
                 expected_line %(Expected: { created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, geo_enabled: false, verified: true, media_count: 51044, statuses_count: 273860, contributors_enabled: false, profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_color: "FFF1E0", profile_background_tile: false, profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg", listed_count: 37009, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
-                actual_line   %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_background_tile: false, profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592" })
+                actual_line   %(  Actual: { listed_count: 37009, created_at: "Tue Jan 13 19:28:24 +0000 2009", favourites_count: 38, utc_offset: nil, statuses_count: 273860, media_count: 51044, contributors_enabled: false, is_translator: false, is_translation_enabled: false, profile_background_color: "FFF1E0", profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png", profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592", profile_background_tile: false })
               end
             }
 
@@ -1199,9 +1199,9 @@ RSpec.describe SuperDiff::EqualityMatchers::Main do
                 actual_line   %(+   is_translation_enabled: false,)
                 plain_line    %(    profile_background_color: "FFF1E0",)
                 plain_line    %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
-                plain_line    %(    profile_background_tile: false,)
                 expected_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
-                plain_line    %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592")
+                plain_line    %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",)
+                plain_line    %(    profile_background_tile: false)
                 plain_line    %(  })
               end
             }
