@@ -53,7 +53,7 @@ module SuperDiff
                 ev2, av2 = expected[ek], actual[ek]
 
                 if (
-                  (!actual.include?(ek) || ev != av2) &&
+                  (!actual.include?(ek) || ev2 != av2) &&
                   operations.none? { |operation|
                     [:delete, :noop].include?(operation.name) &&
                       operation.key == ek
