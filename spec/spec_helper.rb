@@ -1,3 +1,5 @@
+require "pp"
+
 begin
   require "pry-byebug"
 rescue LoadError
@@ -8,7 +10,7 @@ begin
 rescue LoadError
 end
 
-require "pp"
+require "climate_control"
 
 #---
 

@@ -430,6 +430,84 @@ RSpec.describe SuperDiff do
       end
     end
 
+    context "given a Time object" do
+      context "that does not have an associated time zone" do
+        context "given as_single_line: true" do
+          it "returns a representation of the time on a single line" do
+            inspection = described_class.inspect_object(
+              Time.new(2021, 5, 5, 10, 23, 28.1234567891, "-05:00"),
+              as_single_line: true,
+            )
+            expect(inspection).to eq(
+              "#<Time 2021-05-05 10:23:28+(34749996836695/281474976710656) -05:00>"
+            )
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the time across multiple lines" do
+            inspection = described_class.inspect_object(
+              Time.new(2021, 5, 5, 10, 23, 28.1234567891, "-05:00"),
+              as_single_line: false,
+            )
+            expect(inspection).to eq(<<~INSPECTION.rstrip)
+              #<Time {
+                year: 2021,
+                month: 5,
+                day: 5,
+                hour: 10,
+                min: 23,
+                sec: 28,
+                subsec: (34749996836695/281474976710656),
+                zone: nil,
+                utc_offset: -18000
+              }>
+            INSPECTION
+          end
+        end
+      end
+
+      context "that has an associated time zone" do
+        around do |example|
+          ClimateControl.modify(TZ: 'America/Chicago', &example)
+        end
+
+        context "given as_single_line: true" do
+          it "returns a representation of the time on a single line" do
+            inspection = described_class.inspect_object(
+              Time.new(2021, 5, 5, 10, 23, 28.1234567891),
+              as_single_line: true,
+            )
+            expect(inspection).to eq(
+              "#<Time 2021-05-05 10:23:28+(34749996836695/281474976710656) -05:00 (CDT)>"
+            )
+          end
+        end
+
+        context "given as_single_line: false" do
+          it "returns a representation of the time across multiple lines" do
+            inspection = described_class.inspect_object(
+              Time.new(2021, 5, 5, 10, 23, 28.1234567891),
+              as_single_line: false,
+            )
+            expect(inspection).to eq(<<~INSPECTION.rstrip)
+              #<Time {
+                year: 2021,
+                month: 5,
+                day: 5,
+                hour: 10,
+                min: 23,
+                sec: 28,
+                subsec: (34749996836695/281474976710656),
+                zone: "CDT",
+                utc_offset: -18000
+              }>
+            INSPECTION
+          end
+        end
+      end
+    end
+
     context "given a class" do
       context "given as_single_line: true" do
         it "returns a representation of the object on a single line" do
@@ -842,21 +920,31 @@ RSpec.describe SuperDiff do
           )
 
           expect(inspection).to eq(
-            %(#<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>),
+            %(#<a value within 1 of #<Time 2020-04-09 00:00:00 +00:00 (UTC)>>),
           )
         end
       end
 
       context "given as_single_line: false" do
-        it "returns a representation of the object on a single line" do
+        it "returns a representation of the object across multiple lines" do
           inspection = described_class.inspect_object(
             a_value_within(1).of(Time.utc(2020, 4, 9)),
             as_single_line: false,
           )
 
-          expect(inspection).to eq(
-            %(#<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>),
-          )
+          expect(inspection).to eq(<<~INSPECTION.rstrip)
+            #<a value within 1 of #<Time {
+              year: 2020,
+              month: 4,
+              day: 9,
+              hour: 0,
+              min: 0,
+              sec: 0,
+              subsec: 0,
+              zone: "UTC",
+              utc_offset: 0
+            }>>
+          INSPECTION
         end
       end
     end
