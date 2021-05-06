@@ -54,10 +54,11 @@ GEM
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     method_source (1.0.0)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.1)
     minitest (5.14.2)
-    nokogiri (1.10.10)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.3)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     optimist (3.0.1)
     parallel (1.19.2)
     parser (2.7.1.4)
@@ -70,6 +71,7 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
+    racc (1.5.2)
     rack (2.2.3)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -150,4 +152,4 @@ DEPENDENCIES
   warnings_logger
 
 BUNDLED WITH
-   2.1.4
+   2.2.17

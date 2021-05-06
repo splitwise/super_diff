@@ -39,13 +39,7 @@ appraisals = {
     gem "rspec", version
 
     if with_rails
-      # gem "rspec-core", version
-      # gem "rspec-expectations", version
-      # gem "rspec-mocks", version
-      # gem "rspec-support", version
       gem "rspec-rails"
-    # else
-      # gem "rspec", version
     end
   },
   rspec_gte_3_10: proc { |with_rails|
@@ -54,23 +48,19 @@ appraisals = {
     gem "rspec", *version
 
     if with_rails
-      # gem "rspec-core", *version
-      # gem "rspec-expectations", *version
-      # gem "rspec-mocks", *version
-      # gem "rspec-support", *version
       gem "rspec-rails"
-    # else
-      # gem "rspec", *version
     end
   },
 }
 
-rails_appraisals = [
-  :rails_5_0,
-  :rails_5_1,
-  :rails_5_2,
-  :no_rails,
-]
+rails_appraisals = [:no_rails]
+
+if Gem::Requirement.new("< 3").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  rails_appraisals << :rails_5_0
+  rails_appraisals << :rails_5_1
+  rails_appraisals << :rails_5_2
+end
+
 if Gem::Requirement.new(">= 2.5.0").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   rails_appraisals << :rails_6_0
 end
