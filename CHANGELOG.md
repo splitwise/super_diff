@@ -1,5 +1,20 @@
 # Changelog
 
+## Unreleased
+
+### Features
+
+* Add support for `hash_including`, `array_including`, `kind_of`, and
+  `instance_of`, which come from `rspec-mocks`. ([#128])
+
+### Fixes
+
+* Fix comparison involving hashes to prevent a case where the same key would
+  show up twice in the diff (one as a "deleted" version and another as an
+  "unchanged" version). ([#129])
+
+[#129]: https://github.com/mcmire/super_diff/pull/129
+
 ## 0.6.2 - 2021-04-16
 
 ### Improvements
@@ -14,10 +29,10 @@
 
 ## 0.6.1 - 2021-02-10
 
-### Bug fixes
+### Fixes
 
-* Fix compatibility issues with newer versions of `rspec-rails`
-  which prevented the gem from being loaded. ([#121])
+* Fix compatibility issues with newer versions of `rspec-rails` which prevented
+  the gem from being loaded. ([#121])
 
 [#121]: https://github.com/mcmire/super_diff/pull/121
 
@@ -25,8 +40,8 @@
 
 ### Features
 
-* You can now customize the colors that SuperDiff uses
-  by adding this to your test setup:
+* You can now customize the colors that SuperDiff uses by adding this to your
+  test setup:
 
   ``` ruby
   SuperDiff.configure do |config|
@@ -45,12 +60,12 @@
 [042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
 [#118]: https://github.com/mcmire/super_diff/pull/118
 
-### Bug fixes
+### Fixes
 
 * Resolve compatibility issues with RSpec 3.10. ([#114])
 * Fix diffs involving `contain_exactly` and `a_collection_containing_exactly`
-  so that if there are extra items in the actual value,
-  they are shown with `+`s. ([#106])
+  so that if there are extra items in the actual value, they are shown with
+  `+`s. ([#106])
 
 [#114]: https://github.com/mcmire/super_diff/pull/114
 [#106]: https://github.com/mcmire/super_diff/pull/106
@@ -62,7 +77,7 @@
 
 ## 0.5.3 - 2020-12-21
 
-### Bug fixes
+### Fixes
 
 * Fix `match_array` so that it works when given a string. ([#110])
 
@@ -77,7 +92,7 @@
 
 ## 0.5.2 - 2020-09-04
 
-### Bug fixes
+### Fixes
 
 * Add missing standard library requires. ([#98])
 
@@ -89,7 +104,7 @@
 
 ## 0.5.1 - 2020-06-19
 
-### Bug fixes
+### Fixes
 
 * Add dependency on `attr_extras` back as it was mistakenly removed in the
   previous release. ([#92])
@@ -139,7 +154,7 @@
 
 [#74]: https://github.com/mcmire/super_diff/pull/74
 
-### Bug fixes
+### Fixes
 
 * Get rid of warnings produced on Ruby 2.7.1. ([#71])
 * Fix diff produced by (incorrect) usage of `have_attributes` with a hash as the
@@ -176,7 +191,7 @@
 
 ## 0.4.2 - 2020-02-11
 
-### Bug fixes
+### Fixes
 
 * Fix `raise_error` when used with a regex. ([#72])
 
@@ -184,11 +199,10 @@
 
 ## 0.4.1 - 2020-01-30
 
-### Bug fixes
+### Fixes
 
 * Fix multiple exception failures so that they work again. ([#66])
 
-[v0.4.1]: https://github.com/mcmire/super_diff/tree/v0.4.1
 [#66]: https://github.com/mcmire/super_diff/pull/66
 
 ## 0.4.0 - 2020-01-16
