@@ -6,15 +6,55 @@ module SuperDiff
           SuperDiff.time_like?(value)
         end
 
-        TIME_FORMAT = "%Y-%m-%d %H:%M:%S.%3N %Z %:z".freeze
-
         protected
 
         def inspection_tree
           InspectionTree.new do
             add_text do |time|
-              "#{time.strftime(TIME_FORMAT)} (#{time.class})"
+              "#<#{time.class} "
             end
+
+            when_singleline do
+              add_text do |time|
+                time.strftime("%Y-%m-%d %H:%M:%S") +
+                  (time.subsec == 0 ? "" : "+#{time.subsec.inspect}") +
+                  " " + time.strftime("%:z") +
+                  (time.zone ? " (#{time.zone})" : "")
+              end
+            end
+
+            when_multiline do
+              add_text "{"
+
+              nested do |time|
+                add_break " "
+
+                insert_separated_list(
+                  [
+                    :year,
+                    :month,
+                    :day,
+                    :hour,
+                    :min,
+                    :sec,
+                    :subsec,
+                    :zone,
+                    :utc_offset
+                  ],
+                  separator: ","
+                ) do |name|
+                  add_text name.to_s
+                  add_text ": "
+                  add_inspection_of time.public_send(name)
+                end
+              end
+
+              add_break
+
+              add_text "}"
+            end
+
+            add_text ">"
           end
         end
       end

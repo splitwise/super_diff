@@ -411,7 +411,17 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher", type: :integ
               expected_line %|-   data: #<a hash including (|
               expected_line %|-     active: true|
               expected_line %|-   )>,|
-              expected_line %|-   created_at: #<a value within 1 of 2020-04-09 00:00:00.000 UTC +00:00 (Time)>|
+              expected_line %|-   created_at: #<a value within 1 of #<Time {|
+              expected_line %|-     year: 2020,|
+              expected_line %|-     month: 4,|
+              expected_line %|-     day: 9,|
+              expected_line %|-     hour: 0,|
+              expected_line %|-     min: 0,|
+              expected_line %|-     sec: 0,|
+              expected_line %|-     subsec: 0,|
+              expected_line %|-     zone: "UTC",|
+              expected_line %|-     utc_offset: 0|
+              expected_line %|-   }>>|
               plain_line    %|  }|
             },
           )

@@ -188,10 +188,12 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           expectation: proc {
             line do
               plain    %|Expected |
-              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
-              plain    %| to eq |
-              expected %|2011-12-13 14:15:16.500 UTC +00:00 (Time)|
-              plain    %|.|
+              actual   %|#<Time 2011-12-13 14:15:16 +00:00 (UTC)>|
+            end
+
+            line do
+              plain    %|   to eq |
+              expected %|#<Time 2011-12-13 14:15:16+(1/2) +00:00 (UTC)>|
             end
           },
           diff: proc {
@@ -202,10 +204,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             plain_line    "    hour: 14,"
             plain_line    "    min: 15,"
             plain_line    "    sec: 16,"
-            expected_line "-   nsec: 500000000,"
-            actual_line   "+   nsec: 0,"
+            expected_line "-   subsec: (1/2),"
+            actual_line   "+   subsec: 0,"
             plain_line    "    zone: \"UTC\","
-            plain_line    "    gmt_offset: 0"
+            plain_line    "    utc_offset: 0"
             plain_line    "  }>"
           },
         )
@@ -234,12 +236,12 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           expectation: proc {
             line do
               plain    %| Expected |
-              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              actual   %|#<Time 2011-12-13 14:15:16 +00:00 (UTC)>|
             end
 
             line do
               plain    %|not to eq |
-              expected %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              expected %|#<Time 2011-12-13 14:15:16 +00:00 (UTC)>|
             end
           },
         )
@@ -270,31 +272,41 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
           expectation: proc {
             line do
               plain    %|Expected |
-              actual   %|2011-12-13 14:15:16.000 UTC +00:00 (Time)|
+              actual   %|#<Time 2011-12-13 14:15:16 +00:00 (UTC)>|
             end
 
             line do
               plain    %|   to eq |
-              expected %|2011-12-13 16:15:16.000 CET +01:00 (ActiveSupport::TimeWithZone)|
+              expected %|#<ActiveSupport::TimeWithZone 2011-12-13 16:15:16 +01:00 (CET)>|
             end
           },
           diff: proc {
-            plain_line    "  #<ActiveSupport::TimeWithZone {"
-            plain_line    "    year: 2011,"
-            plain_line    "    month: 12,"
-            plain_line    "    day: 13,"
-            expected_line "-   hour: 16,"
-            actual_line   "+   hour: 14,"
-            plain_line    "    min: 15,"
-            plain_line    "    sec: 16,"
-            plain_line    "    nsec: 0,"
-            expected_line "-   zone: \"CET\","
-            actual_line   "+   zone: \"UTC\","
-            expected_line "-   gmt_offset: 3600,"
-            actual_line   "+   gmt_offset: 0,"
-            expected_line "-   utc: 2011-12-13 15:15:16.000 UTC +00:00 (Time)"
-            actual_line   "+   utc: 2011-12-13 14:15:16.000 UTC +00:00 (Time)"
-            plain_line    "  }>"
+            plain_line    %|  #<ActiveSupport::TimeWithZone {|
+            plain_line    %|    year: 2011,|
+            plain_line    %|    month: 12,|
+            plain_line    %|    day: 13,|
+            expected_line %|-   hour: 16,|
+            actual_line   %|+   hour: 14,|
+            plain_line    %|    min: 15,|
+            plain_line    %|    sec: 16,|
+            plain_line    %|    subsec: 0,|
+            expected_line %|-   zone: \"CET\",|
+            actual_line   %|+   zone: \"UTC\",|
+            expected_line %|-   utc_offset: 3600,|
+            actual_line   %|+   utc_offset: 0,|
+            plain_line    %|    utc: #<Time {|
+            plain_line    %|      year: 2011,|
+            plain_line    %|      month: 12,|
+            plain_line    %|      day: 13,|
+            expected_line %|-     hour: 15,|
+            actual_line   %|+     hour: 14,|
+            plain_line    %|      min: 15,|
+            plain_line    %|      sec: 16,|
+            plain_line    %|      subsec: 0,|
+            plain_line    %|      zone: "UTC",|
+            plain_line    %|      utc_offset: 0|
+            plain_line    %|    }>|
+            plain_line    %|  }>|
           },
         )
 

@@ -1,5 +1,5 @@
 module SuperDiff
   module OperationTreeBuilders
-    DEFAULTS = [Array, Hash, CustomObject].freeze
+    DEFAULTS = [Array, Hash, TimeLike, CustomObject].freeze
   end
 end

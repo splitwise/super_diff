@@ -15,9 +15,9 @@ module SuperDiff
           "hour",
           "min",
           "sec",
-          "nsec",
+          "subsec",
           "zone",
-          "gmt_offset",
+          "utc_offset",
         ]
 
         # If timezones are different, also show a normalized timestamp at the
