@@ -7,6 +7,13 @@
 * Add support for `hash_including`, `array_including`, `kind_of`, and
   `instance_of`, which come from `rspec-mocks`. ([#128])
 
+* Update how Time-like values are displayed in diffs to include subseconds
+  so that it is easy to tell the difference between two times that are extremely
+  close to each other. ([#130])
+
+[#128]: https://github.com/mcmire/super_diff/pull/128
+[#130]: https://github.com/mcmire/super_diff/pull/130
+
 ### Fixes
 
 * Fix comparison involving hashes to prevent a case where the same key would
