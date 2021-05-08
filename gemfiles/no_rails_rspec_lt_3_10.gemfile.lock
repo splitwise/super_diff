@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    super_diff (0.6.2)
+    super_diff (0.7.0)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
@@ -82,4 +82,4 @@ DEPENDENCIES
   warnings_logger
 
 BUNDLED WITH
-   2.2.16
+   2.2.17

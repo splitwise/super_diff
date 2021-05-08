@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    super_diff (0.6.2)
+    super_diff (0.7.0)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
@@ -43,6 +43,7 @@ GEM
     builder (3.2.4)
     byebug (11.1.3)
     childprocess (4.0.0)
+    climate_control (1.0.0)
     coderay (1.1.3)
     concurrent-ruby (1.1.7)
     crass (1.0.6)
@@ -139,6 +140,7 @@ DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
   appraisal
   childprocess
+  climate_control
   jdbc-sqlite3
   pry-byebug
   pry-nav
