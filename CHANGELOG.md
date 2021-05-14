@@ -1,8 +1,8 @@
 # Changelog
 
-## Unreleased
+## 0.8.0 - 2021-05-14
 
-### Breaking changes
+### BREAKING CHANGES
 
 * Diff formatters are now gone in favor of operation tree flatteners. If you
   have a custom diff formatter, you will want to inherit from
@@ -10,14 +10,15 @@
   Additionally, the `add_extra_diff_formatter_class` configuration option has
   disappeared; instead, operation tree classes are expected to have an
   `operation_tree_flattener_class` method, which should return your custom
-  operation tree flattener class.
+  operation tree flattener class. ([#91])
 
 ### Features
 
 * Add the ability to compress long diffs by eliding sections of unchanged data
   (data which is present in both "expected" and "actual" values). This
   functionality is not enabled by default; rather, you will need to activate it.
-  At a minimum, you will want to add this to your test helper:
+  At a minimum, you will want to add this to your spec helper (or a support file
+  if you so desire):
 
   ``` ruby
   SuperDiff.configure do |config|
@@ -38,17 +39,22 @@
   Here, the gem will try to keep at least 10 unchanged lines in between changed
   lines.
 
+  ([#91])
+
 ### Features
 
 * Update inspection of Doubles to include stubbed methods and their values.
+  ([#91])
 
 ### Improvements
 
 * Change how objects are inspected on a single line so that instance variables
-  are always sorted.
+  are always sorted. ([#91])
 * Make a tweak to how hashes are presented in diffs and inspections: a hash that
   has a mixture of symbols and strings will be presented as though all keys are
-  strings (i.e. hashrocket syntax).
+  strings (i.e. hashrocket syntax). ([#91])
+
+[#91]: https://github.com/mcmire/super_diff/pull/91
 
 ## 0.7.0 - 2021-05-07
 
@@ -170,7 +176,7 @@
 
 ## 0.5.0 - 2020-06-18
 
-### Breaking changes
+### BREAKING CHANGES
 
 * Do some reorganizing and rename some concepts in the code: "operational
   sequencer" changes to "operation tree builder" and "operation sequence"
