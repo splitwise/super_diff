@@ -418,4 +418,93 @@ RSpec.describe "Integration with RSpec's #match_array matcher", type: :integrati
       end
     end
   end
+
+  context "when the input value is a rspec-mocks argument matcher" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = hash_including("message" => "lol")
+          actual   = [{ "message" => "foo" }]
+          expect(actual).to match_array(expected)
+        TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match_array(expected)|,
+          expectation: proc {
+            line do
+              plain    %|Expected |
+              actual   %|[{ "message" => "foo" }]|
+              plain    %| to match array with |
+              expected %|#<a hash including ("message" => "lol")>|
+              plain    %|.|
+            end
+          },
+          diff: proc {
+            plain_line    %|  [|
+            actual_line   %|+   {|
+            actual_line   %|+     "message" => "foo"|
+            actual_line   %|+   },|
+            expected_line %|-   #<a hash including (|
+            expected_line %|-     "message" => "lol"|
+            expected_line %|-   )>,|
+            plain_line    %|  ]|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
+
+  context "when the input value is a hash" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          expected = { "message" => "foo" }
+          actual   = [{ "message" => "foo" }]
+          expect(actual).to match_array(expected)
+        TEST
+        program = make_plain_test_program(
+          snippet,
+          color_enabled: color_enabled,
+        )
+
+        expected_output = build_expected_output(
+          color_enabled: color_enabled,
+          snippet: %|expect(actual).to match_array(expected)|,
+          expectation: proc {
+            line do
+              plain    %|Expected |
+              actual   %|[{ "message" => "foo" }]|
+              plain    %| to match array with |
+              expected %|["message", "foo"]|
+              plain    %|.|
+            end
+          },
+          diff: proc {
+            plain_line    %|  [|
+            actual_line   %|+   {|
+            actual_line   %|+     "message" => "foo"|
+            actual_line   %|+   },|
+            expected_line %|-   [|
+            expected_line %|-     "message",|
+            expected_line %|-     "foo"|
+            expected_line %|-   ],|
+            plain_line    %|  ]|
+          },
+        )
+
+        expect(program).
+          to produce_output_when_run(expected_output).
+          in_color(color_enabled)
+      end
+    end
+  end
 end

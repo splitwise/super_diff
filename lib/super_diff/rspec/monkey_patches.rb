@@ -776,7 +776,8 @@ module RSpec
       end
 
       def match_array(items)
-        BuiltIn::MatchArray.new(items.is_a?(String) ? [items] : items)
+        items = *items
+        BuiltIn::MatchArray.new(items)
       end
     end
   end
