@@ -32,6 +32,13 @@ appraisals = {
     gem "railties", "~> 6.0"
     gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
   },
+  rails_6_1: proc {
+    instance_eval(&rails_dependencies)
+
+    gem "activerecord", "~> 6.1.0"
+    gem "railties", "~> 6.1.0"
+    gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
+  },
   no_rails: proc {},
   rspec_lt_3_10: proc { |with_rails|
     version = "< 3.10"
@@ -63,6 +70,7 @@ end
 
 if Gem::Requirement.new(">= 2.5.0").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   rails_appraisals << :rails_6_0
+  rails_appraisals << :rails_6_1
 end
 
 rspec_appraisals = [
@@ -77,6 +85,8 @@ rails_appraisals.each do |rails_appraisal|
         instance_eval(&appraisals.fetch(rails_appraisal))
         instance_exec(false, &appraisals.fetch(rspec_appraisal))
       end
+    elsif rails_appraisal == :rails_6_1 && rspec_appraisal == :rspec_lt_3_10
+      next
     else
       appraise "#{rails_appraisal}_#{rspec_appraisal}" do
         instance_eval(&appraisals.fetch(rails_appraisal))
