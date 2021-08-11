@@ -184,6 +184,14 @@ end
 See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
 for the list of available colors.
 
+You can also completely disable colorized output.
+
+``` ruby
+SuperDiff.configure do |config|
+  config.color_enabled = false
+end
+```
+
 ### Diffing custom objects
 
 If you are comparing two data structures

@@ -10,6 +10,7 @@ module SuperDiff
     attr_accessor(
       :actual_color,
       :border_color,
+      :color_enabled,
       :diff_elision_enabled,
       :diff_elision_maximum,
       :elision_marker_color,
