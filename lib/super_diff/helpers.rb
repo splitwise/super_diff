@@ -52,9 +52,9 @@ module SuperDiff
 
       def object_address_for(object)
         # Sources: <https://bugs.ruby-lang.org/issues/15408> and <https://bugs.ruby-lang.org/issues/15626#Object-ID>
-        address = JSON.parse(ObjectSpace.dump(object)).try(:[], "address")
-        if address
-          "0x%016x" % Integer(address, 16)
+        json = JSON.parse(ObjectSpace.dump(object))
+        if json.is_a?(Hash)
+          "0x%016x" % Integer(json["address"], 16)
         else
           ""
         end
