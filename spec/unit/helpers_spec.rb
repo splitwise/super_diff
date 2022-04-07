@@ -39,6 +39,20 @@ RSpec.describe SuperDiff::Helpers do
         end
       end
     end
+
+    describe "object_address_for" do
+      if SuperDiff::Helpers.ruby_version_matches?(">= 2.7.0")
+        it "returns an empty string for Floats" do
+          expect(helper.object_address_for(1.0)).to eq("")
+        end
+
+        it "returns an object address for Objects" do
+          object = Object.new
+          address = JSON.parse(ObjectSpace.dump(object))["address"]
+          expect(helper.object_address_for(object)).to eq("0x%016x" % Integer(address, 16))
+        end
+      end
+    end
   end
 
   describe 'as class methods' do
