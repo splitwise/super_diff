@@ -12,11 +12,11 @@ gem "rubocop"
 gem "warnings_logger"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
+gem "net-ftp"
 gem "activerecord", "~> 5.2.0"
 gem "railties", "~> 5.2.0"
 gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
 gem "rspec", ">= 3.10", "< 4"
 gem "rspec-rails"
-gem "net-ftp"
 
 gemspec path: "../"
