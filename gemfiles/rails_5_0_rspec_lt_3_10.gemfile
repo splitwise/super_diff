@@ -17,5 +17,6 @@ gem "railties", "~> 5.0.0"
 gem "sqlite3", "~> 1.3.6", platform: [:ruby, :mswin, :mingw]
 gem "rspec", "< 3.10"
 gem "rspec-rails"
+gem "net-ftp"
 
 gemspec path: "../"
