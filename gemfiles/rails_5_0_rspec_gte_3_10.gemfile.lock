@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/thoughtbot/appraisal
+  revision: 2f5be65b8e127bd602fd149f395f2f8fa50616a8
+  ref: 2f5be65b8e127bd602fd149f395f2f8fa50616a8
+  specs:
+    appraisal (2.4.1)
+      bundler
+      rake
+      thor (>= 0.14.0)
+
 PATH
   remote: ..
   specs:
@@ -33,10 +43,6 @@ GEM
       i18n (>= 0.7, < 2)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
-    appraisal (2.3.0)
-      bundler
-      rake
-      thor (>= 0.14.0)
     arel (7.1.4)
     ast (2.4.1)
     attr_extras (6.2.4)
@@ -147,7 +153,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord (~> 5.0.0)
   activerecord-jdbcsqlite3-adapter
-  appraisal
+  appraisal!
   childprocess
   climate_control
   jdbc-sqlite3
