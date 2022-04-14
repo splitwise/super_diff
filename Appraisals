@@ -1,6 +1,9 @@
 rails_dependencies = proc do
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
   gem "jdbc-sqlite3", platform: :jruby
+  install_if '-> { Gem::Requirement.new(">= 2.6.0").satisfied_by?(Gem::Version.new(RUBY_VERSION)) }' do
+    gem "net-ftp"
+  end
 end
 
 appraisals = {
