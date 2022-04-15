@@ -26,6 +26,7 @@ module SuperDiff
   autoload :OperationTreeBuilders, "super_diff/operation_tree_builders"
   autoload :Operations, "super_diff/operations"
   autoload :RecursionGuard, "super_diff/recursion_guard"
+  autoload :VERSION, "super_diff/version"
 
   def self.configure
     yield configuration
