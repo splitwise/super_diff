@@ -11,7 +11,7 @@ GIT
 PATH
   remote: ..
   specs:
-    super_diff (0.8.0)
+    super_diff (0.9.0)
       attr_extras (>= 6.2.4)
       diff-lcs
       patience_diff
@@ -20,7 +20,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.1)
-    attr_extras (6.2.4)
+    attr_extras (6.2.5)
     byebug (11.1.3)
     childprocess (4.0.0)
     climate_control (1.0.0)
