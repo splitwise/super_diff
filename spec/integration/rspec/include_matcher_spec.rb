@@ -258,6 +258,46 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
             in_color(color_enabled)
         end
       end
+
+      it "produces the correct failure message when fuzzy matching" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = { number: a_kind_of(Numeric), city: /burb/i, state: "CA" }
+            actual   = { number: 42, city: "Burbank", zip: "90210" }
+            expect(actual).to include(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).to include(expected)|,
+            expectation: proc {
+              line do
+                plain    %|Expected |
+                actual   %|{ number: 42, city: "Burbank", zip: "90210" }|
+                plain    %| to include |
+                expected %|(state: "CA")|
+                plain    %|.|
+              end
+            },
+            diff: proc {
+              plain_line    %|  {|
+              plain_line    %|    number: 42,|
+              plain_line    %|    city: "Burbank",|
+              plain_line    %|    zip: "90210"|
+              expected_line %|-   state: "CA"|
+              plain_line    %|  }|
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
     end
 
     context "that is large" do
@@ -337,6 +377,61 @@ RSpec.describe "Integration with RSpec's #include matcher", type: :integration d
                 plain    %|not to include |
                 expected %|(city: "Hill Valley", state: "CA")|
               end
+            },
+          )
+
+          expect(program).
+            to produce_output_when_run(expected_output).
+            in_color(color_enabled)
+        end
+      end
+
+      it "produces the correct failure message when fuzzy matching" do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expected = {
+              number: a_kind_of(Numeric),
+              street: "Yoshie Circles",
+              city: /burb/i,
+              zip: "90382"
+            }
+            actual   = {
+              number: 42,
+              street: "Yoshie Circles",
+              city: "Burbank",
+              state: "CA",
+              zip: "90210"
+            }
+            expect(actual).to include(expected)
+          TEST
+          program = make_plain_test_program(
+            snippet,
+            color_enabled: color_enabled,
+          )
+
+          expected_output = build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(actual).to include(expected)|,
+            expectation: proc {
+              line do
+                plain    %|  Expected |
+                actual   %|{ number: 42, street: "Yoshie Circles", city: "Burbank", state: "CA", zip: "90210" }|
+              end
+
+              line do
+                plain    %|to include |
+                expected %|(zip: "90382")|
+              end
+            },
+            diff: proc {
+              plain_line    %|  {|
+              plain_line    %|    number: 42,|
+              plain_line    %|    street: "Yoshie Circles",|
+              plain_line    %|    city: "Burbank",|
+              plain_line    %|    state: "CA",|
+              expected_line %|-   zip: "90382"|
+              actual_line   %|+   zip: "90210"|
+              plain_line    %|  }|
             },
           )
 
