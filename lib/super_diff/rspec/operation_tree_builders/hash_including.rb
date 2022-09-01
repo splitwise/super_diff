@@ -2,6 +2,8 @@ module SuperDiff
   module RSpec
     module OperationTreeBuilders
       class HashIncluding < SuperDiff::OperationTreeBuilders::Hash
+        include ::RSpec::Matchers::Composable
+
         def self.applies_to?(expected, actual)
           (
             SuperDiff::RSpec.a_hash_including_something?(expected) ||
@@ -23,7 +25,7 @@ module SuperDiff
         def should_add_noop_operation?(key)
           !expected.include?(key) || (
             actual.include?(key) &&
-            expected[key] == actual[key]
+            values_match?(expected[key], actual[key])
           )
         end
       end
