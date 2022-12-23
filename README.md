@@ -184,6 +184,41 @@ end
 See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
 for the list of available colors.
 
+### Enable or disable the key
+
+You can disable the key by changing the following config (default: true)
+
+``` ruby
+SuperDiff.configure do |config|
+  config.key_enabled = false
+end
+```
+
+### Elision
+
+When looking at a large diff for which many of the lines do not change,
+it can be difficult to locate the lines which do. Text-oriented
+diffs such as those you get from a conventional version control system
+solve this problem by removing those unchanged lines from the diff
+entirely. The same can be done in SuperDiff.
+
+``` ruby
+SuperDiff.configure do |config|
+  config.diff_elision_enabled = false
+  config.diff_elision_maximum = 3
+end
+```
+
+* `diff_elision_enabled` — The elision logic is disabled by default so
+  as not to surprise people, so setting this to `true` will turn it on.
+* `diff_elision_maximum` — This number controls what happens to
+   unchanged lines (i.e. lines that are neither "insert" lines nor
+   "delete" lines) that are in between changed lines. If a section of
+   unchanged lines is beyond this number, the gem will elide (a fancy
+   word for remove) the data structures within that section as much as
+   possible until the limit is reached or it cannot go further. Elided
+   lines are replaced with a `# ...` marker.
+
 ### Diffing custom objects
 
 If you are comparing two data structures
