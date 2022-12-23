@@ -6,31 +6,11 @@ shared_examples_for "a toggleable key" do
           expected = [
             "Afghanistan",
             "Aland Islands",
-            "Albania",
-            "Algeria",
-            "American Samoa",
-            "Andorra",
-            "Angola",
-            "Antarctica",
-            "Antigua And Barbuda",
-            "Argentina",
-            "Armenia",
-            "Aruba",
-            "Australia"
+            "Albania"
           ]
           actual = [
             "Afghanistan",
             "Aland Islands",
-            "Albania",
-            "Algeria",
-            "American Samoa",
-            "Andorra",
-            "Anguilla",
-            "Antarctica",
-            "Antigua And Barbuda",
-            "Argentina",
-            "Armenia",
-            "Aruba",
             "Australia"
           ]
           expect(actual).to #{matcher}(expected)
@@ -50,34 +30,20 @@ shared_examples_for "a toggleable key" do
           expectation: proc {
             line do
               plain "Expected "
-              # rubocop:disable Layout/LineLength
-              actual %|["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Anguilla", "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia"]|
-              # rubocop:enable Layout/LineLength
+              actual %|["Afghanistan", "Aland Islands", "Australia"]|
             end
 
             line do
               plain "   to eq "
-              # rubocop:disable Layout/LineLength
-              expected %|["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia"]|
-              # rubocop:enable Layout/LineLength
+              expected %|["Afghanistan", "Aland Islands", "Albania"]|
             end
           },
           diff: proc {
             plain_line          %|  [|
             plain_line          %|    "Afghanistan",|
             plain_line          %|    "Aland Islands",|
-            plain_line          %|    "Albania",|
-            plain_line          %|    "Algeria",|
-            plain_line          %|    "American Samoa",|
-            plain_line          %|    "Andorra",|
-            expected_line       %|-   "Angola",|
-            actual_line         %|+   "Anguilla",|
-            plain_line          %|    "Antarctica",|
-            plain_line          %|    "Antigua And Barbuda",|
-            plain_line          %|    "Argentina",|
-            plain_line          %|    "Armenia",|
-            plain_line          %|    "Aruba",|
-            plain_line          %|    "Australia"|
+            expected_line       %|-   "Albania"|
+            actual_line         %|+   "Australia"|
             plain_line          %|  ]|
           },
           key_enabled: true,
@@ -97,31 +63,11 @@ shared_examples_for "a toggleable key" do
           expected = [
             "Afghanistan",
             "Aland Islands",
-            "Albania",
-            "Algeria",
-            "American Samoa",
-            "Andorra",
-            "Angola",
-            "Antarctica",
-            "Antigua And Barbuda",
-            "Argentina",
-            "Armenia",
-            "Aruba",
-            "Australia"
+            "Albania"
           ]
           actual = [
             "Afghanistan",
             "Aland Islands",
-            "Albania",
-            "Algeria",
-            "American Samoa",
-            "Andorra",
-            "Anguilla",
-            "Antarctica",
-            "Antigua And Barbuda",
-            "Argentina",
-            "Armenia",
-            "Aruba",
             "Australia"
           ]
           expect(actual).to #{matcher}(expected)
@@ -142,34 +88,20 @@ shared_examples_for "a toggleable key" do
           expectation: proc {
             line do
               plain "Expected "
-              # rubocop:disable Layout/LineLength
-              actual %|["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Anguilla", "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia"]|
-              # rubocop:enable Layout/LineLength
+              actual %|["Afghanistan", "Aland Islands", "Australia"]|
             end
 
             line do
               plain "   to eq "
-              # rubocop:disable Layout/LineLength
-              expected %|["Afghanistan", "Aland Islands", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia"]|
-              # rubocop:enable Layout/LineLength
+              expected %|["Afghanistan", "Aland Islands", "Albania"]|
             end
           },
           diff: proc {
             plain_line          %|  [|
             plain_line          %|    "Afghanistan",|
             plain_line          %|    "Aland Islands",|
-            plain_line          %|    "Albania",|
-            plain_line          %|    "Algeria",|
-            plain_line          %|    "American Samoa",|
-            plain_line          %|    "Andorra",|
-            expected_line       %|-   "Angola",|
-            actual_line         %|+   "Anguilla",|
-            plain_line          %|    "Antarctica",|
-            plain_line          %|    "Antigua And Barbuda",|
-            plain_line          %|    "Argentina",|
-            plain_line          %|    "Armenia",|
-            plain_line          %|    "Aruba",|
-            plain_line          %|    "Australia"|
+            expected_line       %|-   "Albania"|
+            actual_line         %|+   "Australia"|
             plain_line          %|  ]|
           },
         )
