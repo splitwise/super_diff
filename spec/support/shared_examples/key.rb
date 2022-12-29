@@ -1,4 +1,4 @@
-shared_examples_for "a toggleable key" do
+shared_examples_for "a matcher that supports a toggleable key" do
   context "if key_enabled is set to true" do
     it "produces the key" do
       as_both_colored_and_uncolored do |color_enabled|

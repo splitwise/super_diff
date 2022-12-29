@@ -184,9 +184,9 @@ end
 See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
 for the list of available colors.
 
-### Enable or disable the key
+### Disabling the key
 
-You can disable the key by changing the following config (default: true)
+You can disable the key by changing the following config (default: true):
 
 ``` ruby
 SuperDiff.configure do |config|
@@ -194,7 +194,7 @@ SuperDiff.configure do |config|
 end
 ```
 
-### Elision
+### Hiding unimportant lines
 
 When looking at a large diff for which many of the lines do not change,
 it can be difficult to locate the lines which do. Text-oriented

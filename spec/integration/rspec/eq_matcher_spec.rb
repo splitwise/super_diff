@@ -954,7 +954,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     let(:matcher) { :eq }
   end
 
-  it_behaves_like "a toggleable key" do
+  it_behaves_like "a matcher that supports a toggleable key" do
     let(:matcher) { :eq }
   end
 end
