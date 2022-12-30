@@ -72,7 +72,7 @@ module RSpec
 
           # Patch so it does not apply a color if code_or_symbol is nil
           def wrap(text, code_or_symbol)
-            if RSpec.configuration.color_enabled? && code = console_code_for(code_or_symbol)
+            if SuperDiff.configuration.color_enabled? && code = console_code_for(code_or_symbol)
               "\e[#{code}m#{text}\e[0m"
             else
               text
