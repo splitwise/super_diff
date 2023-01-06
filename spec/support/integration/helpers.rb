@@ -38,6 +38,7 @@ module SuperDiff
       color_enabled:,
       snippet:,
       expectation:,
+      key_enabled: true, 
       newline_before_expectation: false,
       indentation: 7,
       diff: nil
@@ -64,32 +65,34 @@ module SuperDiff
 
             white_line "Diff:"
 
-            newline
+            if key_enabled
+              newline
 
-            line do
-              blue "┌ (Key) ──────────────────────────┐"
-            end
+              line do
+                blue "┌ (Key) ──────────────────────────┐"
+              end
 
-            line do
-              blue "│ "
-              magenta "‹-› in expected, not in actual"
-              blue "  │"
-            end
+              line do
+                blue "│ "
+                magenta "‹-› in expected, not in actual"
+                blue "  │"
+              end
 
-            line do
-              blue "│ "
-              yellow "‹+› in actual, not in expected"
-              blue "  │"
-            end
+              line do
+                blue "│ "
+                yellow "‹+› in actual, not in expected"
+                blue "  │"
+              end
 
-            line do
-              blue "│ "
-              text "‹ › in both expected and actual"
-              blue " │"
-            end
+              line do
+                blue "│ "
+                text "‹ › in both expected and actual"
+                blue " │"
+              end
 
-            line do
-              blue "└─────────────────────────────────┘"
+              line do
+                blue "└─────────────────────────────────┘"
+              end
             end
 
             newline
