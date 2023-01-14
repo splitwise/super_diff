@@ -154,10 +154,6 @@ class TestPlan
       option_parser.parse!
     end
 
-    RSpec.configure do |config|
-      config.color_mode = color_enabled? ? :on : :off
-    end
-
     SuperDiff.configuration.merge!(
       configuration.merge(color_enabled: color_enabled?)
     )
