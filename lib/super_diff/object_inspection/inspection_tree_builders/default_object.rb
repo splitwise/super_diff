@@ -43,7 +43,13 @@ module SuperDiff
                     add_text "#{name}="
                   end
 
-                  add_inspection_of object.instance_variable_get(name)
+                  object_ivar = object.instance_variable_get(name)
+
+                  if object_ivar.is_a?(Hash)
+                    add_inspection_of(**object_ivar)
+                  else
+                    add_inspection_of object_ivar
+                  end
                 end
               end
 

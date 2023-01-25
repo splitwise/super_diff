@@ -27,7 +27,13 @@ module SuperDiff
                     add_text "#{name}: "
                   end
 
-                  add_inspection_of object.read_attribute(name)
+                  read_attribute = object.read_attribute(name)
+
+                  if read_attribute.is_a?(Hash)
+                    add_inspection_of(**object.read_attribute(name))
+                  else
+                    add_inspection_of object.read_attribute(name)
+                  end
                 end
               end
 
