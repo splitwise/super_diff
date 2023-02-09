@@ -34,12 +34,12 @@ GEM
       ast (~> 2.4.1)
     patience_diff (1.2.0)
       optimist (~> 3.0)
-    pry (0.14.1)
+    pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    pry-byebug (3.10.1)
+    pry-byebug (3.9.0)
       byebug (~> 11.0)
-      pry (>= 0.13, < 0.15)
+      pry (~> 0.13.0)
     rainbow (3.1.1)
     rake (13.0.6)
     regexp_parser (2.6.1)
@@ -81,7 +81,7 @@ DEPENDENCIES
   appraisal!
   childprocess
   climate_control
-  pry-byebug
+  pry-byebug (= 3.9.0)
   pry-nav
   rake
   rspec (>= 3.10, < 4)
@@ -90,4 +90,4 @@ DEPENDENCIES
   warnings_logger
 
 BUNDLED WITH
-   2.2.17
+   2.4.1
