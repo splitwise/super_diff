@@ -2,7 +2,7 @@ name: SuperDiff
 on:
   push:
     branches:
-      - master
+      - main
       - ci-*
     paths-ignore:
       - '**.md'
