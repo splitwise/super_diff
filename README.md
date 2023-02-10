@@ -184,6 +184,14 @@ end
 See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
 for the list of available colors.
 
+You can also completely disable colorized output.
+
+``` ruby
+SuperDiff.configure do |config|
+  config.color_enabled = false
+end
+```
+
 ### Disabling the key
 
 You can disable the key by changing the following config (default: true):
