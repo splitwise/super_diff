@@ -2,7 +2,7 @@
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
-[gh-actions-badge]: http://img.shields.io/github/workflow/status/mcmire/super_diff/SuperDiff/master
+[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/mcmire/super_diff/super_diff.yml?branch=master 
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
 [issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
@@ -183,6 +183,14 @@ end
 
 See [eight_bit_color.rb](lib/super_diff/csi/eight_bit_color.rb)
 for the list of available colors.
+
+You can also completely disable colorized output.
+
+``` ruby
+SuperDiff.configure do |config|
+  config.color_enabled = false
+end
+```
 
 ### Disabling the key
 

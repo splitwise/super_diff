@@ -32,16 +32,18 @@ class TestPlan
 
     $LOAD_PATH.unshift(PROJECT_DIRECTORY.join("lib"))
 
-    begin
-      require "pry-byebug"
-    rescue LoadError
-      require "pry-nav"
-    end
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
+      begin
+        require "pry-byebug"
+      rescue LoadError
+        require "pry-nav"
+      end
 
-    # Fix Zeus for 0.13.0+
-    Pry::Pager.class_eval do
-      def best_available
-        Pry::Pager::NullPager.new(pry_instance.output)
+      # Fix Zeus for 0.13.0+
+      Pry::Pager.class_eval do
+        def best_available
+          Pry::Pager::NullPager.new(pry_instance.output)
+        end
       end
     end
 
