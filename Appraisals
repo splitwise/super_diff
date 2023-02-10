@@ -51,7 +51,7 @@ appraisals = {
   },
   no_rails: proc {},
   rspec_lt_3_10: proc { |with_rails|
-    version = "~> 3.9"
+    version = "~> 3.9.0"
 
     gem "rspec", version
 
