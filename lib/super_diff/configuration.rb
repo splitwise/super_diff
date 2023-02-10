@@ -16,6 +16,7 @@ module SuperDiff
       :elision_marker_color,
       :expected_color,
       :header_color,
+      :key_enabled,
     )
 
     def initialize(options = {})
@@ -32,6 +33,7 @@ module SuperDiff
       @extra_operation_tree_builder_classes = [].freeze
       @extra_operation_tree_classes = [].freeze
       @header_color = :white
+      @key_enabled = true
 
       merge!(options)
     end
@@ -53,6 +55,10 @@ module SuperDiff
 
     def diff_elision_enabled?
       @diff_elision_enabled
+    end
+
+    def key_enabled?
+      @key_enabled
     end
 
     def merge!(configuration_or_options)
@@ -132,6 +138,7 @@ module SuperDiff
           extra_operation_tree_builder_classes.dup,
         extra_operation_tree_classes: extra_operation_tree_classes.dup,
         header_color: header_color,
+        key_enabled: key_enabled?,
       }
     end
 

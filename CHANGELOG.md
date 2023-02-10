@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.9.0 - 2022-04-25
+
+### Fixes
+
+* Fix diff produced when comparing two floats (e.g. `expect(value).to eq(1.0)`)
+  so that it does not blow up with a NoMethodError ([#146])
+
+### Features
+
+* Make `SuperDiff::VERSION` accessible without requiring `super_diff/version`
+  ([#147])
+
+[#146]: https://github.com/mcmire/super_diff/pull/146
+[#147]: https://github.com/mcmire/super_diff/pull/147
+
 ## 0.8.0 - 2021-05-14
 
 ### BREAKING CHANGES

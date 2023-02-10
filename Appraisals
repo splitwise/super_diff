@@ -1,6 +1,9 @@
 rails_dependencies = proc do
   gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
   gem "jdbc-sqlite3", platform: :jruby
+  install_if '-> { Gem::Requirement.new(">= 2.6.0").satisfied_by?(Gem::Version.new(RUBY_VERSION)) }' do
+    gem "net-ftp"
+  end
 end
 
 appraisals = {
@@ -28,13 +31,27 @@ appraisals = {
   rails_6_0: proc {
     instance_eval(&rails_dependencies)
 
-    gem "activerecord", "~> 6.0"
-    gem "railties", "~> 6.0"
+    gem "activerecord", "~> 6.0.0"
+    gem "railties", "~> 6.0.0"
+    gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
+  },
+  rails_6_1: proc {
+    instance_eval(&rails_dependencies)
+
+    gem "activerecord", "~> 6.1.0"
+    gem "railties", "~> 6.1.0"
+    gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
+  },
+  rails_7_0: proc {
+    instance_eval(&rails_dependencies)
+
+    gem "activerecord", "~> 7.0.0"
+    gem "railties", "~> 7.0.0"
     gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
   },
   no_rails: proc {},
   rspec_lt_3_10: proc { |with_rails|
-    version = "< 3.10"
+    version = "~> 3.9.0"
 
     gem "rspec", version
 
@@ -63,6 +80,11 @@ end
 
 if Gem::Requirement.new(">= 2.5.0").satisfied_by?(Gem::Version.new(RUBY_VERSION))
   rails_appraisals << :rails_6_0
+  rails_appraisals << :rails_6_1
+end
+
+if Gem::Requirement.new(">= 2.7.0").satisfied_by?(Gem::Version.new(RUBY_VERSION))
+  rails_appraisals << :rails_7_0
 end
 
 rspec_appraisals = [
@@ -77,6 +99,8 @@ rails_appraisals.each do |rails_appraisal|
         instance_eval(&appraisals.fetch(rails_appraisal))
         instance_exec(false, &appraisals.fetch(rspec_appraisal))
       end
+    elsif  %i(rails_6_1 rails_7_0).include?(rails_appraisal) && rspec_appraisal == :rspec_lt_3_10
+      next
     else
       appraise "#{rails_appraisal}_#{rspec_appraisal}" do
         instance_eval(&appraisals.fetch(rails_appraisal))
