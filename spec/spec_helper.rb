@@ -1,13 +1,15 @@
 require "pp"
 
-begin
-  require "pry-byebug"
-rescue LoadError
-end
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
+  begin
+    require "pry-byebug"
+  rescue LoadError
+  end
 
-begin
-  require "pry-nav"
-rescue LoadError
+  begin
+    require "pry-nav"
+  rescue LoadError
+  end
 end
 
 require "climate_control"

@@ -72,7 +72,7 @@ module RSpec
 
           # Patch so it does not apply a color if code_or_symbol is nil
           def wrap(text, code_or_symbol)
-            if RSpec.configuration.color_enabled? && code = console_code_for(code_or_symbol)
+            if SuperDiff.configuration.color_enabled? && code = console_code_for(code_or_symbol)
               "\e[#{code}m#{text}\e[0m"
             else
               text
@@ -286,36 +286,38 @@ module RSpec
         def from(expected)
           return expected if self === expected
 
-          text =
-            colorizer.wrap("Diff:", SuperDiff.configuration.header_color) +
-            "\n\n" +
-            colorizer.wrap(
-              "┌ (Key) ──────────────────────────┐",
-              SuperDiff.configuration.border_color
-            ) +
-            "\n" +
-            colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-            colorizer.wrap(
-              "‹-› in expected, not in actual",
-              SuperDiff.configuration.expected_color
-            ) +
-            colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-            "\n" +
-            colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-            colorizer.wrap(
-              "‹+› in actual, not in expected",
-              SuperDiff.configuration.actual_color
-            ) +
-            colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-            "\n" +
-            colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-            "‹ › in both expected and actual" +
-            colorizer.wrap(" │", SuperDiff.configuration.border_color) +
-            "\n" +
-            colorizer.wrap(
-              "└─────────────────────────────────┘",
-              SuperDiff.configuration.border_color
-            )
+          text = colorizer.wrap("Diff:", SuperDiff.configuration.header_color)
+
+          if SuperDiff.configuration.key_enabled?
+            text += "\n\n" +
+              colorizer.wrap(
+                "┌ (Key) ──────────────────────────┐",
+                SuperDiff.configuration.border_color
+              ) +
+              "\n" +
+              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+              colorizer.wrap(
+                "‹-› in expected, not in actual",
+                SuperDiff.configuration.expected_color
+              ) +
+              colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+              "\n" +
+              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+              colorizer.wrap(
+                "‹+› in actual, not in expected",
+                SuperDiff.configuration.actual_color
+              ) +
+              colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+              "\n" +
+              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+              "‹ › in both expected and actual" +
+              colorizer.wrap(" │", SuperDiff.configuration.border_color) +
+              "\n" +
+              colorizer.wrap(
+                "└─────────────────────────────────┘",
+                SuperDiff.configuration.border_color
+              )
+          end
 
           new([[expected, text]])
         end

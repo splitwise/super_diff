@@ -32,16 +32,18 @@ class TestPlan
 
     $LOAD_PATH.unshift(PROJECT_DIRECTORY.join("lib"))
 
-    begin
-      require "pry-byebug"
-    rescue LoadError
-      require "pry-nav"
-    end
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
+      begin
+        require "pry-byebug"
+      rescue LoadError
+        require "pry-nav"
+      end
 
-    # Fix Zeus for 0.13.0+
-    Pry::Pager.class_eval do
-      def best_available
-        Pry::Pager::NullPager.new(pry_instance.output)
+      # Fix Zeus for 0.13.0+
+      Pry::Pager.class_eval do
+        def best_available
+          Pry::Pager::NullPager.new(pry_instance.output)
+        end
       end
     end
 
@@ -152,10 +154,6 @@ class TestPlan
   def run_test_with_libraries(*libraries)
     if !using_outside_of_zeus?
       option_parser.parse!
-    end
-
-    RSpec.configure do |config|
-      config.color_mode = color_enabled? ? :on : :off
     end
 
     SuperDiff.configuration.merge!(

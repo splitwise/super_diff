@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "appraisal"
+gem "appraisal", ref: "2f5be65b8e127bd602fd149f395f2f8fa50616a8", git: "https://github.com/thoughtbot/appraisal"
 gem "childprocess"
 gem "climate_control"
 gem "pry-byebug", platform: :mri
@@ -10,6 +10,6 @@ gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rubocop"
 gem "warnings_logger"
-gem "rspec", "< 3.10"
+gem "rspec", "~> 3.9.0"
 
 gemspec path: "../"
