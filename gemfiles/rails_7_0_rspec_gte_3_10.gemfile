@@ -10,8 +10,8 @@ gem "rubocop"
 gem "warnings_logger"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
-gem "activerecord", "~> 7.0"
-gem "railties", "~> 7.0"
+gem "activerecord", "~> 7.0.0"
+gem "railties", "~> 7.0.0"
 gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
 gem "rspec", ">= 3.10", "< 4"
 gem "rspec-rails"
