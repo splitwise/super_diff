@@ -48,13 +48,13 @@ module SuperDiff
       attr_reader :layer
 
       def interpret_layer!(layer)
-        if [:foreground, :background].include?(layer)
+        if %i[foreground background].include?(layer)
           layer
         else
           raise ArgumentError.new(
-            "Invalid layer #{layer.inspect}. " +
-            "Layer must be :foreground or :background.",
-          )
+                  "Invalid layer #{layer.inspect}. " +
+                    "Layer must be :foreground or :background."
+                )
         end
       end
     end

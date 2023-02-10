@@ -6,7 +6,7 @@ module SuperDiff
       TimeLike,
       MultilineString,
       CustomObject,
-      DefaultObject,
+      DefaultObject
     ].freeze
   end
 end

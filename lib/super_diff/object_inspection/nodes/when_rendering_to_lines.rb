@@ -18,7 +18,7 @@ module SuperDiff
           render_to_lines_in_subtree(
             object,
             type: type,
-            indentation_level: indentation_level,
+            indentation_level: indentation_level
           )
         end
       end

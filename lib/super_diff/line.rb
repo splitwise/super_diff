@@ -15,8 +15,8 @@ module SuperDiff
         children: [],
         elided: false,
         collection_bookend: nil,
-        complete_bookend: nil,
-      ],
+        complete_bookend: nil
+      ]
     )
     attr_query :add_comma?
     attr_query :elided?
@@ -32,7 +32,7 @@ module SuperDiff
         elided: elided?,
         collection_bookend: collection_bookend,
         complete_bookend: complete_bookend,
-        **overrides,
+        **overrides
       )
     end
 

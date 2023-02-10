@@ -11,19 +11,17 @@ module SuperDiff
           Differing #{Helpers.plural_type_for(actual)}.
 
           #{
-            Helpers.style(
-              :expected,
-              "Expected: " +
-              SuperDiff.inspect_object(expected, as_lines: false),
-            )
-          }
+          Helpers.style(
+            :expected,
+            "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
+          )
+        }
           #{
-            Helpers.style(
-              :actual,
-              "  Actual: " +
-              SuperDiff.inspect_object(actual, as_lines: false),
-            )
-          }
+          Helpers.style(
+            :actual,
+            "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
+          )
+        }
         OUTPUT
       end
     end

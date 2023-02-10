@@ -20,10 +20,8 @@ module SuperDiff
     end
 
     def self.a_hash_including_something?(value)
-      fuzzy_object?(value) &&
-        value.respond_to?(:expecteds) &&
-        value.expecteds.one? &&
-        value.expecteds.first.is_a?(::Hash)
+      fuzzy_object?(value) && value.respond_to?(:expecteds) &&
+        value.expecteds.one? && value.expecteds.first.is_a?(::Hash)
     end
 
     # HINT: `a_hash_including` is an alias of `include` in the rspec-expectations gem.
@@ -33,8 +31,7 @@ module SuperDiff
     end
 
     def self.a_collection_including_something?(value)
-      fuzzy_object?(value) &&
-        value.respond_to?(:expecteds) &&
+      fuzzy_object?(value) && value.respond_to?(:expecteds) &&
         !(value.expecteds.one? && value.expecteds.first.is_a?(::Hash))
     end
 
@@ -84,10 +81,11 @@ module SuperDiff
     end
 
     def self.rspec_version
-      @_rspec_version ||= begin
-        require "rspec/core/version"
-        GemVersion.new(::RSpec::Core::Version::STRING)
-      end
+      @_rspec_version ||=
+        begin
+          require "rspec/core/version"
+          GemVersion.new(::RSpec::Core::Version::STRING)
+        end
     end
 
     SuperDiff.configuration.tap do |config|
@@ -95,14 +93,14 @@ module SuperDiff
         Differs::CollectionContainingExactly,
         Differs::CollectionIncluding,
         Differs::HashIncluding,
-        Differs::ObjectHavingAttributes,
+        Differs::ObjectHavingAttributes
       )
 
       config.add_extra_operation_tree_builder_classes(
         OperationTreeBuilders::CollectionContainingExactly,
         OperationTreeBuilders::CollectionIncluding,
         OperationTreeBuilders::HashIncluding,
-        OperationTreeBuilders::ObjectHavingAttributes,
+        OperationTreeBuilders::ObjectHavingAttributes
       )
 
       config.add_extra_inspection_tree_builder_classes(
@@ -114,7 +112,7 @@ module SuperDiff
         ObjectInspection::InspectionTreeBuilders::KindOf,
         ObjectInspection::InspectionTreeBuilders::ObjectHavingAttributes,
         # ObjectInspection::InspectionTreeBuilders::Primitive,
-        ObjectInspection::InspectionTreeBuilders::ValueWithin,
+        ObjectInspection::InspectionTreeBuilders::ValueWithin
       )
     end
   end

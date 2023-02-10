@@ -15,8 +15,7 @@ module SuperDiff
               as_lines_when_rendering_to_lines do
                 add_text do |object|
                   "#<#{object.class.name}:" +
-                    SuperDiff::Helpers.object_address_for(object) +
-                    ">"
+                    SuperDiff::Helpers.object_address_for(object) + ">"
                 end
               end
             end
@@ -28,29 +27,21 @@ module SuperDiff
                     SuperDiff::Helpers.object_address_for(object)
                 end
 
-                when_rendering_to_lines do
-                  add_text " {"
-                end
+                when_rendering_to_lines { add_text " {" }
               end
 
-              when_rendering_to_string do
-                add_text " "
-              end
+              when_rendering_to_string { add_text " " }
 
               nested do |object|
                 insert_separated_list(object.instance_variables.sort) do |name|
-                  as_prefix_when_rendering_to_lines do
-                    add_text "#{name}="
-                  end
+                  as_prefix_when_rendering_to_lines { add_text "#{name}=" }
 
                   add_inspection_of object.instance_variable_get(name)
                 end
               end
 
               as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                when_rendering_to_lines do
-                  add_text "}"
-                end
+                when_rendering_to_lines { add_text "}" }
 
                 add_text ">"
               end

@@ -5,11 +5,7 @@ module SuperDiff
         protected
 
         def actual_phrase
-          if actual
-            "Expected raised exception"
-          else
-            "Expected"
-          end
+          actual ? "Expected raised exception" : "Expected"
         end
 
         def add_actual_value

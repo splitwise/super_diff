@@ -10,9 +10,7 @@ module SuperDiff
       def initialize
         @tokens = []
 
-        if block_given?
-          yield self
-        end
+        yield self if block_given?
       end
 
       def add_text(*args, &block)
@@ -44,16 +42,15 @@ module SuperDiff
       end
 
       def length_of_first_paragraph
-        Csi.decolorize(to_string_in_singleline_mode).
-          split(/\n\n/).
-          first.
-          length
+        Csi.decolorize(to_string_in_singleline_mode).split(/\n\n/).first.length
       end
 
       def to_s(as_single_line: nil)
-        if length_of_first_paragraph > MAX_LINE_LENGTH || as_single_line == false
+        if length_of_first_paragraph > MAX_LINE_LENGTH ||
+             as_single_line == false
           to_string_in_multiline_mode
-        elsif length_of_first_paragraph <= MAX_LINE_LENGTH || as_single_line == true
+        elsif length_of_first_paragraph <= MAX_LINE_LENGTH ||
+              as_single_line == true
           to_string_in_singleline_mode
         end
       end
@@ -77,14 +74,14 @@ module SuperDiff
       class Base
         def to_string_in_singleline_mode
           raise NotImplementedError.new(
-            "#{self.class} must support #to_string_in_singleline_mode",
-          )
+                  "#{self.class} must support #to_string_in_singleline_mode"
+                )
         end
 
         def to_string_in_multiline_mode
           raise NotImplementedError.new(
-            "#{self.class} must support #to_string_in_multiline_mode",
-          )
+                  "#{self.class} must support #to_string_in_multiline_mode"
+                )
         end
 
         def length
@@ -117,8 +114,8 @@ module SuperDiff
         def evaluate
           if immediate_value && block
             raise ArgumentError.new(
-              "Cannot provide both immediate value and block",
-            )
+                    "Cannot provide both immediate value and block"
+                  )
           end
 
           immediate_value || block.call
@@ -186,7 +183,7 @@ module SuperDiff
           evaluate.map do |value|
             colorizer.wrap(
               ::RSpec::Support::ObjectFormatter.format(value),
-              color,
+              color
             )
           end
         end

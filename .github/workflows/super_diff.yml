@@ -4,16 +4,36 @@ on:
     branches:
       - main
       - ci-*
-    paths-ignore:
-      - '**.md'
   pull_request:
     types:
       - opened
       - synchronize
-    paths-ignore:
-      - '**.md'
+concurrency:
+  group: build-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+      - name: Install Ruby dependencies
+        run: bin/ci/install
+      - name: Install Yarn dependencies
+        run: yarn --immutable
+      - name: Lint
+        run: yarn lint
   test:
+    needs:
+      - lint
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -42,7 +62,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
-        id: set-up-ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}
@@ -50,14 +69,16 @@ jobs:
       - name: Run tests
         run: bin/ci/run-tests
   test_ruby_3:
+    needs:
+      - lint
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         ruby:
-          - '3.0'
-          - '3.1'
-          - '3.2'
+          - "3.0"
+          - "3.1"
+          - "3.2"
         rails_appraisal:
           - rails_6_0
           - rails_6_1
@@ -82,7 +103,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
-        id: set-up-ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.ruby }}

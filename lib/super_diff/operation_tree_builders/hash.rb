@@ -53,18 +53,18 @@ module SuperDiff
                 ev2, av2 = expected[ek], actual[ek]
 
                 if (
-                  (!actual.include?(ek) || ev2 != av2) &&
-                  operations.none? { |operation|
-                    [:delete, :noop].include?(operation.name) &&
-                      operation.key == ek
-                  }
-                )
+                     (!actual.include?(ek) || ev2 != av2) &&
+                       operations.none? do |operation|
+                         %i[delete noop].include?(operation.name) &&
+                           operation.key == ek
+                       end
+                   )
                   operations << Operations::UnaryOperation.new(
                     name: :delete,
                     collection: expected,
                     key: ek,
                     value: ev2,
-                    index: ei2,
+                    index: ei2
                   )
                 end
               end
@@ -75,16 +75,16 @@ module SuperDiff
               collection: actual,
               key: ak,
               value: av,
-              index: ai,
+              index: ai
             )
           else
             # (If we're here, it probably means that the key in 'actual' isn't
             # present in 'expected' or the values don't match.)
 
             if (
-              (operations.empty? || operations.last.name == :noop) &&
-              (ai == 0 || eks.include?(aks[ai - 1]))
-            )
+                 (operations.empty? || operations.last.name == :noop) &&
+                   (ai == 0 || eks.include?(aks[ai - 1]))
+               )
               # If we go from a match in the last iteration to a missing or
               # extra key in this one, or we're at the first key in 'actual' and
               # it's missing or extra, look for deletes in the 'expected' hash
@@ -113,10 +113,10 @@ module SuperDiff
                   # handled in some future iteration of the 'actual' loop.
                   break
                 elsif (
-                  aks[ai + 1 .. -1].any? { |k|
-                    expected.include?(k) && expected[k] != actual[k]
-                  }
-                )
+                      aks[ai + 1..-1].any? do |k|
+                        expected.include?(k) && expected[k] != actual[k]
+                      end
+                    )
                   # While we backtracked a bit to iterate over 'expected', we
                   # now have to look ahead. If we will end up encountering a
                   # insert that matches this delete later, stop and go back to
@@ -130,7 +130,7 @@ module SuperDiff
                     collection: expected,
                     key: ek,
                     value: ev,
-                    index: ei2,
+                    index: ei2
                   )
                 end
 
@@ -144,17 +144,16 @@ module SuperDiff
                     collection: actual,
                     key: ak,
                     value: av,
-                    index: ai,
+                    index: ai
                   )
                 end
               end
             end
 
             if (
-              expected.include?(ak) &&
-              ev != av &&
-              operations.none? { |op| op.name == :delete && op.key == ak }
-            )
+                 expected.include?(ak) && ev != av &&
+                   operations.none? { |op| op.name == :delete && op.key == ak }
+               )
               # If we're here, it means that we didn't encounter any delete
               # operations above for whatever reason and so we need to add a
               # delete to represent the fact that the value for this key has
@@ -164,7 +163,7 @@ module SuperDiff
                 collection: expected,
                 key: ak,
                 value: expected[ak],
-                index: ei,
+                index: ei
               )
             end
 
@@ -178,7 +177,7 @@ module SuperDiff
                 collection: actual,
                 key: ak,
                 value: av,
-                index: ai,
+                index: ai
               )
             end
           end
@@ -200,7 +199,7 @@ module SuperDiff
             collection: expected,
             key: ek,
             value: ev,
-            index: ei,
+            index: ei
           )
         end
 

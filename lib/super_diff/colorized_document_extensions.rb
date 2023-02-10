@@ -1,12 +1,10 @@
 module SuperDiff
   module ColorizedDocumentExtensions
     def self.extended(extendee)
-      extendee.singleton_class.class_eval do
-        alias_method :normal, :text
-      end
+      extendee.singleton_class.class_eval { alias_method :normal, :text }
     end
 
-    [:actual, :border, :elision_marker, :expected, :header].each do |method_name|
+    %i[actual border elision_marker expected header].each do |method_name|
       define_method(method_name) do |*args, **opts, &block|
         colorize(
           *args,

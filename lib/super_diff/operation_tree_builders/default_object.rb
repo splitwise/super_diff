@@ -33,8 +33,9 @@ module SuperDiff
       end
 
       def attribute_names
-        (expected.instance_variables.sort & actual.instance_variables.sort).
-          map { |variable_name| variable_name[1..-1] }
+        (
+          expected.instance_variables.sort & actual.instance_variables.sort
+        ).map { |variable_name| variable_name[1..-1] }
       end
 
       private
@@ -42,13 +43,15 @@ module SuperDiff
       attr_reader :expected_attributes, :actual_attributes
 
       def establish_expected_and_actual_attributes
-        @expected_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => expected.instance_variable_get("@#{name}"))
-        end
+        @expected_attributes =
+          attribute_names.reduce({}) do |hash, name|
+            hash.merge(name => expected.instance_variable_get("@#{name}"))
+          end
 
-        @actual_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => actual.instance_variable_get("@#{name}"))
-        end
+        @actual_attributes =
+          attribute_names.reduce({}) do |hash, name|
+            hash.merge(name => actual.instance_variable_get("@#{name}"))
+          end
       end
 
       def possibly_add_noop_operation_to(operations, attribute_name)
@@ -58,7 +61,7 @@ module SuperDiff
             collection: actual_attributes,
             key: attribute_name,
             index: attribute_names.index(attribute_name),
-            value: actual_attributes[attribute_name],
+            value: actual_attributes[attribute_name]
           )
         end
       end
@@ -66,7 +69,8 @@ module SuperDiff
       def should_add_noop_operation?(attribute_name)
         expected_attributes.include?(attribute_name) &&
           actual_attributes.include?(attribute_name) &&
-          expected_attributes[attribute_name] == actual_attributes[attribute_name]
+          expected_attributes[attribute_name] ==
+            actual_attributes[attribute_name]
       end
 
       def possibly_add_delete_operation_to(operations, attribute_name)
@@ -76,16 +80,18 @@ module SuperDiff
             collection: expected_attributes,
             key: attribute_name,
             index: attribute_names.index(attribute_name),
-            value: expected_attributes[attribute_name],
+            value: expected_attributes[attribute_name]
           )
         end
       end
 
       def should_add_delete_operation?(attribute_name)
-        expected_attributes.include?(attribute_name) && (
-          !actual_attributes.include?(attribute_name) ||
-          expected_attributes[attribute_name] != actual_attributes[attribute_name]
-        )
+        expected_attributes.include?(attribute_name) &&
+          (
+            !actual_attributes.include?(attribute_name) ||
+              expected_attributes[attribute_name] !=
+                actual_attributes[attribute_name]
+          )
       end
 
       def possibly_add_insert_operation_to(operations, attribute_name)
@@ -95,16 +101,18 @@ module SuperDiff
             collection: actual_attributes,
             key: attribute_name,
             index: attribute_names.index(attribute_name),
-            value: actual_attributes[attribute_name],
+            value: actual_attributes[attribute_name]
           )
         end
       end
 
       def should_add_insert_operation?(attribute_name)
-        !expected_attributes.include?(attribute_name) || (
-          actual_attributes.include?(attribute_name) &&
-          expected_attributes[attribute_name] != actual_attributes[attribute_name]
-        )
+        !expected_attributes.include?(attribute_name) ||
+          (
+            actual_attributes.include?(attribute_name) &&
+              expected_attributes[attribute_name] !=
+                actual_attributes[attribute_name]
+          )
       end
     end
   end

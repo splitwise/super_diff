@@ -14,8 +14,8 @@ module SuperDiff
           :right_value!,
           :left_index!,
           :right_index!,
-          children: [],
-        ],
+          children: []
+        ]
       )
     end
   end

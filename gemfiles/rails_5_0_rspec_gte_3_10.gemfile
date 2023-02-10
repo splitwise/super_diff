@@ -8,7 +8,10 @@ gem "climate_control"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
-gem "rubocop"
+gem "prettier_print"
+gem "syntax_tree"
+gem "syntax_tree-haml"
+gem "syntax_tree-rbs"
 gem "warnings_logger"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby

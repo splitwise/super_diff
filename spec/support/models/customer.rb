@@ -10,10 +10,8 @@ module SuperDiff
       end
 
       def ==(other)
-        other.is_a?(self.class) &&
-          other.name == name &&
-          other.shipping_address == shipping_address &&
-          other.phone == phone
+        other.is_a?(self.class) && other.name == name &&
+          other.shipping_address == shipping_address && other.phone == phone
       end
 
       def attributes_for_super_diff

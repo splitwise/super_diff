@@ -13,17 +13,11 @@ module SuperDiff
                 add_text "#<HashWithIndifferentAccess {"
               end
 
-              when_rendering_to_string do
-                add_text " "
-              end
+              when_rendering_to_string { add_text " " }
 
-              nested do |hash|
-                insert_hash_inspection_of(hash)
-              end
+              nested { |hash| insert_hash_inspection_of(hash) }
 
-              when_rendering_to_string do
-                add_text " "
-              end
+              when_rendering_to_string { add_text " " }
 
               as_lines_when_rendering_to_lines(collection_bookend: :close) do
                 add_text "}>"

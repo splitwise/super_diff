@@ -24,10 +24,14 @@ module SuperDiff
 
     def plural_type_for(value)
       case value
-      when Numeric then "numbers"
-      when String then "strings"
-      when Symbol then "symbols"
-      else "objects"
+      when Numeric
+        "numbers"
+      when String
+        "strings"
+      when Symbol
+        "symbols"
+      else
+        "objects"
       end
     end
 
@@ -37,7 +41,7 @@ module SuperDiff
 
     def ruby_version_matches?(version_string)
       Gem::Requirement.new(version_string).satisfied_by?(
-        Gem::Version.new(RUBY_VERSION),
+        Gem::Version.new(RUBY_VERSION)
       )
     end
 
@@ -53,11 +57,7 @@ module SuperDiff
       def object_address_for(object)
         # Sources: <https://bugs.ruby-lang.org/issues/15408> and <https://bugs.ruby-lang.org/issues/15626#Object-ID>
         json = JSON.parse(ObjectSpace.dump(object))
-        if json.is_a?(Hash)
-          "0x%016x" % Integer(json["address"], 16)
-        else
-          ""
-        end
+        json.is_a?(Hash) ? "0x%016x" % Integer(json["address"], 16) : ""
       end
     else
       def object_address_for(object)

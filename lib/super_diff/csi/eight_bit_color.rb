@@ -19,18 +19,18 @@ module SuperDiff
         bright_blue: 12,
         bright_magenta: 13,
         bright_cyan: 14,
-        bright_white: 15,
+        bright_white: 15
       }.freeze
       STARTING_INDICES = {
         standard: 0,
         high_intensity: 8,
-        grayscale: 232,
+        grayscale: 232
       }.freeze
       VALID_PAIR_TYPES = STARTING_INDICES.keys
       VALID_PAIR_INDEX_RANGES = {
         standard: 0..7,
         high_intensity: 0..7,
-        grayscale: 0..23,
+        grayscale: 0..23
       }.freeze
       LEADING_CODES_BY_LAYER = { foreground: 38, background: 48 }.freeze
       LAYERS_BY_LEADING_CODE = LEADING_CODES_BY_LAYER.invert.freeze
@@ -93,10 +93,10 @@ module SuperDiff
       def interpret_triplet!(red:, green:, blue:)
         if invalid_triplet?(red, green, blue)
           raise ArgumentError.new(
-            "(#{red},#{green},#{blue}) is not a valid color " +
-            "specification. All components must be between " +
-            "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}.",
-          )
+                  "(#{red},#{green},#{blue}) is not a valid color " +
+                    "specification. All components must be between " +
+                    "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}."
+                )
         end
 
         16 + 36 * red + 6 * green + blue
@@ -110,7 +110,7 @@ module SuperDiff
         if !VALID_CODES_BY_NAME.include?(name)
           message =
             "#{name.inspect} is not a valid color name.\n" +
-            "Valid names are:\n"
+              "Valid names are:\n"
 
           VALID_CODES_BY_NAME.keys.each do |valid_name|
             message << "- #{valid_name}\n"
@@ -125,19 +125,19 @@ module SuperDiff
       def interpret_pair!(type:, index:)
         if !VALID_PAIR_TYPES.include?(type)
           raise ArgumentError.new(
-            "Given pair did not have a valid type. " +
-            "Type must be one of: #{VALID_PAIR_TYPES}",
-          )
+                  "Given pair did not have a valid type. " +
+                    "Type must be one of: #{VALID_PAIR_TYPES}"
+                )
         end
 
         valid_range = VALID_PAIR_INDEX_RANGES[type]
 
         if !valid_range.cover?(index)
           raise ArgumentError.new(
-            "Given pair did not have a valid index. " +
-            "For #{type}, index must be between #{valid_range.begin} and " +
-            "#{valid_range.end}.",
-          )
+                  "Given pair did not have a valid index. " +
+                    "For #{type}, index must be between #{valid_range.begin} and " +
+                    "#{valid_range.end}."
+                )
         end
 
         STARTING_INDICES[type] + index
@@ -149,7 +149,7 @@ module SuperDiff
         if match
           {
             layer: interpret_layer!(match[1]),
-            code: interpret_code!(match[2].to_i),
+            code: interpret_code!(match[2].to_i)
           }
         end
       end
@@ -165,9 +165,9 @@ module SuperDiff
       def interpret_code!(code)
         if !VALID_CODE_RANGE.cover?(code)
           raise ArgumentError.new(
-            "#{code.inspect} is not a valid color code " +
-            "(must be between 0 and 255).",
-          )
+                  "#{code.inspect} is not a valid color code " +
+                    "(must be between 0 and 255)."
+                )
         end
 
         code

@@ -5,16 +5,16 @@ module SuperDiff
     autoload :Collection, "super_diff/operation_tree_flatteners/collection"
     autoload(
       :CustomObject,
-      "super_diff/operation_tree_flatteners/custom_object",
+      "super_diff/operation_tree_flatteners/custom_object"
     )
     autoload(
       :DefaultObject,
-      "super_diff/operation_tree_flatteners/default_object",
+      "super_diff/operation_tree_flatteners/default_object"
     )
     autoload :Hash, "super_diff/operation_tree_flatteners/hash"
     autoload(
       :MultilineString,
-      "super_diff/operation_tree_flatteners/multiline_string",
+      "super_diff/operation_tree_flatteners/multiline_string"
     )
   end
 end

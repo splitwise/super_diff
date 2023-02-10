@@ -4,7 +4,8 @@ module SuperDiff
       module InspectionTreeBuilders
         class HashIncluding < SuperDiff::ObjectInspection::InspectionTreeBuilders::Base
           def self.applies_to?(value)
-            SuperDiff::RSpec.a_hash_including_something?(value) || SuperDiff::RSpec.hash_including_something?(value)
+            SuperDiff::RSpec.a_hash_including_something?(value) ||
+              SuperDiff::RSpec.hash_including_something?(value)
           end
 
           def call

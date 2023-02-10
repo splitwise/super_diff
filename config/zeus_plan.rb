@@ -17,7 +17,7 @@ class CustomZeusPlan < Zeus::Plan
     :run_plain_test,
     :run_rspec_active_support_test,
     :run_rspec_active_record_test,
-    :run_rspec_rails_test,
+    :run_rspec_rails_test
   )
 
   def initialize(
@@ -25,11 +25,12 @@ class CustomZeusPlan < Zeus::Plan
     color_enabled: false,
     configuration: {}
   )
-    @test_plan = TestPlan.new(
-      using_outside_of_zeus: using_outside_of_zeus,
-      color_enabled: color_enabled,
-      configuration: configuration,
-    )
+    @test_plan =
+      TestPlan.new(
+        using_outside_of_zeus: using_outside_of_zeus,
+        color_enabled: color_enabled,
+        configuration: configuration
+      )
   end
 end
 

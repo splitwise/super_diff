@@ -4,8 +4,7 @@ module SuperDiff
       class ActiveRecordModel < SuperDiff::OperationTreeBuilders::CustomObject
         def self.applies_to?(expected, actual)
           expected.is_a?(::ActiveRecord::Base) &&
-            actual.is_a?(::ActiveRecord::Base) &&
-            expected.class == actual.class
+            actual.is_a?(::ActiveRecord::Base) && expected.class == actual.class
         end
 
         protected

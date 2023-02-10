@@ -11,7 +11,7 @@ module SuperDiff
         OperationTreeBuilders::Main.call(
           expected: expected,
           actual: actual,
-          all_or_nothing: true,
+          all_or_nothing: true
         )
       end
     end

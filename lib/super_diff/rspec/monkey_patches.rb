@@ -60,19 +60,22 @@ module RSpec
             if code_or_symbol
               if (config_method = config_colors_to_methods[code_or_symbol])
                 console_code_for RSpec.configuration.__send__(config_method)
-              elsif RSpec::Core::Formatters::ConsoleCodes::VT100_CODE_VALUES.key?(code_or_symbol)
+              elsif RSpec::Core::Formatters::ConsoleCodes::VT100_CODE_VALUES.key?(
+                    code_or_symbol
+                  )
                 code_or_symbol
               else
-                RSpec::Core::Formatters::ConsoleCodes::VT100_CODES.fetch(code_or_symbol) do
+                RSpec::Core::Formatters::ConsoleCodes::VT100_CODES.fetch(
                   code_or_symbol
-                end
+                ) { code_or_symbol }
               end
             end
           end
 
           # Patch so it does not apply a color if code_or_symbol is nil
           def wrap(text, code_or_symbol)
-            if SuperDiff.configuration.color_enabled? && code = console_code_for(code_or_symbol)
+            if SuperDiff.configuration.color_enabled? &&
+                 code = console_code_for(code_or_symbol)
               "\e[#{code}m#{text}\e[0m"
             else
               text
@@ -86,50 +89,56 @@ module RSpec
         RESET_CODE = "\e[0m"
 
         SuperDiff.insert_overrides(self) do
-          def initialize(exception, example, options={})
-            @exception               = exception
-            @example                 = example
-            @message_color           = options.fetch(:message_color)          { RSpec.configuration.failure_color }
-            @description             = options.fetch(:description)            { example.full_description }
-            @detail_formatter        = options.fetch(:detail_formatter)       { Proc.new {} }
-            @extra_detail_formatter  = options.fetch(:extra_detail_formatter) { Proc.new {} }
-            @backtrace_formatter     = options.fetch(:backtrace_formatter)    { RSpec.configuration.backtrace_formatter }
-            @indentation             = options.fetch(:indentation, 2)
-            @skip_shared_group_trace = options.fetch(:skip_shared_group_trace, false)
+          def initialize(exception, example, options = {})
+            @exception = exception
+            @example = example
+            @message_color =
+              options.fetch(:message_color) do
+                RSpec.configuration.failure_color
+              end
+            @description =
+              options.fetch(:description) { example.full_description }
+            @detail_formatter = options.fetch(:detail_formatter) { Proc.new {} }
+            @extra_detail_formatter =
+              options.fetch(:extra_detail_formatter) { Proc.new {} }
+            @backtrace_formatter =
+              options.fetch(:backtrace_formatter) do
+                RSpec.configuration.backtrace_formatter
+              end
+            @indentation = options.fetch(:indentation, 2)
+            @skip_shared_group_trace =
+              options.fetch(:skip_shared_group_trace, false)
             # Patch to convert options[:failure_lines] to groups
             if options.include?(:failure_lines)
               @failure_line_groups = [
-                {
-                  lines: options[:failure_lines],
-                  already_colorized: false
-                }
+                { lines: options[:failure_lines], already_colorized: false }
               ]
             end
           end
 
           # Override to only color uncolored lines in red
           # and to not color empty lines
-          def colorized_message_lines(colorizer = ::RSpec::Core::Formatters::ConsoleCodes)
-            lines = failure_line_groups.flat_map do |group|
-              if group[:already_colorized]
-                group[:lines]
-              else
-                group[:lines].map do |line|
-                  if line.strip.empty?
-                    line
-                  else
-                    indentation = line[/^[ ]+/]
-                    rest = colorizer.wrap(line.sub(/^[ ]+/, ''), message_color)
-
-                    if indentation
-                      indentation + rest
+          def colorized_message_lines(
+            colorizer = ::RSpec::Core::Formatters::ConsoleCodes
+          )
+            lines =
+              failure_line_groups.flat_map do |group|
+                if group[:already_colorized]
+                  group[:lines]
+                else
+                  group[:lines].map do |line|
+                    if line.strip.empty?
+                      line
                     else
-                      rest
+                      indentation = line[/^[ ]+/]
+                      rest =
+                        colorizer.wrap(line.sub(/^[ ]+/, ""), message_color)
+
+                      indentation ? indentation + rest : rest
                     end
                   end
                 end
               end
-            end
 
             add_shared_group_lines(lines, colorizer)
           end
@@ -158,25 +167,24 @@ module RSpec
               @failure_line_groups
             else
               @failure_line_groups = [
-                {
-                  lines: failure_slash_error_lines,
-                  already_colorized: true
-                }
+                { lines: failure_slash_error_lines, already_colorized: true }
               ]
 
               sections = [failure_slash_error_lines, exception_lines]
-              separate_groups = (
-                sections.any? { |section| section.size > 1 } &&
-                !exception_lines.first.empty?
-              )
+              separate_groups =
+                (
+                  sections.any? { |section| section.size > 1 } &&
+                    !exception_lines.first.empty?
+                )
 
               if separate_groups
-                @failure_line_groups << { lines: [''], already_colorized: true }
+                @failure_line_groups << { lines: [""], already_colorized: true }
               end
 
-              already_colorized = exception_lines.any? do |line|
-                SuperDiff::Csi.already_colorized?(line)
-              end
+              already_colorized =
+                exception_lines.any? do |line|
+                  SuperDiff::Csi.already_colorized?(line)
+                end
 
               if already_colorized
                 @failure_line_groups << {
@@ -225,9 +233,8 @@ module RSpec
               lines[0] = failure_slash_error + lines[0].strip
             else
               least_indentation = SnippetExtractor.least_indentation_from(lines)
-              lines = lines.map do |line|
-                line.sub(/^#{least_indentation}/, '  ')
-              end
+              lines =
+                lines.map { |line| line.sub(/^#{least_indentation}/, "  ") }
               lines.unshift(failure_slash_error)
             end
 
@@ -243,7 +250,8 @@ module RSpec
             exception_backtrace.find do |line|
               next unless (line_path = line[/(.+?):(\d+)(|:\d+)/, 1])
               path = File.expand_path(line_path)
-              path != __FILE__ && (loaded_spec_files.include?(path) || path =~ line_regex)
+              path != __FILE__ &&
+                (loaded_spec_files.include?(path) || path =~ line_regex)
             end || exception_backtrace.first
           end
         end
@@ -289,34 +297,34 @@ module RSpec
           text = colorizer.wrap("Diff:", SuperDiff.configuration.header_color)
 
           if SuperDiff.configuration.key_enabled?
-            text += "\n\n" +
-              colorizer.wrap(
-                "┌ (Key) ──────────────────────────┐",
-                SuperDiff.configuration.border_color
-              ) +
-              "\n" +
-              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-              colorizer.wrap(
-                "‹-› in expected, not in actual",
-                SuperDiff.configuration.expected_color
-              ) +
-              colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-              "\n" +
-              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-              colorizer.wrap(
-                "‹+› in actual, not in expected",
-                SuperDiff.configuration.actual_color
-              ) +
-              colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-              "\n" +
-              colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-              "‹ › in both expected and actual" +
-              colorizer.wrap(" │", SuperDiff.configuration.border_color) +
-              "\n" +
-              colorizer.wrap(
-                "└─────────────────────────────────┘",
-                SuperDiff.configuration.border_color
-              )
+            text +=
+              "\n\n" +
+                colorizer.wrap(
+                  "┌ (Key) ──────────────────────────┐",
+                  SuperDiff.configuration.border_color
+                ) + "\n" +
+                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                colorizer.wrap(
+                  "‹-› in expected, not in actual",
+                  SuperDiff.configuration.expected_color
+                ) +
+                colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                "\n" +
+                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                colorizer.wrap(
+                  "‹+› in actual, not in expected",
+                  SuperDiff.configuration.actual_color
+                ) +
+                colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                "\n" +
+                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                "‹ › in both expected and actual" +
+                colorizer.wrap(" │", SuperDiff.configuration.border_color) +
+                "\n" +
+                colorizer.wrap(
+                  "└─────────────────────────────────┘",
+                  SuperDiff.configuration.border_color
+                )
           end
 
           new([[expected, text]])
@@ -332,22 +340,21 @@ module RSpec
         def message_with_diff(message, differ, actual)
           diff = diffs(differ, actual)
 
-          if diff.empty?
-            message
-          else
-            "#{message.rstrip}\n\n#{diff}"
-          end
+          diff.empty? ? message : "#{message.rstrip}\n\n#{diff}"
         end
 
         private
 
         # Add extra line breaks in between diffs, and colorize the word "Diff"
         def diffs(differ, actual)
-          @expected_list.map do |(expected, diff_label)|
-            diff = differ.diff(actual, expected)
-            next if diff.strip.empty?
-            diff_label + diff
-          end.compact.join("\n\n")
+          @expected_list
+            .map do |(expected, diff_label)|
+              diff = differ.diff(actual, expected)
+              next if diff.strip.empty?
+              diff_label + diff
+            end
+            .compact
+            .join("\n\n")
         end
       end
     end
@@ -368,7 +375,7 @@ module RSpec
 
         SuperDiff.insert_overrides(self) do
           def expected_action_for_matcher_text
-            if [:==, :===, :=~].include?(@operator)
+            if %i[== === =~].include?(@operator)
               "#{@operator}"
             else
               "be #{@operator}"
@@ -417,7 +424,7 @@ module RSpec
             if SuperDiff::RSpec.rspec_version < "3.10"
               expected
             else
-              predicate.to_s.chomp('?')
+              predicate.to_s.chomp("?")
             end
           end
 
@@ -509,7 +516,7 @@ module RSpec
 
           # Override to use (...) as delimiters rather than {...}
           def expected_for_matcher_text
-            super.sub(/^\{ /, '(').gsub(/ \}$/, ')')
+            super.sub(/^\{ /, "(").gsub(/ \}$/, ")")
           end
 
           # Override so that the differ knows that this is a partial object
@@ -540,14 +547,17 @@ module RSpec
           # Override this method to skip non-existent attributes, and to use
           # public_send
           def cache_all_values
-            @values = @expected.keys.inject({}) do |hash, attribute_key|
-              if @actual.respond_to?(attribute_key)
-                actual_value = @actual.public_send(attribute_key)
-                hash.merge(attribute_key => actual_value)
-              else
-                hash
-              end
-            end
+            @values =
+              @expected
+                .keys
+                .inject({}) do |hash, attribute_key|
+                  if @actual.respond_to?(attribute_key)
+                    actual_value = @actual.public_send(attribute_key)
+                    hash.merge(attribute_key => actual_value)
+                  else
+                    hash
+                  end
+                end
           end
 
           def actual_has_attribute?(attribute_key, attribute_value)
@@ -626,7 +636,8 @@ module RSpec
             if actual.respond_to?(:include?)
               message
             elsif message.end_with?(".")
-              message.sub("\.$", ", ") + "but it does not respond to `include?`."
+              message.sub("\.$", ", ") +
+                "but it does not respond to `include?`."
             else
               message + "\n\nBut it does not respond to `include?`."
             end
@@ -651,9 +662,10 @@ module RSpec
           # Update to use (...) as delimiter instead of {...}
           def readable_list_of(items)
             if items && items.all? { |item| item.is_a?(Hash) }
-              description_of(items.inject(:merge)).
-                sub(/^\{ /, '(').
-                sub(/ \}$/, ')')
+              description_of(items.inject(:merge)).sub(/^\{ /, "(").sub(
+                / \}$/,
+                ")"
+              )
             else
               super
             end
@@ -696,9 +708,7 @@ module RSpec
           end
 
           def actual_for_diff
-            if @actual_error
-              @actual_error.message
-            end
+            @actual_error.message if @actual_error
           end
 
           def expected_for_matcher_text
@@ -720,11 +730,7 @@ module RSpec
           end
 
           def expected_action_for_failure_message
-            if @actual_error
-              "match"
-            else
-              "raise error"
-            end
+            @actual_error ? "match" : "raise error"
           end
 
           def matcher_text_builder_class
@@ -772,9 +778,7 @@ module RSpec
 
     SuperDiff.insert_overrides(self) do
       def self.prepended(base)
-        base.class_eval do
-          alias_matcher :an_array_matching, :match_array
-        end
+        base.class_eval { alias_matcher :an_array_matching, :match_array }
       end
 
       def match_array(items)

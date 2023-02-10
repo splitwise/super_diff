@@ -8,7 +8,7 @@ module SuperDiff
       extend AttrExtras.mixin
       include ImplementationChecks
 
-      method_object [:expected!, :actual!]
+      method_object %i[expected! actual!]
 
       def call
         operation_tree
@@ -33,16 +33,20 @@ module SuperDiff
 
         unary_operations.each_with_index do |operation, index|
           if (
-            operation.name == :insert &&
-            (delete_operation = unmatched_delete_operations.find { |op| op.key == operation.key }) &&
-            (insert_operation = operation)
-          )
+               operation.name == :insert &&
+                 (
+                   delete_operation =
+                     unmatched_delete_operations.find do |op|
+                       op.key == operation.key
+                     end
+                 ) && (insert_operation = operation)
+             )
             unmatched_delete_operations.delete(delete_operation)
 
-            if (children = possible_comparison_of(
-              delete_operation,
-              insert_operation,
-            ))
+            if (
+                 children =
+                   possible_comparison_of(delete_operation, insert_operation)
+               )
               operation_tree.delete(delete_operation)
               operation_tree << Operations::BinaryOperation.new(
                 name: :change,
@@ -54,7 +58,7 @@ module SuperDiff
                 right_value: insert_operation.collection[operation.key],
                 left_index: delete_operation.index,
                 right_index: insert_operation.index,
-                children: children,
+                children: children
               )
             else
               operation_tree << insert_operation
@@ -80,17 +84,15 @@ module SuperDiff
       end
 
       def should_compare?(operation, next_operation)
-        next_operation &&
-          operation.name == :delete &&
-          next_operation.name == :insert &&
-          next_operation.key == operation.key
+        next_operation && operation.name == :delete &&
+          next_operation.name == :insert && next_operation.key == operation.key
       end
 
       def compare(expected, actual)
         OperationTreeBuilders::Main.call(
           expected: expected,
           actual: actual,
-          all_or_nothing: false,
+          all_or_nothing: false
         )
       end
     end

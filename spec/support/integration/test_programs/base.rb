@@ -57,15 +57,15 @@ module SuperDiff
             else
               CommandRunner.run(
                 Shellwords.join(command),
-                env: { 'DISABLE_PRY' => 'true' },
+                env: {
+                  "DISABLE_PRY" => "true"
+                }
               )
             end
         end
 
         def command
-          if ENV["RAILS_ENV"]
-            raise "RAILS_ENV is being set somehow?!"
-          end
+          raise "RAILS_ENV is being set somehow?!" if ENV["RAILS_ENV"]
 
           if zeus_running?
             [
@@ -75,15 +75,10 @@ module SuperDiff
               "--no-pry",
               tempfile.to_s,
               "--configuration",
-              JSON.generate(configuration),
+              JSON.generate(configuration)
             ]
           else
-            [
-              "rspec",
-              "--options",
-              "/tmp/dummy-rspec-config",
-              tempfile.to_s,
-            ]
+            ["rspec", "--options", "/tmp/dummy-rspec-config", tempfile.to_s]
           end
         end
 
@@ -96,12 +91,13 @@ module SuperDiff
         end
 
         def tempfile
-          @_tempfile ||= begin
-            TEMP_DIRECTORY.mkpath
-            TEMP_DIRECTORY.join("integration_spec.rb").tap do |file|
-              file.write(program)
+          @_tempfile ||=
+            begin
+              TEMP_DIRECTORY.mkpath
+              TEMP_DIRECTORY
+                .join("integration_spec.rb")
+                .tap { |file| file.write(program) }
             end
-          end
         end
 
         def program

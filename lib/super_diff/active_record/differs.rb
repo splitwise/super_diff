@@ -3,7 +3,7 @@ module SuperDiff
     module Differs
       autoload(
         :ActiveRecordRelation,
-        "super_diff/active_record/differs/active_record_relation",
+        "super_diff/active_record/differs/active_record_relation"
       )
     end
   end

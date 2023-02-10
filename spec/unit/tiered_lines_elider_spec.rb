@@ -22,132 +22,125 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              value: %([),
+              value: "[",
               collection_bookend: :open,
-              complete_bookend: :open,
+              complete_bookend: :open
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               value: %("one"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               value: %("two"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               value: %("three"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :delete,
               indentation_level: 1,
               value: %("four"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :insert,
               indentation_level: 1,
               value: %("FOUR"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               value: %("five"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               value: %("six"),
-              add_comma?: true,
+              add_comma?: true
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              value: %("seven"),
+              value: %("seven")
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              value: %(]),
+              value: "]",
               collection_bookend: :close,
-              complete_bookend: :close,
-            ),
+              complete_bookend: :close
+            )
           ]
 
-          line_tree_with_elisions = with_configuration(
-            diff_elision_enabled: true,
-            diff_elision_maximum: 3
-          ) do
-            described_class.call(lines)
-          end
+          line_tree_with_elisions =
+            with_configuration(
+              diff_elision_enabled: true,
+              diff_elision_maximum: 3
+            ) { described_class.call(lines) }
 
-          expect(line_tree_with_elisions).to match([
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              value: %([),
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("one"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("two"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("three"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :delete,
-              indentation_level: 1,
-              value: %("four"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :insert,
-              indentation_level: 1,
-              value: %("FOUR"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("five"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("six"),
-              add_comma?: true,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 1,
-              value: %("seven"),
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              value: %(]),
-            ),
-          ])
+          expect(line_tree_with_elisions).to match(
+            [
+              an_expected_line(type: :noop, indentation_level: 0, value: "["),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("one"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("two"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("three"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :delete,
+                indentation_level: 1,
+                value: %("four"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :insert,
+                indentation_level: 1,
+                value: %("FOUR"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("five"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("six"),
+                add_comma?: true
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 1,
+                value: %("seven")
+              ),
+              an_expected_line(type: :noop, indentation_level: 0, value: "]")
+            ]
+          )
         end
       end
 
@@ -173,144 +166,145 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("six"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("seven"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("eight"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("nine"),
+                  value: %("nine")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 3
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 3
+                ) { described_class.call(lines) }
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("one"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("two"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("three"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("four"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("five"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("six"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("seven"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("eight"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("nine"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("one"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("two"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("three"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("four"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("five"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("six"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("seven"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("eight"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("nine")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -332,61 +326,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     collection_bookend: :open,
-                    complete_bookend: :open,
+                    complete_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("one"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("two"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("three"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("four"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
                     value: %("five"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
                     value: %("FIVE"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 3
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 3
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -398,59 +391,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 # +   "FIVE",
                 #   ]
 
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("one"),
-                        add_comma?: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("two"),
-                        add_comma?: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("three"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("four"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("five"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("FIVE"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("one"),
+                          add_comma?: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("two"),
+                          add_comma?: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("three"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("four"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("five"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("FIVE"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
 
@@ -471,61 +466,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     collection_bookend: :open,
-                    complete_bookend: :open,
+                    complete_bookend: :open
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
                     value: %("one"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
                     value: %("ONE"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("two"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("three"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("four"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("five"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 3
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 3
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -538,59 +532,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 #     # ...
                 #   ]
 
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("one"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("ONE"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("two"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("three"),
-                    add_comma?: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("four"),
-                        add_comma?: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("five"),
-                        add_comma?: true,
-                      ),
-                    ]
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("one"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("ONE"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("two"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("three"),
+                      add_comma?: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("four"),
+                          add_comma?: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("five"),
+                          add_comma?: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
 
@@ -615,84 +611,83 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     collection_bookend: :open,
-                    complete_bookend: :open,
+                    complete_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("one"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("two"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("three"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("four"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
                     value: %("five"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
                     value: %("FIVE"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("six"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("seven"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("eight"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %("nine"),
+                    value: %("nine")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 3
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 3
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -707,87 +702,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 #     # ...
                 #   ]
 
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("one"),
-                        add_comma?: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("two"),
-                        add_comma?: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("three"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("four"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("five"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("FIVE"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("six"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("seven"),
-                    add_comma?: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("eight"),
-                        add_comma?: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("nine"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("one"),
+                          add_comma?: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("two"),
+                          add_comma?: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("three"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("four"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("five"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("FIVE"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("six"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("seven"),
+                      add_comma?: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("eight"),
+                          add_comma?: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("nine")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
 
@@ -813,89 +810,88 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     collection_bookend: :open,
-                    complete_bookend: :open,
+                    complete_bookend: :open
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
                     value: %("one"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
                     value: %("ONE"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("two"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("three"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("four"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("five"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("six"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("seven"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("eight"),
-                    add_comma?: true,
+                    add_comma?: true
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
-                    value: %("nine"),
+                    value: %("nine")
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
-                    value: %("NINE"),
+                    value: %("NINE")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 6,
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 6
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -912,87 +908,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 # +   "NINE",
                 #   ]
 
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("one"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("ONE"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("two"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("three"),
-                    add_comma?: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("four"),
-                        add_comma?: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("five"),
-                        add_comma?: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("six"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("seven"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("eight"),
-                    add_comma?: true,
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("nine"),
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("NINE"),
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("one"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("ONE"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("two"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("three"),
+                      add_comma?: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("four"),
+                          add_comma?: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("five"),
+                          add_comma?: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("six"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("seven"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("eight"),
+                      add_comma?: true
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("nine")
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("NINE")
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
           end
@@ -1024,200 +1022,201 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("alpha"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("beta"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %([),
-                  collection_bookend: :open,
+                  value: "[",
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
                   value: %("proton"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
                   value: %("["),
-                  collection_bookend: :open,
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("electron"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("photon"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
-                  value: %("gluon"),
+                  value: %("gluon")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
                   value: %("]"),
                   add_comma?: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %("neutron"),
+                  value: %("neutron")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %(]),
+                  value: "]",
                   add_comma?: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("digamma"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("waw"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("omega"),
+                  value: %("omega")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 5
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 5
+                ) { described_class.call(lines) }
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("alpha"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("beta"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  value: %("proton"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  value: %("["),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 3,
-                  value: %("electron"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 3,
-                  value: %("photon"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 3,
-                  value: %("gluon"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  value: %("]"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  value: %("neutron"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %(]),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("digamma"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("waw"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("omega"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("alpha"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("beta"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    value: %("proton"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    value: %("[")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 3,
+                    value: %("electron"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 3,
+                    value: %("photon"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 3,
+                    value: %("gluon")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    value: %("]"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    value: %("neutron")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: "]",
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("digamma"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("waw"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("omega")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -1247,108 +1246,107 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     collection_bookend: :open,
-                    complete_bookend: :open,
+                    complete_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("alpha"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("beta"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("proton"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("["),
-                    collection_bookend: :open,
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 3,
                     value: %("electron"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 3,
                     value: %("photon"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 3,
-                    value: %("gluon"),
+                    value: %("gluon")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("]"),
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %("neutron"),
+                    value: %("neutron")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 1,
                     value: %("digamma"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 1,
                     value: %("waw"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %("omega"),
+                    value: %("omega")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 5
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 5
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -1363,102 +1361,104 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 #     "omega"
                 #   ]
 
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("alpha"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("beta"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 2,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("proton"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("["),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 3,
-                        value: %("electron"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 3,
-                        value: %("photon"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 3,
-                        value: %("gluon"),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("]"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("neutron"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %(]),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 1,
-                    value: %("digamma"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 1,
-                    value: %("waw"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("omega"),
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("alpha"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("beta"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 2,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("proton"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("[")
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 3,
+                          value: %("electron"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 3,
+                          value: %("photon"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 3,
+                          value: %("gluon")
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("]"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("neutron")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "]",
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 1,
+                      value: %("digamma"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 1,
+                      value: %("waw"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("omega")
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
 
@@ -1495,307 +1495,308 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: %([),
+                      value: "[",
                       complete_bookend: :open,
-                      collection_bookend: :open,
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
                       value: %("alpha"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("zeta"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %("eta"),
+                      value: %("eta")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %(]),
+                      value: "]",
                       add_comma: true,
-                      collection_bookend: :close,
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
                       value: %("beta"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("proton"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("electron"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :delete,
                       indentation_level: 3,
                       value: %("red"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :insert,
                       indentation_level: 3,
                       value: %("blue"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 3,
-                      value: %("green"),
+                      value: %("green")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %(]),
+                      value: "]",
                       add_comma: true,
-                      collection_bookend: :close,
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("neutron"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("charm"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("up"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %("down"),
+                      value: %("down")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %(]),
+                      value: "]",
                       add_comma: true,
-                      collection_bookend: :close,
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
                       value: %("waw"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %("omega"),
+                      value: %("omega")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: %(]),
+                      value: "]",
                       collection_bookend: :close,
-                      complete_bookend: :close,
-                    ),
+                      complete_bookend: :close
+                    )
                   ]
 
-                  line_tree_with_elisions = with_configuration(
-                    diff_elision_enabled: true,
-                    diff_elision_maximum: 5
-                  ) do
-                    described_class.call(lines)
-                  end
+                  line_tree_with_elisions =
+                    with_configuration(
+                      diff_elision_enabled: true,
+                      diff_elision_maximum: 5
+                    ) { described_class.call(lines) }
 
-                  expect(line_tree_with_elisions).to match([
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 0,
-                      value: %([),
-                    ),
-                    an_expected_elision(
-                      indentation_level: 1,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("alpha"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %([),
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("zeta"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("eta"),
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %(]),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("beta"),
-                          add_comma: true,
-                        ),
-                      ],
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %([),
-                    ),
-                    an_expected_elision(
-                      indentation_level: 2,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("proton"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("electron"),
-                          add_comma: true,
-                        ),
-                      ],
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %([),
-                    ),
-                    an_expected_line(
-                      type: :delete,
-                      indentation_level: 3,
-                      value: %("red"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :insert,
-                      indentation_level: 3,
-                      value: %("blue"),
-                      add_comma: true,
-                    ),
-                    an_expected_elision(
-                      indentation_level: 3,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 3,
-                          value: %("green"),
-                        ),
-                      ],
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %(]),
-                      add_comma: true,
-                    ),
-                    an_expected_elision(
-                      indentation_level: 2,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("neutron"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("charm"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("up"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("down"),
-                        ),
-                      ],
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %(]),
-                      add_comma: true,
-                    ),
-                    an_expected_elision(
-                      indentation_level: 1,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("waw"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("omega"),
-                        ),
-                      ],
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 0,
-                      value: %(]),
-                    ),
-                  ])
+                  expect(line_tree_with_elisions).to match(
+                    [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 0,
+                        value: "["
+                      ),
+                      an_expected_elision(
+                        indentation_level: 1,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("alpha"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: "["
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("zeta"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("eta")
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: "]",
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("beta"),
+                            add_comma: true
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "["
+                      ),
+                      an_expected_elision(
+                        indentation_level: 2,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("proton"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("electron"),
+                            add_comma: true
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "["
+                      ),
+                      an_expected_line(
+                        type: :delete,
+                        indentation_level: 3,
+                        value: %("red"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :insert,
+                        indentation_level: 3,
+                        value: %("blue"),
+                        add_comma: true
+                      ),
+                      an_expected_elision(
+                        indentation_level: 3,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 3,
+                            value: %("green")
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "]",
+                        add_comma: true
+                      ),
+                      an_expected_elision(
+                        indentation_level: 2,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("neutron"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("charm"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("up"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("down")
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "]",
+                        add_comma: true
+                      ),
+                      an_expected_elision(
+                        indentation_level: 1,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("waw"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("omega")
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 0,
+                        value: "]"
+                      )
+                    ]
+                  )
                 end
               end
 
@@ -1822,94 +1823,93 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: %([),
+                      value: "[",
                       complete_bookend: :open,
-                      collection_bookend: :open,
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
                       value: %("alpha"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
                       value: %("beta"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %("gamma"),
+                      value: %("gamma")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %(]),
-                      collection_bookend: :close,
+                      value: "]",
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
                       value: %("pi"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %([),
-                      collection_bookend: :open,
+                      value: "[",
+                      collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :delete,
                       indentation_level: 3,
                       value: %("red"),
-                      add_comma: true,
+                      add_comma: true
                     ),
                     an_actual_line(
                       type: :insert,
                       indentation_level: 3,
-                      value: %("blue"),
+                      value: %("blue")
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: %(]),
-                      collection_bookend: :close,
+                      value: "]",
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: %(]),
-                      collection_bookend: :close,
+                      value: "]",
+                      collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: %(]),
-                      collection_bookend: :close,
-                    ),
+                      value: "]",
+                      collection_bookend: :close
+                    )
                   ]
 
-                  line_tree_with_elisions = with_configuration(
-                    diff_elision_enabled: true,
-                    diff_elision_maximum: 5
-                  ) do
-                    described_class.call(lines)
-                  end
+                  line_tree_with_elisions =
+                    with_configuration(
+                      diff_elision_enabled: true,
+                      diff_elision_maximum: 5
+                    ) { described_class.call(lines) }
 
                   # Result:
                   #
@@ -1923,104 +1923,106 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   #     ]
                   #   ]
 
-                  expect(line_tree_with_elisions).to match([
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 0,
-                      value: %([),
-                      complete_bookend: :open,
-                      collection_bookend: :open,
-                      elided: false,
-                    ),
-                    an_expected_elision(
-                      indentation_level: 1,
-                      children: [
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("alpha"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %([),
-                          collection_bookend: :open,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("beta"),
-                          add_comma: true,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 2,
-                          value: %("gamma"),
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %(]),
-                          collection_bookend: :close,
-                        ),
-                        an_expected_line(
-                          type: :noop,
-                          indentation_level: 1,
-                          value: %("pi"),
-                          add_comma: true,
-                        ),
-                      ]
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %([),
-                      collection_bookend: :open,
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %([),
-                      collection_bookend: :open,
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :delete,
-                      indentation_level: 3,
-                      value: %("red"),
-                      add_comma: true,
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :insert,
-                      indentation_level: 3,
-                      value: %("blue"),
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %(]),
-                      collection_bookend: :close,
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %(]),
-                      collection_bookend: :close,
-                      elided: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 0,
-                      value: %(]),
-                      collection_bookend: :close,
-                      elided: false,
-                    ),
-                  ])
+                  expect(line_tree_with_elisions).to match(
+                    [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 0,
+                        value: "[",
+                        complete_bookend: :open,
+                        collection_bookend: :open,
+                        elided: false
+                      ),
+                      an_expected_elision(
+                        indentation_level: 1,
+                        children: [
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("alpha"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: "[",
+                            collection_bookend: :open
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("beta"),
+                            add_comma: true
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 2,
+                            value: %("gamma")
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: "]",
+                            collection_bookend: :close
+                          ),
+                          an_expected_line(
+                            type: :noop,
+                            indentation_level: 1,
+                            value: %("pi"),
+                            add_comma: true
+                          )
+                        ]
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "[",
+                        collection_bookend: :open,
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "[",
+                        collection_bookend: :open,
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :delete,
+                        indentation_level: 3,
+                        value: %("red"),
+                        add_comma: true,
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :insert,
+                        indentation_level: 3,
+                        value: %("blue"),
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "]",
+                        collection_bookend: :close,
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "]",
+                        collection_bookend: :close,
+                        elided: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 0,
+                        value: "]",
+                        collection_bookend: :close,
+                        elided: false
+                      )
+                    ]
+                  )
                 end
               end
             end
@@ -2053,10 +2055,10 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 type: :noop,
                 indentation_level: 0,
                 prefix: "",
-                value: %([),
+                value: "[",
                 add_comma: false,
                 complete_bookend: :open,
-                collection_bookend: :open,
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :delete,
@@ -2065,7 +2067,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("0"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2074,7 +2076,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("1"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2083,7 +2085,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("2"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2092,7 +2094,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("3"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2100,7 +2102,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("4"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2108,7 +2110,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("5"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2116,7 +2118,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("6"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2124,7 +2126,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("7"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
@@ -2132,42 +2134,42 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("8"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %({),
+                value: "{",
                 add_comma: false,
                 complete_bookend: nil,
-                collection_bookend: :open,
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                prefix: %(foo:),
+                prefix: "foo:",
                 value: %("bar"),
                 add_comma: true,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                prefix: %(baz:),
+                prefix: "baz:",
                 value: %("qux"),
                 add_comma: false,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 prefix: "",
-                value: %(}),
+                value: "}",
                 add_comma: false,
                 complete_bookend: nil,
-                collection_bookend: :close,
+                collection_bookend: :close
               ),
               an_actual_line(
                 type: :insert,
@@ -2176,25 +2178,24 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 value: %("9"),
                 add_comma: false,
                 complete_bookend: nil,
-                collection_bookend: nil,
+                collection_bookend: nil
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
                 prefix: "",
-                value: %(]),
+                value: "]",
                 add_comma: false,
                 complete_bookend: :close,
-                collection_bookend: :close,
-              ),
+                collection_bookend: :close
+              )
             ]
 
-            line_tree_with_elisions = with_configuration(
-              diff_elision_enabled: true,
-              diff_elision_maximum: 4
-            ) do
-              described_class.call(lines)
-            end
+            line_tree_with_elisions =
+              with_configuration(
+                diff_elision_enabled: true,
+                diff_elision_maximum: 4
+              ) { described_class.call(lines) }
 
             # Result:
             #
@@ -2205,151 +2206,153 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
             # +   "9"
             #   ]
 
-            expect(line_tree_with_elisions).to match([
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                prefix: "",
-                value: %([),
-                add_comma: false,
-                complete_bookend: :open,
-                collection_bookend: :open,
-              ),
-              an_expected_line(
-                type: :delete,
-                indentation_level: 1,
-                prefix: "",
-                value: %("0"),
-                add_comma: true,
-                complete_bookend: nil,
-                collection_bookend: nil,
-              ),
-              an_expected_elision(
-                indentation_level: 1,
-                children: [
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    prefix: "",
-                    value: %("1"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    prefix: "",
-                    value: %("2"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    prefix: "",
-                    value: %("3"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("4"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("5"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("6"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("7"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %("8"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %({),
-                    add_comma: false,
-                    complete_bookend: nil,
-                    collection_bookend: :open,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    prefix: %(foo:),
-                    value: %("bar"),
-                    add_comma: true,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    prefix: %(baz:),
-                    value: %("qux"),
-                    add_comma: false,
-                    complete_bookend: nil,
-                    collection_bookend: nil,
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    prefix: "",
-                    value: %(}),
-                    add_comma: false,
-                    complete_bookend: nil,
-                    collection_bookend: :close,
-                  ),
-                ]
-              ),
-              an_expected_line(
-                type: :insert,
-                indentation_level: 1,
-                prefix: "",
-                value: %("9"),
-                add_comma: false,
-                complete_bookend: nil,
-                collection_bookend: nil,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                prefix: "",
-                value: %(]),
-                add_comma: false,
-                complete_bookend: :close,
-                collection_bookend: :close,
-              ),
-            ])
+            expect(line_tree_with_elisions).to match(
+              [
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 0,
+                  prefix: "",
+                  value: "[",
+                  add_comma: false,
+                  complete_bookend: :open,
+                  collection_bookend: :open
+                ),
+                an_expected_line(
+                  type: :delete,
+                  indentation_level: 1,
+                  prefix: "",
+                  value: %("0"),
+                  add_comma: true,
+                  complete_bookend: nil,
+                  collection_bookend: nil
+                ),
+                an_expected_elision(
+                  indentation_level: 1,
+                  children: [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      prefix: "",
+                      value: %("1"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      prefix: "",
+                      value: %("2"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      prefix: "",
+                      value: %("3"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("4"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("5"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("6"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("7"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: %("8"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "{",
+                      add_comma: false,
+                      complete_bookend: nil,
+                      collection_bookend: :open
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      prefix: "foo:",
+                      value: %("bar"),
+                      add_comma: true,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      prefix: "baz:",
+                      value: %("qux"),
+                      add_comma: false,
+                      complete_bookend: nil,
+                      collection_bookend: nil
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      prefix: "",
+                      value: "}",
+                      add_comma: false,
+                      complete_bookend: nil,
+                      collection_bookend: :close
+                    )
+                  ]
+                ),
+                an_expected_line(
+                  type: :insert,
+                  indentation_level: 1,
+                  prefix: "",
+                  value: %("9"),
+                  add_comma: false,
+                  complete_bookend: nil,
+                  collection_bookend: nil
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 0,
+                  prefix: "",
+                  value: "]",
+                  add_comma: false,
+                  complete_bookend: :close,
+                  collection_bookend: :close
+                )
+              ]
+            )
           end
         end
       end
@@ -2377,144 +2380,137 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %([),
+                value: "[",
                 collection_bookend: :open,
-                complete_bookend: :open,
+                complete_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("one"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("two"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("three"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("four"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("five"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("six"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("seven"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("eight"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %("nine"),
+                value: %("nine")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %(]),
+                value: "]",
                 collection_bookend: :close,
-                complete_bookend: :close,
-              ),
+                complete_bookend: :close
+              )
             ]
 
-            line_tree_with_elisions = with_configuration(
-              diff_elision_enabled: true,
-              diff_elision_maximum: 0
-            ) do
-              described_class.call(lines)
-            end
+            line_tree_with_elisions =
+              with_configuration(
+                diff_elision_enabled: true,
+                diff_elision_maximum: 0
+              ) { described_class.call(lines) }
 
-            expect(line_tree_with_elisions).to match([
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("one"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("two"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("three"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("four"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("five"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("six"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("seven"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("eight"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("nine"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %(]),
-              ),
-            ])
+            expect(line_tree_with_elisions).to match(
+              [
+                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("one"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("two"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("three"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("four"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("five"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("six"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("seven"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("eight"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("nine")
+                ),
+                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+              ]
+            )
           end
         end
 
@@ -2536,61 +2532,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("FIVE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -2600,59 +2595,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               # +   "FIVE",
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("one"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("five"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("FIVE"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("one"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("five"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("FIVE"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -2673,61 +2670,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("ONE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -2737,59 +2733,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("one"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("ONE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("five"),
-                      add_comma?: true,
-                    ),
-                  ]
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("one"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("ONE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("five"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -2814,84 +2812,83 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("FIVE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("six"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("seven"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("eight"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("nine"),
+                  value: %("nine")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -2902,87 +2899,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("one"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("five"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("FIVE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("six"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("seven"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("eight"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("nine"),
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("one"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("five"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("FIVE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("six"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("seven"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("eight"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("nine")
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -3008,89 +3007,88 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("ONE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("six"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("seven"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("eight"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
-                  value: %("nine"),
+                  value: %("nine")
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
-                  value: %("NINE"),
+                  value: %("NINE")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0,
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -3102,87 +3100,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               # +   "NINE",
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("one"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("ONE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("five"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("six"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("seven"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("eight"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("nine"),
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("NINE"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("one"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("ONE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("five"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("six"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("seven"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("eight"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("nine")
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("NINE")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
         end
@@ -3214,200 +3214,189 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %([),
+                value: "[",
                 collection_bookend: :open,
-                complete_bookend: :open,
+                complete_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("alpha"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("beta"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %([),
-                collection_bookend: :open,
+                value: "[",
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("proton"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("["),
-                collection_bookend: :open,
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
                 value: %("electron"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
                 value: %("photon"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
-                value: %("gluon"),
+                value: %("gluon")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("]"),
                 add_comma?: true,
-                collection_bookend: :close,
+                collection_bookend: :close
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                value: %("neutron"),
+                value: %("neutron")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %(]),
+                value: "]",
                 add_comma?: true,
-                collection_bookend: :close,
+                collection_bookend: :close
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("digamma"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("waw"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %("omega"),
+                value: %("omega")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %(]),
+                value: "]",
                 collection_bookend: :close,
-                complete_bookend: :close,
-              ),
+                complete_bookend: :close
+              )
             ]
 
-            line_tree_with_elisions = with_configuration(
-              diff_elision_enabled: true,
-              diff_elision_maximum: 0,
-            ) do
-              described_class.call(lines)
-            end
+            line_tree_with_elisions =
+              with_configuration(
+                diff_elision_enabled: true,
+                diff_elision_maximum: 0
+              ) { described_class.call(lines) }
 
-            expect(line_tree_with_elisions).to match([
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("alpha"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("beta"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("proton"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("["),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("electron"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("photon"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("gluon"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("]"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("neutron"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %(]),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("digamma"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("waw"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("omega"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %(]),
-              ),
-            ])
+            expect(line_tree_with_elisions).to match(
+              [
+                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("alpha"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("beta"),
+                  add_comma?: true
+                ),
+                an_expected_line(type: :noop, indentation_level: 1, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("proton"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("[")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("electron"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("photon"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("gluon")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("]"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("neutron")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: "]",
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("digamma"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("waw"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("omega")
+                ),
+                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+              ]
+            )
           end
         end
 
@@ -3437,108 +3426,107 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("alpha"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("beta"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %([),
-                  collection_bookend: :open,
+                  value: "[",
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
                   value: %("proton"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %([),
-                  collection_bookend: :open,
+                  value: "[",
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("electron"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("photon"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
-                  value: %("gluon"),
+                  value: %("gluon")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %(]),
+                  value: "]",
                   add_comma: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %("neutron"),
+                  value: %("neutron")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %(]),
+                  value: "]",
                   add_comma: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("digamma"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("waw"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("omega"),
+                  value: %("omega")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0,
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -3549,107 +3537,109 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("alpha"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("beta"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %([),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %("proton"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %([),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("electron"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("photon"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("gluon"),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %(]),
-                      add_comma: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %("neutron"),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %(]),
-                      add_comma: false,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("digamma"),
-                  add_comma: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("waw"),
-                  add_comma: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("omega"),
-                    ),
-                  ]
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("alpha"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("beta"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "["
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: %("proton"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "["
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("electron"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("photon"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("gluon")
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "]",
+                        add_comma: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: %("neutron")
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "]",
+                        add_comma: false
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("digamma"),
+                    add_comma: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("waw"),
+                    add_comma: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("omega")
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -3686,150 +3676,149 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     complete_bookend: :open,
-                    collection_bookend: :open,
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("alpha"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("zeta"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %("eta"),
+                    value: %("eta")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("beta"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("proton"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("electron"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 3,
                     value: %("red"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 3,
                     value: %("blue"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 3,
-                    value: %("green"),
+                    value: %("green")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("neutron"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("charm"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("up"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %("down"),
+                    value: %("down")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("waw"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %("omega"),
+                    value: %("omega")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 0,
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 0
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -3847,163 +3836,164 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 #     # ...
                 #   ]
 
-
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("alpha"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %([),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("zeta"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("eta"),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %(]),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("beta"),
-                        add_comma: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 2,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("proton"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("electron"),
-                        add_comma: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    value: %([),
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 3,
-                    value: %("red"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 3,
-                    value: %("blue"),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 3,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 3,
-                        value: %("green"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    value: %(]),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 2,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("neutron"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("charm"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("up"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("down"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %(]),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("waw"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("omega"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("alpha"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: "["
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("zeta"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("eta")
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: "]",
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("beta"),
+                          add_comma: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 2,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("proton"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("electron"),
+                          add_comma: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      value: "["
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 3,
+                      value: %("red"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 3,
+                      value: %("blue"),
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 3,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 3,
+                          value: %("green")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      value: "]",
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 2,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("neutron"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("charm"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("up"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("down")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "]",
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("waw"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("omega")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
           end
@@ -4036,10 +4026,10 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               type: :noop,
               indentation_level: 0,
               prefix: "",
-              value: %([),
+              value: "[",
               add_comma: false,
               complete_bookend: :open,
-              collection_bookend: :open,
+              collection_bookend: :open
             ),
             an_actual_line(
               type: :delete,
@@ -4048,7 +4038,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("0"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4057,7 +4047,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("1"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4066,7 +4056,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("2"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4075,7 +4065,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("3"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4083,7 +4073,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("4"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4091,7 +4081,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("5"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4099,7 +4089,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("6"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4107,7 +4097,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("7"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -4115,42 +4105,42 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("8"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              value: %({),
+              value: "{",
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: :open,
+              collection_bookend: :open
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: %(foo:),
+              prefix: "foo:",
               value: %("bar"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: %(baz:),
+              prefix: "baz:",
               value: %("qux"),
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               prefix: "",
-              value: %(}),
+              value: "}",
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: :close,
+              collection_bookend: :close
             ),
             an_actual_line(
               type: :insert,
@@ -4159,25 +4149,24 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("9"),
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 0,
               prefix: "",
-              value: %(]),
+              value: "]",
               add_comma: false,
               complete_bookend: :close,
-              collection_bookend: :close,
-            ),
+              collection_bookend: :close
+            )
           ]
 
-          line_tree_with_elisions = with_configuration(
-            diff_elision_enabled: true,
-            diff_elision_maximum: 0,
-          ) do
-            described_class.call(lines)
-          end
+          line_tree_with_elisions =
+            with_configuration(
+              diff_elision_enabled: true,
+              diff_elision_maximum: 0
+            ) { described_class.call(lines) }
 
           # Result:
           #
@@ -4187,151 +4176,153 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
           # +   "9"
           #   ]
 
-          expect(line_tree_with_elisions).to match([
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              prefix: "",
-              value: %([),
-              add_comma: false,
-              complete_bookend: :open,
-              collection_bookend: :open,
-            ),
-            an_expected_line(
-              type: :delete,
-              indentation_level: 1,
-              prefix: "",
-              value: %("0"),
-              add_comma: true,
-              complete_bookend: nil,
-              collection_bookend: nil,
-            ),
-            an_expected_elision(
-              indentation_level: 1,
-              children: [
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("1"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("2"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("3"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("4"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("5"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("6"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("7"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("8"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %({),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: :open,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  prefix: %(foo:),
-                  value: %("bar"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  prefix: %(baz:),
-                  value: %("qux"),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %(}),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: :close,
-                ),
-              ]
-            ),
-            an_expected_line(
-              type: :insert,
-              indentation_level: 1,
-              prefix: "",
-              value: %("9"),
-              add_comma: false,
-              complete_bookend: nil,
-              collection_bookend: nil,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              prefix: "",
-              value: %(]),
-              add_comma: false,
-              complete_bookend: :close,
-              collection_bookend: :close,
-            ),
-          ])
+          expect(line_tree_with_elisions).to match(
+            [
+              an_expected_line(
+                type: :noop,
+                indentation_level: 0,
+                prefix: "",
+                value: "[",
+                add_comma: false,
+                complete_bookend: :open,
+                collection_bookend: :open
+              ),
+              an_expected_line(
+                type: :delete,
+                indentation_level: 1,
+                prefix: "",
+                value: %("0"),
+                add_comma: true,
+                complete_bookend: nil,
+                collection_bookend: nil
+              ),
+              an_expected_elision(
+                indentation_level: 1,
+                children: [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("1"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("2"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("3"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("4"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("5"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("6"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("7"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("8"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: "{",
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: :open
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    prefix: "foo:",
+                    value: %("bar"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    prefix: "baz:",
+                    value: %("qux"),
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: "}",
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: :close
+                  )
+                ]
+              ),
+              an_expected_line(
+                type: :insert,
+                indentation_level: 1,
+                prefix: "",
+                value: %("9"),
+                add_comma: false,
+                complete_bookend: nil,
+                collection_bookend: nil
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 0,
+                prefix: "",
+                value: "]",
+                add_comma: false,
+                complete_bookend: :close,
+                collection_bookend: :close
+              )
+            ]
+          )
         end
       end
     end
@@ -4358,144 +4349,137 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %([),
+                value: "[",
                 collection_bookend: :open,
-                complete_bookend: :open,
+                complete_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("one"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("two"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("three"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("four"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("five"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("six"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("seven"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("eight"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %("nine"),
+                value: %("nine")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %(]),
+                value: "]",
                 collection_bookend: :close,
-                complete_bookend: :close,
-              ),
+                complete_bookend: :close
+              )
             ]
 
-            line_tree_with_elisions = with_configuration(
-              diff_elision_enabled: true,
-              diff_elision_maximum: 0
-            ) do
-              described_class.call(lines)
-            end
+            line_tree_with_elisions =
+              with_configuration(
+                diff_elision_enabled: true,
+                diff_elision_maximum: 0
+              ) { described_class.call(lines) }
 
-            expect(line_tree_with_elisions).to match([
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("one"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("two"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("three"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("four"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("five"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("six"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("seven"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("eight"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("nine"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %(]),
-              ),
-            ])
+            expect(line_tree_with_elisions).to match(
+              [
+                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("one"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("two"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("three"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("four"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("five"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("six"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("seven"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("eight"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("nine")
+                ),
+                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+              ]
+            )
           end
         end
 
@@ -4517,61 +4501,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("FIVE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -4581,59 +4564,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               # +   "FIVE",
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("one"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("five"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("FIVE"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("one"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("five"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("FIVE"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -4654,61 +4639,60 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("ONE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -4718,59 +4702,61 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("one"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("ONE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("five"),
-                      add_comma?: true,
-                    ),
-                  ]
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("one"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("ONE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("five"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -4795,84 +4781,83 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("FIVE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("six"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("seven"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("eight"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("nine"),
+                  value: %("nine")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -4883,87 +4868,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("one"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("five"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("FIVE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("six"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("seven"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("eight"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("nine"),
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("one"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("five"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("FIVE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("six"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("seven"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("eight"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("nine")
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -4989,89 +4976,88 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("one"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("ONE"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("two"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("three"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("four"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("five"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("six"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("seven"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("eight"),
-                  add_comma?: true,
+                  add_comma?: true
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
-                  value: %("nine"),
+                  value: %("nine")
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
-                  value: %("NINE"),
+                  value: %("NINE")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0,
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -5083,87 +5069,89 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               # +   "NINE",
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("one"),
-                  add_comma?: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("ONE"),
-                  add_comma?: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("two"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("three"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("four"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("five"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("six"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("seven"),
-                      add_comma?: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("eight"),
-                      add_comma?: true,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("nine"),
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("NINE"),
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("one"),
+                    add_comma?: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("ONE"),
+                    add_comma?: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("two"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("three"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("four"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("five"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("six"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("seven"),
+                        add_comma?: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("eight"),
+                        add_comma?: true
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("nine")
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("NINE")
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
         end
@@ -5195,200 +5183,189 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %([),
+                value: "[",
                 collection_bookend: :open,
-                complete_bookend: :open,
+                complete_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("alpha"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("beta"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %([),
-                collection_bookend: :open,
+                value: "[",
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("proton"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("["),
-                collection_bookend: :open,
+                collection_bookend: :open
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
                 value: %("electron"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
                 value: %("photon"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 3,
-                value: %("gluon"),
+                value: %("gluon")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
                 value: %("]"),
                 add_comma?: true,
-                collection_bookend: :close,
+                collection_bookend: :close
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                value: %("neutron"),
+                value: %("neutron")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %(]),
+                value: "]",
                 add_comma?: true,
-                collection_bookend: :close,
+                collection_bookend: :close
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("digamma"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
                 value: %("waw"),
-                add_comma?: true,
+                add_comma?: true
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: %("omega"),
+                value: %("omega")
               ),
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: %(]),
+                value: "]",
                 collection_bookend: :close,
-                complete_bookend: :close,
-              ),
+                complete_bookend: :close
+              )
             ]
 
-            line_tree_with_elisions = with_configuration(
-              diff_elision_enabled: true,
-              diff_elision_maximum: 0,
-            ) do
-              described_class.call(lines)
-            end
+            line_tree_with_elisions =
+              with_configuration(
+                diff_elision_enabled: true,
+                diff_elision_maximum: 0
+              ) { described_class.call(lines) }
 
-            expect(line_tree_with_elisions).to match([
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("alpha"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("beta"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %([),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("proton"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("["),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("electron"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("photon"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 3,
-                value: %("gluon"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("]"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 2,
-                value: %("neutron"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %(]),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("digamma"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("waw"),
-                add_comma?: true,
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 1,
-                value: %("omega"),
-              ),
-              an_expected_line(
-                type: :noop,
-                indentation_level: 0,
-                value: %(]),
-              ),
-            ])
+            expect(line_tree_with_elisions).to match(
+              [
+                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("alpha"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("beta"),
+                  add_comma?: true
+                ),
+                an_expected_line(type: :noop, indentation_level: 1, value: "["),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("proton"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("[")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("electron"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("photon"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 3,
+                  value: %("gluon")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("]"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 2,
+                  value: %("neutron")
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: "]",
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("digamma"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("waw"),
+                  add_comma?: true
+                ),
+                an_expected_line(
+                  type: :noop,
+                  indentation_level: 1,
+                  value: %("omega")
+                ),
+                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+              ]
+            )
           end
         end
 
@@ -5418,108 +5395,107 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %([),
+                  value: "[",
                   collection_bookend: :open,
-                  complete_bookend: :open,
+                  complete_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("alpha"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
                   value: %("beta"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %([),
-                  collection_bookend: :open,
+                  value: "[",
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
                   value: %("proton"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %([),
-                  collection_bookend: :open,
+                  value: "[",
+                  collection_bookend: :open
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("electron"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
                   value: %("photon"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 3,
-                  value: %("gluon"),
+                  value: %("gluon")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %(]),
+                  value: "]",
                   add_comma: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: %("neutron"),
+                  value: %("neutron")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %(]),
+                  value: "]",
                   add_comma: true,
-                  collection_bookend: :close,
+                  collection_bookend: :close
                 ),
                 an_actual_line(
                   type: :delete,
                   indentation_level: 1,
                   value: %("digamma"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :insert,
                   indentation_level: 1,
                   value: %("waw"),
-                  add_comma: true,
+                  add_comma: true
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: %("omega"),
+                  value: %("omega")
                 ),
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: %(]),
+                  value: "]",
                   collection_bookend: :close,
-                  complete_bookend: :close,
-                ),
+                  complete_bookend: :close
+                )
               ]
 
-              line_tree_with_elisions = with_configuration(
-                diff_elision_enabled: true,
-                diff_elision_maximum: 0,
-              ) do
-                described_class.call(lines)
-              end
+              line_tree_with_elisions =
+                with_configuration(
+                  diff_elision_enabled: true,
+                  diff_elision_maximum: 0
+                ) { described_class.call(lines) }
 
               # Result:
               #
@@ -5530,107 +5506,109 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               #     # ...
               #   ]
 
-              expect(line_tree_with_elisions).to match([
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %([),
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("alpha"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("beta"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %([),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %("proton"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %([),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("electron"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("photon"),
-                      add_comma: true,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 3,
-                      value: %("gluon"),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %(]),
-                      add_comma: false,
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 2,
-                      value: %("neutron"),
-                    ),
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %(]),
-                      add_comma: false,
-                    ),
-                  ],
-                ),
-                an_expected_line(
-                  type: :delete,
-                  indentation_level: 1,
-                  value: %("digamma"),
-                  add_comma: true,
-                ),
-                an_expected_line(
-                  type: :insert,
-                  indentation_level: 1,
-                  value: %("waw"),
-                  add_comma: true,
-                ),
-                an_expected_elision(
-                  indentation_level: 1,
-                  children: [
-                    an_expected_line(
-                      type: :noop,
-                      indentation_level: 1,
-                      value: %("omega"),
-                    ),
-                  ]
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 0,
-                  value: %(]),
-                ),
-              ])
+              expect(line_tree_with_elisions).to match(
+                [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "["
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("alpha"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("beta"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "["
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: %("proton"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "["
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("electron"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("photon"),
+                        add_comma: true
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 3,
+                        value: %("gluon")
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: "]",
+                        add_comma: false
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 2,
+                        value: %("neutron")
+                      ),
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: "]",
+                        add_comma: false
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :delete,
+                    indentation_level: 1,
+                    value: %("digamma"),
+                    add_comma: true
+                  ),
+                  an_expected_line(
+                    type: :insert,
+                    indentation_level: 1,
+                    value: %("waw"),
+                    add_comma: true
+                  ),
+                  an_expected_elision(
+                    indentation_level: 1,
+                    children: [
+                      an_expected_line(
+                        type: :noop,
+                        indentation_level: 1,
+                        value: %("omega")
+                      )
+                    ]
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 0,
+                    value: "]"
+                  )
+                ]
+              )
             end
           end
 
@@ -5667,150 +5645,149 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %([),
+                    value: "[",
                     complete_bookend: :open,
-                    collection_bookend: :open,
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("alpha"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("zeta"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %("eta"),
+                    value: %("eta")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("beta"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("proton"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("electron"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %([),
-                    collection_bookend: :open,
+                    value: "[",
+                    collection_bookend: :open
                   ),
                   an_actual_line(
                     type: :delete,
                     indentation_level: 3,
                     value: %("red"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :insert,
                     indentation_level: 3,
                     value: %("blue"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 3,
-                    value: %("green"),
+                    value: %("green")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("neutron"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("charm"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
                     value: %("up"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: %("down"),
+                    value: %("down")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %(]),
+                    value: "]",
                     add_comma: true,
-                    collection_bookend: :close,
+                    collection_bookend: :close
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
                     value: %("waw"),
-                    add_comma: true,
+                    add_comma: true
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: %("omega"),
+                    value: %("omega")
                   ),
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: %(]),
+                    value: "]",
                     collection_bookend: :close,
-                    complete_bookend: :close,
-                  ),
+                    complete_bookend: :close
+                  )
                 ]
 
-                line_tree_with_elisions = with_configuration(
-                  diff_elision_enabled: true,
-                  diff_elision_maximum: 0,
-                ) do
-                  described_class.call(lines)
-                end
+                line_tree_with_elisions =
+                  with_configuration(
+                    diff_elision_enabled: true,
+                    diff_elision_maximum: 0
+                  ) { described_class.call(lines) }
 
                 # Result:
                 #
@@ -5828,163 +5805,164 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
                 #     # ...
                 #   ]
 
-
-                expect(line_tree_with_elisions).to match([
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("alpha"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %([),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("zeta"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("eta"),
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %(]),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("beta"),
-                        add_comma: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %([),
-                  ),
-                  an_expected_elision(
-                    indentation_level: 2,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("proton"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("electron"),
-                        add_comma: true,
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    value: %([),
-                  ),
-                  an_expected_line(
-                    type: :delete,
-                    indentation_level: 3,
-                    value: %("red"),
-                    add_comma: true,
-                  ),
-                  an_expected_line(
-                    type: :insert,
-                    indentation_level: 3,
-                    value: %("blue"),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 3,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 3,
-                        value: %("green"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 2,
-                    value: %(]),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 2,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("neutron"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("charm"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("up"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 2,
-                        value: %("down"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 1,
-                    value: %(]),
-                    add_comma: true,
-                  ),
-                  an_expected_elision(
-                    indentation_level: 1,
-                    children: [
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("waw"),
-                        add_comma: true,
-                      ),
-                      an_expected_line(
-                        type: :noop,
-                        indentation_level: 1,
-                        value: %("omega"),
-                      ),
-                    ],
-                  ),
-                  an_expected_line(
-                    type: :noop,
-                    indentation_level: 0,
-                    value: %(]),
-                  ),
-                ])
+                expect(line_tree_with_elisions).to match(
+                  [
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("alpha"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: "["
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("zeta"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("eta")
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: "]",
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("beta"),
+                          add_comma: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "["
+                    ),
+                    an_expected_elision(
+                      indentation_level: 2,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("proton"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("electron"),
+                          add_comma: true
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      value: "["
+                    ),
+                    an_expected_line(
+                      type: :delete,
+                      indentation_level: 3,
+                      value: %("red"),
+                      add_comma: true
+                    ),
+                    an_expected_line(
+                      type: :insert,
+                      indentation_level: 3,
+                      value: %("blue"),
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 3,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 3,
+                          value: %("green")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 2,
+                      value: "]",
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 2,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("neutron"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("charm"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("up"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 2,
+                          value: %("down")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 1,
+                      value: "]",
+                      add_comma: true
+                    ),
+                    an_expected_elision(
+                      indentation_level: 1,
+                      children: [
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("waw"),
+                          add_comma: true
+                        ),
+                        an_expected_line(
+                          type: :noop,
+                          indentation_level: 1,
+                          value: %("omega")
+                        )
+                      ]
+                    ),
+                    an_expected_line(
+                      type: :noop,
+                      indentation_level: 0,
+                      value: "]"
+                    )
+                  ]
+                )
               end
             end
           end
@@ -6017,10 +5995,10 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               type: :noop,
               indentation_level: 0,
               prefix: "",
-              value: %([),
+              value: "[",
               add_comma: false,
               complete_bookend: :open,
-              collection_bookend: :open,
+              collection_bookend: :open
             ),
             an_actual_line(
               type: :delete,
@@ -6029,7 +6007,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("0"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6038,7 +6016,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("1"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6047,7 +6025,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("2"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6056,7 +6034,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("3"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6064,7 +6042,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("4"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6072,7 +6050,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("5"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6080,7 +6058,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("6"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6088,7 +6066,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("7"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
@@ -6096,42 +6074,42 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("8"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              value: %({),
+              value: "{",
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: :open,
+              collection_bookend: :open
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: %(foo:),
+              prefix: "foo:",
               value: %("bar"),
               add_comma: true,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: %(baz:),
+              prefix: "baz:",
               value: %("qux"),
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 1,
               prefix: "",
-              value: %(}),
+              value: "}",
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: :close,
+              collection_bookend: :close
             ),
             an_actual_line(
               type: :insert,
@@ -6140,25 +6118,24 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
               value: %("9"),
               add_comma: false,
               complete_bookend: nil,
-              collection_bookend: nil,
+              collection_bookend: nil
             ),
             an_actual_line(
               type: :noop,
               indentation_level: 0,
               prefix: "",
-              value: %(]),
+              value: "]",
               add_comma: false,
               complete_bookend: :close,
-              collection_bookend: :close,
-            ),
+              collection_bookend: :close
+            )
           ]
 
-          line_tree_with_elisions = with_configuration(
-            diff_elision_enabled: true,
-            diff_elision_maximum: 0,
-          ) do
-            described_class.call(lines)
-          end
+          line_tree_with_elisions =
+            with_configuration(
+              diff_elision_enabled: true,
+              diff_elision_maximum: 0
+            ) { described_class.call(lines) }
 
           # Result:
           #
@@ -6168,151 +6145,153 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
           # +   "9"
           #   ]
 
-          expect(line_tree_with_elisions).to match([
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              prefix: "",
-              value: %([),
-              add_comma: false,
-              complete_bookend: :open,
-              collection_bookend: :open,
-            ),
-            an_expected_line(
-              type: :delete,
-              indentation_level: 1,
-              prefix: "",
-              value: %("0"),
-              add_comma: true,
-              complete_bookend: nil,
-              collection_bookend: nil,
-            ),
-            an_expected_elision(
-              indentation_level: 1,
-              children: [
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("1"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("2"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %("3"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("4"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("5"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("6"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("7"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %("8"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  value: %({),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: :open,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  prefix: %(foo:),
-                  value: %("bar"),
-                  add_comma: true,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 2,
-                  prefix: %(baz:),
-                  value: %("qux"),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: nil,
-                ),
-                an_expected_line(
-                  type: :noop,
-                  indentation_level: 1,
-                  prefix: "",
-                  value: %(}),
-                  add_comma: false,
-                  complete_bookend: nil,
-                  collection_bookend: :close,
-                ),
-              ]
-            ),
-            an_expected_line(
-              type: :insert,
-              indentation_level: 1,
-              prefix: "",
-              value: %("9"),
-              add_comma: false,
-              complete_bookend: nil,
-              collection_bookend: nil,
-            ),
-            an_expected_line(
-              type: :noop,
-              indentation_level: 0,
-              prefix: "",
-              value: %(]),
-              add_comma: false,
-              complete_bookend: :close,
-              collection_bookend: :close,
-            ),
-          ])
+          expect(line_tree_with_elisions).to match(
+            [
+              an_expected_line(
+                type: :noop,
+                indentation_level: 0,
+                prefix: "",
+                value: "[",
+                add_comma: false,
+                complete_bookend: :open,
+                collection_bookend: :open
+              ),
+              an_expected_line(
+                type: :delete,
+                indentation_level: 1,
+                prefix: "",
+                value: %("0"),
+                add_comma: true,
+                complete_bookend: nil,
+                collection_bookend: nil
+              ),
+              an_expected_elision(
+                indentation_level: 1,
+                children: [
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("1"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("2"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: %("3"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("4"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("5"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("6"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("7"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: %("8"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    value: "{",
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: :open
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    prefix: "foo:",
+                    value: %("bar"),
+                    add_comma: true,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 2,
+                    prefix: "baz:",
+                    value: %("qux"),
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: nil
+                  ),
+                  an_expected_line(
+                    type: :noop,
+                    indentation_level: 1,
+                    prefix: "",
+                    value: "}",
+                    add_comma: false,
+                    complete_bookend: nil,
+                    collection_bookend: :close
+                  )
+                ]
+              ),
+              an_expected_line(
+                type: :insert,
+                indentation_level: 1,
+                prefix: "",
+                value: %("9"),
+                add_comma: false,
+                complete_bookend: nil,
+                collection_bookend: nil
+              ),
+              an_expected_line(
+                type: :noop,
+                indentation_level: 0,
+                prefix: "",
+                value: "]",
+                add_comma: false,
+                complete_bookend: :close,
+                collection_bookend: :close
+              )
+            ]
+          )
         end
       end
     end
@@ -6323,13 +6302,7 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
     SuperDiff::Line.new(**args, add_comma: add_comma)
   end
 
-  def an_expected_line(
-    type:,
-    indentation_level:,
-    value:,
-    children: [],
-    **rest
-  )
+  def an_expected_line(type:, indentation_level:, value:, children: [], **rest)
     an_object_having_attributes(
       type: type,
       indentation_level: indentation_level,
@@ -6345,12 +6318,11 @@ RSpec.describe SuperDiff::TieredLinesElider, type: :unit do
       type: :elision,
       value: "# ...",
       indentation_level: indentation_level,
-      children: children.map do |child|
-        an_expected_line(
-          **child.base_matcher.expected.merge(elided?: true)
-        )
-      end,
-      elided?: true,
+      children:
+        children.map do |child|
+          an_expected_line(**child.base_matcher.expected.merge(elided?: true))
+        end,
+      elided?: true
     )
   end
 end

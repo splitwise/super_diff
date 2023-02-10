@@ -3,8 +3,9 @@ module SuperDiff
     module OperationTreeBuilders
       class CollectionContainingExactly < SuperDiff::OperationTreeBuilders::Base
         def self.applies_to?(expected, actual)
-          SuperDiff::RSpec.a_collection_containing_exactly_something?(expected) &&
-            actual.is_a?(::Array)
+          SuperDiff::RSpec.a_collection_containing_exactly_something?(
+            expected
+          ) && actual.is_a?(::Array)
         end
 
         def initialize(actual:, **)
@@ -17,11 +18,11 @@ module SuperDiff
         def unary_operations
           operations = []
 
-          (0...actual.length).reject do |index|
-            indexes_in_actual_but_not_in_expected.include?(index)
-          end.each do |index|
-            add_noop_to(operations, index)
-          end
+          (0...actual.length)
+            .reject do |index|
+              indexes_in_actual_but_not_in_expected.include?(index)
+            end
+            .each { |index| add_noop_to(operations, index) }
 
           indexes_in_actual_but_not_in_expected.each do |index|
             add_insert_to(operations, index)
@@ -51,7 +52,7 @@ module SuperDiff
             collection: collection,
             key: index,
             value: value,
-            index: index,
+            index: index
           )
         end
 
@@ -62,7 +63,7 @@ module SuperDiff
             collection: collection,
             key: index,
             value: value,
-            index: index,
+            index: index
           )
         end
 
@@ -73,7 +74,7 @@ module SuperDiff
             collection: collection,
             key: index,
             value: value,
-            index: index,
+            index: index
           )
         end
 

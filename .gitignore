@@ -1,8 +1,19 @@
 .DS_Store
 Gemfile.lock
+gemfiles/.bundle
 gemfiles/*.gemfile.lock
+node_modules
 pkg
 spec/examples.txt
 tmp
 zeus.server.log
 zeus.server-start.log
+
+# Ignore Yarn stuff
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
