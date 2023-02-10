@@ -3,9 +3,7 @@ module SuperDiff
     PROJECT_DIRECTORY = Pathname.new("../../..").expand_path(__dir__)
 
     def as_both_colored_and_uncolored
-      [true, false].each do |color_enabled|
-        yield color_enabled
-      end
+      [true, false].each { |color_enabled| yield color_enabled }
     end
 
     def make_plain_test_program(
@@ -18,7 +16,7 @@ module SuperDiff
         test,
         color_enabled: color_enabled,
         configuration: configuration,
-        preserve_as_whole_file: preserve_as_whole_file,
+        preserve_as_whole_file: preserve_as_whole_file
       )
     end
 
@@ -38,7 +36,7 @@ module SuperDiff
       color_enabled:,
       snippet:,
       expectation:,
-      key_enabled: true, 
+      key_enabled: true,
       newline_before_expectation: false,
       indentation: 7,
       diff: nil
@@ -53,9 +51,7 @@ module SuperDiff
           plain snippet
         end
 
-        if diff || newline_before_expectation
-          newline
-        end
+        newline if diff || newline_before_expectation
 
         indent by: indentation do
           evaluate_block(&expectation)
@@ -68,9 +64,7 @@ module SuperDiff
             if key_enabled
               newline
 
-              line do
-                blue "┌ (Key) ──────────────────────────┐"
-              end
+              line { blue "┌ (Key) ──────────────────────────┐" }
 
               line do
                 blue "│ "
@@ -90,9 +84,7 @@ module SuperDiff
                 blue " │"
               end
 
-              line do
-                blue "└─────────────────────────────────┘"
-              end
+              line { blue "└─────────────────────────────────┘" }
             end
 
             newline

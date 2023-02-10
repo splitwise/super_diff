@@ -20,23 +20,21 @@ module SuperDiff
 
       def to_diff(indentation_level:)
         TieredLinesFormatter.call(
-          perhaps_elide(flatten(indentation_level: indentation_level)),
+          perhaps_elide(flatten(indentation_level: indentation_level))
         )
       end
 
       def flatten(indentation_level:)
         operation_tree_flattener_class.call(
           self,
-          indentation_level: indentation_level,
+          indentation_level: indentation_level
         )
       end
 
       def pretty_print(pp)
         pp.group(1, "#<#{self.class.name} [", "]>") do
           pp.breakable
-          pp.seplist(self) do |value|
-            pp.pp value
-          end
+          pp.seplist(self) { |value| pp.pp value }
         end
       end
 

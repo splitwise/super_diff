@@ -13,12 +13,13 @@ module SuperDiff
       private
 
       def lcs_callbacks
-        @_lcs_callbacks ||= LcsCallbacks.new(
-          operation_tree: operation_tree,
-          expected: expected,
-          actual: actual,
-          compare: method(:compare),
-        )
+        @_lcs_callbacks ||=
+          LcsCallbacks.new(
+            operation_tree: operation_tree,
+            expected: expected,
+            actual: actual,
+            compare: method(:compare)
+          )
       end
 
       def operation_tree
@@ -28,7 +29,7 @@ module SuperDiff
       class LcsCallbacks
         extend AttrExtras.mixin
 
-        pattr_initialize [:operation_tree!, :expected!, :actual!, :compare!]
+        pattr_initialize %i[operation_tree! expected! actual! compare!]
         public :operation_tree
 
         def match(event)
@@ -62,7 +63,7 @@ module SuperDiff
             collection: expected,
             key: event.old_position,
             value: event.old_element,
-            index: event.old_position,
+            index: event.old_position
           )
         end
 
@@ -72,7 +73,7 @@ module SuperDiff
             collection: actual,
             key: event.new_position,
             value: event.new_element,
-            index: event.new_position,
+            index: event.new_position
           )
         end
 
@@ -82,7 +83,7 @@ module SuperDiff
             collection: actual,
             key: event.new_position,
             value: event.new_element,
-            index: event.new_position,
+            index: event.new_position
           )
         end
 
@@ -97,7 +98,7 @@ module SuperDiff
             right_value: event.new_element,
             left_index: event.old_position,
             right_index: event.new_position,
-            children: children,
+            children: children
           )
         end
       end

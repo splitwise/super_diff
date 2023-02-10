@@ -37,9 +37,9 @@ module SuperDiff
     attr_reader :version
 
     def compare?(operator, other_version)
-      Gem::Requirement.
-        new("#{operator} #{other_version}").
-        satisfied_by?(version)
+      Gem::Requirement.new("#{operator} #{other_version}").satisfied_by?(
+        version
+      )
     end
   end
 end

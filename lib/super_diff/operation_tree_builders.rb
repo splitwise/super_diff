@@ -9,7 +9,7 @@ module SuperDiff
     # TODO: Where is this used?
     autoload(
       :MultilineString,
-      "super_diff/operation_tree_builders/multiline_string",
+      "super_diff/operation_tree_builders/multiline_string"
     )
     autoload :TimeLike, "super_diff/operation_tree_builders/time_like"
   end

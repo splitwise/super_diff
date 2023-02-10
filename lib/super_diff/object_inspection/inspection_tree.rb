@@ -7,9 +7,7 @@ module SuperDiff
         @disallowed_node_names = disallowed_node_names
         @nodes = []
 
-        if block
-          instance_eval(&block)
-        end
+        instance_eval(&block) if block
       end
 
       Nodes.registry.each do |node_class|
@@ -34,12 +32,11 @@ module SuperDiff
       end
 
       def render_to_lines(object, type:, indentation_level:)
-        nodes.
-          each_with_index.
-          reduce([TieredLines.new, "", ""]) do |
-            (tiered_lines, prelude, prefix),
-            (node, index)
-          |
+        nodes
+          .each_with_index
+          .reduce(
+            [TieredLines.new, "", ""]
+          ) do |(tiered_lines, prelude, prefix), (node, index)|
             UpdateTieredLines.call(
               object: object,
               type: type,
@@ -49,10 +46,10 @@ module SuperDiff
               prelude: prelude,
               prefix: prefix,
               node: node,
-              index: index,
+              index: index
             )
-          end.
-          first
+          end
+          .first
       end
 
       def evaluate_block(object, &block)
@@ -74,15 +71,11 @@ module SuperDiff
       def insert_hash_inspection_of(hash)
         keys = hash.keys
 
-        format_keys_as_kwargs = keys.all? do |key|
-          key.is_a?(Symbol)
-        end
+        format_keys_as_kwargs = keys.all? { |key| key.is_a?(Symbol) }
 
         insert_separated_list(keys) do |key|
           if format_keys_as_kwargs
-            as_prefix_when_rendering_to_lines do
-              add_text "#{key}: "
-            end
+            as_prefix_when_rendering_to_lines { add_text "#{key}: " }
           else
             as_prefix_when_rendering_to_lines do
               add_inspection_of key, as_lines: false
@@ -103,13 +96,9 @@ module SuperDiff
       def insert_separated_list(enumerable, &block)
         enumerable.each_with_index do |value, index|
           as_lines_when_rendering_to_lines(
-            add_comma: index < enumerable.size - 1,
+            add_comma: index < enumerable.size - 1
           ) do
-            if index > 0
-              when_rendering_to_string do
-                add_text " "
-              end
-            end
+            when_rendering_to_string { add_text " " } if index > 0
 
             evaluate_block(value, &block)
           end
@@ -139,17 +128,17 @@ module SuperDiff
       class UpdateTieredLines
         extend AttrExtras.mixin
 
-        method_object [
-          :object!,
-          :type!,
-          :indentation_level!,
-          :nodes!,
-          :tiered_lines!,
-          :prelude!,
-          :prefix!,
-          :node!,
-          :index!
-        ]
+        method_object %i[
+                        object!
+                        type!
+                        indentation_level!
+                        nodes!
+                        tiered_lines!
+                        prelude!
+                        prefix!
+                        node!
+                        index!
+                      ]
 
         def call
           if rendering.is_a?(Array)
@@ -168,19 +157,13 @@ module SuperDiff
         private
 
         def concat_with_lines
-          additional_lines = prefix_with(
-            prefix,
-            prepend_with(prelude, rendering),
-          )
+          additional_lines =
+            prefix_with(prefix, prepend_with(prelude, rendering))
           [tiered_lines + additional_lines, "", ""]
         end
 
         def prefix_with(prefix, text)
-          if prefix.empty?
-            text
-          else
-            [text[0].prefixed_with(prefix)] + text[1..-1]
-          end
+          prefix.empty? ? text : [text[0].prefixed_with(prefix)] + text[1..-1]
         end
 
         def prepend_with(prelude, text)
@@ -196,9 +179,9 @@ module SuperDiff
         end
 
         def add_to_last_line
-          new_lines = tiered_lines[0..-2] + [
-            tiered_lines[-1].with_value_appended(rendering),
-          ]
+          new_lines =
+            tiered_lines[0..-2] +
+              [tiered_lines[-1].with_value_appended(rendering)]
           [new_lines, prelude, prefix]
         end
 
@@ -207,13 +190,15 @@ module SuperDiff
         end
 
         def add_to_lines
-          new_lines = tiered_lines + [
-            Line.new(
-              type: type,
-              indentation_level: indentation_level,
-              value: rendering,
-            ),
-          ]
+          new_lines =
+            tiered_lines +
+              [
+                Line.new(
+                  type: type,
+                  indentation_level: indentation_level,
+                  value: rendering
+                )
+              ]
           [new_lines, prelude, prefix]
         end
 
@@ -221,12 +206,13 @@ module SuperDiff
           if defined?(@_rendering)
             @_rendering
           else
-            @_rendering = node.render(
-              object,
-              preferably_as_lines: true,
-              type: type,
-              indentation_level: indentation_level,
-            )
+            @_rendering =
+              node.render(
+                object,
+                preferably_as_lines: true,
+                type: type,
+                indentation_level: indentation_level
+              )
           end
         end
       end

@@ -9,7 +9,7 @@ module SuperDiff
     autoload :Primitive, "super_diff/equality_matchers/primitive"
     autoload(
       :SinglelineString,
-      "super_diff/equality_matchers/singleline_string",
+      "super_diff/equality_matchers/singleline_string"
     )
   end
 end

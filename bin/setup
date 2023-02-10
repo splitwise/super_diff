@@ -5,17 +5,21 @@ set -euo pipefail
 ### PROJECT SETUP ##############################################################
 
 provision-project() {
+  banner "Adding simple-git-hooks"
+  yarn simple-git-hooks
+
+  banner "Installing appraisals"
   bundle exec appraisal install
 }
 
 ### DON'T MODIFY ANYTHING BELOW THIS LINE! #####################################
 
-# This setup script was generated with setup_script_generator 0.2.4,
+# This setup script was generated with setup_script_generator 0.5.0,
 # available on RubyGems.
 #
 # To regenerate this section, install the gem and run:
 #
-#     generate-setup -p ruby
+#     generate-setup -p ruby -p node
 #
 
 # --- SETUP --------------------------------------------------------------------
@@ -179,24 +183,31 @@ setup() {
 
 # --- RUBY ---------------------------------------------------------------------
 
+REQUIRED_RUBY_VERSION=
+
 provision-ruby() {
   USE_BUNDLER_1=0
 
   if [[ -f .tool-versions ]]; then
-    REQUIRED_RUBY_VERSION=$(cat .tool-versions | grep '^ruby ' | sed -Ee 's/^ruby (.+)$/\1/')
+    REQUIRED_RUBY_VERSION=$(cat .tool-versions | grep '^ruby ' | head -n 1 | sed -Ee 's/^ruby (.+)$/\1/')
   elif [[ -f .ruby-version ]]; then
-    REQUIRED_RUBY_VERSION=$(cat .ruby-version)
-  else
-    error "You don't seem to have a Ruby version set in your project."
+    REQUIRED_RUBY_VERSION=$(cat .ruby-version | head -n 1 | sed -Ee 's/^ruby-([[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+)$/\1/')
+  fi
+
+  if [[ -z $REQUIRED_RUBY_VERSION ]]; then
+    error "Could not determine required Ruby version for this project."
     print-wrapped "\
-You'll need to create either a .tool-versions file or .ruby-version file in your
-project before you can run this script."
+Your project needs to include either a valid .tool-versions file with a 'ruby'
+line or a valid .ruby-version file."
     exit 1
   fi
 
   ensure-ruby-development-libraries-installed
   ensure-ruby-installed
-  ensure-project-ruby-dependencies-installed
+
+  if [[ -f Gemfile ]]; then
+    ensure-project-ruby-dependencies-installed
+  fi
 }
 
 ensure-ruby-development-libraries-installed() {
@@ -230,10 +241,9 @@ ensure-ruby-installed() {
       fi
     fi
   elif has-executable rvm; then
-    if ! (rvm list | grep $required_ruby_version'\>' &>/dev/null); then
-      banner "Installing Ruby $required_ruby_version with rvm"
-      rvm install $required_ruby_version
-      rvm use $required_ruby_version
+    if ! (rvm list | grep $REQUIRED_RUBY_VERSION'\>' &>/dev/null); then
+      banner "Installing Ruby $REQUIRED_RUBY_VERSION with rvm"
+      rvm install $REQUIRED_RUBY_VERSION
     fi
   else
     error "You don't seem to have a Ruby manager installed."
@@ -254,8 +264,8 @@ has-bundler() {
 ensure-project-ruby-dependencies-installed() {
   banner 'Installing Ruby dependencies'
 
-  if [[ $USE_BUNDLER_1 -eq 1 ]] && (! has-bundler || [[ $(bundle -v) =~ '^1\.' ]]); then
-    gem install bundler -v '~> 1.0'
+  if [[ $USE_BUNDLER_1 -eq 1 ]] && (! has-bundler || ! [[ $(bundle -v) =~ '^Bundler version 1\.' ]]); then
+    gem install bundler:'~> 1.0'
   elif ! has-bundler; then
     gem install bundler
   fi
@@ -263,8 +273,86 @@ ensure-project-ruby-dependencies-installed() {
   bundle check || bundle install
 }
 
+# --- NODE ---------------------------------------------------------------------
+
+REQUIRED_NODE_VERSION=
+
+provision-node() {
+  if [[ -f .tool-versions ]]; then
+    REQUIRED_NODE_VERSION=$((cat .tool-versions | grep '^nodejs ' | sed -Ee 's/^nodejs (.+)$/\1/') || echo '')
+  elif [[ -f .node-version ]]; then
+    REQUIRED_NODE_VERSION=$(cat .node-version)
+  elif [[ -f .nvmrc ]]; then
+    REQUIRED_NODE_VERSION=$(cat .nvmrc)
+  fi
+
+  if [[ -z $REQUIRED_NODE_VERSION ]]; then
+    error 'Could not determine required Node version for this project.'
+    print-wrapped "\
+Your project needs to include either a valid .tool-versions file with a 'nodejs'
+line or a valid .node-version or .nvmrc file."
+    exit 1
+  fi
+
+  ensure-node-installed
+  ensure-project-node-dependencies-installed
+}
+
+ensure-node-installed() {
+  if has-executable asdf; then
+    if ! (asdf current nodejs | grep $REQUIRED_NODE_VERSION'\>' &>/dev/null); then
+      banner "Installing Node $REQUIRED_NODE_VERSION with asdf"
+      asdf install nodejs $REQUIRED_NODE_VERSION
+    fi
+  elif has-executable nodenv; then
+    if ! (nodenv versions | grep $REQUIRED_NODE_VERSION'\>' &>/dev/null); then
+      banner "Installing Node $REQUIRED_NODE_VERSION with nodenv"
+      nodenv install --skip-existing "$REQUIRED_NODE_VERSION"
+    fi
+  elif has-executable nvm; then
+    if ! (nvm list | grep $required_node_version'\>' &>/dev/null); then
+      banner "Installing node $required_node_version with nvm"
+      nvm install $required_node_version
+      nvm use $required_node_version
+    fi
+  else
+    error "You don't seem to have a Node manager installed."
+    print-wrapped "\
+We recommend using asdf. You can find instructions to install it here:
+
+    https://asdf-vm.com
+
+When you're done, close and re-open this terminal tab and re-run this script."
+    exit 1
+  fi
+}
+
+ensure-project-node-dependencies-installed() {
+  if [[ -f package-lock.json ]]; then
+    banner 'Installing Node dependencies'
+    npm install
+  elif [[ -f yarn.lock ]]; then
+    if ! type yarn &>/dev/null || ! yarn --version &>/dev/null; then
+      banner 'Installing Yarn'
+      npm install -g yarn
+    fi
+    banner 'Installing Node dependencies'
+    yarn install
+  else
+    error "Sorry, I'm not sure how to install your dependencies."
+    print-wrapped "\
+It doesn't look like you have a package-lock.json or yarn.lock in your project
+yet. I'm not sure which package manager you plan on using, so you'll need to run
+either \`npm install\` or \`yarn install\` once first. Additionally, if you want
+to use Yarn 2+, then now is the time to switch to that. Then you can re-run this
+script."
+    exit 1
+  fi
+}
+
 run-provisions() {
   provision-ruby
+  provision-node
 }
 
 # --- FIN ----------------------------------------------------------------------

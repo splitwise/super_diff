@@ -32,25 +32,23 @@ module SuperDiff
           "Expected output of test " +
             (expect_output_to_contain_color? ? "to " : "not to ") +
             "contain color, but " +
-            (expect_output_to_contain_color? ? "it did not" : "it did") +
-            "."
+            (expect_output_to_contain_color? ? "it did not" : "it did") + "."
         else
           message =
             "Expected test to produce #{expect_output_to_contain_color? ? "colored" : "uncolored"} output, but it did not.\n\n" +
-            "Expected output to contain:\n\n" +
-            SuperDiff::Test::OutputHelpers.bookended(expected_output) +
-            "\n" +
-            "Actual output:\n\n" +
-            SuperDiff::Test::OutputHelpers.bookended(actual_output)
+              "Expected output to contain:\n\n" +
+              SuperDiff::Test::OutputHelpers.bookended(expected_output) + "\n" +
+              "Actual output:\n\n" +
+              SuperDiff::Test::OutputHelpers.bookended(actual_output)
 
-          if ["1", "true"].include?(ENV["SHOW_DIFF"])
-            ::RSpec::Matchers::ExpectedsForMultipleDiffs.
-              from(expected_output).
-              message_with_diff(
-                message,
-                ::RSpec::Expectations.differ,
-                actual_output,
-              )
+          if %w[1 true].include?(ENV["SHOW_DIFF"])
+            ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(
+              expected_output
+            ).message_with_diff(
+              message,
+              ::RSpec::Expectations.differ,
+              actual_output
+            )
           else
             message
           end
@@ -75,15 +73,16 @@ module SuperDiff
       end
 
       def actual_output
-        @_actual_output ||= begin
-          output = program.run.output.strip
+        @_actual_output ||=
+          begin
+            output = program.run.output.strip
 
-          if output_processor
-            output.gsub!(output_processor[0], output_processor[1])
+            if output_processor
+              output.gsub!(output_processor[0], output_processor[1])
+            end
+
+            output
           end
-
-          output
-        end
       end
 
       def presence_of_color_matches?

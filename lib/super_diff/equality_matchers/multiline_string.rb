@@ -10,20 +10,18 @@ module SuperDiff
           Differing strings.
 
           #{
-            # TODO: This whole thing should not be red or green, just the values
-            Helpers.style(
-              :expected,
-              "Expected: " +
-              SuperDiff.inspect_object(expected, as_lines: false),
-            )
-          }
+          # TODO: This whole thing should not be red or green, just the values
+          Helpers.style(
+            :expected,
+            "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
+          )
+        }
           #{
-            Helpers.style(
-              :actual,
-              "  Actual: " +
-              SuperDiff.inspect_object(actual, as_lines: false),
-            )
-          }
+          Helpers.style(
+            :actual,
+            "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
+          )
+        }
 
           Diff:
 

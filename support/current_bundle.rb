@@ -10,8 +10,7 @@ module SuperDiff
     APPRAISAL_GEMFILES_PATH = ROOT_DIR.join("gemfiles")
 
     def assert_appraisal!
-      unless appraisal_in_use?
-        raise AppraisalNotSpecified.new(<<~MESSAGE)
+      raise AppraisalNotSpecified.new(<<~MESSAGE) unless appraisal_in_use?
           Please run tests by specifying an appraisal, like:
 
               bundle exec appraisal <appraisal_name> #{current_command}
@@ -24,7 +23,6 @@ module SuperDiff
 
               bin/rspec #{shell_arguments}
         MESSAGE
-      end
     end
 
     def appraisal_in_use?
@@ -52,15 +50,15 @@ module SuperDiff
     end
 
     def available_appraisals
-      @_available_appraisals ||= Dir.glob(
-        APPRAISAL_GEMFILES_PATH.join("*.gemfile").to_s,
-      ).
-        map do |path|
-          FakeAppraisal.new(
-            name: File.basename(path).sub(/\.gemfile$/, ""),
-            gemfile_path: path,
-          )
-        end
+      @_available_appraisals ||=
+        Dir
+          .glob(APPRAISAL_GEMFILES_PATH.join("*.gemfile").to_s)
+          .map do |path|
+            FakeAppraisal.new(
+              name: File.basename(path).sub(/\.gemfile$/, ""),
+              gemfile_path: path
+            )
+          end
     end
 
     def current_command
@@ -80,6 +78,7 @@ module SuperDiff
       end
     end
 
-    class AppraisalNotSpecified < ArgumentError; end
+    class AppraisalNotSpecified < ArgumentError
+    end
   end
 end

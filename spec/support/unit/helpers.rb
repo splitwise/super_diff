@@ -3,9 +3,7 @@ module SuperDiff
     def with_configuration(configuration)
       old_configuration = SuperDiff.configuration.dup
       SuperDiff.configuration.merge!(configuration)
-      yield.tap do
-        SuperDiff.configuration.merge!(old_configuration)
-      end
+      yield.tap { SuperDiff.configuration.merge!(old_configuration) }
     end
 
     def colored(*args, **opts, &block)

@@ -4,7 +4,7 @@ module SuperDiff
       raise(
         NotImplementedError,
         "#{self.class} must implement ##{caller_locations(1, 1).first.label}",
-        caller(1),
+        caller(1)
       )
     end
 
@@ -12,7 +12,7 @@ module SuperDiff
       raise(
         NotImplementedError,
         "#{self} must implement .#{caller_locations(1, 1).first.label}",
-        caller(1),
+        caller(1)
       )
     end
   end

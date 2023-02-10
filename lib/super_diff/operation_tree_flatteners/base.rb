@@ -29,11 +29,7 @@ module SuperDiff
       end
 
       def middle_lines
-        if tiered_lines.empty?
-          []
-        else
-          tiered_lines[1..-2]
-        end
+        tiered_lines.empty? ? [] : tiered_lines[1..-2]
       end
 
       def ending_lines

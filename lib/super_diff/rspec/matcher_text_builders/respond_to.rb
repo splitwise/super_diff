@@ -24,9 +24,7 @@ module SuperDiff
         end
 
         def add_extra_after_expected_to(template)
-          if expected_arity
-            add_arity_clause_to(template)
-          end
+          add_arity_clause_to(template) if expected_arity
 
           if arbitrary_keywords?
             add_arbitrary_keywords_clause_to(template)
@@ -34,9 +32,7 @@ module SuperDiff
             add_keywords_clause_to(template)
           end
 
-          if unlimited_arguments?
-            add_unlimited_arguments_clause_to(template)
-          end
+          add_unlimited_arguments_clause_to(template) if unlimited_arguments?
         end
 
         private

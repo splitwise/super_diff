@@ -3,7 +3,7 @@ module SuperDiff
     module OperationTreeFlatteners
       autoload(
         :ActiveRecordRelation,
-        "super_diff/active_record/operation_tree_flatteners/active_record_relation",
+        "super_diff/active_record/operation_tree_flatteners/active_record_relation"
       )
     end
   end

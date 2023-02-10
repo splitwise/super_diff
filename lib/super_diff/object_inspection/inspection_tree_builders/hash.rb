@@ -12,9 +12,7 @@ module SuperDiff
 
           InspectionTree.new do
             only_when empty do
-              as_lines_when_rendering_to_lines do
-                add_text "{}"
-              end
+              as_lines_when_rendering_to_lines { add_text "{}" }
             end
 
             only_when nonempty do
@@ -22,17 +20,11 @@ module SuperDiff
                 add_text "{"
               end
 
-              when_rendering_to_string do
-                add_text " "
-              end
+              when_rendering_to_string { add_text " " }
 
-              nested do |hash|
-                insert_hash_inspection_of(hash)
-              end
+              nested { |hash| insert_hash_inspection_of(hash) }
 
-              when_rendering_to_string do
-                add_text " "
-              end
+              when_rendering_to_string { add_text " " }
 
               as_lines_when_rendering_to_lines(collection_bookend: :close) do
                 add_text "}"

@@ -53,7 +53,7 @@ module SuperDiff
             collection: expected,
             key: index,
             index: index,
-            value: expected[index],
+            value: expected[index]
           )
         end
       end
@@ -65,7 +65,7 @@ module SuperDiff
             collection: actual,
             key: index,
             index: index,
-            value: actual[index],
+            value: actual[index]
           )
         end
       end
@@ -77,7 +77,7 @@ module SuperDiff
             collection: actual,
             key: index,
             index: index,
-            value: actual[index],
+            value: actual[index]
           )
         end
       end

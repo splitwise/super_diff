@@ -20,16 +20,14 @@ module SuperDiff
       def expected_line
         Helpers.style(
           :expected,
-          "Expected: " +
-          SuperDiff.inspect_object(expected, as_lines: false),
+          "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
         )
       end
 
       def actual_line
         Helpers.style(
           :actual,
-          "  Actual: " +
-          SuperDiff.inspect_object(actual, as_lines: false),
+          "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
         )
       end
 

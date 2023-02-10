@@ -9,38 +9,23 @@ module SuperDiff
         def call
           InspectionTree.new do
             as_lines_when_rendering_to_lines(collection_bookend: :open) do
-              add_text do |time|
-                "#<#{time.class} "
-              end
+              add_text { |time| "#<#{time.class} " }
 
-              when_rendering_to_lines do
-                add_text "{"
-              end
+              when_rendering_to_lines { add_text "{" }
             end
 
             when_rendering_to_string do
               add_text do |time|
                 time.strftime("%Y-%m-%d %H:%M:%S") +
-                  (time.subsec == 0 ? "" : "+#{time.subsec.inspect}") +
-                  " " + time.strftime("%:z") +
-                  (time.zone ? " (#{time.zone})" : "")
+                  (time.subsec == 0 ? "" : "+#{time.subsec.inspect}") + " " +
+                  time.strftime("%:z") + (time.zone ? " (#{time.zone})" : "")
               end
             end
 
             when_rendering_to_lines do
               nested do |time|
                 insert_separated_list(
-                  [
-                    :year,
-                    :month,
-                    :day,
-                    :hour,
-                    :min,
-                    :sec,
-                    :subsec,
-                    :zone,
-                    :utc_offset
-                  ]
+                  %i[year month day hour min sec subsec zone utc_offset]
                 ) do |name|
                   add_text name.to_s
                   add_text ": "
@@ -50,9 +35,7 @@ module SuperDiff
             end
 
             as_lines_when_rendering_to_lines(collection_bookend: :close) do
-              when_rendering_to_lines do
-                add_text "}"
-              end
+              when_rendering_to_lines { add_text "}" }
 
               add_text ">"
             end

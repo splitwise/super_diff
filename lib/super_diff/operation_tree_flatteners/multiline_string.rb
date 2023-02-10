@@ -8,7 +8,8 @@ module SuperDiff
             indentation_level: indentation_level,
             # TODO: Test that quotes and things don't get escaped but escape
             # characters do
-            value: operation.value.inspect[1..-2].gsub(/\\"/, '"').gsub(/\\'/, "'")
+            value:
+              operation.value.inspect[1..-2].gsub(/\\"/, '"').gsub(/\\'/, "'")
           )
         end
       end

@@ -8,11 +8,7 @@ module SuperDiff
     method_object :lines
 
     def call
-      if all_lines_are_changed_or_unchanged?
-        lines
-      else
-        elided_lines
-      end
+      all_lines_are_changed_or_unchanged? ? lines : elided_lines
     end
 
     private
@@ -22,9 +18,11 @@ module SuperDiff
     end
 
     def elided_lines
-      boxes_to_elide.reverse.reduce(lines) do |lines_with_elisions, box|
-        with_box_elided(box, lines_with_elisions)
-      end
+      boxes_to_elide
+        .reverse
+        .reduce(lines) do |lines_with_elisions, box|
+          with_box_elided(box, lines_with_elisions)
+        end
     end
 
     def boxes_to_elide
@@ -35,9 +33,7 @@ module SuperDiff
     end
 
     def panes_to_consider_for_eliding
-      panes.select do |pane|
-        pane.type == :clean && pane.range.size > maximum
-      end
+      panes.select { |pane| pane.type == :clean && pane.range.size > maximum }
     end
 
     def panes
@@ -45,24 +41,26 @@ module SuperDiff
     end
 
     def padded_dirty_panes
-      @_padded_dirty_panes ||= combine_congruent_panes(
-        dirty_panes.
-        map(&:padded).
-        map { |pane| pane.capped_to(0, lines.size - 1) }
-      )
+      @_padded_dirty_panes ||=
+        combine_congruent_panes(
+          dirty_panes
+            .map(&:padded)
+            .map { |pane| pane.capped_to(0, lines.size - 1) }
+        )
     end
 
     def dirty_panes
-      @_dirty_panes ||= lines.
-        each_with_index.
-        select { |line, index| line.type != :noop }.
-        reduce([]) do |panes, (_, index)|
-          if !panes.empty? && panes.last.range.end == index - 1
-            panes[0..-2] + [panes[-1].extended_to(index)]
-          else
-            panes + [Pane.new(type: :dirty, range: index..index)]
+      @_dirty_panes ||=
+        lines
+          .each_with_index
+          .select { |line, index| line.type != :noop }
+          .reduce([]) do |panes, (_, index)|
+            if !panes.empty? && panes.last.range.end == index - 1
+              panes[0..-2] + [panes[-1].extended_to(index)]
+            else
+              panes + [Pane.new(type: :dirty, range: index..index)]
+            end
           end
-        end
     end
 
     def with_box_elided(box, lines)
@@ -92,7 +90,7 @@ module SuperDiff
         with_subset_of_lines_elided(
           lines,
           range: box.range,
-          indentation_level: box.indentation_level,
+          indentation_level: box.indentation_level
         )
       end
     end
@@ -106,26 +104,25 @@ module SuperDiff
     end
 
     def all_indentation_levels
-      lines.
-        map(&:indentation_level).
-        select { |indentation_level| indentation_level > 0 }.
-        uniq
+      lines
+        .map(&:indentation_level)
+        .select { |indentation_level| indentation_level > 0 }
+        .uniq
     end
 
     def find_boxes_to_elide_within(pane)
       set_of_boxes =
         normalized_box_groups_at_decreasing_indentation_levels_within(pane)
 
-      total_size_before_eliding = lines[pane.range].
-        reject(&:complete_bookend?).
-        size
+      total_size_before_eliding =
+        lines[pane.range].reject(&:complete_bookend?).size
 
       if total_size_before_eliding > maximum
         if maximum > 0
           set_of_boxes.find do |boxes|
             total_size_after_eliding =
               total_size_before_eliding -
-              boxes.sum { |box| box.range.size - SIZE_OF_ELISION }
+                boxes.sum { |box| box.range.size - SIZE_OF_ELISION }
             total_size_after_eliding <= maximum
           end
         else
@@ -137,22 +134,21 @@ module SuperDiff
     end
 
     def normalized_box_groups_at_decreasing_indentation_levels_within(pane)
-      box_groups_at_decreasing_indentation_levels_within(pane).
-        map(&method(:filter_out_boxes_fully_contained_in_others)).
-        map(&method(:combine_congruent_boxes))
+      box_groups_at_decreasing_indentation_levels_within(pane).map(
+        &method(:filter_out_boxes_fully_contained_in_others)
+      ).map(&method(:combine_congruent_boxes))
     end
 
     def box_groups_at_decreasing_indentation_levels_within(pane)
-      boxes_within_pane = boxes.select do |box|
-        box.fits_fully_within?(pane)
-      end
+      boxes_within_pane = boxes.select { |box| box.fits_fully_within?(pane) }
 
-      possible_indentation_levels = boxes_within_pane.
-        map(&:indentation_level).
-        select { |indentation_level| indentation_level > 0 }.
-        uniq.
-        sort.
-        reverse
+      possible_indentation_levels =
+        boxes_within_pane
+          .map(&:indentation_level)
+          .select { |indentation_level| indentation_level > 0 }
+          .uniq
+          .sort
+          .reverse
 
       possible_indentation_levels.map do |indentation_level|
         boxes_within_pane.select do |box|
@@ -162,9 +158,10 @@ module SuperDiff
     end
 
     def filter_out_boxes_fully_contained_in_others(boxes)
-      sorted_boxes = boxes.sort_by do |box|
-        [box.indentation_level, box.range.begin, box.range.end]
-      end
+      sorted_boxes =
+        boxes.sort_by do |box|
+          [box.indentation_level, box.range.begin, box.range.end]
+        end
 
       boxes.reject do |box2|
         sorted_boxes.any? do |box1|
@@ -185,14 +182,14 @@ module SuperDiff
       criterion = on
       spannables.reduce([]) do |combined_spannables, spannable|
         if (
-          !combined_spannables.empty? &&
-          spannable.range.begin <= combined_spannables.last.range.end + 1 &&
-          spannable.public_send(criterion) ==
-            combined_spannables.last.public_send(criterion)
-        )
-          combined_spannables[0..-2] + [
-            combined_spannables[-1].extended_to(spannable.range.end),
-          ]
+             !combined_spannables.empty? &&
+               spannable.range.begin <=
+                 combined_spannables.last.range.end + 1 &&
+               spannable.public_send(criterion) ==
+                 combined_spannables.last.public_send(criterion)
+           )
+          combined_spannables[0..-2] +
+            [combined_spannables[-1].extended_to(spannable.range.end)]
         else
           combined_spannables + [spannable]
         end
@@ -213,10 +210,8 @@ module SuperDiff
 
       with_subset_of_lines_elided(
         lines,
-        range: Range.new(
-          box.range.begin,
-          box.range.begin + amount_to_elide - 1,
-        ),
+        range:
+          Range.new(box.range.begin, box.range.begin + amount_to_elide - 1),
         indentation_level: box.indentation_level
       )
     end
@@ -252,14 +247,16 @@ module SuperDiff
         end
 
       opening_length, closing_length =
-        half_of_maximum, half_of_maximum + remainder
+        half_of_maximum,
+        half_of_maximum + remainder
 
       with_subset_of_lines_elided(
         lines,
-        range: Range.new(
-          box.range.begin + opening_length,
-          box.range.end - closing_length,
-        ),
+        range:
+          Range.new(
+            box.range.begin + opening_length,
+            box.range.end - closing_length
+          ),
         indentation_level: box.indentation_level
       )
     end
@@ -270,8 +267,8 @@ module SuperDiff
         range,
         Elision.new(
           indentation_level: indentation_level,
-          children: lines[range].map(&:as_elided),
-        ),
+          children: lines[range].map(&:as_elided)
+        )
       )
     end
 
@@ -282,7 +279,7 @@ module SuperDiff
     class BuildPanes
       extend AttrExtras.mixin
 
-      method_object [:dirty_panes!, :lines!]
+      method_object %i[dirty_panes! lines!]
 
       def call
         beginning + middle + ending
@@ -291,19 +288,13 @@ module SuperDiff
       private
 
       def beginning
-        if (
-          dirty_panes.empty? ||
-          dirty_panes.first.range.begin == 0
-        )
+        if (dirty_panes.empty? || dirty_panes.first.range.begin == 0)
           []
         else
           [
             Pane.new(
               type: :clean,
-              range: Range.new(
-                0,
-                dirty_panes.first.range.begin - 1
-              )
+              range: Range.new(0, dirty_panes.first.range.begin - 1)
             )
           ]
         end
@@ -313,43 +304,30 @@ module SuperDiff
         if dirty_panes.size == 1
           dirty_panes
         else
-          dirty_panes.
-            each_with_index.
-            each_cons(2).
-            reduce([]) do |panes, ((pane1, _), (pane2, index2))|
+          dirty_panes
+            .each_with_index
+            .each_cons(2)
+            .reduce([]) do |panes, ((pane1, _), (pane2, index2))|
               panes +
-              [
-                pane1,
-                Pane.new(
-                  type: :clean,
-                  range: Range.new(
-                    pane1.range.end + 1,
-                    pane2.range.begin - 1,
+                [
+                  pane1,
+                  Pane.new(
+                    type: :clean,
+                    range: Range.new(pane1.range.end + 1, pane2.range.begin - 1)
                   )
-                )
-              ] + (
-                index2 == dirty_panes.size - 1 ?
-                [pane2] :
-                []
-              )
+                ] + (index2 == dirty_panes.size - 1 ? [pane2] : [])
             end
         end
       end
 
       def ending
-        if (
-          dirty_panes.empty? ||
-          dirty_panes.last.range.end >= lines.size - 1
-        )
+        if (dirty_panes.empty? || dirty_panes.last.range.end >= lines.size - 1)
           []
         else
           [
             Pane.new(
               type: :clean,
-              range: Range.new(
-                dirty_panes.last.range.end + 1,
-                lines.size - 1
-              )
+              range: Range.new(dirty_panes.last.range.end + 1, lines.size - 1)
             )
           ]
         end
@@ -359,26 +337,20 @@ module SuperDiff
     class Pane
       extend AttrExtras.mixin
 
-      rattr_initialize [:type!, :range!]
+      rattr_initialize %i[type! range!]
 
       def extended_to(new_end)
         self.class.new(type: type, range: range.begin..new_end)
       end
 
       def padded
-        self.class.new(
-          type: type,
-          range: Range.new(range.begin, range.end)
-        )
+        self.class.new(type: type, range: Range.new(range.begin, range.end))
       end
 
       def capped_to(beginning, ending)
         new_beginning = range.begin < beginning ? beginning : range.begin
         new_ending = range.end > ending ? ending : range.end
-        self.class.new(
-          type: type,
-          range: Range.new(new_beginning, new_ending),
-        )
+        self.class.new(type: type, range: Range.new(new_beginning, new_ending))
       end
     end
 
@@ -427,14 +399,14 @@ module SuperDiff
       def open_new_collection_box(line, index)
         open_collection_boxes << Box.new(
           indentation_level: line.indentation_level,
-          range: index..index,
+          range: index..index
         )
       end
 
       def record_item_box(line, index)
         final_boxes << Box.new(
           indentation_level: line.indentation_level,
-          range: index..index,
+          range: index..index
         )
       end
     end
@@ -442,7 +414,7 @@ module SuperDiff
     class Box
       extend AttrExtras.mixin
 
-      rattr_initialize [:indentation_level!, :range!]
+      rattr_initialize %i[indentation_level! range!]
 
       def fully_contains?(other)
         range.begin <= other.range.begin && range.end >= other.range.end
@@ -464,7 +436,7 @@ module SuperDiff
     class Elision
       extend AttrExtras.mixin
 
-      rattr_initialize [:indentation_level!, :children!]
+      rattr_initialize %i[indentation_level! children!]
 
       def type
         :elision

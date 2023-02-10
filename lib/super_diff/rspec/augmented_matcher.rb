@@ -43,8 +43,9 @@ module SuperDiff
           actual: actual_for_matcher_text,
           expected_for_failure_message: expected_for_failure_message,
           expected_for_description: expected_for_description,
-          expected_action_for_failure_message: expected_action_for_failure_message,
-          expected_action_for_description: expected_action_for_description,
+          expected_action_for_failure_message:
+            expected_action_for_failure_message,
+          expected_action_for_description: expected_action_for_description
         }
       end
 
@@ -84,9 +85,7 @@ module SuperDiff
 
       def matchers
         Object.new.tap do |object|
-          object.singleton_class.class_eval do
-            include ::RSpec::Matchers
-          end
+          object.singleton_class.class_eval { include ::RSpec::Matchers }
         end
       end
 

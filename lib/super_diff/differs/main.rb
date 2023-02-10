@@ -3,14 +3,7 @@ module SuperDiff
     class Main
       extend AttrExtras.mixin
 
-      method_object(
-        :expected,
-        :actual,
-        [
-          indent_level: 0,
-          omit_empty: false,
-        ],
-      )
+      method_object(:expected, :actual, [indent_level: 0, omit_empty: false])
 
       def call
         if resolved_class
@@ -31,11 +24,7 @@ module SuperDiff
       def available_classes
         classes = SuperDiff.configuration.extra_differ_classes + DEFAULTS
 
-        if omit_empty?
-          classes
-        else
-          classes + [Empty]
-        end
+        omit_empty? ? classes : classes + [Empty]
       end
     end
   end

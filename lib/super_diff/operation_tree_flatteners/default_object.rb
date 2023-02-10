@@ -7,8 +7,7 @@ module SuperDiff
         "#<#{operation_tree.underlying_object.class.name}:" +
           SuperDiff::Helpers.object_address_for(
             operation_tree.underlying_object
-          ) +
-          " {"
+          ) + " {"
       end
 
       def close_token

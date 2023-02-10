@@ -5,7 +5,7 @@ RSpec.describe "RSpec's `have_<predicate>` matcher" do
     context "given nothing" do
       it "returns the correct output" do
         expect(have_experience.description).to eq(
-          "return true for `has_experience?`",
+          "return true for `has_experience?`"
         )
       end
     end
@@ -13,7 +13,7 @@ RSpec.describe "RSpec's `have_<predicate>` matcher" do
     context "given an argument" do
       it "returns the correct output" do
         expect(have_ingredients(:sugar).description).to eq(
-          "return true for `has_ingredients?(:sugar)`",
+          "return true for `has_ingredients?(:sugar)`"
         )
       end
     end

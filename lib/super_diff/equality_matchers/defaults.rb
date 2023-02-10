@@ -6,7 +6,7 @@ module SuperDiff
       Hash,
       MultilineString,
       SinglelineString,
-      Default,
+      Default
     ].freeze
   end
 end

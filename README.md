@@ -2,7 +2,7 @@
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
-[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/mcmire/super_diff/super_diff.yml?branch=master 
+[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/mcmire/super_diff/super_diff.yml?branch=master
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
 [issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
@@ -36,7 +36,7 @@ the output it produces leaves much to be desired.
 For instance,
 let's say you wanted to compare these two hashes:
 
-``` ruby
+```ruby
 actual = {
   customer: {
     person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr.", age: 17),
@@ -48,11 +48,7 @@ actual = {
     }
   },
   items: [
-    {
-      name: "Fender Stratocaster",
-      cost: 100_000,
-      options: ["red", "blue", "green"]
-    },
+    { name: "Fender Stratocaster", cost: 100_000, options: %w[red blue green] },
     { name: "Mattel Hoverboard" }
   ]
 }
@@ -68,11 +64,7 @@ expected = {
     }
   },
   items: [
-    {
-      name: "Fender Stratocaster",
-      cost: 100_000,
-      options: ["red", "blue", "green"]
-    },
+    { name: "Fender Stratocaster", cost: 100_000, options: %w[red blue green] },
     { name: "Chevy 4x4" }
   ]
 }
@@ -80,7 +72,7 @@ expected = {
 
 If, somewhere in a test, you were to say:
 
-``` ruby
+```ruby
 expect(actual).to eq(expected)
 ```
 
@@ -107,7 +99,7 @@ depending on your type of project.
 If you're developing a Rails app,
 add the following to your Gemfile:
 
-``` ruby
+```ruby
 group :test do
   gem "super_diff"
 end
@@ -116,7 +108,7 @@ end
 After running `bundle install`,
 add the following to your `rails_helper`:
 
-``` ruby
+```ruby
 require "super_diff/rspec-rails"
 ```
 
@@ -126,14 +118,14 @@ If you're developing an app using Hanami or Sinatra,
 or merely using a part of Rails such as ActiveModel,
 add the following to your Gemfile where appropriate:
 
-``` ruby
+```ruby
 gem "super_diff"
 ```
 
 After running `bundle install`,
 add the following to your `spec_helper`:
 
-``` ruby
+```ruby
 require "super_diff/rspec"
 require "super_diff/active_support"
 ```
@@ -143,13 +135,13 @@ require "super_diff/active_support"
 If you're developing a gem,
 add the following to your gemspec:
 
-``` ruby
+```ruby
 spec.add_development_dependency "super_diff"
 ```
 
 Now add the following to your `spec_helper`:
 
-``` ruby
+```ruby
 require "super_diff/rspec"
 ```
 
@@ -161,7 +153,7 @@ to your test helper file
 (`rails_helper` or `spec_helper`)
 which looks something like this:
 
-``` ruby
+```ruby
 SuperDiff.configure do |config|
   # ...
 end
@@ -172,7 +164,7 @@ end
 If you don't like the colors that SuperDiff uses,
 you can change them like this:
 
-``` ruby
+```ruby
 SuperDiff.configure do |config|
   config.actual_color = :green
   config.expected_color = :red
@@ -186,21 +178,25 @@ for the list of available colors.
 
 You can also completely disable colorized output.
 
-``` ruby
+<!-- prettier-ignore-start -->
+```ruby
 SuperDiff.configure do |config|
   config.color_enabled = false
-end
+  end
 ```
+<!-- prettier-ignore-end -->
 
 ### Disabling the key
 
 You can disable the key by changing the following config (default: true):
 
-``` ruby
+<!-- prettier-ignore-start -->
+```ruby
 SuperDiff.configure do |config|
   config.key_enabled = false
 end
 ```
+<!-- prettier-ignore-end -->
 
 ### Hiding unimportant lines
 
@@ -210,22 +206,22 @@ diffs such as those you get from a conventional version control system
 solve this problem by removing those unchanged lines from the diff
 entirely. The same can be done in SuperDiff.
 
-``` ruby
+```ruby
 SuperDiff.configure do |config|
   config.diff_elision_enabled = false
   config.diff_elision_maximum = 3
 end
 ```
 
-* `diff_elision_enabled` — The elision logic is disabled by default so
+- `diff_elision_enabled` — The elision logic is disabled by default so
   as not to surprise people, so setting this to `true` will turn it on.
-* `diff_elision_maximum` — This number controls what happens to
-   unchanged lines (i.e. lines that are neither "insert" lines nor
-   "delete" lines) that are in between changed lines. If a section of
-   unchanged lines is beyond this number, the gem will elide (a fancy
-   word for remove) the data structures within that section as much as
-   possible until the limit is reached or it cannot go further. Elided
-   lines are replaced with a `# ...` marker.
+- `diff_elision_maximum` — This number controls what happens to
+  unchanged lines (i.e. lines that are neither "insert" lines nor
+  "delete" lines) that are in between changed lines. If a section of
+  unchanged lines is beyond this number, the gem will elide (a fancy
+  word for remove) the data structures within that section as much as
+  possible until the limit is reached or it cannot go further. Elided
+  lines are replaced with a `# ...` marker.
 
 ### Diffing custom objects
 
@@ -240,7 +236,7 @@ of key pieces involved in the diffing process.
 I'll have more about how that works soon,
 but here is what such a configuration would look like:
 
-``` ruby
+```ruby
 SuperDiff.configure do |config|
   config.add_extra_differ_class(YourDiffer)
   config.add_extra_operation_tree_builder_class(YourOperationTreeBuilder)
@@ -285,10 +281,10 @@ and Rails >= 5.x.
 In developing this gem
 I made use of or was heavily inspired by these libraries:
 
-* [Diff::LCS][diff-lcs],
+- [Diff::LCS][diff-lcs],
   the library I started with in the [original version of this gem][original-version]
   (made in 2011!)
-* The pretty-printing algorithms and API within [PrettyPrinter][pretty-printer] and [AwesomePrint][awesome-print],
+- The pretty-printing algorithms and API within [PrettyPrinter][pretty-printer] and [AwesomePrint][awesome-print],
   from which I borrowed ideas to develop the [inspectors][inspection-tree].
 
 Thank you to the authors of these libraries!

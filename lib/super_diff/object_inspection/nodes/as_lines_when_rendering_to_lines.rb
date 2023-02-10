@@ -26,17 +26,9 @@ module SuperDiff
         def render_to_string(object)
           # TODO: This happens a lot, can we simplify this?
           string =
-            if block
-              render_to_string_in_subtree(object)
-            else
-              immediate_value.to_s
-            end
+            (block ? render_to_string_in_subtree(object) : immediate_value.to_s)
 
-          if add_comma?
-            string + ","
-          else
-            string
-          end
+          add_comma? ? string + "," : string
         end
 
         def render_to_lines(object, type:, indentation_level:)
@@ -46,23 +38,20 @@ module SuperDiff
                 object,
                 type: type,
                 indentation_level: indentation_level,
-                disallowed_node_names: [
-                  :line,
-                  :as_lines_when_rendering_to_lines,
-                ],
+                disallowed_node_names: %i[line as_lines_when_rendering_to_lines]
               )
             else
               [
                 SuperDiff::Line.new(
                   type: type,
                   indentation_level: indentation_level,
-                  value: immediate_value.to_s,
-                ),
+                  value: immediate_value.to_s
+                )
               ]
             end
 
           with_collection_bookend_added_to_last_line_in(
-            with_add_comma_added_to_last_line_in(lines),
+            with_add_comma_added_to_last_line_in(lines)
           )
         end
 
@@ -76,9 +65,8 @@ module SuperDiff
 
         def with_collection_bookend_added_to_last_line_in(lines)
           if collection_bookend
-            lines[0..-2] + [
-              lines[-1].clone_with(collection_bookend: collection_bookend),
-            ]
+            lines[0..-2] +
+              [lines[-1].clone_with(collection_bookend: collection_bookend)]
           else
             lines
           end

@@ -20,8 +20,17 @@ bundle exec rake
 ```
 
 Next, make changes to the code as necessary.
-Code is linted using Rubocop,
-so make sure that's set up in your editor.
+
+Code is linted and formatted using Prettier,
+so [make sure that's set up in your editor first][prettier-editors],
+or you can always fix any lint violations by running:
+
+```
+yarn lint:fix
+```
+
+[prettier-editors]: https://prettier.io/docs/en/editors.html
+
 If you update one of the tests,
 you can run it like so:
 

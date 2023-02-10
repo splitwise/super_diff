@@ -7,15 +7,15 @@ module SuperDiff
       STYLES = { insert: :actual, delete: :expected, noop: :plain }.freeze
 
       method_object(
-        [
-          :open_token!,
-          :close_token!,
-          :operation_tree!,
-          :indent_level!,
-          :add_comma!,
-          :collection_prefix!,
-          :build_item_prefix!,
-        ],
+        %i[
+          open_token!
+          close_token!
+          operation_tree!
+          indent_level!
+          add_comma!
+          collection_prefix!
+          build_item_prefix!
+        ]
       )
 
       def call
@@ -30,7 +30,7 @@ module SuperDiff
         [
           "  #{indentation}#{collection_prefix}#{open_token}",
           *contents,
-          "  #{indentation}#{close_token}#{comma}",
+          "  #{indentation}#{close_token}#{comma}"
         ]
       end
 
@@ -47,7 +47,7 @@ module SuperDiff
       def handle_change_operation(operation)
         SuperDiff::RecursionGuard.guarding_recursion_of(
           operation.left_collection,
-          operation.right_collection,
+          operation.right_collection
         ) do |already_seen|
           if already_seen
             raise "Infinite recursion!"
@@ -55,7 +55,7 @@ module SuperDiff
             operation.child_operations.to_diff(
               indent_level: indent_level + 1,
               collection_prefix: build_item_prefix.call(operation),
-              add_comma: operation.should_add_comma_after_displaying?,
+              add_comma: operation.should_add_comma_after_displaying?
             )
           end
         end
@@ -64,15 +64,14 @@ module SuperDiff
       def handle_non_change_operation(operation)
         icon = ICONS.fetch(operation.name, " ")
         style_name = STYLES.fetch(operation.name, :normal)
-        chunk = build_chunk_for(
-          operation,
-          prefix: build_item_prefix.call(operation),
-          icon: icon,
-        )
+        chunk =
+          build_chunk_for(
+            operation,
+            prefix: build_item_prefix.call(operation),
+            icon: icon
+          )
 
-        if operation.should_add_comma_after_displaying?
-          chunk << ","
-        end
+        chunk << "," if operation.should_add_comma_after_displaying?
 
         style_chunk(style_name, chunk)
       end
@@ -82,44 +81,43 @@ module SuperDiff
           build_chunk_from_string(
             SuperDiff::RecursionGuard::PLACEHOLDER,
             prefix: build_item_prefix.call(operation),
-            icon: icon,
+            icon: icon
           )
         else
           build_chunk_by_inspecting(
             operation.value,
             prefix: build_item_prefix.call(operation),
-            icon: icon,
+            icon: icon
           )
         end
       end
 
       def build_chunk_by_inspecting(value, prefix:, icon:)
-        inspection = SuperDiff.inspect_object(
-          value,
-          as_single_line: false,
-        )
+        inspection = SuperDiff.inspect_object(value, as_single_line: false)
         build_chunk_from_string(inspection, prefix: prefix, icon: icon)
       end
 
       def build_chunk_from_string(value, prefix:, icon:)
-        value.split("\n").
-          map.with_index { |line, index|
+        value
+          .split("\n")
+          .map
+          .with_index do |line, index|
             [
               icon,
               " ",
               indentation(offset: 1),
               (index == 0 ? prefix : ""),
-              line,
+              line
             ].join
-          }.
-          join("\n")
+          end
+          .join("\n")
       end
 
       def style_chunk(style_name, chunk)
-        chunk.
-          split("\n").
-          map { |line| Helpers.style(style_name, line) }.
-          join("\n")
+        chunk
+          .split("\n")
+          .map { |line| Helpers.style(style_name, line) }
+          .join("\n")
       end
 
       def indentation(offset: 0)
@@ -127,11 +125,7 @@ module SuperDiff
       end
 
       def comma
-        if add_comma?
-          ","
-        else
-          ""
-        end
+        add_comma? ? "," : ""
       end
     end
   end

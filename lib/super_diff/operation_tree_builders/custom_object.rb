@@ -25,13 +25,15 @@ module SuperDiff
       attr_reader :expected_attributes, :actual_attributes
 
       def establish_expected_and_actual_attributes
-        @expected_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => expected.public_send(name))
-        end
+        @expected_attributes =
+          attribute_names.reduce({}) do |hash, name|
+            hash.merge(name => expected.public_send(name))
+          end
 
-        @actual_attributes = attribute_names.reduce({}) do |hash, name|
-          hash.merge(name => actual.public_send(name))
-        end
+        @actual_attributes =
+          attribute_names.reduce({}) do |hash, name|
+            hash.merge(name => actual.public_send(name))
+          end
       end
     end
   end

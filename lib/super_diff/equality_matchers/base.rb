@@ -12,7 +12,7 @@ module SuperDiff
           :expected!,
           :actual!,
           extra_operation_tree_builder_classes: [],
-          extra_diff_formatter_classes: [],
+          extra_diff_formatter_classes: []
         ]
       )
 

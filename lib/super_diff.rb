@@ -5,7 +5,7 @@ require "patience_diff"
 module SuperDiff
   autoload(
     :ColorizedDocumentExtensions,
-    "super_diff/colorized_document_extensions",
+    "super_diff/colorized_document_extensions"
   )
   autoload :OperationTreeFlatteners, "super_diff/operation_tree_flatteners"
   autoload :Configuration, "super_diff/configuration"
@@ -39,9 +39,8 @@ module SuperDiff
 
   def self.inspect_object(object, as_lines:, **rest)
     SuperDiff::RecursionGuard.guarding_recursion_of(object) do
-      inspection_tree = ObjectInspection::InspectionTreeBuilders::Main.call(
-        object
-      )
+      inspection_tree =
+        ObjectInspection::InspectionTreeBuilders::Main.call(object)
 
       if as_lines
         inspection_tree.render_to_lines(object, **rest)
@@ -68,11 +67,7 @@ module SuperDiff
   end
 
   def self.insert_overrides(target_module, mod = nil, &block)
-    if mod
-      target_module.prepend(mod)
-    else
-      target_module.prepend(Module.new(&block))
-    end
+    mod ? target_module.prepend(mod) : target_module.prepend(Module.new(&block))
   end
 
   def self.insert_singleton_overrides(target_module, mod = nil, &block)

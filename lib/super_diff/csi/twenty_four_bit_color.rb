@@ -28,7 +28,7 @@ module SuperDiff
           SERIAL_CODE,
           triplet.red,
           triplet.blue,
-          triplet.green,
+          triplet.green
         ].join(";") + "m"
       end
 
@@ -37,7 +37,7 @@ module SuperDiff
           red: triplet.red,
           green: triplet.green,
           blue: triplet.blue,
-          layer: :foreground,
+          layer: :foreground
         )
       end
 
@@ -55,11 +55,12 @@ module SuperDiff
         if match
           {
             layer: interpret_layer!(match[1]),
-            triplet: interpret_triplet!(
-              red: match[2].to_i,
-              green: match[3].to_i,
-              blue: match[4].to_i,
-            ),
+            triplet:
+              interpret_triplet!(
+                red: match[2].to_i,
+                green: match[3].to_i,
+                blue: match[4].to_i
+              )
           }
         end
       end
@@ -67,10 +68,10 @@ module SuperDiff
       def interpret_triplet!(red:, green:, blue:)
         if invalid_triplet?(red, green, blue)
           raise ArgumentError.new(
-            "(#{red},#{green},#{blue}) is not a valid color " +
-            "specification. All components must be between " +
-            "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}.",
-          )
+                  "(#{red},#{green},#{blue}) is not a valid color " +
+                    "specification. All components must be between " +
+                    "#{VALID_COMPONENT_RANGE.begin} and #{VALID_COMPONENT_RANGE.end}."
+                )
         end
 
         Triplet.new(red: red, green: green, blue: blue)

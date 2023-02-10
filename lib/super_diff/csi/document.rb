@@ -7,9 +7,7 @@ module SuperDiff
         @parts = []
         @indentation_stack = []
 
-        if block
-          evaluate_block(&block)
-        end
+        evaluate_block(&block) if block
       end
 
       def each(&block)
@@ -21,9 +19,8 @@ module SuperDiff
       end
 
       def colorize(*args, **opts, &block)
-        contents, colors = args.partition do |arg|
-          arg.is_a?(String) || arg.is_a?(self.class)
-        end
+        contents, colors =
+          args.partition { |arg| arg.is_a?(String) || arg.is_a?(self.class) }
 
         if colors[0].is_a?(Symbol)
           if colors[0] == :colorize
@@ -47,13 +44,9 @@ module SuperDiff
         if block
           evaluate_block(&block)
         elsif contents.any?
-          contents.each do |part|
-            add_part(part)
-          end
+          contents.each { |part| add_part(part) }
         else
-          raise ArgumentError.new(
-            "Must have something to add to the document!",
-          )
+          raise ArgumentError.new("Must have something to add to the document!")
         end
       end
       alias_method :plain, :text
@@ -68,8 +61,8 @@ module SuperDiff
             text(*contents)
           else
             raise ArgumentError.new(
-              "Must have something to add to the document!",
-            )
+                    "Must have something to add to the document!"
+                  )
           end
         end
 
@@ -155,11 +148,7 @@ module SuperDiff
         end
 
         def wrapper
-          if for_line?
-            :line
-          else
-            :text
-          end
+          for_line? ? :line : :text
         end
       end
 

@@ -28,16 +28,13 @@ class CommandRunner
 Command #{command.inspect} failed, exiting with status #{exit_status}.
       MESSAGE
 
-      if output
-        message << <<-MESSAGE
+      message << <<-MESSAGE if output
 Output:
 #{
-  SuperDiff::Test::OutputHelpers.divider("START") +
-  output +
-  SuperDiff::Test::OutputHelpers.divider("END")
-}
+        SuperDiff::Test::OutputHelpers.divider("START") + output +
+          SuperDiff::Test::OutputHelpers.divider("END")
+      }
         MESSAGE
-      end
 
       message
     end
@@ -66,16 +63,13 @@ Output:
 Command #{formatted_command.inspect} timed out after #{timeout} seconds.
       MESSAGE
 
-      if output
-        message << <<-MESSAGE
+      message << <<-MESSAGE if output
 Output:
 #{
-  SuperDiff::Test::OutputHelpers.divider("START") +
-  output +
-  SuperDiff::Test::OutputHelpers.divider("END")
-}
+        SuperDiff::Test::OutputHelpers.divider("START") + output +
+          SuperDiff::Test::OutputHelpers.divider("END")
+      }
         MESSAGE
-      end
 
       message
     end
@@ -96,26 +90,20 @@ Output:
   end
 
   attr_reader :status, :options, :env
-  attr_accessor :run_quickly, :run_successfully, :retries,
-    :timeout
+  attr_accessor :run_quickly, :run_successfully, :retries, :timeout
 
   def initialize(*args)
     @reader, @writer = IO.pipe
     options = (args.last.is_a?(Hash) ? args.pop : {})
     @args = args
-    @options = options.merge(
-      err: [:child, :out],
-      out: @writer,
-    )
+    @options = options.merge(err: %i[child out], out: @writer)
     @env = extract_env_from(@options)
 
     @process = ChildProcess.build(*command)
-    @env.each do |key, value|
-      @process.environment[key] = value
-    end
+    @env.each { |key, value| @process.environment[key] = value }
     @process.io.stdout = @process.io.stderr = @writer
 
-    @wrapper = -> (block) { block.call }
+    @wrapper = ->(block) { block.call }
     self.directory = Dir.pwd
     @run_quickly = false
     @run_successfully = false
@@ -137,43 +125,36 @@ Output:
   end
 
   def formatted_command
-    [formatted_env, Shellwords.join(command)].
-      reject(&:empty?).
-      join(" ")
+    [formatted_env, Shellwords.join(command)].reject(&:empty?).join(" ")
   end
 
   def run
     possibly_running_quickly do
       run_with_debugging
 
-      if run_successfully && !success?
-        fail!
-      end
+      fail! if run_successfully && !success?
     end
 
     self
   end
 
   def stop
-    if !writer.closed?
-      writer.close
-    end
+    writer.close if !writer.closed?
   end
 
   def output
-    @_output ||= begin
-      stop
-      reader.read
-    end
+    @_output ||=
+      begin
+        stop
+        reader.read
+      end
   end
 
   def elided_output
     lines = output.split(/\n/)
     new_lines = lines[0..4]
 
-    if lines.size > 10
-      new_lines << "(...#{lines.size - 10} more lines...)"
-    end
+    new_lines << "(...#{lines.size - 10} more lines...)" if lines.size > 10
 
     new_lines << lines[-5..-1]
     new_lines.join("\n")
@@ -189,10 +170,10 @@ Output:
 
   def fail!
     raise CommandFailedError.create(
-      command: formatted_command,
-      exit_status: exit_status,
-      output: output,
-    )
+            command: formatted_command,
+            exit_status: exit_status,
+            output: output
+          )
   end
 
   def has_output?(expected_output)
@@ -210,9 +191,9 @@ Output:
   private
 
   def extract_env_from(options)
-    options.delete(:env) { {} }.reduce({}) do |hash, (key, value)|
-      hash.merge(key.to_s => value)
-    end
+    options
+      .delete(:env) { {} }
+      .reduce({}) { |hash, (key, value)| hash.merge(key.to_s => value) }
   end
 
   def command
@@ -239,9 +220,7 @@ Output:
     run_with_wrapper
 
     debug do
-      "\n" +
-        SuperDiff::Test::OutputHelpers.divider("START") +
-        output +
+      "\n" + SuperDiff::Test::OutputHelpers.divider("START") + output +
         SuperDiff::Test::OutputHelpers.divider("END")
     end
   end
@@ -254,10 +233,10 @@ Output:
         stop
 
         raise CommandTimedOutError.create(
-          command: formatted_command,
-          timeout: timeout,
-          output: output,
-        )
+                command: formatted_command,
+                timeout: timeout,
+                output: output
+              )
       end
     else
       yield
@@ -269,8 +248,6 @@ Output:
   end
 
   def debug
-    if debugging_enabled?
-      puts yield
-    end
+    puts yield if debugging_enabled?
   end
 end

@@ -26,13 +26,16 @@ class TestPlan
   end
 
   def boot
-    ENV["BUNDLE_GEMFILE"] ||=
-      SuperDiff::CurrentBundle.instance.latest_appraisal.gemfile_path.to_s
+    ENV["BUNDLE_GEMFILE"] ||= SuperDiff::CurrentBundle
+      .instance
+      .latest_appraisal
+      .gemfile_path
+      .to_s
     require "bundler/setup"
 
     $LOAD_PATH.unshift(PROJECT_DIRECTORY.join("lib"))
 
-    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.2")
       begin
         require "pry-byebug"
       rescue LoadError
@@ -47,7 +50,9 @@ class TestPlan
       end
     end
 
-    if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?("no_rails_")
+    if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?(
+         "no_rails_"
+       )
       require "rspec"
     else
       require "rails"
@@ -58,15 +63,14 @@ class TestPlan
     require "super_diff"
     SuperDiff.const_set(:IntegrationTests, Module.new)
 
-    Dir.glob(SUPPORT_DIR.join("{models,matchers}/*.rb")).sort.each do |path|
-      require path
-    end
+    Dir
+      .glob(SUPPORT_DIR.join("{models,matchers}/*.rb"))
+      .sort
+      .each { |path| require path }
 
     require SUPPORT_DIR.join("integration/matchers")
 
-    RSpec.configure do |config|
-      config.include SuperDiff::IntegrationTests
-    end
+    RSpec.configure { |config| config.include SuperDiff::IntegrationTests }
   end
 
   def boot_active_support
@@ -82,7 +86,7 @@ class TestPlan
 
     ActiveRecord::Base.establish_connection(
       adapter: "sqlite3",
-      database: ":memory:",
+      database: ":memory:"
     )
 
     RSpec.configuration do |config|
@@ -92,9 +96,10 @@ class TestPlan
       end
     end
 
-    Dir.glob(SUPPORT_DIR.join("models/active_record/*.rb")).sort.each do |path|
-      require path
-    end
+    Dir
+      .glob(SUPPORT_DIR.join("models/active_record/*.rb"))
+      .sort
+      .each { |path| require path }
   rescue LoadError => e
     # active_record may not be in the Gemfile, so that's okay
     puts "Error in TestPlan#boot_active_record: #{e.message}"
@@ -152,40 +157,35 @@ class TestPlan
   end
 
   def run_test_with_libraries(*libraries)
-    if !using_outside_of_zeus?
-      option_parser.parse!
-    end
+    option_parser.parse! if !using_outside_of_zeus?
 
     SuperDiff.configuration.merge!(
       configuration.merge(color_enabled: color_enabled?)
     )
 
-    if !pry_enabled?
-      ENV["DISABLE_PRY"] = "true"
-    end
+    ENV["DISABLE_PRY"] = "true" if !pry_enabled?
 
     yield if block_given?
 
     libraries.each { |library| require library }
 
-    if !using_outside_of_zeus?
-      RSpec::Core::Runner.invoke
-    end
+    RSpec::Core::Runner.invoke if !using_outside_of_zeus?
   end
 
   def option_parser
-    @_option_parser ||= OptionParser.new do |opts|
-      opts.on("--[no-]color", "Enable or disable color.") do |value|
-        @color_enabled = value
-      end
+    @_option_parser ||=
+      OptionParser.new do |opts|
+        opts.on("--[no-]color", "Enable or disable color.") do |value|
+          @color_enabled = value
+        end
 
-      opts.on("--[no-]pry", "Disable Pry.") do |value|
-        @pry_enabled = value
-      end
+        opts.on("--[no-]pry", "Disable Pry.") { |value| @pry_enabled = value }
 
-      opts.on("--configuration CONFIG", String, "Configure SuperDiff.") do |json|
-        @configuration = JSON.parse(json).transform_keys(&:to_sym)
+        opts.on(
+          "--configuration CONFIG",
+          String,
+          "Configure SuperDiff."
+        ) { |json| @configuration = JSON.parse(json).transform_keys(&:to_sym) }
       end
-    end
   end
 end

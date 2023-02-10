@@ -8,17 +8,7 @@ module SuperDiff
       protected
 
       def attribute_names
-        base = [
-          "year",
-          "month",
-          "day",
-          "hour",
-          "min",
-          "sec",
-          "subsec",
-          "zone",
-          "utc_offset",
-        ]
+        base = %w[year month day hour min sec subsec zone utc_offset]
 
         # If timezones are different, also show a normalized timestamp at the
         # end of the diff to help visualize why they are different moments in

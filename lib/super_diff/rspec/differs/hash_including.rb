@@ -5,7 +5,7 @@ module SuperDiff
         def self.applies_to?(expected, actual)
           (
             SuperDiff::RSpec.a_hash_including_something?(expected) ||
-            SuperDiff::RSpec.hash_including_something?(expected)
+              SuperDiff::RSpec.hash_including_something?(expected)
           ) && actual.is_a?(::Hash)
         end
 

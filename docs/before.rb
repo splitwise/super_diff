@@ -16,17 +16,17 @@ describe "My test" do
           line_1: "456 Ponderosa Ct.",
           city: "Hill Valley",
           state: "CA",
-          zip: "90382",
-        },
+          zip: "90382"
+        }
       },
       items: [
         {
           name: "Fender Stratocaster",
           cost: 100_000,
-          options: ["red", "blue", "green"],
+          options: %w[red blue green]
         },
-        { name: "Mattel Hoverboard" },
-      ],
+        { name: "Mattel Hoverboard" }
+      ]
     }
 
     expected = {
@@ -36,17 +36,17 @@ describe "My test" do
           line_1: "123 Main St.",
           city: "Hill Valley",
           state: "CA",
-          zip: "90382",
-        },
+          zip: "90382"
+        }
       },
       items: [
         {
           name: "Fender Stratocaster",
           cost: 100_000,
-          options: ["red", "blue", "green"],
+          options: %w[red blue green]
         },
-        { name: "Chevy 4x4" },
-      ],
+        { name: "Chevy 4x4" }
+      ]
     }
 
     expect(actual).to eq(expected)

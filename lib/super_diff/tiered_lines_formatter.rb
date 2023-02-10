@@ -15,7 +15,7 @@ module SuperDiff
         formattable_lines.each do |formattable_line|
           doc.public_send(
             "#{formattable_line.color}_line",
-            formattable_line.content,
+            formattable_line.content
           )
         end
       end
@@ -34,7 +34,7 @@ module SuperDiff
         delete: :expected,
         insert: :actual,
         elision: :elision_marker,
-        noop: :plain,
+        noop: :plain
       }.freeze
 
       pattr_initialize :line
@@ -47,7 +47,7 @@ module SuperDiff
         COLORS.fetch(line.type) do
           raise(
             KeyError,
-            "Couldn't find color for line type #{line.type.inspect}!",
+            "Couldn't find color for line type #{line.type.inspect}!"
           )
         end
       end
@@ -58,7 +58,7 @@ module SuperDiff
         ICONS.fetch(line.type) do
           raise(
             KeyError,
-            "Couldn't find icon for line type #{line.type.inspect}!",
+            "Couldn't find icon for line type #{line.type.inspect}!"
           )
         end
       end
@@ -68,11 +68,7 @@ module SuperDiff
       end
 
       def possible_comma
-        if line.add_comma?
-          ","
-        else
-          ""
-        end
+        line.add_comma? ? "," : ""
       end
     end
   end
