@@ -13,7 +13,7 @@
   "devDependencies": {
     "@lavamoat/allow-scripts": "^2.3.0",
     "@prettier/plugin-ruby": "^3.2.2",
-    "prettier": "^2.7.1",
+    "prettier": "^2.8.7",
     "simple-git-hooks": "^2.8.1"
   },
   "packageManager": "yarn@3.4.1",
