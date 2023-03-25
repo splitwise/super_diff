@@ -12,6 +12,7 @@
       "boot_rails": {
         "run_rspec_rails_test": []
       }
-    }
+    },
+    "boot_rails_engine": []
   }
 }

@@ -112,7 +112,6 @@ module SuperDiff
                 color_enabled: #{color_enabled?.inspect},
                 configuration: #{configuration.inspect}
               )
-              test_plan.boot
               #{test_plan_prelude}
               test_plan.#{test_plan_command}
 

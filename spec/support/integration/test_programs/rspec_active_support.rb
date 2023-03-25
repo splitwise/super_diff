@@ -5,7 +5,10 @@ module SuperDiff
         protected
 
         def test_plan_prelude
-          "test_plan.boot_active_support"
+          <<~PRELUDE.strip
+            test_plan.boot
+            test_plan.boot_active_support
+          PRELUDE
         end
 
         def test_plan_command

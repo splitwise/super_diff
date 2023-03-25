@@ -5,6 +5,7 @@ gemfiles/*.gemfile.lock
 node_modules
 pkg
 spec/examples.txt
+spec/internal
 tmp
 zeus.server.log
 zeus.server-start.log

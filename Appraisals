@@ -3,6 +3,7 @@ rails_dependencies =
     gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
     gem "jdbc-sqlite3", platform: :jruby
     gem "net-ftp"
+    gem "combustion"
   end
 
 appraisals = {
@@ -10,24 +11,21 @@ appraisals = {
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "activerecord", "~> 6.0.0"
-      gem "railties", "~> 6.0.0"
+      gem "rails", "~> 6.0.0"
       gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
     end,
   rails_6_1:
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "activerecord", "~> 6.1.0"
-      gem "railties", "~> 6.1.0"
+      gem "rails", "~> 6.1.0"
       gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
     end,
   rails_7_0:
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "activerecord", "~> 7.0.0"
-      gem "railties", "~> 7.0.0"
+      gem "rails", "~> 7.0.0"
       gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
     end,
   no_rails: proc {},

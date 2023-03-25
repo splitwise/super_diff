@@ -110,6 +110,11 @@ class TestPlan
     boot_active_record
   end
 
+  def boot_rails_engine(combustion_initialize: [])
+    require "combustion"
+    Combustion.initialize!(*combustion_initialize)
+  end
+
   def run_plain_test
     run_test_with_libraries("super_diff/rspec")
   end

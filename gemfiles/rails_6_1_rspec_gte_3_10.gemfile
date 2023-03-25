@@ -17,8 +17,8 @@ gem "warnings_logger"
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
 gem "net-ftp"
-gem "activerecord", "~> 6.1.0"
-gem "railties", "~> 6.1.0"
+gem "combustion"
+gem "rails", "~> 6.1.0"
 gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
 gem "rspec", ">= 3.10", "< 4"
 gem "rspec-rails"
