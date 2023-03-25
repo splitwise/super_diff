@@ -5,7 +5,7 @@ shared_examples_for "integration with ActiveSupport" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
           expected = Time.utc(2011, 12, 13, 14, 15, 16)
-          actual   = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
+          actual = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
           expect(expected).to eq(actual)
         RUBY
         program =

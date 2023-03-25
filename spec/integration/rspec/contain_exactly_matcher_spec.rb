@@ -7,7 +7,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = ["Einie", "Marty"]
-          actual   = ["Marty", "Jennifer", "Doc"]
+          actual = ["Marty", "Jennifer", "Doc"]
           expect(actual).to contain_exactly(*expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -91,7 +91,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
               "George McFly",
               "Lorraine McFly"
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -203,7 +203,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
               /Georg McFly/,
               /Lorrain McFly/
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -317,7 +317,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
               a_collection_containing_exactly("zing"),
               an_object_having_attributes(baz: "qux"),
             ]
-            actual   = [
+            actual = [
               { foo: "bar" },
               double(baz: "qux"),
               { blargh: "riddle" }

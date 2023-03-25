@@ -7,7 +7,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = ["Einie", "Marty"]
-          actual   = ["Marty", "Jennifer", "Doc"]
+          actual = ["Marty", "Jennifer", "Doc"]
           expect(actual).to match_array(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -91,7 +91,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
               "George McFly",
               "Lorraine McFly"
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -203,7 +203,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
               /Georg McFly/,
               /Lorrain McFly/
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -319,7 +319,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
               a_collection_containing_exactly("zing"),
               an_object_having_attributes(baz: "qux"),
             ]
-            actual   = [
+            actual = [
               { foo: "bar" },
               double(baz: "qux"),
               { blargh: "riddle" }
@@ -384,7 +384,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = "Einie"
-          actual   = ["Marty", "Jennifer", "Doc"]
+          actual = ["Marty", "Jennifer", "Doc"]
           expect(actual).to match_array(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)

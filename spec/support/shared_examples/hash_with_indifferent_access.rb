@@ -1,6 +1,6 @@
 shared_examples_for "integration with HashWithIndifferentAccess" do
   describe "and RSpec's #eq matcher" do
-    context "when the actual   value is a HashWithIndifferentAccess" do
+    context "when the actual value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
         context "and the expected hash contains symbol keys" do
           it "produces the correct output" do
@@ -12,7 +12,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "90382",
                 }
-                actual   = HashWithIndifferentAccess.new({
+                actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -69,7 +69,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   "state" => "CA",
                   "zip" => "90382",
                 }
-                actual   = HashWithIndifferentAccess.new({
+                actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -130,7 +130,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual   = {
+                actual = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
@@ -177,7 +177,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual   hash contains string keys" do
+        context "and the actual hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -187,7 +187,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual   = {
+                actual = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
@@ -250,7 +250,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual   = {
+                actual = {
                   shipments: [
                     {
                       estimated_delivery: {
@@ -303,7 +303,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual   hash contains string keys" do
+        context "and the actual hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -317,7 +317,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual   = {
+                actual = {
                   'shipments' => [
                     {
                       'estimated_delivery' => {
@@ -374,7 +374,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
   end
 
   describe "and RSpec's #match matcher" do
-    context "when the actual   value is a HashWithIndifferentAccess" do
+    context "when the actual value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
         context "and the expected hash contains symbol keys" do
           it "produces the correct output" do
@@ -386,7 +386,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "90382",
                 }
-                actual   = HashWithIndifferentAccess.new({
+                actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -443,7 +443,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   "state" => "CA",
                   "zip" => "90382",
                 }
-                actual   = HashWithIndifferentAccess.new({
+                actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
@@ -494,7 +494,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
 
     context "when the expected value is a HashWithIndifferentAccess" do
       context "and both hashes are one-dimensional" do
-        context "and the actual   hash contains symbol keys" do
+        context "and the actual hash contains symbol keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -504,7 +504,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual   = {
+                actual = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
@@ -551,7 +551,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual   hash contains string keys" do
+        context "and the actual hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -561,7 +561,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                   state: "CA",
                   zip: "91234",
                 })
-                actual   = {
+                actual = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
@@ -610,7 +610,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
       end
 
       context "and both hashes are multi-dimensional" do
-        context "and the actual   hash contains symbol keys" do
+        context "and the actual hash contains symbol keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -624,7 +624,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual   = {
+                actual = {
                   shipments: [
                     {
                       estimated_delivery: {
@@ -677,7 +677,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           end
         end
 
-        context "and the actual   hash contains string keys" do
+        context "and the actual hash contains string keys" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
@@ -691,7 +691,7 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     })
                   ]
                 })
-                actual   = {
+                actual = {
                   'shipments' => [
                     {
                       'estimated_delivery' => {

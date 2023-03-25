@@ -2,14 +2,14 @@ require "spec_helper"
 
 RSpec.describe "Integration with RSpec's #have_attributes matcher",
                type: :integration do
-  context "when the actual   value is an object" do
+  context "when the actual value is an object" do
     context "with a small set of attributes" do
-      context "when all of the names are methods on the actual   object" do
+      context "when all of the names are methods on the actual object" do
         it "produces the correct output when used in the positive" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
               expected = { name: "b" }
-              actual   = SuperDiff::Test::Person.new(name: "a", age: 9)
+              actual = SuperDiff::Test::Person.new(name: "a", age: 9)
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -50,7 +50,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
               expected = { name: "a" }
-              actual   = SuperDiff::Test::Person.new(name: "a", age: 9)
+              actual = SuperDiff::Test::Person.new(name: "a", age: 9)
               expect(actual).not_to have_attributes(expected)
             TEST
             program =
@@ -79,12 +79,12 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         end
       end
 
-      context "when some of the names are not methods on the actual   object" do
+      context "when some of the names are not methods on the actual object" do
         it "produces the correct output" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
               expected = { name: "b", foo: "bar" }
-              actual   = SuperDiff::Test::Person.new(name: "a", age: 9)
+              actual = SuperDiff::Test::Person.new(name: "a", age: 9)
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -127,7 +127,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
     end
 
     context "with a large set of attributes" do
-      context "when all of the names are methods on the actual   object" do
+      context "when all of the names are methods on the actual object" do
         it "produces the correct output when used in the positive" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -137,7 +137,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 state: "CA",
                 zip: "91234"
               }
-              actual   = SuperDiff::Test::ShippingAddress.new(
+              actual = SuperDiff::Test::ShippingAddress.new(
                 line_1: "456 Ponderosa Ct.",
                 line_2: nil,
                 city: "Hill Valley",
@@ -195,7 +195,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 state: "CA",
                 zip: "91234"
               }
-              actual   = SuperDiff::Test::ShippingAddress.new(
+              actual = SuperDiff::Test::ShippingAddress.new(
                 line_1: "123 Main St.",
                 line_2: nil,
                 city: "Oakland",
@@ -233,7 +233,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         end
       end
 
-      context "when some of the names are not methods on the actual   object" do
+      context "when some of the names are not methods on the actual object" do
         it "produces the correct output" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -245,7 +245,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 foo: "bar",
                 baz: "qux"
               }
-              actual   = SuperDiff::Test::ShippingAddress.new(
+              actual = SuperDiff::Test::ShippingAddress.new(
                 line_1: "456 Ponderosa Ct.",
                 line_2: nil,
                 city: "Hill Valley",
@@ -303,12 +303,12 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
     end
   end
 
-  context "when the actual   value is actually a hash instead of an object" do
+  context "when the actual value is actually a hash instead of an object" do
     it "displays the diff as if we were comparing hashes" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = { name: "Elliot", age: 32 }
-          actual   = {}
+          actual = {}
           expect(actual).to have_attributes(expected)
         TEST
 
@@ -365,8 +365,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
               data: a_hash_including(active: true),
               created_at: a_value_within(1).of(Time.utc(2020, 4, 9))
             }
-
-            actual   = {}
+            actual = {}
 
             expect(actual).to have_attributes(expected)
           TEST

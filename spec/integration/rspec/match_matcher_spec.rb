@@ -7,7 +7,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_hash_including(city: "Hill Valley")
-            actual   = { city: "Burbank" }
+            actual = { city: "Burbank" }
             expect(actual).to match(expected)
           TEST
           program =
@@ -46,7 +46,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_hash_including(city: "Burbank")
-            actual   = { city: "Burbank" }
+            actual = { city: "Burbank" }
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -83,7 +83,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               city: "Hill Valley",
               zip: "90382"
             )
-            actual   = {
+            actual = {
               line_1: "123 Main St.",
               city: "Burbank",
               state: "CA",
@@ -136,7 +136,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               city: "Burbank",
               zip: "90210"
             )
-            actual   = {
+            actual = {
               line_1: "123 Main St.",
               city: "Burbank",
               state: "CA",
@@ -175,7 +175,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
   end
 
   context "when the expected value includes a hash-including-<something>" do
-    context "and the corresponding actual   value is a hash" do
+    context "and the corresponding actual value is a hash" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -186,7 +186,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
                 zip: "90382"
               )
             }
-            actual   = {
+            actual = {
               name: "Marty McFly",
               address: {
                 line_1: "123 Main St.",
@@ -248,7 +248,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
                 zip: "90210"
               )
             }
-            actual   = {
+            actual = {
               name: "Marty McFly",
               address: {
                 line_1: "123 Main St.",
@@ -288,7 +288,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
       end
     end
 
-    context "and the corresponding actual   value is not a hash" do
+    context "and the corresponding actual value is not a hash" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -299,7 +299,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
                 zip: "90382"
               )
             }
-            actual   = {
+            actual = {
               name: "Marty McFly",
               address: nil
             }
@@ -352,7 +352,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = hash_including(city: "Hill Valley")
-          actual   = { city: "Burbank" }
+          actual = { city: "Burbank" }
           expect(actual).to match(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -393,7 +393,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_including("a")
-            actual   = ["b"]
+            actual = ["b"]
             expect(actual).to match(expected)
           TEST
           program =
@@ -433,7 +433,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_including("b")
-            actual   = ["b"]
+            actual = ["b"]
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -467,7 +467,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_including("milk", "bread")
-            actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
+            actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
           program =
@@ -513,7 +513,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_including("milk", "toast")
-            actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
+            actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -547,7 +547,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
   end
 
   context "when the expected value includes a collection-including-<something>" do
-    context "and the corresponding actual   value is an array" do
+    context "and the corresponding actual value is an array" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -555,7 +555,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: ["milk", "toast", "eggs"]
             }
@@ -608,7 +608,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_including("milk", "toast")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: ["milk", "toast", "eggs"]
             }
@@ -643,7 +643,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
       end
     end
 
-    context "when the corresponding actual   value is not an array" do
+    context "when the corresponding actual value is not an array" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -651,7 +651,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_including("milk", "bread")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: nil
             }
@@ -702,7 +702,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           expected = array_including("a")
-          actual   = ["b"]
+          actual = ["b"]
           expect(actual).to match(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -744,7 +744,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = an_object_having_attributes(name: "b")
-            actual   = A.new("a")
+            actual = A.new("a")
             expect(actual).to match(expected)
           TEST
           program =
@@ -784,7 +784,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = an_object_having_attributes(name: "b")
-            actual   = A.new("b")
+            actual = A.new("b")
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -824,7 +824,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               state: "CA",
               something_else: "blah"
             )
-            actual   = SuperDiff::Test::ShippingAddress.new(
+            actual = SuperDiff::Test::ShippingAddress.new(
               line_1: "456 Ponderosa Ct.",
               line_2: nil,
               city: "Hill Valley",
@@ -885,7 +885,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               city: "Oakland",
               zip: "91234"
             )
-            actual   = SuperDiff::Test::ShippingAddress.new(
+            actual = SuperDiff::Test::ShippingAddress.new(
               line_1: "123 Main St.",
               line_2: nil,
               city: "Oakland",
@@ -938,7 +938,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               something_else: "blah"
             )
           }
-          actual   = {
+          actual = {
             name: "Marty McFly",
             shipping_address: SuperDiff::Test::ShippingAddress.new(
               line_1: "456 Ponderosa Ct.",
@@ -1007,7 +1007,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               zip: "91234"
             )
           }
-          actual   = {
+          actual = {
             name: "Marty McFly",
             shipping_address: SuperDiff::Test::ShippingAddress.new(
               line_1: "123 Main St.",
@@ -1053,7 +1053,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("a")
-            actual   = ["b"]
+            actual = ["b"]
             expect(actual).to match(expected)
           TEST
           program =
@@ -1093,7 +1093,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("b")
-            actual   = ["b"]
+            actual = ["b"]
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -1127,7 +1127,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("milk", "bread")
-            actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
+            actual = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
           program =
@@ -1173,7 +1173,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = a_collection_containing_exactly("milk", "eggs", "toast")
-            actual   = ["milk", "toast", "eggs"]
+            actual = ["milk", "toast", "eggs"]
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -1207,7 +1207,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
   end
 
   context "when the expected value includes a collection-containing-exactly-<something>" do
-    context "and the corresponding actual   value is an array" do
+    context "and the corresponding actual value is an array" do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -1215,7 +1215,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: ["milk", "toast", "eggs"]
             }
@@ -1268,7 +1268,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "eggs", "toast")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: ["milk", "toast", "eggs"]
             }
@@ -1303,7 +1303,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
       end
     end
 
-    context "when the corresponding actual   value is not an array" do
+    context "when the corresponding actual value is not an array" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -1311,7 +1311,7 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
               name: "shopping list",
               contents: a_collection_containing_exactly("milk", "bread")
             }
-            actual   = {
+            actual = {
               name: "shopping list",
               contents: nil
             }

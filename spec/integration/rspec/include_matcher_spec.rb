@@ -8,7 +8,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = ["Marty", "Einie"]
-            actual   = ["Marty", "Jennifer", "Doc"]
+            actual = ["Marty", "Jennifer", "Doc"]
             expect(actual).to include(*expected)
           TEST
           program =
@@ -90,7 +90,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
               "George McFly",
               "Lorraine McFly"
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -146,7 +146,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
               "Einie",
               "Lorraine McFly"
             ]
-            actual   = [
+            actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
@@ -192,7 +192,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
-            actual   = { city: "Burbank", zip: "90210" }
+            actual = { city: "Burbank", zip: "90210" }
             expect(actual).to include(expected)
           TEST
           program =
@@ -235,7 +235,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Burbank" }
-            actual   = { city: "Burbank", zip: "90210" }
+            actual = { city: "Burbank", zip: "90210" }
             expect(actual).not_to include(expected)
           TEST
           program =
@@ -267,7 +267,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { number: a_kind_of(Numeric), city: /burb/i, state: "CA" }
-            actual   = { number: 42, city: "Burbank", zip: "90210" }
+            actual = { number: 42, city: "Burbank", zip: "90210" }
             expect(actual).to include(expected)
           TEST
           program =
@@ -313,7 +313,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
               city: "Hill Valley",
               zip: "90382"
             }
-            actual   = {
+            actual = {
               city: "Burbank",
               state: "CA",
               zip: "90210"
@@ -361,7 +361,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             expected = { city: "Hill Valley", state: "CA" }
-            actual   = { city: "Hill Valley", state: "CA", zip: "90210" }
+            actual = { city: "Hill Valley", state: "CA", zip: "90210" }
             expect(actual).not_to include(expected)
           TEST
           program =
@@ -401,7 +401,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
               city: /burb/i,
               zip: "90382"
             }
-            actual   = {
+            actual = {
               number: 42,
               street: "Yoshie Circles",
               city: "Burbank",

@@ -10,7 +10,7 @@ shared_examples_for "integration with ActiveRecord" do
               state: "CA",
               zip: "90382",
             )
-            actual   = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
+            actual = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
               line_1: "456 Ponderosa Ct.",
               city: "Oakland",
               state: "CA",
@@ -69,7 +69,7 @@ shared_examples_for "integration with ActiveRecord" do
               state: "CA",
               zip: "90382",
             )
-            actual   = SuperDiff::Test::Models::ActiveRecord::Person.new(
+            actual = SuperDiff::Test::Models::ActiveRecord::Person.new(
               name: "Elliot",
               age: 31,
             )
@@ -113,7 +113,7 @@ shared_examples_for "integration with ActiveRecord" do
               state: "CA",
               zip: "90382"
             )
-            actual   = nil
+            actual = nil
             expect(actual).to eq(expected)
           TEST
           program = make_program(snippet, color_enabled: color_enabled)
@@ -157,7 +157,7 @@ shared_examples_for "integration with ActiveRecord" do
                 zip: "90382",
               )
             }
-            actual   = {
+            actual = {
               name: "Marty McFly",
               shipping_address: SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
                 line_1: "456 Ponderosa Ct.",
@@ -225,7 +225,7 @@ shared_examples_for "integration with ActiveRecord" do
                 zip: "90382",
               )
             }
-            actual   = {
+            actual = {
               name: "Marty McFly",
               shipping_address: SuperDiff::Test::Models::ActiveRecord::Person.new(
                 name: "Elliot",
@@ -300,7 +300,7 @@ shared_examples_for "integration with ActiveRecord" do
               )
             ]
             expected = [shipping_addresses.first]
-            actual   = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.all
+            actual = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.all
             expect(actual).to eq(expected)
           TEST
           program = make_program(snippet, color_enabled: color_enabled)
@@ -370,7 +370,7 @@ shared_examples_for "integration with ActiveRecord" do
               )
             ]
 
-            actual   = [
+            actual = [
               SuperDiff::Test::Models::ActiveRecord::Query.new(
                 results: SuperDiff::Test::Models::ActiveRecord::Person.all
               )

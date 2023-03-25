@@ -33,7 +33,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
       end
     end
 
-    context "when the inspected version of the actual   value is long" do
+    context "when the inspected version of the actual value is long" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
@@ -72,7 +72,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
 
   context "when the predicate method exists on the object" do
     context "but is private" do
-      context "when the inspected version of the actual   value is short" do
+      context "when the inspected version of the actual value is short" do
         it "produces the correct failure message" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -108,7 +108,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
         end
       end
 
-      context "when the inspected version of the actual   value is long" do
+      context "when the inspected version of the actual value is long" do
         it "produces the correct failure message" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
@@ -153,7 +153,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
     context "and is public" do
       context "and returns false" do
         context "and takes arguments" do
-          context "when the inspected version of the actual   value is short" do
+          context "when the inspected version of the actual value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -189,7 +189,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
             end
           end
 
-          context "when the inspected version of the actual   value is long" do
+          context "when the inspected version of the actual value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -233,7 +233,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
         end
 
         context "and takes no arguments" do
-          context "when the inspected version of the actual   value is short" do
+          context "when the inspected version of the actual value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -269,7 +269,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
             end
           end
 
-          context "when the inspected version of the actual   value is long" do
+          context "when the inspected version of the actual value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -314,7 +314,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
 
       context "and returns true" do
         context "and takes arguments" do
-          context "when the inspected version of the actual   value is short" do
+          context "when the inspected version of the actual value is short" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -351,7 +351,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
             end
           end
 
-          context "when the inspected version of the actual   value is long" do
+          context "when the inspected version of the actual value is long" do
             it "produces the correct failure message" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -395,7 +395,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
         end
 
         context "and takes no arguments" do
-          context "when the inspected version of the actual   value is short" do
+          context "when the inspected version of the actual value is short" do
             it "produces the correct failure message when used in the negative" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
@@ -431,7 +431,7 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
             end
           end
 
-          context "when the inspected version of the actual   value is long" do
+          context "when the inspected version of the actual value is long" do
             it "produces the correct failure message when used in the negative" do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
