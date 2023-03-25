@@ -1,5 +1,0 @@
-#!/bin/sh
-
-echo $PWD
-bundle config set path $PWD/vendor/bundle
-bundle install --jobs=3 --retry=3

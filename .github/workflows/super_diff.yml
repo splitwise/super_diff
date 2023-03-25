@@ -12,6 +12,18 @@ concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
+  all:
+    runs-on: ubuntu-latest
+    needs:
+      - lint
+      - audit
+      - test
+    outputs:
+      PASSED: ${{ steps.set-output.outputs.PASSED }}
+    steps:
+      - name: Set PASSED output
+        id: set-output
+        run: echo "PASSED=true" >> "$GITHUB_OUTPUT"
   lint:
     runs-on: ubuntu-latest
     steps:
@@ -25,59 +37,28 @@ jobs:
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
-      - name: Install Ruby dependencies
-        run: bin/ci/install
       - name: Install Yarn dependencies
         run: yarn --immutable
       - name: Lint
         run: yarn lint
   audit:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
-      - name: Install Ruby dependencies
-        run: bin/ci/install
-      - name: Install Yarn dependencies
-        run: yarn --immutable
-      - name: Audit
-        run: yarn audit
-  test:
-    needs:
-      - lint
-    runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
       matrix:
         ruby:
-          - 2.5
-          - 2.6
-          - 2.7
+          - "3.0"
+          - "3.1"
+          - "3.2"
         rails_appraisal:
-          - rails_5_0
-          - rails_5_1
-          - rails_5_2
-          - rails_6_0
           - rails_6_1
+          - rails_7_0
           - no_rails
         rspec_appraisal:
           - rspec_lt_3_10
           - rspec_gte_3_10
-        exclude:
-          - rails_appraisal: rails_6_1
-            rspec_appraisal: rspec_lt_3_10
-
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
-      JAVA_OPTS: "--add-opens java.base/sun.nio.ch=org.jruby.dist --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.security.cert=ALL-UNNAMED --add-opens=java.base/java.util.zip=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util.regex=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/javax.crypto=ALL-UNNAMED --add-opens=java.management/sun.management=ALL-UNNAMED --add-opens=java.base/java.io=org.jruby.dist"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
@@ -85,11 +66,19 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Run tests
-        run: bin/ci/run-tests
-  test_ruby_3:
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: ".nvmrc"
+          cache: "yarn"
+      - name: Install Yarn dependencies
+        run: yarn --immutable
+      - name: Audit
+        run: yarn audit
+  test:
     needs:
       - lint
+      - audit
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: false
@@ -99,26 +88,14 @@ jobs:
           - "3.1"
           - "3.2"
         rails_appraisal:
-          - rails_6_0
           - rails_6_1
           - rails_7_0
           - no_rails
         rspec_appraisal:
           - rspec_lt_3_10
           - rspec_gte_3_10
-        exclude:
-          - ruby: 3.2
-            rails_appraisal: rails_6_0
-          - ruby: 3.2
-            rails_appraisal: rails_6_1
-          - rails_appraisal: rails_6_1
-            rspec_appraisal: rspec_lt_3_10
-          - rails_appraisal: rails_7_0
-            rspec_appraisal: rspec_lt_3_10
-
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
-      JAVA_OPTS: "--add-opens java.base/sun.nio.ch=org.jruby.dist --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.security.cert=ALL-UNNAMED --add-opens=java.base/java.util.zip=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED --add-opens=java.base/java.util.regex=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.io=ALL-UNNAMED  --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/javax.crypto=ALL-UNNAMED --add-opens=java.management/sun.management=ALL-UNNAMED --add-opens=java.base/java.io=org.jruby.dist"
     steps:
       - uses: actions/checkout@v3
       - name: Set up Ruby
@@ -127,4 +104,4 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Run tests
-        run: bin/ci/run-tests
+        run: bundle exec rake --trace

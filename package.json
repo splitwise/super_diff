@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "lint": "prettier --check .",
-    "audit": "yarn npm audit && bundle exec bundle audit",
+    "audit": "yarn npm audit && bundle exec bundle audit --gemfile-lock ${BUNDLE_GEMFILE:-Gemfile}",
     "lint:fix": "yarn lint --write"
   },
   "simple-git-hooks": {
