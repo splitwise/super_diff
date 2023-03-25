@@ -5,10 +5,11 @@
   "private": true,
   "scripts": {
     "lint": "prettier --check .",
+    "audit": "yarn npm audit && bundle exec bundle audit",
     "lint:fix": "yarn lint --write"
   },
   "simple-git-hooks": {
-    "pre-push": "yarn lint"
+    "pre-push": "yarn lint && yarn audit"
   },
   "devDependencies": {
     "@lavamoat/allow-scripts": "^2.3.0",
