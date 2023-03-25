@@ -1,5 +1,11 @@
 # frozen_string_literal: true
 
+if !Gem::Requirement.new(">= 2.4").satisfied_by?(
+     Gem::Version.new(Bundler::VERSION)
+   )
+  raise "Bundler >= 2.4 is required. Please update Bundler by running `bundle update --bundler`"
+end
+
 source "https://rubygems.org"
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }

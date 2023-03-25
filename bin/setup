@@ -267,7 +267,7 @@ ensure-project-ruby-dependencies-installed() {
   if [[ $USE_BUNDLER_1 -eq 1 ]] && (! has-bundler || ! [[ $(bundle -v) =~ '^Bundler version 1\.' ]]); then
     gem install bundler:'~> 1.0'
   elif ! has-bundler; then
-    gem install bundler
+    gem install bundler:'>= 2.4.0'
   fi
 
   bundle check || bundle install
