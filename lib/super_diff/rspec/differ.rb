@@ -7,11 +7,8 @@ module SuperDiff
 
       def diff
         if worth_diffing?
-          diff = SuperDiff::Differs::Main.call(
-            expected,
-            actual,
-            omit_empty: true,
-          )
+          diff =
+            SuperDiff::Differs::Main.call(expected, actual, omit_empty: true)
           "\n\n" + diff
         else
           ""
@@ -23,8 +20,7 @@ module SuperDiff
       private
 
       def worth_diffing?
-        comparing_inequal_values? &&
-          !comparing_primitive_values? &&
+        comparing_inequal_values? && !comparing_primitive_values? &&
           !comparing_singleline_strings?
       end
 
@@ -33,16 +29,13 @@ module SuperDiff
       end
 
       def comparing_primitive_values?
-        expected.is_a?(Symbol) ||
-          expected.is_a?(Integer) ||
+        expected.is_a?(Symbol) || expected.is_a?(Integer) ||
           [true, false, nil].include?(expected)
       end
 
       def comparing_singleline_strings?
-        expected.is_a?(String) &&
-          actual.is_a?(String) &&
-          !expected.include?("\n") &&
-          !actual.include?("\n")
+        expected.is_a?(String) && actual.is_a?(String) &&
+          !expected.include?("\n") && !actual.include?("\n")
       end
 
       def helpers

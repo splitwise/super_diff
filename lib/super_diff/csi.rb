@@ -41,21 +41,17 @@ module SuperDiff
     end
 
     def self.inspect_colors_in(text)
-      [FourBitColor, EightBitColor, TwentyFourBitColor].
-        reduce(text) do |str, klass|
-          klass.sub_colorized_areas_in(str) do |area, color|
-            color_block = colorize("◼︎", color.to_foreground)
+      [FourBitColor, EightBitColor, TwentyFourBitColor].reduce(
+        text
+      ) do |str, klass|
+        klass.sub_colorized_areas_in(str) do |area, color|
+          color_block = colorize("◼︎", color.to_foreground)
 
-            layer_indicator =
-              if color.foreground?
-                "(fg)"
-              else
-                "(bg)"
-              end
+          layer_indicator = (color.foreground? ? "(fg)" : "(bg)")
 
-            "#{color_block} #{layer_indicator} ❮#{area}❯"
-          end
+          "#{color_block} #{layer_indicator} ❮#{area}❯"
         end
+      end
     end
 
     self.color_enabled = false

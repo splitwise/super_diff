@@ -11,11 +11,7 @@ module SuperDiff
         end
 
         def render_to_string(object)
-          if block
-            render_to_string_in_subtree(object)
-          else
-            immediate_value.to_s
-          end
+          block ? render_to_string_in_subtree(object) : immediate_value.to_s
         end
 
         def render_to_lines(object, type:, indentation_level:)
@@ -23,8 +19,8 @@ module SuperDiff
             SuperDiff::Line.new(
               type: type,
               indentation_level: indentation_level,
-              value: render_to_string(object),
-            ),
+              value: render_to_string(object)
+            )
           ]
         end
       end

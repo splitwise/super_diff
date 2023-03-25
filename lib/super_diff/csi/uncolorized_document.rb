@@ -10,9 +10,7 @@ module SuperDiff
       def colorize_inline(contents, *)
         contents.each do |content|
           if content.is_a?(self.class)
-            content.each do |part|
-              add_part(part)
-            end
+            content.each { |part| add_part(part) }
           else
             add_part(content)
           end
@@ -20,9 +18,7 @@ module SuperDiff
       end
 
       def add_part(part)
-        if !part.is_a?(ResetSequence) && !part.is_a?(ColorSequenceBlock)
-          super
-        end
+        super if !part.is_a?(ResetSequence) && !part.is_a?(ColorSequenceBlock)
       end
     end
   end

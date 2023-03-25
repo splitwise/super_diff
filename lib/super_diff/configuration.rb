@@ -5,7 +5,7 @@ module SuperDiff
       :extra_differ_classes,
       :extra_inspection_tree_builder_classes,
       :extra_operation_tree_builder_classes,
-      :extra_operation_tree_classes,
+      :extra_operation_tree_classes
     )
     attr_accessor(
       :actual_color,
@@ -16,7 +16,7 @@ module SuperDiff
       :elision_marker_color,
       :expected_color,
       :header_color,
-      :key_enabled,
+      :key_enabled
     )
 
     def initialize(options = {})
@@ -69,9 +69,7 @@ module SuperDiff
           configuration_or_options
         end
 
-      options.each do |key, value|
-        instance_variable_set("@#{key}", value)
-      end
+      options.each { |key, value| instance_variable_set("@#{key}", value) }
 
       updated
     end
@@ -86,7 +84,7 @@ module SuperDiff
     end
     alias_method(
       :add_extra_diff_formatter_class,
-      :add_extra_diff_formatter_classes,
+      :add_extra_diff_formatter_classes
     )
 
     def add_extra_differ_classes(*classes)
@@ -100,7 +98,7 @@ module SuperDiff
     end
     alias_method(
       :add_extra_inspection_tree_builder_class,
-      :add_extra_inspection_tree_builder_classes,
+      :add_extra_inspection_tree_builder_classes
     )
 
     def add_extra_operation_tree_builder_classes(*classes)
@@ -109,7 +107,7 @@ module SuperDiff
     end
     alias_method(
       :add_extra_operation_tree_builder_class,
-      :add_extra_operation_tree_builder_classes,
+      :add_extra_operation_tree_builder_classes
     )
 
     def add_extra_operation_tree_classes(*classes)
@@ -118,7 +116,7 @@ module SuperDiff
     end
     alias_method(
       :add_extra_operation_tree_class,
-      :add_extra_operation_tree_classes,
+      :add_extra_operation_tree_classes
     )
 
     def to_h
@@ -138,7 +136,7 @@ module SuperDiff
           extra_operation_tree_builder_classes.dup,
         extra_operation_tree_classes: extra_operation_tree_classes.dup,
         header_color: header_color,
-        key_enabled: key_enabled?,
+        key_enabled: key_enabled?
       }
     end
 

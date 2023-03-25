@@ -16,9 +16,9 @@ module SuperDiff
         def initialize(tree, *args, **options, &block)
           if !args.empty? && block
             raise ArgumentError.new(
-              "You cannot provide both an immediate value and a lazy value. " +
-              "Either pass a block or a positional argument.",
-            )
+                    "You cannot provide both an immediate value and a lazy value. " +
+                      "Either pass a block or a positional argument."
+                  )
           end
 
           @tree = tree
@@ -50,13 +50,13 @@ module SuperDiff
 
         # rubocop:disable Lint/UnusedMethodArgument
         def render_to_string(object)
-        # rubocop:enable Lint/UnusedMethodArgument
+          # rubocop:enable Lint/UnusedMethodArgument
           unimplemented_instance_method!
         end
 
         # rubocop:disable Lint/UnusedMethodArgument
         def render_to_lines(object, type:, indentation_level:)
-        # rubocop:enable Lint/UnusedMethodArgument
+          # rubocop:enable Lint/UnusedMethodArgument
           unimplemented_instance_method!
         end
 
@@ -80,11 +80,7 @@ module SuperDiff
         attr_reader :tree, :immediate_value, :block, :options
 
         def pretty_print_variables
-          if block
-            [:"@block"]
-          else
-            [:"@immediate_value"]
-          end
+          block ? [:"@block"] : [:"@immediate_value"]
         end
 
         def evaluate_block(object)
@@ -104,15 +100,14 @@ module SuperDiff
           disallowed_node_names: [],
           **rest
         )
-          subtree = InspectionTree.new(
-            disallowed_node_names: disallowed_node_names,
-          )
+          subtree =
+            InspectionTree.new(disallowed_node_names: disallowed_node_names)
           subtree.evaluate_block(object, &block)
           subtree.render_to_lines(
             object,
             type: type,
             indentation_level: indentation_level,
-            **rest,
+            **rest
           )
         end
       end

@@ -3,7 +3,7 @@ module SuperDiff
     class UnaryOperation
       extend AttrExtras.mixin
 
-      rattr_initialize [:name!, :collection!, :key!, :value!, :index!]
+      rattr_initialize %i[name! collection! key! value! index!]
     end
   end
 end

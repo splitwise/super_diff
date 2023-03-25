@@ -10,23 +10,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
               expect(true).to be(false)
             TEST
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(true).to be(false)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|true|
-                plain    %| to equal |
-                expected %|false|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(true).to be(false)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual "true"
+                    plain " to equal "
+                    expected "false"
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -37,23 +39,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
               expect(false).not_to be(false)
             TEST
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(false).not_to be(false)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|false|
-                plain    %| not to equal |
-                expected %|false|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(false).not_to be(false)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual "false"
+                    plain " not to equal "
+                    expected "false"
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -66,23 +70,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
               expect(false).to be(true)
             TEST
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(false).to be(true)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|false|
-                plain    %| to equal |
-                expected %|true|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(false).to be(true)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual "false"
+                    plain " to equal "
+                    expected "true"
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -93,23 +99,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
               expect(true).not_to be(true)
             TEST
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(true).not_to be(true)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|true|
-                plain    %| not to equal |
-                expected %|true|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(true).not_to be(true)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual "true"
+                    plain " not to equal "
+                    expected "true"
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -123,23 +131,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(nil).to be
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(nil).to be|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|nil|
-              plain    %| to be |
-              expected %|truthy|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(nil).to be",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "nil"
+                  plain " to be "
+                  expected "truthy"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -150,23 +160,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(:something).not_to be
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(:something).not_to be|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|:something|
-              plain    %| not to be |
-              expected %|truthy|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(:something).not_to be",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual ":something"
+                  plain " not to be "
+                  expected "truthy"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -179,23 +191,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(nil).to be == :foo
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(nil).to be == :foo|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|nil|
-              plain    %| to == |
-              expected %|:foo|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(nil).to be == :foo",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "nil"
+                  plain " to == "
+                  expected ":foo"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -206,23 +220,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(:foo).not_to be == :foo
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(:foo).not_to be == :foo|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|:foo|
-              plain    %| not to == |
-              expected %|:foo|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(:foo).not_to be == :foo",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual ":foo"
+                  plain " not to == "
+                  expected ":foo"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -235,23 +251,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(1).to be < 1
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(1).to be < 1|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|1|
-              plain    %| to be < |
-              expected %|1|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(1).to be < 1",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "1"
+                  plain " to be < "
+                  expected "1"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -262,23 +280,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(0).not_to be < 1
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(0).not_to be < 1|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|0|
-              plain    %| not to be < |
-              expected %|1|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(0).not_to be < 1",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "0"
+                  plain " not to be < "
+                  expected "1"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -291,23 +311,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(1).to be <= 0
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(1).to be <= 0|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|1|
-              plain    %| to be <= |
-              expected %|0|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(1).to be <= 0",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "1"
+                  plain " to be <= "
+                  expected "0"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -318,23 +340,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(0).not_to be <= 0
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(0).not_to be <= 0|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|0|
-              plain    %| not to be <= |
-              expected %|0|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(0).not_to be <= 0",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "0"
+                  plain " not to be <= "
+                  expected "0"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -347,23 +371,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(1).to be >= 2
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(1).to be >= 2|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|1|
-              plain    %| to be >= |
-              expected %|2|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(1).to be >= 2",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "1"
+                  plain " to be >= "
+                  expected "2"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -374,23 +400,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(2).not_to be >= 2
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(2).not_to be >= 2|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|2|
-              plain    %| not to be >= |
-              expected %|2|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(2).not_to be >= 2",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "2"
+                  plain " not to be >= "
+                  expected "2"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -403,23 +431,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(1).to be > 2
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(1).to be > 2|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|1|
-              plain    %| to be > |
-              expected %|2|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(1).to be > 2",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "1"
+                  plain " to be > "
+                  expected "2"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -430,23 +460,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(3).not_to be > 2
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(3).not_to be > 2|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|3|
-              plain    %| not to be > |
-              expected %|2|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(3).not_to be > 2",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "3"
+                  plain " not to be > "
+                  expected "2"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -459,23 +491,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(String).to be === :foo
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(String).to be === :foo|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|String|
-              plain    %| to === |
-              expected %|:foo|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(String).to be === :foo",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "String"
+                  plain " to === "
+                  expected ":foo"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -486,23 +520,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect(String).not_to be === "foo"
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(String).not_to be === "foo"|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|String|
-              plain    %| not to === |
-              expected %|"foo"|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect(String).not_to be === "foo"|,
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "String"
+                  plain " not to === "
+                  expected %|"foo"|
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -515,23 +551,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect("foo").to be =~ /bar/
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect("foo").to be =~ /bar/|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|"foo"|
-              plain    %| to =~ |
-              expected %|/bar/|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect("foo").to be =~ /bar/|,
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual %|"foo"|
+                  plain " to =~ "
+                  expected "/bar/"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
 
@@ -542,23 +580,25 @@ RSpec.describe "Integration with RSpec's #be matcher", type: :integration do
             expect("bar").not_to be =~ /bar/
           TEST
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect("bar").not_to be =~ /bar/|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|"bar"|
-              plain    %| not to =~ |
-              expected %|/bar/|
-              plain    %|.|
-            end
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: %|expect("bar").not_to be =~ /bar/|,
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual %|"bar"|
+                  plain " not to =~ "
+                  expected "/bar/"
+                  plain "."
+                end
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end

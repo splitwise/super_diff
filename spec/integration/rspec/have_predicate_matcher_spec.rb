@@ -1,33 +1,34 @@
 require "spec_helper"
 
-RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :integration do
+RSpec.describe "Integration with RSpec's #have_<predicate> matcher",
+               type: :integration do
   context "when the predicate method doesn't exist on the object" do
     context "when the predicate method doesn't exist on the object" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
-          snippet = %|expect(:words).to have_power|
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          snippet = "expect(:words).to have_power"
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: snippet,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|:words|
-                plain    %| to respond to |
-                expected %|has_power?|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: snippet,
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual ":words"
+                    plain " to respond to "
+                    expected "has_power?"
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -39,31 +40,31 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
             hash = { a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }
             expect(hash).to have_mapping
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(hash).to have_mapping",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "     Expected "
+                    actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                  end
+
+                  line do
+                    plain "to respond to "
+                    expected "has_mapping?"
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(hash).to have_mapping|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|     Expected |
-                actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-              end
-
-              line do
-                plain    %|to respond to |
-                expected %|has_mapping?|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -81,29 +82,28 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
               expect(Robot.new).to have_arms
             TEST
-            program = make_plain_test_program(
-              snippet,
-              color_enabled: color_enabled,
-            )
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
 
-            expected_output = build_expected_output(
-              color_enabled: color_enabled,
-              snippet: %|expect(Robot.new).to have_arms|,
-              expectation: proc {
-                line do
-                  plain    %|Expected |
-                  actual   %|#<Robot>|
-                  plain    %| to have a public method |
-                  expected %|has_arms?|
-                  plain    %|.|
-                end
-              },
-            )
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet: "expect(Robot.new).to have_arms",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected "
+                      actual "#<Robot>"
+                      plain " to have a public method "
+                      expected "has_arms?"
+                      plain "."
+                    end
+                  end
+              )
 
-            expect(program).
-              to produce_output_when_run(expected_output).
-              in_color(color_enabled).
-              removing_object_ids
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled).removing_object_ids
           end
         end
       end
@@ -120,32 +120,31 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
               expect(hash).to have_mapping
             TEST
-            program = make_plain_test_program(
-              snippet,
-              color_enabled: color_enabled,
-            )
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
 
-            expected_output = build_expected_output(
-              color_enabled: color_enabled,
-              snippet: %|expect(hash).to have_mapping|,
-              newline_before_expectation: true,
-              expectation: proc {
-                line do
-                  plain    %|               Expected |
-                  actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-                end
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet: "expect(hash).to have_mapping",
+                newline_before_expectation: true,
+                expectation:
+                  proc do
+                    line do
+                      plain "               Expected "
+                      actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                    end
 
-                line do
-                  plain    %|to have a public method |
-                  expected %|has_mapping?|
-                end
-              },
-            )
+                    line do
+                      plain "to have a public method "
+                      expected "has_mapping?"
+                    end
+                  end
+              )
 
-            expect(program).
-              to produce_output_when_run(expected_output).
-              in_color(color_enabled).
-              removing_object_ids
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled).removing_object_ids
           end
         end
       end
@@ -164,29 +163,28 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(Drink.new).to have_ingredients(:vodka)
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(Drink.new).to have_ingredients(:vodka)|,
-                  expectation: proc {
-                    line do
-                      plain    %|Expected |
-                      actual   %|#<Drink>|
-                      plain    %| to return a truthy result for |
-                      expected %|has_ingredients?(:vodka)|
-                      plain    %|.|
-                    end
-                  },
-                )
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: "expect(Drink.new).to have_ingredients(:vodka)",
+                    expectation:
+                      proc do
+                        line do
+                          plain "Expected "
+                          actual "#<Drink>"
+                          plain " to return a truthy result for "
+                          expected "has_ingredients?(:vodka)"
+                          plain "."
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -203,32 +201,32 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(hash).to have_contents("keys", "upon", "keys")
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(hash).to have_contents("keys", "upon", "keys")|,
-                  newline_before_expectation: true,
-                  expectation: proc {
-                    line do
-                      plain    %|                     Expected |
-                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-                    end
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet:
+                      %|expect(hash).to have_contents("keys", "upon", "keys")|,
+                    newline_before_expectation: true,
+                    expectation:
+                      proc do
+                        line do
+                          plain "                     Expected "
+                          actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                        end
 
-                    line do
-                      plain    %|to return a truthy result for |
-                      expected %|has_contents?("keys", "upon", "keys")|
-                    end
-                  },
-                )
+                        line do
+                          plain "to return a truthy result for "
+                          expected %|has_contents?("keys", "upon", "keys")|
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -245,29 +243,28 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(Robot.new).to have_arms
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(Robot.new).to have_arms|,
-                  expectation: proc {
-                    line do
-                      plain    %|Expected |
-                      actual   %|#<Robot>|
-                      plain    %| to return a truthy result for |
-                      expected %|has_arms?|
-                      plain    %|.|
-                    end
-                  },
-                )
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: "expect(Robot.new).to have_arms",
+                    expectation:
+                      proc do
+                        line do
+                          plain "Expected "
+                          actual "#<Robot>"
+                          plain " to return a truthy result for "
+                          expected "has_arms?"
+                          plain "."
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -284,32 +281,31 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(hash).to have_mapping
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(hash).to have_mapping|,
-                  newline_before_expectation: true,
-                  expectation: proc {
-                    line do
-                      plain    %|                     Expected |
-                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-                    end
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: "expect(hash).to have_mapping",
+                    newline_before_expectation: true,
+                    expectation:
+                      proc do
+                        line do
+                          plain "                     Expected "
+                          actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                        end
 
-                    line do
-                      plain    %|to return a truthy result for |
-                      expected %|has_mapping?|
-                    end
-                  },
-                )
+                        line do
+                          plain "to return a truthy result for "
+                          expected "has_mapping?"
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -328,29 +324,29 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(Drink.new).not_to have_ingredients(:vodka)
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(Drink.new).not_to have_ingredients(:vodka)|,
-                  expectation: proc {
-                    line do
-                      plain    %|Expected |
-                      actual   %|#<Drink>|
-                      plain    %| not to return a truthy result for |
-                      expected %|has_ingredients?(:vodka)|
-                      plain    %|.|
-                    end
-                  },
-                )
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet:
+                      "expect(Drink.new).not_to have_ingredients(:vodka)",
+                    expectation:
+                      proc do
+                        line do
+                          plain "Expected "
+                          actual "#<Drink>"
+                          plain " not to return a truthy result for "
+                          expected "has_ingredients?(:vodka)"
+                          plain "."
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -367,32 +363,32 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(hash).not_to have_contents("keys", "upon", "keys")
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(hash).not_to have_contents("keys", "upon", "keys")|,
-                  newline_before_expectation: true,
-                  expectation: proc {
-                    line do
-                      plain    %|                         Expected |
-                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-                    end
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet:
+                      %|expect(hash).not_to have_contents("keys", "upon", "keys")|,
+                    newline_before_expectation: true,
+                    expectation:
+                      proc do
+                        line do
+                          plain "                         Expected "
+                          actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                        end
 
-                    line do
-                      plain    %|not to return a truthy result for |
-                      expected %|has_contents?("keys", "upon", "keys")|
-                    end
-                  },
-                )
+                        line do
+                          plain "not to return a truthy result for "
+                          expected %|has_contents?("keys", "upon", "keys")|
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -409,29 +405,28 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(Robot.new).not_to have_arms
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(Robot.new).not_to have_arms|,
-                  expectation: proc {
-                    line do
-                      plain    %|Expected |
-                      actual   %|#<Robot>|
-                      plain    %| not to return a truthy result for |
-                      expected %|has_arms?|
-                      plain    %|.|
-                    end
-                  },
-                )
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: "expect(Robot.new).not_to have_arms",
+                    expectation:
+                      proc do
+                        line do
+                          plain "Expected "
+                          actual "#<Robot>"
+                          plain " not to return a truthy result for "
+                          expected "has_arms?"
+                          plain "."
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end
@@ -448,32 +443,31 @@ RSpec.describe "Integration with RSpec's #have_<predicate> matcher", type: :inte
 
                   expect(hash).not_to have_mapping
                 TEST
-                program = make_plain_test_program(
-                  snippet,
-                  color_enabled: color_enabled,
-                )
+                program =
+                  make_plain_test_program(snippet, color_enabled: color_enabled)
 
-                expected_output = build_expected_output(
-                  color_enabled: color_enabled,
-                  snippet: %|expect(hash).not_to have_mapping|,
-                  newline_before_expectation: true,
-                  expectation: proc {
-                    line do
-                      plain    %|                         Expected |
-                      actual   %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
-                    end
+                expected_output =
+                  build_expected_output(
+                    color_enabled: color_enabled,
+                    snippet: "expect(hash).not_to have_mapping",
+                    newline_before_expectation: true,
+                    expectation:
+                      proc do
+                        line do
+                          plain "                         Expected "
+                          actual %|{ a: "lot", of: "keys", and: "things", like: "that", lets: "add", more: "keys" }|
+                        end
 
-                    line do
-                      plain    %|not to return a truthy result for |
-                      expected %|has_mapping?|
-                    end
-                  },
-                )
+                        line do
+                          plain "not to return a truthy result for "
+                          expected "has_mapping?"
+                        end
+                      end
+                  )
 
-                expect(program).
-                  to produce_output_when_run(expected_output).
-                  in_color(color_enabled).
-                  removing_object_ids
+                expect(program).to produce_output_when_run(
+                  expected_output
+                ).in_color(color_enabled).removing_object_ids
               end
             end
           end

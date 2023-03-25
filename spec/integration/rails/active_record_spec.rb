@@ -1,6 +1,8 @@
 require "spec_helper"
 
-RSpec.describe "Integration with Rails's ActiveRecord class", type: :integration, active_record: true do
+RSpec.describe "Integration with Rails's ActiveRecord class",
+               type: :integration,
+               active_record: true do
   context "when using 'super_diff/rspec-rails'" do
     include_context "integration with ActiveRecord"
 

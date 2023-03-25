@@ -1,6 +1,7 @@
 require "spec_helper"
 
-RSpec.describe "Integration with RSpec and unhandled errors", type: :integration do
+RSpec.describe "Integration with RSpec and unhandled errors",
+               type: :integration do
   context "when a random exception occurs" do
     context "and the message spans multiple lines" do
       it "highlights the first line in red, and then leaves the rest of the message alone" do
@@ -8,29 +9,29 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
           snippet = <<~TEST.strip
             raise "Some kind of error or whatever\\n\\nThis is another line"
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: snippet,
-            newline_before_expectation: true,
-            indentation: 5,
-            expectation: proc {
-              red_line "RuntimeError:"
-              indent by: 2 do
-                red_line   "Some kind of error or whatever"
-                newline
-                plain_line "This is another line"
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: snippet,
+              newline_before_expectation: true,
+              indentation: 5,
+              expectation:
+                proc do
+                  red_line "RuntimeError:"
+                  indent by: 2 do
+                    red_line "Some kind of error or whatever"
+                    newline
+                    plain_line "This is another line"
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -41,27 +42,27 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
           snippet = <<~TEST.strip
             raise "Some kind of error or whatever"
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: snippet,
-            newline_before_expectation: true,
-            indentation: 5,
-            expectation: proc {
-              red_line "RuntimeError:"
-              indent by: 2 do
-                red_line "Some kind of error or whatever"
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: snippet,
+              newline_before_expectation: true,
+              indentation: 5,
+              expectation:
+                proc do
+                  red_line "RuntimeError:"
+                  indent by: 2 do
+                    red_line "Some kind of error or whatever"
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -85,61 +86,64 @@ RSpec.describe "Integration with RSpec and unhandled errors", type: :integration
           end
         CODE
 
-        program = make_plain_test_program(
-          code,
-          color_enabled: color_enabled,
-          preserve_as_whole_file: true,
+        program =
+          make_plain_test_program(
+            code,
+            color_enabled: color_enabled,
+            preserve_as_whole_file: true
+          )
+
+        expected_output1 =
+          colored(color_enabled: color_enabled) do
+            indent by: 5 do
+              line do
+                plain "1.1) "
+                bold "Failure/Error: "
+                plain snippet
+              end
+
+              newline
+
+              indent by: 5 do
+                red_line "RuntimeError:"
+                indent by: 2 do
+                  red_line "Some kind of error or whatever"
+                  newline
+                  line "This is another line"
+                end
+              end
+            end
+          end
+
+        expected_output2 =
+          colored(color_enabled: color_enabled) do
+            indent by: 5 do
+              line do
+                plain "1.2) "
+                bold "Failure/Error: "
+                plain snippet
+              end
+
+              newline
+
+              indent by: 5 do
+                red_line "RuntimeError:"
+                indent by: 2 do
+                  red_line "Some kind of error or whatever"
+                  newline
+                  line "This is another line"
+                end
+              end
+            end
+          end
+
+        expect(program).to produce_output_when_run(expected_output1).in_color(
+          color_enabled
         )
 
-        expected_output1 = colored(color_enabled: color_enabled) do
-          indent by: 5 do
-            line do
-              plain "1.1) "
-              bold  "Failure/Error: "
-              plain snippet
-            end
-
-            newline
-
-            indent by: 5 do
-              red_line "RuntimeError:"
-              indent by: 2 do
-                red_line "Some kind of error or whatever"
-                newline
-                line     "This is another line"
-              end
-            end
-          end
-        end
-
-        expected_output2 = colored(color_enabled: color_enabled) do
-          indent by: 5 do
-            line do
-              plain "1.2) "
-              bold  "Failure/Error: "
-              plain snippet
-            end
-
-            newline
-
-            indent by: 5 do
-              red_line "RuntimeError:"
-              indent by: 2 do
-                red_line "Some kind of error or whatever"
-                newline
-                line     "This is another line"
-              end
-            end
-          end
-        end
-
-        expect(program).
-          to produce_output_when_run(expected_output1).
-          in_color(color_enabled)
-
-        expect(program).
-          to produce_output_when_run(expected_output2).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output2).in_color(
+          color_enabled
+        )
       end
     end
   end

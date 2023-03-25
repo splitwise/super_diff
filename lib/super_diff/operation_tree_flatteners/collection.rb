@@ -9,21 +9,21 @@ module SuperDiff
             type: :noop,
             indentation_level: indentation_level,
             value: open_token,
-            collection_bookend: :open,
+            collection_bookend: :open
           ),
           *inner_lines,
           Line.new(
             type: :noop,
             indentation_level: indentation_level,
             value: close_token,
-            collection_bookend: :close,
-          ),
+            collection_bookend: :close
+          )
         ]
       end
 
       def inner_lines
-        @_inner_lines ||= operation_tree.
-          flat_map do |operation|
+        @_inner_lines ||=
+          operation_tree.flat_map do |operation|
             lines =
               if operation.name == :change
                 build_lines_for_change_operation(operation)
@@ -33,7 +33,7 @@ module SuperDiff
 
             maybe_add_prefix_at_beginning_of_lines(
               maybe_add_comma_at_end_of_lines(lines, operation),
-              operation,
+              operation
             )
           end
       end
@@ -51,8 +51,7 @@ module SuperDiff
       end
 
       def add_prefix_at_beginning_of_lines(lines, operation)
-        [lines[0].prefixed_with(item_prefix_for(operation))] +
-          lines[1..-1]
+        [lines[0].prefixed_with(item_prefix_for(operation))] + lines[1..-1]
       end
 
       def maybe_add_comma_at_end_of_lines(lines, operation)
@@ -79,14 +78,12 @@ module SuperDiff
       def build_lines_for_change_operation(operation)
         SuperDiff::RecursionGuard.guarding_recursion_of(
           operation.left_collection,
-          operation.right_collection,
+          operation.right_collection
         ) do |already_seen|
           if already_seen
             raise InfiniteRecursionError
           else
-            operation.children.flatten(
-              indentation_level: indentation_level + 1,
-            )
+            operation.children.flatten(indentation_level: indentation_level + 1)
           end
         end
       end
@@ -99,14 +96,14 @@ module SuperDiff
             Line.new(
               type: operation.name,
               indentation_level: indentation_level,
-              value: SuperDiff::RecursionGuard::PLACEHOLDER,
-            ),
+              value: SuperDiff::RecursionGuard::PLACEHOLDER
+            )
           ]
         else
           build_lines_from_inspection_of(
             operation.value,
             type: operation.name,
-            indentation_level: indentation_level,
+            indentation_level: indentation_level
           )
         end
       end
@@ -125,7 +122,7 @@ module SuperDiff
           value,
           as_lines: true,
           type: type,
-          indentation_level: indentation_level,
+          indentation_level: indentation_level
         )
       end
 

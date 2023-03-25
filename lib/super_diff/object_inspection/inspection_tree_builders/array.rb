@@ -12,9 +12,7 @@ module SuperDiff
 
           InspectionTree.new do
             only_when empty do
-              as_lines_when_rendering_to_lines do
-                add_text "[]"
-              end
+              as_lines_when_rendering_to_lines { add_text "[]" }
             end
 
             only_when nonempty do
@@ -22,9 +20,7 @@ module SuperDiff
                 add_text "["
               end
 
-              nested do |array|
-                insert_array_inspection_of(array)
-              end
+              nested { |array| insert_array_inspection_of(array) }
 
               as_lines_when_rendering_to_lines(collection_bookend: :close) do
                 add_text "]"

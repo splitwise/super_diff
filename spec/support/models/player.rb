@@ -20,12 +20,9 @@ module SuperDiff
       end
 
       def ==(other)
-        other.is_a?(self.class) &&
-          other.handle == handle &&
-          other.character == character &&
-          other.inventory == inventory &&
-          other.shields == shields &&
-          other.health == health &&
+        other.is_a?(self.class) && other.handle == handle &&
+          other.character == character && other.inventory == inventory &&
+          other.shields == shields && other.health == health &&
           other.ultimate == ultimate
       end
     end

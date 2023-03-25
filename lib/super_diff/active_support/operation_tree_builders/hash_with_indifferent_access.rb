@@ -4,13 +4,12 @@ module SuperDiff
       class HashWithIndifferentAccess < SuperDiff::OperationTreeBuilders::Hash
         def self.applies_to?(expected, actual)
           (
-            expected.is_a?(::HashWithIndifferentAccess) &&
-              actual.is_a?(::Hash)
+            expected.is_a?(::HashWithIndifferentAccess) && actual.is_a?(::Hash)
           ) ||
-          (
-            expected.is_a?(::Hash) &&
-              actual.is_a?(::HashWithIndifferentAccess)
-          )
+            (
+              expected.is_a?(::Hash) &&
+                actual.is_a?(::HashWithIndifferentAccess)
+            )
         end
 
         def initialize(expected:, actual:, **rest)

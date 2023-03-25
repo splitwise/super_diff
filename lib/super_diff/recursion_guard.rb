@@ -1,4 +1,4 @@
-require 'set'
+require "set"
 
 module SuperDiff
   module RecursionGuard
@@ -6,9 +6,10 @@ module SuperDiff
     PLACEHOLDER = "∙∙∙".freeze
 
     def self.guarding_recursion_of(*objects, &block)
-      already_seen_objects, first_seen_objects = objects.partition do |object|
-        !SuperDiff.primitive?(object) && already_seen?(object)
-      end
+      already_seen_objects, first_seen_objects =
+        objects.partition do |object|
+          !SuperDiff.primitive?(object) && already_seen?(object)
+        end
 
       first_seen_objects.each do |object|
         already_seen_object_ids.add(object.object_id)

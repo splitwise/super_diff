@@ -19,9 +19,7 @@ module SuperDiff
           pp.text ":operations=>"
           pp.group(1, "[", "]") do
             pp.breakable
-            pp.seplist(self) do |value|
-              pp.pp value
-            end
+            pp.seplist(self) { |value| pp.pp value }
           end
           pp.comma_breakable
           pp.text ":underlying_object=>"

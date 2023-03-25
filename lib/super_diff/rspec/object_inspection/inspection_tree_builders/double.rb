@@ -31,23 +31,17 @@ module SuperDiff
                     "#<#{inspected_class} #{inspected_name}"
                   end
 
-                  when_rendering_to_lines do
-                    add_text " {"
-                  end
+                  when_rendering_to_lines { add_text " {" }
                 end
 
-                when_rendering_to_string do
-                  add_text " "
-                end
+                when_rendering_to_string { add_text " " }
 
                 nested do |object|
                   insert_hash_inspection_of(builder.doubled_methods)
                 end
 
                 as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                  when_rendering_to_lines do
-                    add_text "}"
-                  end
+                  when_rendering_to_lines { add_text "}" }
 
                   add_text ">"
                 end
@@ -85,16 +79,17 @@ module SuperDiff
           end
 
           def doubled_methods
-            @_doubled_methods ||= doubled_method_names.reduce({}) do |hash, key|
-              hash.merge(key => object.public_send(key))
-            end
+            @_doubled_methods ||=
+              doubled_method_names.reduce({}) do |hash, key|
+                hash.merge(key => object.public_send(key))
+              end
           end
 
           def doubled_method_names
-            object.
-              __send__(:__mock_proxy).
-              instance_variable_get("@method_doubles").
-              keys
+            object
+              .__send__(:__mock_proxy)
+              .instance_variable_get("@method_doubles")
+              .keys
           end
         end
       end

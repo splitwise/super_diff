@@ -28,11 +28,12 @@ module SuperDiff
         end
 
         def matcher_description
-          template = MatcherTextTemplate.new do |t|
-            t.add_text expected_action_for_description
-            add_expected_value_to_description(t)
-            add_extra_after_expected_to(t)
-          end
+          template =
+            MatcherTextTemplate.new do |t|
+              t.add_text expected_action_for_description
+              add_expected_value_to_description(t)
+              add_extra_after_expected_to(t)
+            end
 
           Csi.decolorize(template.to_s(as_single_line: true))
         end
@@ -61,7 +62,7 @@ module SuperDiff
           :expected_for_description,
           :expected_action_for_failure_message,
           :expected_action_for_description,
-          :template,
+          :template
         )
 
         def negated?
@@ -111,7 +112,7 @@ module SuperDiff
             template.add_text " "
             template.add_text_in_color(
               expected_color,
-              expected_for_failure_message,
+              expected_for_failure_message
             )
           end
         end
@@ -130,17 +131,14 @@ module SuperDiff
         end
 
         def to_or_not_to
-          if negated?
-            "not to"
-          else
-            "to"
-          end
+          negated? ? "not to" : "to"
         end
 
         def phrase_width
-          [actual_phrase, expected_phrase].
-            map { |text| Csi.decolorize(text.to_s).length }.
-            max
+          [actual_phrase, expected_phrase].map do |text|
+              Csi.decolorize(text.to_s).length
+            end
+            .max
         end
 
         # TODO: Should this be applied to expected and actual automatically

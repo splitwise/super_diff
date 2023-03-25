@@ -10,34 +10,35 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = { city: "Burbank" }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ city: "Burbank" }|
-                plain    %| to match |
-                expected %|#<a hash including (city: "Hill Valley")>|
-                plain    %|.|
-              end
-            },
-            diff: proc {
-              plain_line    %|  {|
-              expected_line %|-   city: "Hill Valley"|
-              actual_line   %|+   city: "Burbank"|
-              plain_line    %|  }|
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ city: "Burbank" }|
+                    plain " to match "
+                    expected %|#<a hash including (city: "Hill Valley")>|
+                    plain "."
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  expected_line %|-   city: "Hill Valley"|
+                  actual_line %|+   city: "Burbank"|
+                  plain_line "  }"
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -48,28 +49,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = { city: "Burbank" }
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ city: "Burbank" }|
-                plain    %| not to match |
-                expected %|#<a hash including (city: "Burbank")>|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ city: "Burbank" }|
+                    plain " not to match "
+                    expected %|#<a hash including (city: "Burbank")>|
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -90,40 +91,41 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|#<a hash including (city: "Hill Valley", zip: "90382")>|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %|    line_1: "123 Main St.",|
+                  expected_line %|-   city: "Hill Valley",|
+                  actual_line %|+   city: "Burbank",|
+                  plain_line %|    state: "CA",|
+                  expected_line %|-   zip: "90382"|
+                  actual_line %|+   zip: "90210"|
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|#<a hash including (city: "Hill Valley", zip: "90382")>|
-              end
-            },
-            diff: proc {
-              plain_line    %|  {|
-              plain_line    %|    line_1: "123 Main St.",|
-              expected_line %|-   city: "Hill Valley",|
-              actual_line   %|+   city: "Burbank",|
-              plain_line    %|    state: "CA",|
-              expected_line %|-   zip: "90382"|
-              actual_line   %|+   zip: "90210"|
-              plain_line    %|  }|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -142,31 +144,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|#<a hash including (city: "Burbank", zip: "90210")>|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|{ line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" }|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|#<a hash including (city: "Burbank", zip: "90210")>|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -195,43 +197,44 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %|    name: "Marty McFly",|
+                  plain_line "    address: {"
+                  plain_line %|      line_1: "123 Main St.",|
+                  expected_line %|-     city: "Hill Valley",|
+                  actual_line %|+     city: "Burbank",|
+                  plain_line %|      state: "CA",|
+                  expected_line %|-     zip: "90382"|
+                  actual_line %|+     zip: "90210"|
+                  plain_line "    }"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %|  {|
-              plain_line    %|    name: "Marty McFly",|
-              plain_line    %|    address: {|
-              plain_line    %|      line_1: "123 Main St.",|
-              expected_line %|-     city: "Hill Valley",|
-              actual_line   %|+     city: "Burbank",|
-              plain_line    %|      state: "CA",|
-              expected_line %|-     zip: "90382"|
-              actual_line   %|+     zip: "90210"|
-              plain_line    %|    }|
-              plain_line    %|  }|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -256,31 +259,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|{ name: "Marty McFly", address: #<a hash including (city: "Burbank", zip: "90210")> }|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|{ name: "Marty McFly", address: { line_1: "123 Main St.", city: "Burbank", state: "CA", zip: "90210" } }|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|{ name: "Marty McFly", address: #<a hash including (city: "Burbank", zip: "90210")> }|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -302,40 +305,41 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "Marty McFly", address: nil }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %!    name: "Marty McFly",!
+                  expected_line "-   address: #<a hash including ("
+                  expected_line %!-     city: "Hill Valley",!
+                  expected_line %!-     zip: "90382"!
+                  expected_line "-   )>"
+                  actual_line "+   address: nil"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "Marty McFly", address: nil }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "Marty McFly", address: #<a hash including (city: "Hill Valley", zip: "90382")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %!  {!
-              plain_line    %!    name: "Marty McFly",!
-              expected_line %!-   address: #<a hash including (!
-              expected_line %!-     city: "Hill Valley",!
-              expected_line %!-     zip: "90382"!
-              expected_line %!-   )>!
-              actual_line   %!+   address: nil!
-              plain_line    %!  }!
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -351,34 +355,34 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           actual   = { city: "Burbank" }
           expect(actual).to match(expected)
         TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
-        )
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(actual).to match(expected)|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|{ city: "Burbank" }|
-              plain    %| to match |
-              expected %|#<a hash including (city: "Hill Valley")>|
-              plain    %|.|
-            end
-          },
-          diff: proc {
-            plain_line    %|  {|
-            expected_line %|-   city: "Hill Valley"|
-            actual_line   %|+   city: "Burbank"|
-            plain_line    %|  }|
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(actual).to match(expected)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual %|{ city: "Burbank" }|
+                  plain " to match "
+                  expected %|#<a hash including (city: "Hill Valley")>|
+                  plain "."
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  {"
+                expected_line %|-   city: "Hill Valley"|
+                actual_line %|+   city: "Burbank"|
+                plain_line "  }"
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -392,35 +396,36 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["b"]
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["b"]|
-                plain    %| to match |
-                expected %|#<a collection including ("a")>|
-                plain    %|.|
-              end
-            },
-            diff: proc {
-              plain_line    %|  [|
-              plain_line    %|    "b"|
-              # expected_line %|-   "a",|   # FIXME
-              expected_line %|-   "a"|
-              plain_line    %|  ]|
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["b"]|
+                    plain " to match "
+                    expected %|#<a collection including ("a")>|
+                    plain "."
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  ["
+                  plain_line %|    "b"|
+                  # expected_line %|-   "a",|   # FIXME
+                  expected_line %|-   "a"|
+                  plain_line "  ]"
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -431,28 +436,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["b"]
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["b"]|
-                plain    %| not to match |
-                expected %|#<a collection including ("b")>|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["b"]|
+                    plain " not to match "
+                    expected %|#<a collection including ("b")>|
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -465,41 +470,42 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|#<a collection including ("milk", "bread")>|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  ["
+                  plain_line %|    "milk",|
+                  plain_line %|    "toast",|
+                  plain_line %|    "eggs",|
+                  plain_line %|    "cheese",|
+                  # plain_line    %|    "English muffins",|  # FIXME
+                  plain_line %|    "English muffins"|
+                  expected_line %|-   "bread"|
+                  plain_line "  ]"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["milk", "toast", "eggs", "cheese", "English muffins"]|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|#<a collection including ("milk", "bread")>|
-              end
-            },
-            diff: proc {
-              plain_line    %|  [|
-              plain_line    %|    "milk",|
-              plain_line    %|    "toast",|
-              plain_line    %|    "eggs",|
-              plain_line    %|    "cheese",|
-              # plain_line    %|    "English muffins",|  # FIXME
-              plain_line    %|    "English muffins"|
-              expected_line %|-   "bread"|
-              plain_line    %|  ]|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -510,31 +516,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|#<a collection including ("milk", "toast")>|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|["milk", "toast", "eggs", "cheese", "English muffins"]|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|#<a collection including ("milk", "toast")>|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -555,42 +561,43 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %|    name: "shopping list",|
+                  plain_line "    contents: ["
+                  plain_line %|      "milk",|
+                  plain_line %|      "toast",|
+                  # plain_line    %|      "eggs",|     # FIXME
+                  plain_line %|      "eggs"|
+                  expected_line %|-     "bread"|
+                  plain_line "    ]"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %|  {|
-              plain_line    %|    name: "shopping list",|
-              plain_line    %|    contents: [|
-              plain_line    %|      "milk",|
-              plain_line    %|      "toast",|
-              # plain_line    %|      "eggs",|     # FIXME
-              plain_line    %|      "eggs"|
-              expected_line %|-     "bread"|
-              plain_line    %|    ]|
-              plain_line    %|  }|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -607,31 +614,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|{ name: "shopping list", contents: #<a collection including ("milk", "toast")> }|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|{ name: "shopping list", contents: #<a collection including ("milk", "toast")> }|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -650,40 +657,41 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "shopping list", contents: nil }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %!    name: "shopping list",!
+                  expected_line "-   contents: #<a collection including ("
+                  expected_line %!-     "milk",!
+                  expected_line %!-     "bread"!
+                  expected_line "-   )>"
+                  actual_line "+   contents: nil"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "shopping list", contents: nil }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "shopping list", contents: #<a collection including ("milk", "bread")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %!  {!
-              plain_line    %!    name: "shopping list",!
-              expected_line %!-   contents: #<a collection including (!
-              expected_line %!-     "milk",!
-              expected_line %!-     "bread"!
-              expected_line %!-   )>!
-              actual_line   %!+   contents: nil!
-              plain_line    %!  }!
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -697,35 +705,35 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           actual   = ["b"]
           expect(actual).to match(expected)
         TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
-        )
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(actual).to match(expected)|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|["b"]|
-              plain    %| to match |
-              expected %|#<a collection including ("a")>|
-              plain    %|.|
-            end
-          },
-          diff: proc {
-            plain_line    %|  [|
-            plain_line    %|    "b"|
-            # expected_line %|-   "a",|   # FIXME
-            expected_line %|-   "a"|
-            plain_line    %|  ]|
-          },
-        )
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(actual).to match(expected)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual %|["b"]|
+                  plain " to match "
+                  expected %|#<a collection including ("a")>|
+                  plain "."
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  ["
+                plain_line %|    "b"|
+                # expected_line %|-   "a",|   # FIXME
+                expected_line %|-   "a"|
+                plain_line "  ]"
+              end
+          )
 
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
       end
     end
   end
@@ -739,35 +747,36 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = A.new("a")
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|#<A name: "a">|
-                plain    %| to match |
-                expected %|#<an object having attributes (name: "b")>|
-                plain    %|.|
-              end
-            },
-            diff: proc {
-              plain_line    %|  #<A {|
-              # expected_line %|-   name: "b",|  # FIXME
-              expected_line %|-   name: "b"|
-              actual_line   %|+   name: "a"|
-              plain_line    %|  }>|
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|#<A name: "a">|
+                    plain " to match "
+                    expected %|#<an object having attributes (name: "b")>|
+                    plain "."
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  #<A {"
+                  # expected_line %|-   name: "b",|  # FIXME
+                  expected_line %|-   name: "b"|
+                  actual_line %|+   name: "a"|
+                  plain_line "  }>"
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -778,28 +787,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = A.new("b")
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|#<A name: "b">|
-                plain    %| not to match |
-                expected %|#<an object having attributes (name: "b")>|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|#<A name: "b">|
+                    plain " not to match "
+                    expected %|#<an object having attributes (name: "b")>|
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -824,46 +833,47 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             )
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234", state: "CA", something_else: "blah")>|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  #<SuperDiff::Test::ShippingAddress {"
+                  expected_line %|-   line_1: "123 Main St.",|
+                  actual_line %|+   line_1: "456 Ponderosa Ct.",|
+                  plain_line "    line_2: nil,"
+                  expected_line %|-   city: "Oakland",|
+                  actual_line %|+   city: "Hill Valley",|
+                  plain_line %|    state: "CA",|
+                  # expected_line %|-   zip: "91234",|  # FIXME
+                  # actual_line   %|+   zip: "90382",|  # FIXME
+                  expected_line %|-   zip: "91234"|
+                  actual_line %|+   zip: "90382"|
+                  # expected_line %|-   something_else: "blah"|  # TODO
+                  expected_line %|-   something_else: "blah",|
+                  plain_line "  }>"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|#<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382">|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234", state: "CA", something_else: "blah")>|
-              end
-            },
-            diff: proc {
-              plain_line    %|  #<SuperDiff::Test::ShippingAddress {|
-              expected_line %|-   line_1: "123 Main St.",|
-              actual_line   %|+   line_1: "456 Ponderosa Ct.",|
-              plain_line    %|    line_2: nil,|
-              expected_line %|-   city: "Oakland",|
-              actual_line   %|+   city: "Hill Valley",|
-              plain_line    %|    state: "CA",|
-              # expected_line %|-   zip: "91234",|  # FIXME
-              # actual_line   %|+   zip: "90382",|  # FIXME
-              expected_line %|-   zip: "91234"|
-              actual_line   %|+   zip: "90382"|
-              # expected_line %|-   something_else: "blah"|  # TODO
-              expected_line %|-   something_else: "blah",|
-              plain_line    %|  }>|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -884,31 +894,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             )
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234")>|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|#<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234">|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|#<an object having attributes (line_1: "123 Main St.", city: "Oakland", zip: "91234")>|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -940,48 +950,48 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           }
           expect(actual).to match(expected)
         TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(actual).to match(expected)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382"> }|
+                end
+
+                line do
+                  plain "to match "
+                  expected %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234", something_else: "blah")> }|
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  {"
+                plain_line %|    name: "Marty McFly",|
+                plain_line "    shipping_address: #<SuperDiff::Test::ShippingAddress {"
+                expected_line %|-     line_1: "123 Main St.",|
+                actual_line %|+     line_1: "456 Ponderosa Ct.",|
+                plain_line "      line_2: nil,"
+                expected_line %|-     city: "Oakland",|
+                actual_line %|+     city: "Hill Valley",|
+                plain_line %|      state: "CA",|
+                # expected_line %|-     zip: "91234",|  # FIXME
+                expected_line %|-     zip: "91234"|
+                actual_line %|+     zip: "90382"|
+                # expected_line %|-     something_else: "blah"|  # TODO
+                expected_line %|-     something_else: "blah",|
+                plain_line "    }>"
+                plain_line "  }"
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
         )
-
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(actual).to match(expected)|,
-          expectation: proc {
-            line do
-              plain    %|Expected |
-              actual   %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "456 Ponderosa Ct.", line_2: nil, city: "Hill Valley", state: "CA", zip: "90382"> }|
-            end
-
-            line do
-              plain    %|to match |
-              expected %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234", something_else: "blah")> }|
-            end
-          },
-          diff: proc {
-            plain_line    %|  {|
-            plain_line    %|    name: "Marty McFly",|
-            plain_line    %|    shipping_address: #<SuperDiff::Test::ShippingAddress {|
-            expected_line %|-     line_1: "123 Main St.",|
-            actual_line   %|+     line_1: "456 Ponderosa Ct.",|
-            plain_line    %|      line_2: nil,|
-            expected_line %|-     city: "Oakland",|
-            actual_line   %|+     city: "Hill Valley",|
-            plain_line    %|      state: "CA",|
-            # expected_line %|-     zip: "91234",|  # FIXME
-            expected_line %|-     zip: "91234"|
-            actual_line   %|+     zip: "90382"|
-            # expected_line %|-     something_else: "blah"|  # TODO
-            expected_line %|-     something_else: "blah",|
-            plain_line    %|    }>|
-            plain_line    %|  }|
-          },
-        )
-
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
       end
     end
 
@@ -1009,31 +1019,30 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
           }
           expect(actual).not_to match(expected)
         TEST
-        program = make_plain_test_program(
-          snippet,
-          color_enabled: color_enabled,
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(actual).not_to match(expected)",
+            newline_before_expectation: true,
+            expectation:
+              proc do
+                line do
+                  plain "    Expected "
+                  actual %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234"> }|
+                end
+
+                line do
+                  plain "not to match "
+                  expected %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")> }|
+                end
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
         )
-
-        expected_output = build_expected_output(
-          color_enabled: color_enabled,
-          snippet: %|expect(actual).not_to match(expected)|,
-          newline_before_expectation: true,
-          expectation: proc {
-            line do
-              plain    %|    Expected |
-              actual   %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::ShippingAddress line_1: "123 Main St.", line_2: nil, city: "Oakland", state: "CA", zip: "91234"> }|
-            end
-
-            line do
-              plain    %|not to match |
-              expected %|{ name: "Marty McFly", shipping_address: #<an object having attributes (line_1: "123 Main St.", city: "Oakland", state: "CA", zip: "91234")> }|
-            end
-          },
-        )
-
-        expect(program).
-          to produce_output_when_run(expected_output).
-          in_color(color_enabled)
       end
     end
   end
@@ -1047,35 +1056,36 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["b"]
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["b"]|
-                plain    %| to match |
-                expected %|#<a collection containing exactly ("a")>|
-                plain    %|.|
-              end
-            },
-            diff: proc {
-              plain_line    %|  [|
-              actual_line   %|+   "b",|
-              # expected_line %|-   "a"|  # TODO
-              expected_line %|-   "a",|
-              plain_line    %|  ]|
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["b"]|
+                    plain " to match "
+                    expected %|#<a collection containing exactly ("a")>|
+                    plain "."
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  ["
+                  actual_line %|+   "b",|
+                  # expected_line %|-   "a"|  # TODO
+                  expected_line %|-   "a",|
+                  plain_line "  ]"
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
 
@@ -1086,28 +1096,28 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["b"]
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
-          )
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
 
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["b"]|
-                plain    %| not to match |
-                expected %|#<a collection containing exactly ("b")>|
-                plain    %|.|
-              end
-            },
-          )
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["b"]|
+                    plain " not to match "
+                    expected %|#<a collection containing exactly ("b")>|
+                    plain "."
+                  end
+                end
+            )
 
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
         end
       end
     end
@@ -1120,41 +1130,42 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["milk", "toast", "eggs", "cheese", "English muffins"]
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|["milk", "toast", "eggs", "cheese", "English muffins"]|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|#<a collection containing exactly ("milk", "bread")>|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  ["
+                  plain_line %|    "milk",|
+                  actual_line %|+   "toast",|
+                  actual_line %|+   "eggs",|
+                  actual_line %|+   "cheese",|
+                  actual_line %|+   "English muffins",|
+                  # expected_line %|-   "bread"|  # TODO
+                  expected_line %|-   "bread",|
+                  plain_line "  ]"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|["milk", "toast", "eggs", "cheese", "English muffins"]|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|#<a collection containing exactly ("milk", "bread")>|
-              end
-            },
-            diff: proc {
-              plain_line    %|  [|
-              plain_line    %|    "milk",|
-              actual_line   %|+   "toast",|
-              actual_line   %|+   "eggs",|
-              actual_line   %|+   "cheese",|
-              actual_line   %|+   "English muffins",|
-              # expected_line %|-   "bread"|  # TODO
-              expected_line %|-   "bread",|
-              plain_line    %|  ]|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -1165,31 +1176,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             actual   = ["milk", "toast", "eggs"]
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|["milk", "toast", "eggs"]|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|#<a collection containing exactly ("milk", "eggs", "toast")>|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|["milk", "toast", "eggs"]|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|#<a collection containing exactly ("milk", "eggs", "toast")>|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -1210,42 +1221,43 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %|    name: "shopping list",|
+                  plain_line "    contents: ["
+                  plain_line %|      "milk",|
+                  actual_line %|+     "toast",|
+                  actual_line %|+     "eggs",|
+                  # expected_line %|-     "bread"|  # TODO
+                  expected_line %|-     "bread",|
+                  plain_line "    ]"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %|  {|
-              plain_line    %|    name: "shopping list",|
-              plain_line    %|    contents: [|
-              plain_line    %|      "milk",|
-              actual_line   %|+     "toast",|
-              actual_line   %|+     "eggs",|
-              # expected_line %|-     "bread"|  # TODO
-              expected_line %|-     "bread",|
-              plain_line    %|    ]|
-              plain_line    %|  }|
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
 
@@ -1262,31 +1274,31 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).not_to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).not_to match(expected)",
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain "    Expected "
+                    actual %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
+                  end
+
+                  line do
+                    plain "not to match "
+                    expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "eggs", "toast")> }|
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).not_to match(expected)|,
-            newline_before_expectation: true,
-            expectation: proc {
-              line do
-                plain    %|    Expected |
-                actual   %|{ name: "shopping list", contents: ["milk", "toast", "eggs"] }|
-              end
-
-              line do
-                plain    %|not to match |
-                expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "eggs", "toast")> }|
-              end
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end
@@ -1305,40 +1317,41 @@ RSpec.describe "Integration with RSpec's #match matcher", type: :integration do
             }
             expect(actual).to match(expected)
           TEST
-          program = make_plain_test_program(
-            snippet,
-            color_enabled: color_enabled,
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: "expect(actual).to match(expected)",
+              expectation:
+                proc do
+                  line do
+                    plain "Expected "
+                    actual %|{ name: "shopping list", contents: nil }|
+                  end
+
+                  line do
+                    plain "to match "
+                    expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
+                  end
+                end,
+              diff:
+                proc do
+                  plain_line "  {"
+                  plain_line %!    name: "shopping list",!
+                  expected_line "-   contents: #<a collection containing exactly ("
+                  expected_line %!-     "milk",!
+                  expected_line %!-     "bread"!
+                  expected_line "-   )>"
+                  actual_line "+   contents: nil"
+                  plain_line "  }"
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
           )
-
-          expected_output = build_expected_output(
-            color_enabled: color_enabled,
-            snippet: %|expect(actual).to match(expected)|,
-            expectation: proc {
-              line do
-                plain    %|Expected |
-                actual   %|{ name: "shopping list", contents: nil }|
-              end
-
-              line do
-                plain    %|to match |
-                expected %|{ name: "shopping list", contents: #<a collection containing exactly ("milk", "bread")> }|
-              end
-            },
-            diff: proc {
-              plain_line    %!  {!
-              plain_line    %!    name: "shopping list",!
-              expected_line %!-   contents: #<a collection containing exactly (!
-              expected_line %!-     "milk",!
-              expected_line %!-     "bread"!
-              expected_line %!-   )>!
-              actual_line   %!+   contents: nil!
-              plain_line    %!  }!
-            },
-          )
-
-          expect(program).
-            to produce_output_when_run(expected_output).
-            in_color(color_enabled)
         end
       end
     end

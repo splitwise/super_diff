@@ -11,11 +11,7 @@ module SuperDiff
         end
 
         def render_to_string(object)
-          if block
-            evaluate_block(object).to_s
-          else
-            immediate_value.to_s
-          end
+          block ? evaluate_block(object).to_s : immediate_value.to_s
         end
 
         def render_to_lines(object, **)

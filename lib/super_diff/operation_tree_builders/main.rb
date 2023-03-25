@@ -3,14 +3,11 @@ module SuperDiff
     class Main
       extend AttrExtras.mixin
 
-      method_object [:expected!, :actual!, :all_or_nothing!]
+      method_object %i[expected! actual! all_or_nothing!]
 
       def call
         if resolved_class
-          resolved_class.call(
-            expected: expected,
-            actual: actual,
-          )
+          resolved_class.call(expected: expected, actual: actual)
         elsif all_or_nothing?
           raise NoOperationTreeBuilderAvailableError.create(expected, actual)
         else
@@ -29,13 +26,9 @@ module SuperDiff
       def available_classes
         classes =
           SuperDiff.configuration.extra_operation_tree_builder_classes +
-          DEFAULTS
+            DEFAULTS
 
-        if all_or_nothing?
-          classes + [DefaultObject]
-        else
-          classes
-        end
+        all_or_nothing? ? classes + [DefaultObject] : classes
       end
     end
   end

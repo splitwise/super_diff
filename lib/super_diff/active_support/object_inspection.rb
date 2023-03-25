@@ -3,7 +3,7 @@ module SuperDiff
     module ObjectInspection
       autoload(
         :InspectionTreeBuilders,
-        "super_diff/active_support/object_inspection/inspection_tree_builders",
+        "super_diff/active_support/object_inspection/inspection_tree_builders"
       )
     end
   end

@@ -13,9 +13,7 @@ module SuperDiff
                 add_text "#<ActiveRecord::Relation ["
               end
 
-              nested do |array|
-                insert_array_inspection_of(array)
-              end
+              nested { |array| insert_array_inspection_of(array) }
 
               as_lines_when_rendering_to_lines(collection_bookend: :close) do
                 add_text "]>"

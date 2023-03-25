@@ -1,0 +1,25 @@
+{
+  "name": "super_diff",
+  "version": "0.0.0",
+  "description": "A more helpful way to view differences between complex data structures in RSpec",
+  "private": true,
+  "scripts": {
+    "lint": "prettier --check .",
+    "lint:fix": "yarn lint --write"
+  },
+  "simple-git-hooks": {
+    "pre-push": "yarn lint"
+  },
+  "devDependencies": {
+    "@lavamoat/allow-scripts": "^2.3.0",
+    "@prettier/plugin-ruby": "^3.2.2",
+    "prettier": "^2.7.1",
+    "simple-git-hooks": "^2.8.1"
+  },
+  "packageManager": "yarn@3.4.1",
+  "lavamoat": {
+    "allowScripts": {
+      "simple-git-hooks": false
+    }
+  }
+}
