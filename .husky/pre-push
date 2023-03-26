@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo "Fixing changed files with lint violations..."
+
+yarn prettier --write --ignore-unknown $(git diff "$(git merge-base main HEAD)" --name-only) || exit $?
+
+echo
+echo "Auditing dependencies..."
+
+yarn audit || exit $?
+
+echo

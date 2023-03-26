@@ -521,6 +521,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"husky@npm:^8.0.3":
+  version: 8.0.3
+  resolution: "husky@npm:8.0.3"
+  bin:
+    husky: lib/bin.js
+  checksum: 837bc7e4413e58c1f2946d38fb050f5d7324c6f16b0fd66411ffce5703b294bd21429e8ba58711cd331951ee86ed529c5be4f76805959ff668a337dbfa82a1b0
+  languageName: node
+  linkType: hard
+
 "imurmurhash@npm:^0.1.4":
   version: 0.1.4
   resolution: "imurmurhash@npm:0.1.4"
@@ -1025,15 +1034,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"simple-git-hooks@npm:^2.8.1":
-  version: 2.8.1
-  resolution: "simple-git-hooks@npm:2.8.1"
-  bin:
-    simple-git-hooks: cli.js
-  checksum: 920d8b3122a102d4790b511a2f033202511f6a08d5105b4e05f05907d407d99f25490da1037643280d622c1951e0d10abacfbeaee64d5f69f1d0e29cf914141f
-  languageName: node
-  linkType: hard
-
 "sshpk@npm:^1.7.0":
   version: 1.17.0
   resolution: "sshpk@npm:1.17.0"
@@ -1110,8 +1110,8 @@ __metadata:
   dependencies:
     "@lavamoat/allow-scripts": ^2.3.0
     "@prettier/plugin-ruby": ^3.2.2
+    husky: ^8.0.3
     prettier: ^2.8.7
-    simple-git-hooks: ^2.8.1
   languageName: unknown
   linkType: soft
 
