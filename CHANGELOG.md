@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.10.0 - 2023-03-26
+
+### BREAKING CHANGES
+
+- Drop support for Ruby 2.5, 2.6, and 2.7 as well as Rails 5.0, 5.1, and 5.2,
+  as they have reached (or are about to reach) end-of-life. To use this gem,
+  you must use at least Ruby 3.x, and if you're using Rails, Rails 6.x. ([#187],
+  [#190])
+
+### Fixes
+
+- Fix diffing logic for `include` matcher so that it knows how to compare fuzzy
+  matcher objects with other kinds of objects. ([#156])
+- Add a `key_enabled` configuration option for disabling the key/legend in the
+  diff output. ([#166])
+- Add a `color_enabled` configuration option for disabling color. ([#138])
+- Update `super_diff/rails` (and, by extension, `super_diff/rspec-rails`) so
+  that the ActiveRecord-specific integration isn't loaded if ActiveRecord isn't
+  available. ([#188])
+
+[#187]: https://github.com/mcmire/super_diff/pull/187
+[#190]: https://github.com/mcmire/super_diff/pull/190
+[#156]: https://github.com/mcmire/super_diff/pull/156
+[#166]: https://github.com/mcmire/super_diff/pull/166
+[#138]: https://github.com/mcmire/super_diff/pull/138
+[#188]: https://github.com/mcmire/super_diff/pull/188
+
 ## 0.9.0 - 2022-04-25
 
 ### Fixes
