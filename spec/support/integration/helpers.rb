@@ -32,6 +32,18 @@ module SuperDiff
       TestPrograms::RSpecRails.new(test, color_enabled: color_enabled)
     end
 
+    def make_rspec_rails_engine_program(
+      test,
+      color_enabled:,
+      combustion_initialize:
+    )
+      TestPrograms::RspecRailsEngine.new(
+        test,
+        color_enabled: color_enabled,
+        combustion_initialize: combustion_initialize
+      )
+    end
+
     def build_expected_output(
       color_enabled:,
       snippet:,

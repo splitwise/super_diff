@@ -55,6 +55,12 @@ module SuperDiff
         end
       end
 
+      def failure_message_when_negated
+        "Expected output of test not to produce output, but it did.\n\n" +
+          "Actual output:\n\n" +
+          SuperDiff::Test::OutputHelpers.bookended(actual_output)
+      end
+
       private
 
       attr_reader :expected_output, :program, :output_processor
