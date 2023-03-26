@@ -2,3 +2,4 @@
 .yarn/releases
 gemfiles
 vendor/bundle
+yarn.lock

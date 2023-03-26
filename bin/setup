@@ -5,8 +5,8 @@ set -euo pipefail
 ### PROJECT SETUP ##############################################################
 
 provision-project() {
-  banner "Adding simple-git-hooks"
-  yarn simple-git-hooks
+  banner "Setting up Git hooks"
+  yarn setup-git-hooks
 
   banner "Installing appraisals"
   bundle exec appraisal install
