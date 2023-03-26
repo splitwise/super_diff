@@ -2,7 +2,8 @@
 
 source "https://rubygems.org"
 
-gem "appraisal", ref: "2f5be65b8e127bd602fd149f395f2f8fa50616a8", git: "https://github.com/thoughtbot/appraisal"
+gem "appraisal", git: "https://github.com/thoughtbot/appraisal"
+gem "bundler-audit"
 gem "childprocess"
 gem "climate_control"
 gem "pry-byebug", platform: :mri

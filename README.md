@@ -270,9 +270,9 @@ I'll get notified right away!
 ## Compatibility
 
 `super_diff` is [tested][gh-actions] to work with
-Ruby >= 2.5.x,
+Ruby >= 3.x,
 RSpec 3.x,
-and Rails >= 5.x.
+and Rails >= 6.x.
 
 [gh-actions]: https://github.com/mcmire/super_diff/actions?query=workflow%3ASuperDiff
 
