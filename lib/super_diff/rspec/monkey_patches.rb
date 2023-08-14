@@ -218,7 +218,10 @@ module RSpec
                   }
                 end
               end
-
+              @failure_line_groups << {
+                lines: extra_failure_lines,
+                already_colorized: true
+              }
               @failure_line_groups
             end
           end
