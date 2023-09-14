@@ -41,5 +41,13 @@ RSpec.describe "RSpec's `raise_error` matcher" do
         )
       end
     end
+
+    context "with a matcher" do
+      it "returns the correct output" do
+        expect(raise_error(a_kind_of(RuntimeError)).description).to eq(
+          "raise error #<a kind of RuntimeError>"
+        )
+      end
+    end
   end
 end

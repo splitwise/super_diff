@@ -713,11 +713,9 @@ module RSpec
 
           def expected_for_matcher_text
             if @expected_message
-              "#<#{@expected_error.name} #{description_of(@expected_message)}>"
-            elsif @expected_error.is_a? Regexp
-              "#<Exception #{description_of(@expected_error)}>"
+              "#<#{describe_expected_error} #{description_of(@expected_message)}>"
             else
-              "#<#{@expected_error.name}>"
+              "#<#{describe_expected_error}>"
             end
           end
 
@@ -735,6 +733,20 @@ module RSpec
 
           def matcher_text_builder_class
             SuperDiff::RSpec::MatcherTextBuilders::RaiseError
+          end
+
+          private
+
+          def describe_expected_error
+            if @expected_error.is_a? Class
+              @expected_error.name
+            elsif @expected_error.is_a? Regexp
+              "Exception #{description_of(@expected_error)}"
+            elsif @expected_error.respond_to? :description
+              @expected_error.description
+            else
+              SuperDiff.inspect_object(@expected_error, as_lines: false)
+            end
           end
         end
 
