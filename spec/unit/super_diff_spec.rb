@@ -1142,9 +1142,7 @@ RSpec.describe SuperDiff, type: :unit do
               Date.new(2023, 10, 14),
               as_lines: false
             )
-          expect(inspection).to eq(
-            "#<Date 2023-10-14>"
-          )
+          expect(inspection).to eq("#<Date 2023-10-14>")
         end
       end
 

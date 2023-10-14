@@ -15,16 +15,12 @@ module SuperDiff
             end
 
             when_rendering_to_string do
-              add_text do |date|
-                date.strftime("%Y-%m-%d")
-              end
+              add_text { |date| date.strftime("%Y-%m-%d") }
             end
 
             when_rendering_to_lines do
               nested do |date|
-                insert_separated_list(
-                  %i[year month day]
-                ) do |name|
+                insert_separated_list(%i[year month day]) do |name|
                   add_text name.to_s
                   add_text ": "
                   add_inspection_of date.public_send(name)
