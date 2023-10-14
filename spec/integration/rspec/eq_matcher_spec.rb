@@ -252,6 +252,78 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     end
   end
 
+  context "when comparing two different Date instances" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~RUBY
+          expected = Date.new(2023, 10, 14)
+          actual = Date.new(2023, 10, 31)
+          expect(expected).to eq(actual)
+        RUBY
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(expected).to eq(actual)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "#<Date 2023-10-14>"
+                  plain " to eq "
+                  expected "#<Date 2023-10-31>"
+                  plain "."
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  #<Date {"
+                plain_line "    year: 2023,"
+                plain_line "    month: 10,"
+                expected_line "-   day: 31"
+                actual_line "+   day: 14"
+                plain_line "  }>"
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+
+    it "produces the correct failure message when used in the negative" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~RUBY
+          date = Date.new(2023, 10, 14)
+          expect(date).not_to eq(date)
+        RUBY
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(date).not_to eq(date)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "#<Date 2023-10-14>"
+                  plain " not to eq "
+                  expected "#<Date 2023-10-14>"
+                  plain "."
+                end
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+  end
+
   context "when comparing a single-line string with a multi-line string" do
     it "produces the correct failure message" do
       as_both_colored_and_uncolored do |color_enabled|
