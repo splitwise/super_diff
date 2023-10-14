@@ -57,6 +57,14 @@ module SuperDiff
       value.is_a?(Time)
   end
 
+  def self.date_like?(value)
+    # Check for ActiveSupport's #acts_like_date? for their date-like objects
+    # In case class is both time-like and date-like, we should treat it as
+    # time-like. This is governed by the order of `Differs::DEFAULTS` entries
+    (value.respond_to?(:acts_like_date?) && value.acts_like_date?) ||
+      value.is_a?(Date)
+  end
+
   def self.primitive?(value)
     case value
     when true, false, nil, Symbol, Numeric, Regexp, Class

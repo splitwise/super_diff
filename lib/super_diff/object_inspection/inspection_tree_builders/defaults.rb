@@ -7,6 +7,7 @@ module SuperDiff
         Hash,
         Primitive,
         TimeLike,
+        DateLike,
         DefaultObject
       ].freeze
     end

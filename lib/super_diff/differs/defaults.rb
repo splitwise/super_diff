@@ -4,6 +4,7 @@ module SuperDiff
       Array,
       Hash,
       TimeLike,
+      DateLike,
       MultilineString,
       CustomObject,
       DefaultObject

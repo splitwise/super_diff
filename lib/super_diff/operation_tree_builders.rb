@@ -12,6 +12,7 @@ module SuperDiff
       "super_diff/operation_tree_builders/multiline_string"
     )
     autoload :TimeLike, "super_diff/operation_tree_builders/time_like"
+    autoload :DateLike, "super_diff/operation_tree_builders/date_like"
   end
 end
 

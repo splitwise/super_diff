@@ -9,6 +9,7 @@ module SuperDiff
     autoload :Main, "super_diff/differs/main"
     autoload :MultilineString, "super_diff/differs/multiline_string"
     autoload :TimeLike, "super_diff/differs/time_like"
+    autoload :DateLike, "super_diff/differs/date_like"
   end
 end
 
