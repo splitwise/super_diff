@@ -1026,6 +1026,72 @@ RSpec.describe SuperDiff, type: :unit do
       end
     end
 
+    context "given a Date object" do
+      context "given as_lines: false" do
+        it "returns a representation of the date on a single line" do
+          inspection =
+            described_class.inspect_object(
+              Date.new(2023, 10, 14),
+              as_lines: false
+            )
+          expect(inspection).to eq(
+            "#<Date 2023-10-14>"
+          )
+        end
+      end
+
+      context "given as_lines: true" do
+        it "returns a representation of the date across multiple lines" do
+          inspection =
+            described_class.inspect_object(
+              Date.new(2023, 10, 14),
+              as_lines: true,
+              type: :delete,
+              indentation_level: 1
+            )
+          expect(inspection).to match(
+            [
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 1,
+                value: "#<Date {",
+                add_comma: false,
+                collection_bookend: :open
+              ),
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 2,
+                value: "year: 2023",
+                add_comma: true,
+                collection_bookend: nil
+              ),
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 2,
+                value: "month: 10",
+                add_comma: true,
+                collection_bookend: nil
+              ),
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 2,
+                value: "day: 14",
+                add_comma: false,
+                collection_bookend: nil
+              ),
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 1,
+                value: "}>",
+                add_comma: false,
+                collection_bookend: :close
+              )
+            ]
+          )
+        end
+      end
+    end
+
     context "given a class" do
       context "given as_lines: false" do
         it "returns an inspected version of the object" do
