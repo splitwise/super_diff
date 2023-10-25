@@ -4,7 +4,7 @@
 
 echo "Fixing changed files with lint violations..."
 
-yarn prettier --write --ignore-unknown $(git diff "$(git merge-base main HEAD)" --name-only) || exit $?
+yarn prettier --write --ignore-unknown $(git diff "$(git merge-base main HEAD)" --name-only --diff-filter=d) || exit $?
 
 echo
 echo "Auditing dependencies..."
