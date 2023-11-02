@@ -35,6 +35,10 @@ module SuperDiff
           "super_diff/rspec/object_inspection/inspection_tree_builders/primitive"
         )
         autoload(
+          :RSpecMatcher,
+          "super_diff/rspec/object_inspection/inspection_tree_builders/rspec_matcher"
+        )
+        autoload(
           :ValueWithin,
           "super_diff/rspec/object_inspection/inspection_tree_builders/value_within"
         )
