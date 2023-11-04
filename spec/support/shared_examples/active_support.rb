@@ -64,4 +64,46 @@ shared_examples_for "integration with ActiveSupport" do
       end
     end
   end
+
+  context "when comparing OrderedOptions and Hash instances",
+          active_record: true do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~RUBY
+          expected = {beep: :bip}
+          actual = ::ActiveSupport::OrderedOptions[beep: :boop]
+          expect(expected).to eq(actual)
+        RUBY
+        program =
+          make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(expected).to eq(actual)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "{ beep: :bip }"
+                  plain " to eq "
+                  expected "#<OrderedOptions { beep: :boop }>"
+                  plain "."
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  {"
+                expected_line "-   beep: :boop"
+                actual_line "+   beep: :bip"
+                plain_line "  }"
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+  end
 end

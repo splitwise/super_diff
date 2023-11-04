@@ -18,7 +18,8 @@ module SuperDiff
         OperationTreeBuilders::HashWithIndifferentAccess
       )
       config.add_extra_inspection_tree_builder_classes(
-        ObjectInspection::InspectionTreeBuilders::HashWithIndifferentAccess
+        ObjectInspection::InspectionTreeBuilders::HashWithIndifferentAccess,
+        ObjectInspection::InspectionTreeBuilders::OrderedOptions
       )
     end
   end

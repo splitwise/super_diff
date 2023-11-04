@@ -3,6 +3,10 @@ module SuperDiff
     module ObjectInspection
       module InspectionTreeBuilders
         autoload(
+          :OrderedOptions,
+          "super_diff/active_support/object_inspection/inspection_tree_builders/ordered_options"
+        )
+        autoload(
           :HashWithIndifferentAccess,
           "super_diff/active_support/object_inspection/inspection_tree_builders/hash_with_indifferent_access"
         )
