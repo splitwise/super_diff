@@ -65,6 +65,9 @@ RSpec.configure do |config|
   config.default_formatter = "documentation" if !%w[true 1].include?(ENV["CI"])
 
   config.filter_run_excluding active_record: true unless active_record_available
+  unless defined?(ActiveSupport)
+    config.filter_run_excluding active_support: true
+  end
 
   config.order = :random
   Kernel.srand config.seed
