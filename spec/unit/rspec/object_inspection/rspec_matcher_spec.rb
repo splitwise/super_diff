@@ -34,7 +34,7 @@ RSpec.describe SuperDiff, type: :unit do
         end
       end
 
-      context "give as_lines: true" do
+      context "given as_lines: true" do
         it "returns an inspected version of the matcher as multiple lines" do
           tiered_lines =
             described_class.inspect_object(
@@ -66,7 +66,7 @@ RSpec.describe SuperDiff, type: :unit do
         end
       end
 
-      context "give as_lines: true" do
+      context "given as_lines: true" do
         it "returns an inspected version of the matcher as multiple lines" do
           tiered_lines =
             described_class.inspect_object(
