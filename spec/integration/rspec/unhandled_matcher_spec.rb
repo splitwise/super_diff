@@ -27,7 +27,7 @@ RSpec.describe "Integration with built-in RSpec matchers", type: :integration do
                     plain "Expected "
                     actual "{ number: 4 }"
                     plain " not to match "
-                    expected "#<a hash including (number: (be a kind of Numeric))>"
+                    expected "#<a hash including (number: #<be a kind of Numeric>)>"
                     plain "."
                   end
                 end
@@ -63,14 +63,14 @@ RSpec.describe "Integration with built-in RSpec matchers", type: :integration do
                     plain "Expected "
                     actual %|{ number: "not a number" }|
                     plain " to match "
-                    expected "#<a hash including (number: (be a kind of Numeric))>"
+                    expected "#<a hash including (number: #<be a kind of Numeric>)>"
                     plain "."
                   end
                 end,
               diff:
                 proc do
                   plain_line "  {"
-                  expected_line "-   number: (be a kind of Numeric)"
+                  expected_line "-   number: #<be a kind of Numeric>"
                   actual_line %|+   number: "not a number"|
                   plain_line "  }"
                 end

@@ -30,7 +30,7 @@ RSpec.describe SuperDiff, type: :unit do
               custom_matcher.call(4),
               as_lines: false
             )
-          expect(string).to eq("(be a perfect square)")
+          expect(string).to eq("#<be a perfect square>")
         end
       end
 
@@ -48,7 +48,7 @@ RSpec.describe SuperDiff, type: :unit do
               an_object_having_attributes(
                 type: :delete,
                 indentation_level: 1,
-                value: "(be a perfect square)"
+                value: "#<be a perfect square>"
               )
             ]
           )
@@ -62,7 +62,7 @@ RSpec.describe SuperDiff, type: :unit do
       context "given as_lines: false" do
         it "returns the matcher's description string" do
           string = described_class.inspect_object(matcher, as_lines: false)
-          expect(string).to eq("(be a kind of Numeric)")
+          expect(string).to eq("#<be a kind of Numeric>")
         end
       end
 
@@ -80,7 +80,7 @@ RSpec.describe SuperDiff, type: :unit do
               an_object_having_attributes(
                 type: :delete,
                 indentation_level: 1,
-                value: "(be a kind of Numeric)"
+                value: "#<be a kind of Numeric>"
               )
             ]
           )
