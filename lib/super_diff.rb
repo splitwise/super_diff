@@ -1,6 +1,7 @@
 require "attr_extras/explicit"
 require "diff-lcs"
 require "patience_diff"
+require "date"
 
 module SuperDiff
   autoload(
