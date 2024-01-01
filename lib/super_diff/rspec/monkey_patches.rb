@@ -532,7 +532,7 @@ module RSpec
 
           # Override to use the whole object, not just part of it
           def actual_for_matcher_text
-            description_of(@actual)
+            -> { description_of(@actual) }
           end
 
           # Override to use (...) as delimiters rather than {...}
