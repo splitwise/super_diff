@@ -92,7 +92,9 @@ module SuperDiff
         end
 
         def add_actual_value
-          template.add_text_in_color(actual_color) { actual }
+          template.add_text_in_color(actual_color) do
+            actual.respond_to?(:call) ? actual.call : actual
+          end
         end
 
         def expected_section

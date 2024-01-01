@@ -50,7 +50,7 @@ module SuperDiff
       end
 
       def actual_for_matcher_text
-        description_of(actual)
+        -> { description_of(actual) }
       end
 
       def expected_for_matcher_text
