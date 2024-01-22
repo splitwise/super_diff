@@ -48,15 +48,17 @@ module SuperDiff
       color_enabled:,
       snippet:,
       expectation:,
+      test_name: "test passes",
       key_enabled: true,
       newline_before_expectation: false,
       indentation: 7,
-      diff: nil
+      diff: nil,
+      extra_failure_lines: nil
     )
       colored(color_enabled: color_enabled) do
         line "Failures:\n"
 
-        line "1) test passes", indent_by: 2
+        line "1) #{test_name}", indent_by: 2
 
         line indent_by: 5 do
           bold "Failure/Error: "
@@ -105,6 +107,11 @@ module SuperDiff
 
             newline
           end
+        end
+
+        if extra_failure_lines
+          newline
+          evaluate_block(&extra_failure_lines)
         end
       end
     end
