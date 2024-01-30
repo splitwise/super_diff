@@ -2,12 +2,14 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "Fixing changed files with lint violations..."
+echo "*** Checking for lint violations in changed files ***************"
+echo
 
-yarn prettier --write --ignore-unknown $(git diff "$(git merge-base main HEAD)" --name-only --diff-filter=d) || exit $?
+yarn prettier --check --ignore-unknown $(git diff --cached "$(git merge-base main HEAD)" --name-only --diff-filter=d) || exit $?
 
 echo
-echo "Auditing dependencies..."
+echo "*** Auditing dependencies ***************"
+echo
 
 yarn audit || exit $?
 
