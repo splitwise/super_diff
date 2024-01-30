@@ -1,2 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+[*.{rb,js,json,yaml,yml}]
+indent_style = space
+indent_size = 2
+
+[*.{rb,js}]
+max_line_length = 80
+
 [README.md]
 max_line_length = unset
