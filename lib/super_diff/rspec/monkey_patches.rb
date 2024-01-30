@@ -218,7 +218,10 @@ module RSpec
                   }
                 end
               end
-
+              @failure_line_groups << {
+                lines: extra_failure_lines,
+                already_colorized: true
+              }
               @failure_line_groups
             end
           end
@@ -239,6 +242,24 @@ module RSpec
             end
 
             lines
+          end
+
+          # Override to ensure that each item in the array returned is one and
+          # only one line and doesn't contain any newline characters
+          def extra_failure_lines
+            @extra_failure_lines ||=
+              begin
+                original_lines = Array(example.metadata[:extra_failure_lines])
+                normalized_lines =
+                  original_lines.flat_map { |line| line.split("\n") }
+                unless normalized_lines.empty?
+                  unless normalized_lines.first == ""
+                    normalized_lines.unshift("")
+                  end
+                  normalized_lines.push("") unless normalized_lines.last == ""
+                end
+                normalized_lines
+              end
           end
 
           # Exclude this file from being included in backtraces, so that the
