@@ -37,6 +37,10 @@ module SuperDiff
         :TimeLike,
         "super_diff/object_inspection/inspection_tree_builders/time_like"
       )
+      autoload(
+        :DateLike,
+        "super_diff/object_inspection/inspection_tree_builders/date_like"
+      )
     end
   end
 end

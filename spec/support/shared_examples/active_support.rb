@@ -106,4 +106,83 @@ shared_examples_for "integration with ActiveSupport" do
       end
     end
   end
+
+  context "when comparing Date instance and date-like DateTime instance for same day",
+          active_record: true do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~RUBY
+          expected = Date.new(2023, 10, 14)
+          actual = DateTime.new(2023, 10, 14, 18, 22, 26)
+          expect(expected).to eq(actual)
+        RUBY
+        program =
+          make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(expected).to eq(actual)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "#<Date 2023-10-14>"
+                  plain " to eq "
+                  expected "#<DateTime 2023-10-14 18:22:26 +00:00 (+00:00)>"
+                  plain "."
+                end
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+  end
+
+  context "when comparing Date instance and date-like DateTime instance for another day",
+          active_record: true do
+    it "produces the diff for date like objects comparison" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~RUBY
+          expected = Date.new(2023, 10, 14)
+          actual = DateTime.new(2023, 10, 31, 18, 22, 26)
+          expect(expected).to eq(actual)
+        RUBY
+        program =
+          make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: "expect(expected).to eq(actual)",
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "#<Date 2023-10-14>"
+                  plain " to eq "
+                  expected "#<DateTime 2023-10-31 18:22:26 +00:00 (+00:00)>"
+                  plain "."
+                end
+              end,
+            diff:
+              proc do
+                plain_line "  #<Date {"
+                plain_line "    year: 2023,"
+                plain_line "    month: 10,"
+                expected_line "-   day: 31"
+                actual_line "+   day: 14"
+                plain_line "  }>"
+              end
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+  end
 end
