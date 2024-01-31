@@ -7,7 +7,7 @@ module SuperDiff
         @disallowed_node_names = disallowed_node_names
         @nodes = []
 
-        instance_eval(&block) if block
+        evaluate_block(&block) if block
       end
 
       Nodes.registry.each do |node_class|
@@ -26,8 +26,7 @@ module SuperDiff
 
       def render_to_string(object)
         nodes.reduce("") do |string, node|
-          result = node.render_to_string(object)
-          string + result
+          string + node.render_to_string(object)
         end
       end
 
@@ -52,43 +51,45 @@ module SuperDiff
           .first
       end
 
-      def evaluate_block(object, &block)
-        instance_exec(object, &block)
+      def evaluate_block(*args, &block)
+        block.call(self, *args)
       end
 
       def insert_array_inspection_of(array)
-        insert_separated_list(array) do |value|
+        insert_separated_list(array) do |t, value|
           # Have to do these shenanigans so that if value is a hash, Ruby
           # doesn't try to interpret it as keyword args
           if SuperDiff::Helpers.ruby_version_matches?(">= 2.7.1")
-            add_inspection_of(value, **{})
+            t.add_inspection_of(value, **{})
           else
-            add_inspection_of(*[value, {}])
+            t.add_inspection_of(*[value, {}])
           end
         end
       end
 
       def insert_hash_inspection_of(hash)
         keys = hash.keys
-
         format_keys_as_kwargs = keys.all? { |key| key.is_a?(Symbol) }
 
-        insert_separated_list(keys) do |key|
+        insert_separated_list(keys) do |t1, key|
           if format_keys_as_kwargs
-            as_prefix_when_rendering_to_lines { add_text "#{key}: " }
+            # stree-ignore
+            t1.as_prefix_when_rendering_to_lines do |t2|
+              t2.add_text "#{key}: "
+            end
           else
-            as_prefix_when_rendering_to_lines do
-              add_inspection_of key, as_lines: false
-              add_text " => "
+            t1.as_prefix_when_rendering_to_lines do |t2|
+              t2.add_inspection_of key, as_lines: false
+              t2.add_text " => "
             end
           end
 
           # Have to do these shenanigans so that if hash[key] is a hash, Ruby
           # doesn't try to interpret it as keyword args
           if SuperDiff::Helpers.ruby_version_matches?(">= 2.7.1")
-            add_inspection_of(hash[key], **{})
+            t1.add_inspection_of(hash[key], **{})
           else
-            add_inspection_of(*[hash[key], {}])
+            t1.add_inspection_of(*[hash[key], {}])
           end
         end
       end
@@ -97,10 +98,14 @@ module SuperDiff
         enumerable.each_with_index do |value, index|
           as_lines_when_rendering_to_lines(
             add_comma: index < enumerable.size - 1
-          ) do
-            when_rendering_to_string { add_text " " } if index > 0
-
-            evaluate_block(value, &block)
+          ) do |t1|
+            if index > 0
+              # stree-ignore
+              t1.when_rendering_to_string do |t2|
+                t2.add_text " "
+              end
+            end
+            t1.evaluate_block(value, &block)
           end
         end
       end

@@ -7,21 +7,31 @@ module SuperDiff
         end
 
         def call
-          InspectionTree.new do
-            as_lines_when_rendering_to_lines(collection_bookend: :open) do
-              add_text { |object| "#<#{object.class} " }
+          InspectionTree.new do |t1|
+            t1.as_lines_when_rendering_to_lines(
+              collection_bookend: :open
+            ) do |t2|
+              t2.add_text "#<#{object.class} "
 
-              when_rendering_to_lines { add_text "{" }
+              # stree-ignore
+              t2.when_rendering_to_lines do |t3|
+                t3.add_text "{"
+              end
             end
 
-            nested do |object|
-              insert_hash_inspection_of(object.attributes_for_super_diff)
+            t1.nested do |t2|
+              t2.insert_hash_inspection_of(object.attributes_for_super_diff)
             end
 
-            as_lines_when_rendering_to_lines(collection_bookend: :close) do
-              when_rendering_to_lines { add_text "}" }
+            t1.as_lines_when_rendering_to_lines(
+              collection_bookend: :close
+            ) do |t2|
+              # stree-ignore
+              t2.when_rendering_to_lines do |t3|
+                t3.add_text "}"
+              end
 
-              add_text ">"
+              t2.add_text ">"
             end
           end
         end

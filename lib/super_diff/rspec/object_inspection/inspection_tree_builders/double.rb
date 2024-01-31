@@ -8,46 +8,50 @@ module SuperDiff
           end
 
           def call
-            builder = self
-            empty = -> { empty? }
-            nonempty = -> { !empty? }
-
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              only_when empty do
-                as_lines_when_rendering_to_lines do
-                  add_text do |object|
-                    inspected_class = builder.inspected_class
-                    inspected_name = builder.inspected_name
-                    "#<#{inspected_class} #{inspected_name}>"
-                  end
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              t1.only_when method(:empty?) do |t2|
+                t2.as_lines_when_rendering_to_lines do |t3|
+                  t3.add_text("#<#{inspected_class} #{inspected_name}>")
                 end
               end
 
-              only_when nonempty do
-                as_lines_when_rendering_to_lines(collection_bookend: :open) do
-                  add_text do |object|
-                    inspected_class = builder.inspected_class
-                    inspected_name = builder.inspected_name
-                    "#<#{inspected_class} #{inspected_name}"
+              t1.only_when method(:nonempty?) do |t2|
+                t2.as_lines_when_rendering_to_lines(
+                  collection_bookend: :open
+                ) do |t3|
+                  t3.add_text("#<#{inspected_class} #{inspected_name}")
+
+                  # stree-ignore
+                  t3.when_rendering_to_lines do |t4|
+                    t4.add_text " {"
+                  end
+                end
+
+                # stree-ignore
+                t2.when_rendering_to_string do |t3|
+                  t3.add_text " "
+                end
+
+                # stree-ignore
+                t2.nested do |t3|
+                  t3.insert_hash_inspection_of doubled_methods
+                end
+
+                t2.as_lines_when_rendering_to_lines(
+                  collection_bookend: :close
+                ) do |t3|
+                  # stree-ignore
+                  t3.when_rendering_to_lines do |t4|
+                    t4.add_text "}"
                   end
 
-                  when_rendering_to_lines { add_text " {" }
-                end
-
-                when_rendering_to_string { add_text " " }
-
-                nested do |object|
-                  insert_hash_inspection_of(builder.doubled_methods)
-                end
-
-                as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                  when_rendering_to_lines { add_text "}" }
-
-                  add_text ">"
+                  t3.add_text ">"
                 end
               end
             end
           end
+
+          private
 
           def empty?
             doubled_methods.empty?

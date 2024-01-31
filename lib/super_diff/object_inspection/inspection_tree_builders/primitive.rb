@@ -7,11 +7,9 @@ module SuperDiff
         end
 
         def call
-          InspectionTree.new do
-            as_lines_when_rendering_to_lines do
-              # rubocop:disable Style/SymbolProc
-              add_text { |object| object.inspect }
-              # rubocop:enable Style/SymbolProc
+          InspectionTree.new do |t1|
+            t1.as_lines_when_rendering_to_lines do |t2|
+              t2.add_text object.inspect
             end
           end
         end

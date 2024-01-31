@@ -9,8 +9,8 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              add_text { |object| "#<#{object.description}>" }
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              t1.add_text "#<#{object.description}>"
             end
           end
         end

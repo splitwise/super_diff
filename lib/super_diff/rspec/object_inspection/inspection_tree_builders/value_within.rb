@@ -8,22 +8,21 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              as_prelude_when_rendering_to_lines do
-                add_text "#<a value within "
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              t1.as_prelude_when_rendering_to_lines do |t2|
+                t2.add_text "#<a value within "
 
-                add_inspection_of as_lines: false do |aliased_matcher|
-                  aliased_matcher.base_matcher.instance_variable_get("@delta")
-                end
+                t2.add_inspection_of(
+                  object.base_matcher.instance_variable_get("@delta"),
+                  as_lines: false
+                )
 
-                add_text " of "
+                t2.add_text " of "
               end
 
-              # rubocop:disable Style/SymbolProc
-              add_inspection_of { |aliased_matcher| aliased_matcher.expected }
-              # rubocop:enable Style/SymbolProc
+              t1.add_inspection_of object.expected
 
-              add_text ">"
+              t1.add_text ">"
             end
           end
         end

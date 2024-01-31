@@ -8,19 +8,34 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              as_lines_when_rendering_to_lines(collection_bookend: :open) do
-                add_text "#<HashWithIndifferentAccess {"
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :open
+              ) do |t2|
+                t2.add_text "#<HashWithIndifferentAccess {"
               end
 
-              when_rendering_to_string { add_text " " }
+              # stree-ignore
+              t1.when_rendering_to_string do |t2|
+                t2.add_text " "
+              end
 
-              nested { |hash| insert_hash_inspection_of(hash) }
+              # stree-ignore
+              t1.nested do |t2|
+                t2.insert_hash_inspection_of(object)
+              end
 
-              when_rendering_to_string { add_text " " }
+              # stree-ignore
+              t1.when_rendering_to_string do |t2|
+                t2.add_text " "
+              end
 
-              as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                add_text "}>"
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :close
+              ) do |t2|
+                t2.add_text "}>"
               end
             end
           end

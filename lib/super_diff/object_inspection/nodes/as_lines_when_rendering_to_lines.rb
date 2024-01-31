@@ -15,9 +15,10 @@ module SuperDiff
           *args,
           add_comma: false,
           collection_bookend: nil,
-          **rest
+          **rest,
+          &block
         )
-          super(tree, *args, **rest)
+          super(tree, *args, **rest, &block)
 
           @add_comma = add_comma
           @collection_bookend = collection_bookend

@@ -8,17 +8,24 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              as_lines_when_rendering_to_lines(collection_bookend: :open) do
-                add_text "#<an object having attributes ("
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :open
+              ) do |t2|
+                t2.add_text "#<an object having attributes ("
               end
 
-              nested do |aliased_matcher|
-                insert_hash_inspection_of(aliased_matcher.expected)
+              # stree-ignore
+              t1.nested do |t2|
+                t2.insert_hash_inspection_of(object.expected)
               end
 
-              as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                add_text ")>"
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :close
+              ) do |t2|
+                t2.add_text ")>"
               end
             end
           end
