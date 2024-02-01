@@ -7,37 +7,48 @@ module SuperDiff
         end
 
         def call
-          InspectionTree.new do
-            as_lines_when_rendering_to_lines(collection_bookend: :open) do
-              add_text { |time| "#<#{time.class} " }
+          InspectionTree.new do |t1|
+            t1.as_lines_when_rendering_to_lines(
+              collection_bookend: :open
+            ) do |t2|
+              t2.add_text "#<#{object.class} "
 
-              when_rendering_to_lines { add_text "{" }
-            end
-
-            when_rendering_to_string do
-              add_text do |time|
-                time.strftime("%Y-%m-%d %H:%M:%S") +
-                  (time.subsec == 0 ? "" : "+#{time.subsec.inspect}") + " " +
-                  time.strftime("%:z") + (time.zone ? " (#{time.zone})" : "")
+              # stree-ignore
+              t2.when_rendering_to_lines do |t3|
+                t3.add_text "{"
               end
             end
 
-            when_rendering_to_lines do
-              nested do |time|
-                insert_separated_list(
+            t1.when_rendering_to_string do |t2|
+              t2.add_text(
+                object.strftime("%Y-%m-%d %H:%M:%S") +
+                  (object.subsec == 0 ? "" : "+#{object.subsec.inspect}") +
+                  " " + object.strftime("%:z") +
+                  (object.zone ? " (#{object.zone})" : "")
+              )
+            end
+
+            t1.when_rendering_to_lines do |t2|
+              t2.nested do |t3|
+                t3.insert_separated_list(
                   %i[year month day hour min sec subsec zone utc_offset]
-                ) do |name|
-                  add_text name.to_s
-                  add_text ": "
-                  add_inspection_of time.public_send(name)
+                ) do |t4, name|
+                  t4.add_text name.to_s
+                  t4.add_text ": "
+                  t4.add_inspection_of object.public_send(name)
                 end
               end
             end
 
-            as_lines_when_rendering_to_lines(collection_bookend: :close) do
-              when_rendering_to_lines { add_text "}" }
+            t1.as_lines_when_rendering_to_lines(
+              collection_bookend: :close
+            ) do |t2|
+              # stree-ignore
+              t2.when_rendering_to_lines do |t3|
+                t3.add_text "}"
+              end
 
-              add_text ">"
+              t2.add_text ">"
             end
           end
         end

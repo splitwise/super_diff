@@ -7,26 +7,45 @@ module SuperDiff
         end
 
         def call
-          empty = -> { object.empty? }
-          nonempty = -> { !object.empty? }
-
-          InspectionTree.new do
-            only_when empty do
-              as_lines_when_rendering_to_lines { add_text "[]" }
+          InspectionTree.new do |t1|
+            t1.only_when empty do |t2|
+              # stree-ignore
+              t2.as_lines_when_rendering_to_lines do |t3|
+                t3.add_text "[]"
+              end
             end
 
-            only_when nonempty do
-              as_lines_when_rendering_to_lines(collection_bookend: :open) do
-                add_text "["
+            t1.only_when nonempty do |t2|
+              # stree-ignore
+              t2.as_lines_when_rendering_to_lines(
+                collection_bookend: :open
+              ) do |t3|
+                t3.add_text "["
               end
 
-              nested { |array| insert_array_inspection_of(array) }
+              # stree-ignore
+              t2.nested do |t3|
+                t3.insert_array_inspection_of(object)
+              end
 
-              as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                add_text "]"
+              # stree-ignore
+              t2.as_lines_when_rendering_to_lines(
+                collection_bookend: :close
+              ) do |t3|
+                t3.add_text "]"
               end
             end
           end
+        end
+
+        private
+
+        def empty
+          -> { object.empty? }
+        end
+
+        def nonempty
+          -> { !object.empty? }
         end
       end
     end

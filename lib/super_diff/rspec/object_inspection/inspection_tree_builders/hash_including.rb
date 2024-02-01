@@ -9,24 +9,29 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              as_lines_when_rendering_to_lines(collection_bookend: :open) do
-                add_text "#<a hash including ("
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :open
+              ) do |t2|
+                t2.add_text "#<a hash including ("
               end
 
-              nested do |value|
-                hash =
-                  if SuperDiff::RSpec.a_hash_including_something?(value)
-                    value.expecteds.first
-                  else
-                    value.instance_variable_get(:@expected)
-                  end
-
-                insert_hash_inspection_of(hash)
+              t1.nested do |t2|
+                if SuperDiff::RSpec.a_hash_including_something?(object)
+                  t2.insert_hash_inspection_of(object.expecteds.first)
+                else
+                  t2.insert_hash_inspection_of(
+                    object.instance_variable_get(:@expected)
+                  )
+                end
               end
 
-              as_lines_when_rendering_to_lines(collection_bookend: :close) do
-                add_text ")>"
+              # stree-ignore
+              t1.as_lines_when_rendering_to_lines(
+                collection_bookend: :close
+              ) do |t2|
+                t2.add_text ")>"
               end
             end
           end

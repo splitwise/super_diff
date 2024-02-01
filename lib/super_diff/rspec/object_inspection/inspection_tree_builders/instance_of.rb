@@ -9,16 +9,15 @@ module SuperDiff
           end
 
           def call
-            SuperDiff::ObjectInspection::InspectionTree.new do
-              add_text do |value|
-                klass =
-                  if SuperDiff::RSpec.an_instance_of_something?(value)
-                    value.expected
-                  else
-                    value.instance_variable_get(:@klass)
-                  end
-                "#<an instance of #{klass}>"
-              end
+            SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+              klass =
+                if SuperDiff::RSpec.an_instance_of_something?(object)
+                  object.expected
+                else
+                  object.instance_variable_get(:@klass)
+                end
+
+              t1.add_text "#<an instance of #{klass}>"
             end
           end
         end
