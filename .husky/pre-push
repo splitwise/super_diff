@@ -2,10 +2,20 @@
 
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "*** Checking for lint violations in changed files ***************"
-echo
+# If the push refs start with (delete), then we're deleting a branch, so skip the pre-push hook
+# Source: <https://github.com/typicode/husky/issues/169#issuecomment-1719263454>
+stdin=$(cat -)
+if echo "$stdin" | grep -q "^(delete)"; then
+  exit 0
+fi
 
-yarn prettier --check --ignore-unknown $(git diff --cached "$(git merge-base main HEAD)" --name-only --diff-filter=d) || exit $?
+files_to_check=$(git diff --cached "$(git merge-base main HEAD)" --name-only --diff-filter=d)
+if [[ -n $files_to_check ]]; then
+  echo "*** Checking for lint violations in changed files ***************"
+  echo
+
+  yarn prettier --check --ignore-unknown $files_to_check || exit $?
+fi
 
 echo
 echo "*** Auditing dependencies ***************"
