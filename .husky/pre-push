@@ -9,12 +9,14 @@ if echo "$stdin" | grep -q "^(delete)"; then
   exit 0
 fi
 
-files_to_check=$(git diff --cached "$(git merge-base main HEAD)" --name-only --diff-filter=d)
-if [[ -n $files_to_check ]]; then
+raw_files_to_check="$(git diff main...HEAD --name-only --diff-filter=d)"
+if [[ -n "$raw_files_to_check" ]]; then
   echo "*** Checking for lint violations in changed files ***************"
   echo
 
-  yarn prettier --check --ignore-unknown $files_to_check || exit $?
+  echo "$raw_files_to_check" | while IFS='\n' read -r line; do
+    printf '%s\0' "$line"
+  done | xargs -0 yarn prettier --check --ignore-unknown || exit $?
 fi
 
 echo
