@@ -21,7 +21,7 @@ if [[ -n "$raw_files_to_check" ]]; then
   echo "*** Checking for lint violations in changed files ***************"
   echo
 
-  echo "$raw_files_to_check" | while IFS='\n' read -r line; do
+  echo "$raw_files_to_check" | while IFS=$'\n' read -r line; do
     printf '%s\0' "$line"
   done | xargs -0 yarn prettier --check --ignore-unknown || exit $?
 fi
