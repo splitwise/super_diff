@@ -13,12 +13,12 @@ module SuperDiff
         def initialize(
           code,
           color_enabled:,
-          configuration: {},
+          super_diff_configuration: {},
           preserve_as_whole_file: false
         )
           @code = code.strip
           @color_enabled = color_enabled
-          @configuration = configuration
+          @super_diff_configuration = super_diff_configuration
           @preserve_as_whole_file = preserve_as_whole_file
         end
 
@@ -38,7 +38,7 @@ module SuperDiff
 
         private
 
-        attr_reader :code, :configuration
+        attr_reader :code, :super_diff_configuration
 
         def color_enabled?
           @color_enabled
@@ -74,8 +74,8 @@ module SuperDiff
               color_option,
               "--no-pry",
               tempfile.to_s,
-              "--configuration",
-              JSON.generate(configuration)
+              "--super-diff-configuration",
+              JSON.generate(super_diff_configuration)
             ]
           else
             ["rspec", "--options", "/tmp/dummy-rspec-config", tempfile.to_s]
@@ -110,7 +110,7 @@ module SuperDiff
               test_plan = TestPlan.new(
                 using_outside_of_zeus: true,
                 color_enabled: #{color_enabled?.inspect},
-                configuration: #{configuration.inspect}
+                super_diff_configuration: #{super_diff_configuration.inspect}
               )
               #{test_plan_prelude}
               test_plan.#{test_plan_command}

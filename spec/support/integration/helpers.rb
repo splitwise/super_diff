@@ -9,13 +9,13 @@ module SuperDiff
     def make_plain_test_program(
       test,
       color_enabled:,
-      configuration: {},
+      super_diff_configuration: {},
       preserve_as_whole_file: false
     )
       TestPrograms::Plain.new(
         test,
         color_enabled: color_enabled,
-        configuration: configuration,
+        super_diff_configuration: super_diff_configuration,
         preserve_as_whole_file: preserve_as_whole_file
       )
     end
@@ -32,15 +32,13 @@ module SuperDiff
       TestPrograms::RSpecRails.new(test, color_enabled: color_enabled)
     end
 
-    def make_rspec_rails_engine_program(
+    def make_rspec_rails_engine_with_action_controller_program(
       test,
-      color_enabled:,
-      combustion_initialize:
+      color_enabled:
     )
-      TestPrograms::RspecRailsEngine.new(
+      TestPrograms::RspecRailsEngineWithActionController.new(
         test,
-        color_enabled: color_enabled,
-        combustion_initialize: combustion_initialize
+        color_enabled: color_enabled
       )
     end
 
