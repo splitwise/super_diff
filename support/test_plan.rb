@@ -11,11 +11,11 @@ class TestPlan
   def initialize(
     using_outside_of_zeus: false,
     color_enabled: false,
-    configuration: {}
+    super_diff_configuration: {}
   )
     @using_outside_of_zeus = using_outside_of_zeus
     @color_enabled = color_enabled
-    @configuration = configuration
+    @super_diff_configuration = super_diff_configuration
 
     @pry_enabled = true
     @libraries = []
@@ -76,7 +76,7 @@ class TestPlan
   def boot_active_support
     require "active_support"
     require "active_support/core_ext/hash/indifferent_access"
-  rescue LoadError
+  rescue LoadError => e
     # active_support may not be in the Gemfile, so that's okay
     puts "Error in TestPlan#boot_active_support: #{e.message}"
   end
@@ -110,9 +110,11 @@ class TestPlan
     boot_active_record
   end
 
-  def boot_rails_engine(combustion_initialize: [])
+  def boot_rails_engine_with_action_controller
+    boot_active_support
+
     require "combustion"
-    Combustion.initialize!(*combustion_initialize)
+    Combustion.initialize!(:action_controller)
   end
 
   def run_plain_test
@@ -131,9 +133,12 @@ class TestPlan
     run_test_with_libraries("super_diff/rspec-rails")
   end
 
+  alias_method :run_rspec_rails_engine_with_action_controller_test,
+               :run_rspec_rails_test
+
   private
 
-  attr_reader :libraries, :configuration
+  attr_reader :libraries, :super_diff_configuration
 
   def using_outside_of_zeus?
     @using_outside_of_zeus
@@ -165,7 +170,7 @@ class TestPlan
     option_parser.parse! if !using_outside_of_zeus?
 
     SuperDiff.configuration.merge!(
-      configuration.merge(color_enabled: color_enabled?)
+      super_diff_configuration.merge(color_enabled: color_enabled?)
     )
 
     ENV["DISABLE_PRY"] = "true" if !pry_enabled?
@@ -187,10 +192,12 @@ class TestPlan
         opts.on("--[no-]pry", "Disable Pry.") { |value| @pry_enabled = value }
 
         opts.on(
-          "--configuration CONFIG",
+          "--super-diff-configuration CONFIG",
           String,
           "Configure SuperDiff."
-        ) { |json| @configuration = JSON.parse(json).transform_keys(&:to_sym) }
+        ) do |json|
+          @super_diff_configuration = JSON.parse(json).transform_keys(&:to_sym)
+        end
       end
   end
 end

@@ -14,22 +14,24 @@ class CustomZeusPlan < Zeus::Plan
     :boot_active_support,
     :boot_active_record,
     :boot_rails,
+    :boot_rails_engine_with_action_controller,
     :run_plain_test,
     :run_rspec_active_support_test,
     :run_rspec_active_record_test,
-    :run_rspec_rails_test
+    :run_rspec_rails_test,
+    :run_rspec_rails_engine_with_action_controller_test
   )
 
   def initialize(
     using_outside_of_zeus: false,
     color_enabled: false,
-    configuration: {}
+    super_diff_configuration: {}
   )
     @test_plan =
       TestPlan.new(
         using_outside_of_zeus: using_outside_of_zeus,
         color_enabled: color_enabled,
-        configuration: configuration
+        super_diff_configuration: super_diff_configuration
       )
   end
 end

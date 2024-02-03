@@ -11,8 +11,10 @@
       },
       "boot_rails": {
         "run_rspec_rails_test": []
+      },
+      "boot_rails_engine_with_action_controller": {
+        "run_rspec_rails_engine_with_action_controller_test": []
       }
-    },
-    "boot_rails_engine": []
+    }
   }
 }

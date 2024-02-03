@@ -19,7 +19,7 @@ shared_examples_for "a matcher that supports a toggleable key" do
           make_plain_test_program(
             snippet,
             color_enabled: color_enabled,
-            configuration: {
+            super_diff_configuration: {
               key_enabled: true
             }
           )
@@ -80,7 +80,7 @@ shared_examples_for "a matcher that supports a toggleable key" do
           make_plain_test_program(
             snippet,
             color_enabled: color_enabled,
-            configuration: {
+            super_diff_configuration: {
               key_enabled: false
             }
           )

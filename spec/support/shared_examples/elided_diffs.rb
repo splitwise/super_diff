@@ -40,7 +40,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: true,
                 diff_elision_maximum: 3
               }
@@ -129,7 +129,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: false,
                 diff_elision_maximum: 3
               }
@@ -228,7 +228,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: true,
                 diff_elision_maximum: 3
               }
@@ -318,7 +318,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: false,
                 diff_elision_maximum: 3
               }
@@ -550,7 +550,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: true,
                 diff_elision_maximum: 10
               }
@@ -811,7 +811,7 @@ shared_examples_for "a matcher that supports elided diffs" do
             make_plain_test_program(
               snippet,
               color_enabled: color_enabled,
-              configuration: {
+              super_diff_configuration: {
                 diff_elision_enabled: false,
                 diff_elision_maximum: 10
               }
