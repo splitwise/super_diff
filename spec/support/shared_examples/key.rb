@@ -3,15 +3,15 @@ shared_examples_for "a matcher that supports a toggleable key" do
     it "produces the key" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = [
-            "Afghanistan",
-            "Aland Islands",
-            "Albania"
-          ]
           actual = [
             "Afghanistan",
             "Aland Islands",
             "Australia"
+          ]
+          expected = [
+            "Afghanistan",
+            "Aland Islands",
+            "Albania"
           ]
           expect(actual).to #{matcher}(expected)
         TEST
@@ -64,15 +64,15 @@ shared_examples_for "a matcher that supports a toggleable key" do
     it "does not produce the key" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = [
-            "Afghanistan",
-            "Aland Islands",
-            "Albania"
-          ]
           actual = [
             "Afghanistan",
             "Aland Islands",
             "Australia"
+          ]
+          expected = [
+            "Afghanistan",
+            "Aland Islands",
+            "Albania"
           ]
           expect(actual).to #{matcher}(expected)
         TEST

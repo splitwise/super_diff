@@ -7,8 +7,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = ["Marty", "Einie"]
             actual = ["Marty", "Jennifer", "Doc"]
+            expected = ["Marty", "Einie"]
             expect(actual).to include(*expected)
           TEST
           program =
@@ -82,18 +82,18 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
             expected = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
               "Biff Tannen",
               "George McFly",
-              "Lorraine McFly"
-            ]
-            actual = [
-              "Marty McFly",
-              "Doc Brown",
-              "Einie",
               "Lorraine McFly"
             ]
             expect(actual).to include(*expected)
@@ -140,18 +140,18 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the negative" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              "Marty McFly",
-              "Doc Brown",
-              "Einie",
-              "Lorraine McFly"
-            ]
             actual = [
               "Marty McFly",
               "Doc Brown",
               "Einie",
               "Biff Tannen",
               "George McFly",
+              "Lorraine McFly"
+            ]
+            expected = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
               "Lorraine McFly"
             ]
             expect(actual).not_to include(*expected)
@@ -191,8 +191,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = { city: "Hill Valley", state: "CA" }
             actual = { city: "Burbank", zip: "90210" }
+            expected = { city: "Hill Valley", state: "CA" }
             expect(actual).to include(expected)
           TEST
           program =
@@ -234,8 +234,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the negative" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = { city: "Burbank" }
             actual = { city: "Burbank", zip: "90210" }
+            expected = { city: "Burbank" }
             expect(actual).not_to include(expected)
           TEST
           program =
@@ -266,8 +266,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when fuzzy matching" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = { number: a_kind_of(Numeric), city: /burb/i, state: "CA" }
             actual = { number: 42, city: "Burbank", zip: "90210" }
+            expected = { number: a_kind_of(Numeric), city: /burb/i, state: "CA" }
             expect(actual).to include(expected)
           TEST
           program =
@@ -309,14 +309,14 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = {
-              city: "Hill Valley",
-              zip: "90382"
-            }
             actual = {
               city: "Burbank",
               state: "CA",
               zip: "90210"
+            }
+            expected = {
+              city: "Hill Valley",
+              zip: "90382"
             }
             expect(actual).to include(expected)
           TEST
@@ -360,8 +360,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when used in the negative" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = { city: "Hill Valley", state: "CA" }
             actual = { city: "Hill Valley", state: "CA", zip: "90210" }
+            expected = { city: "Hill Valley", state: "CA" }
             expect(actual).not_to include(expected)
           TEST
           program =
@@ -395,18 +395,18 @@ RSpec.describe "Integration with RSpec's #include matcher",
       it "produces the correct failure message when fuzzy matching" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = {
-              number: a_kind_of(Numeric),
-              street: "Yoshie Circles",
-              city: /burb/i,
-              zip: "90382"
-            }
             actual = {
               number: 42,
               street: "Yoshie Circles",
               city: "Burbank",
               state: "CA",
               zip: "90210"
+            }
+            expected = {
+              number: a_kind_of(Numeric),
+              street: "Yoshie Circles",
+              city: /burb/i,
+              zip: "90382"
             }
             expect(actual).to include(expected)
           TEST

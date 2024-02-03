@@ -6,8 +6,8 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = ["Einie", "Marty"]
           actual = ["Marty", "Jennifer", "Doc"]
+          expected = ["Einie", "Marty"]
           expect(actual).to contain_exactly(*expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -84,17 +84,17 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
             expected = [
               "Doc Brown",
               "Marty McFly",
               "Biff Tannen",
               "George McFly",
-              "Lorraine McFly"
-            ]
-            actual = [
-              "Marty McFly",
-              "Doc Brown",
-              "Einie",
               "Lorraine McFly"
             ]
             expect(actual).to contain_exactly(*expected)
@@ -196,18 +196,18 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST
+            actual = [
+              "Marty McFly",
+              "Doc Brown",
+              "Einie",
+              "Lorraine McFly"
+            ]
             expected = [
               / Brown$/,
               "Marty McFly",
               "Biff Tannen",
               /Georg McFly/,
               /Lorrain McFly/
-            ]
-            actual = [
-              "Marty McFly",
-              "Doc Brown",
-              "Einie",
-              "Lorraine McFly"
             ]
             expect(actual).to contain_exactly(*expected)
           TEST
@@ -312,15 +312,15 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              a_hash_including(foo: "bar"),
-              a_collection_containing_exactly("zing"),
-              an_object_having_attributes(baz: "qux"),
-            ]
             actual = [
               { foo: "bar" },
               double(baz: "qux"),
               { blargh: "riddle" }
+            ]
+            expected = [
+              a_hash_including(foo: "bar"),
+              a_collection_containing_exactly("zing"),
+              an_object_having_attributes(baz: "qux"),
             ]
             expect(actual).to contain_exactly(*expected)
           TEST

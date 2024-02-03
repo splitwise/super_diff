@@ -4,17 +4,17 @@ shared_examples_for "integration with ActiveRecord" do
       it "produces the correct output" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
-              line_1: "123 Main St.",
-              city: "Hill Valley",
-              state: "CA",
-              zip: "90382",
-            )
             actual = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
               line_1: "456 Ponderosa Ct.",
               city: "Oakland",
               state: "CA",
               zip: "91234",
+            )
+            expected = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
+              line_1: "123 Main St.",
+              city: "Hill Valley",
+              state: "CA",
+              zip: "90382",
             )
             expect(actual).to eq(expected)
           TEST
@@ -63,15 +63,15 @@ shared_examples_for "integration with ActiveRecord" do
       it "produces the correct output" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = SuperDiff::Test::Models::ActiveRecord::Person.new(
+              name: "Elliot",
+              age: 31,
+            )
             expected = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
               line_1: "123 Main St.",
               city: "Hill Valley",
               state: "CA",
               zip: "90382",
-            )
-            actual = SuperDiff::Test::Models::ActiveRecord::Person.new(
-              name: "Elliot",
-              age: 31,
             )
             expect(actual).to eq(expected)
           TEST
@@ -107,13 +107,13 @@ shared_examples_for "integration with ActiveRecord" do
       it "produces the correct output" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = nil
             expected = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
               line_1: "123 Main St.",
               city: "Hill Valley",
               state: "CA",
               zip: "90382"
             )
-            actual = nil
             expect(actual).to eq(expected)
           TEST
           program = make_program(snippet, color_enabled: color_enabled)
@@ -148,15 +148,6 @@ shared_examples_for "integration with ActiveRecord" do
       it "produces the correct output" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = {
-              name: "Marty McFly",
-              shipping_address: SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
-                line_1: "123 Main St.",
-                city: "Hill Valley",
-                state: "CA",
-                zip: "90382",
-              )
-            }
             actual = {
               name: "Marty McFly",
               shipping_address: SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
@@ -164,6 +155,15 @@ shared_examples_for "integration with ActiveRecord" do
                 city: "Oakland",
                 state: "CA",
                 zip: "91234",
+              )
+            }
+            expected = {
+              name: "Marty McFly",
+              shipping_address: SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
+                line_1: "123 Main St.",
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382",
               )
             }
             expect(actual).to eq(expected)
@@ -216,6 +216,13 @@ shared_examples_for "integration with ActiveRecord" do
       it "produces the correct output" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = {
+              name: "Marty McFly",
+              shipping_address: SuperDiff::Test::Models::ActiveRecord::Person.new(
+                name: "Elliot",
+                age: 31,
+              )
+            }
             expected = {
               name: "Marty McFly",
               shipping_address: SuperDiff::Test::Models::ActiveRecord::ShippingAddress.new(
@@ -223,13 +230,6 @@ shared_examples_for "integration with ActiveRecord" do
                 city: "Hill Valley",
                 state: "CA",
                 zip: "90382",
-              )
-            }
-            actual = {
-              name: "Marty McFly",
-              shipping_address: SuperDiff::Test::Models::ActiveRecord::Person.new(
-                name: "Elliot",
-                age: 31,
               )
             }
             expect(actual).to eq(expected)
@@ -299,8 +299,8 @@ shared_examples_for "integration with ActiveRecord" do
                 zip: "91234",
               )
             ]
-            expected = [shipping_addresses.first]
             actual = SuperDiff::Test::Models::ActiveRecord::ShippingAddress.all
+            expected = [shipping_addresses.first]
             expect(actual).to eq(expected)
           TEST
           program = make_program(snippet, color_enabled: color_enabled)
@@ -362,17 +362,17 @@ shared_examples_for "integration with ActiveRecord" do
               age: 20
             )
 
+            actual = [
+              SuperDiff::Test::Models::ActiveRecord::Query.new(
+                results: SuperDiff::Test::Models::ActiveRecord::Person.all
+              )
+            ]
+
             expected = [
               an_object_having_attributes(
                 results: [
                   an_object_having_attributes(name: "John", age: 19)
                 ]
-              )
-            ]
-
-            actual = [
-              SuperDiff::Test::Models::ActiveRecord::Query.new(
-                results: SuperDiff::Test::Models::ActiveRecord::Person.all
               )
             ]
 

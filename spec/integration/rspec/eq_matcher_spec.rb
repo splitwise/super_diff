@@ -173,16 +173,16 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = Time.utc(2011, 12, 13, 14, 15, 16)
-          actual = Time.utc(2011, 12, 13, 14, 15, 16, 500_000)
-          expect(expected).to eq(actual)
+          actual = Time.utc(2011, 12, 13, 14, 15, 16)
+          expected = Time.utc(2011, 12, 13, 14, 15, 16, 500_000)
+          expect(actual).to eq(expected)
         RUBY
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do
@@ -256,16 +256,16 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = Date.new(2023, 10, 14)
-          actual = Date.new(2023, 10, 31)
-          expect(expected).to eq(actual)
+          actual = Date.new(2023, 10, 14)
+          expected = Date.new(2023, 10, 31)
+          expect(actual).to eq(expected)
         RUBY
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do
@@ -328,8 +328,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = "Something entirely different"
           actual = "This is a line\\nAnd that's another line\\n"
+          expected = "Something entirely different"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -367,8 +367,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = "This is a line\\nAnd that's another line\\n"
           actual = "Something entirely different"
+          expected = "This is a line\\nAnd that's another line\\n"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -406,8 +406,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
           actual = "This is a line\\nSomething completely different\\nAnd there's a line too\\n"
+          expected = "This is a line\\nAnd that's a line\\nAnd there's a line too\\n"
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -481,19 +481,6 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST
-          expected = [
-            [
-              :h1,
-              [:span, [:text, "Hello world"]],
-              {
-                class: "header",
-                data: {
-                  "sticky" => true,
-                  person: SuperDiff::Test::Person.new(name: "Marty", age: 60)
-                }
-              }
-            ]
-          ]
           actual = [
             [
               :h2,
@@ -509,6 +496,19 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
               }
             ],
             :br
+          ]
+          expected = [
+            [
+              :h1,
+              [:span, [:text, "Hello world"]],
+              {
+                class: "header",
+                data: {
+                  "sticky" => true,
+                  person: SuperDiff::Test::Person.new(name: "Marty", age: 60)
+                }
+              }
+            ]
           ]
           expect(actual).to eq(expected)
         TEST
@@ -620,25 +620,6 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = {
-            customer: {
-              person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
-              shipping_address: {
-                line_1: "123 Main St.",
-                city: "Hill Valley",
-                state: "CA",
-                zip: "90382"
-              }
-            },
-            items: [
-              {
-                name: "Fender Stratocaster",
-                cost: 100_000,
-                options: ["red", "blue", "green"]
-              },
-              { name: "Chevy 4x4" }
-            ]
-          }
           actual = {
             customer: {
               person: SuperDiff::Test::Person.new(name: "Marty McFly, Jr.", age: 17),
@@ -656,6 +637,25 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
                 options: ["red", "blue", "green"]
               },
               { name: "Mattel Hoverboard" }
+            ]
+          }
+          expected = {
+            customer: {
+              person: SuperDiff::Test::Person.new(name: "Marty McFly", age: 17),
+              shipping_address: {
+                line_1: "123 Main St.",
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382"
+              }
+            },
+            items: [
+              {
+                name: "Fender Stratocaster",
+                cost: 100_000,
+                options: ["red", "blue", "green"]
+              },
+              { name: "Chevy 4x4" }
             ]
           }
           expect(actual).to eq(expected)
@@ -776,14 +776,14 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = SuperDiff::Test::Person.new(
-            name: "Marty",
-            age: 31,
-          )
           actual = SuperDiff::Test::Customer.new(
             name: "Doc",
             shipping_address: :some_shipping_address,
             phone: "1234567890",
+          )
+          expected = SuperDiff::Test::Person.new(
+            name: "Marty",
+            age: 31,
           )
           expect(actual).to eq(expected)
         TEST
@@ -855,10 +855,6 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = SuperDiff::Test::Item.new(
-            name: "camera",
-            quantity: 3,
-          )
           actual = SuperDiff::Test::Player.new(
             handle: "mcmire",
             character: "Jon",
@@ -866,6 +862,10 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
             shields: 11.4,
             health: 4,
             ultimate: true,
+          )
+          expected = SuperDiff::Test::Item.new(
+            name: "camera",
+            quantity: 3,
           )
           expect(actual).to eq(expected)
         TEST
@@ -937,8 +937,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "formats the array correctly in the diff" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = { foo: nil }
           actual = { foo: [] }
+          expected = { foo: nil }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -978,8 +978,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "formats the hash correctly in the diff" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = { foo: nil }
           actual = { foo: {} }
+          expected = { foo: nil }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -1019,8 +1019,8 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     it "formats the object correctly in the diff" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = { foo: nil }
           actual = { foo: SuperDiff::Test::EmptyClass.new }
+          expected = { foo: nil }
           expect(actual).to eq(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)

@@ -4,21 +4,6 @@ shared_examples_for "a matcher that supports elided diffs" do
       it "elides the unchanged sections, preserving <maximum> number of lines within all unchanged sections (including the elision marker)" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              "Afghanistan",
-              "Aland Islands",
-              "Albania",
-              "Algeria",
-              "American Samoa",
-              "Andorra",
-              "Angola",
-              "Antarctica",
-              "Antigua And Barbuda",
-              "Argentina",
-              "Armenia",
-              "Aruba",
-              "Australia"
-            ]
             actual = [
               "Afghanistan",
               "Aland Islands",
@@ -27,6 +12,21 @@ shared_examples_for "a matcher that supports elided diffs" do
               "American Samoa",
               "Andorra",
               "Anguilla",
+              "Antarctica",
+              "Antigua And Barbuda",
+              "Argentina",
+              "Armenia",
+              "Aruba",
+              "Australia"
+            ]
+            expected = [
+              "Afghanistan",
+              "Aland Islands",
+              "Albania",
+              "Algeria",
+              "American Samoa",
+              "Andorra",
+              "Angola",
               "Antarctica",
               "Antigua And Barbuda",
               "Argentina",
@@ -93,21 +93,6 @@ shared_examples_for "a matcher that supports elided diffs" do
       it "does not elide anything" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              "Afghanistan",
-              "Aland Islands",
-              "Albania",
-              "Algeria",
-              "American Samoa",
-              "Andorra",
-              "Angola",
-              "Antarctica",
-              "Antigua And Barbuda",
-              "Argentina",
-              "Armenia",
-              "Aruba",
-              "Australia"
-            ]
             actual = [
               "Afghanistan",
               "Aland Islands",
@@ -116,6 +101,21 @@ shared_examples_for "a matcher that supports elided diffs" do
               "American Samoa",
               "Andorra",
               "Anguilla",
+              "Antarctica",
+              "Antigua And Barbuda",
+              "Argentina",
+              "Armenia",
+              "Aruba",
+              "Australia"
+            ]
+            expected = [
+              "Afghanistan",
+              "Aland Islands",
+              "Albania",
+              "Algeria",
+              "American Samoa",
+              "Andorra",
+              "Angola",
               "Antarctica",
               "Antigua And Barbuda",
               "Argentina",
@@ -190,22 +190,6 @@ shared_examples_for "a matcher that supports elided diffs" do
       it "elides the unchanged sections, preserving <maximum> number of lines within all unchanged sections (including the elision marker)" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              "Afghanistan",
-              "Aland Islands",
-              "Albania",
-              "Algeria",
-              "American Samoa",
-              "Andorra",
-              "Angola",
-              "Anguilla",
-              "Antarctica",
-              "Antigua And Barbuda",
-              "Argentina",
-              "Armenia",
-              "Aruba",
-              "Australia"
-            ]
             actual = [
               "Zambia",
               "Aland Islands",
@@ -221,6 +205,22 @@ shared_examples_for "a matcher that supports elided diffs" do
               "Armenia",
               "Aruba",
               "Zimbabwe"
+            ]
+            expected = [
+              "Afghanistan",
+              "Aland Islands",
+              "Albania",
+              "Algeria",
+              "American Samoa",
+              "Andorra",
+              "Angola",
+              "Anguilla",
+              "Antarctica",
+              "Antigua And Barbuda",
+              "Argentina",
+              "Armenia",
+              "Aruba",
+              "Australia"
             ]
             expect(actual).to #{matcher}(expected)
           TEST
@@ -280,22 +280,6 @@ shared_examples_for "a matcher that supports elided diffs" do
       it "does not elide anything" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = [
-              "Afghanistan",
-              "Aland Islands",
-              "Albania",
-              "Algeria",
-              "American Samoa",
-              "Andorra",
-              "Angola",
-              "Anguilla",
-              "Antarctica",
-              "Antigua And Barbuda",
-              "Argentina",
-              "Armenia",
-              "Aruba",
-              "Australia"
-            ]
             actual = [
               "Zambia",
               "Aland Islands",
@@ -311,6 +295,22 @@ shared_examples_for "a matcher that supports elided diffs" do
               "Armenia",
               "Aruba",
               "Zimbabwe"
+            ]
+            expected = [
+              "Afghanistan",
+              "Aland Islands",
+              "Albania",
+              "Algeria",
+              "American Samoa",
+              "Andorra",
+              "Angola",
+              "Anguilla",
+              "Antarctica",
+              "Antigua And Barbuda",
+              "Argentina",
+              "Armenia",
+              "Aruba",
+              "Australia"
             ]
             expect(actual).to #{matcher}(expected)
           TEST
@@ -383,6 +383,86 @@ shared_examples_for "a matcher that supports elided diffs" do
         # totally weird
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = [
+              {
+                "user_id": "18949452",
+                "user": {
+                  "id": 18949452,
+                  "name": "Financial Times",
+                  "screen_name": "FT",
+                  "location": "London",
+                  "url": "http://t.co/dnhLQpd9BY",
+                  "entities": {
+                    "url": {
+                      "urls": [
+                        {
+                          "url": "http://t.co/dnhLQpd9BY",
+                          "expanded_url": "http://www.ft.com/",
+                          "display_url": "ft.com",
+                          "indices": [
+                            0,
+                            22
+                          ]
+                        }
+                      ]
+                    },
+                    "description": {
+                      "urls": [
+                        {
+                          "url": "https://t.co/5BsmLs9y1Z",
+                          "display_url": "FT.com",
+                          "indices": [
+                            65,
+                            88
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "protected": false,
+                  "listed_count": 37009,
+                  "created_at": "Tue Jan 13 19:28:24 +0000 2009",
+                  "favourites_count": 38,
+                  "utc_offset": nil,
+                  "time_zone": nil,
+                  "geo_enabled": false,
+                  "verified": true,
+                  "statuses_count": 273860,
+                  "media_count": 51044,
+                  "contributors_enabled": false,
+                  "is_translator": false,
+                  "is_translation_enabled": false,
+                  "profile_background_color": "FFF1E0",
+                  "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
+                  "profile_banner_url": "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+                  "profile_image_extensions": {
+                    "mediaStats": {
+                      "r": {
+                        "missing": nil
+                      },
+                      "ttl": -1
+                    }
+                  },
+                  "profile_banner_extensions": {},
+                  "blocking": false,
+                  "blocked_by": false,
+                  "want_retweets": false,
+                  "advertiser_account_type": "none",
+                  "profile_interstitial_type": "",
+                  "business_profile_state": "none",
+                  "translator_type": "none",
+                  "followed_by": false,
+                  "ext": {
+                    "highlightedLabel": {
+                      "ttl": -1
+                    }
+                  },
+                  "require_some_consent": false
+                },
+                "token": "117"
+              }
+            ]
             expected = [
               {
                 "user_id": "18949452",
@@ -450,86 +530,6 @@ shared_examples_for "a matcher that supports elided diffs" do
                   "want_retweets": false,
                   "advertiser_account_type": "none",
                   "advertiser_account_service_levels": [],
-                  "profile_interstitial_type": "",
-                  "business_profile_state": "none",
-                  "translator_type": "none",
-                  "followed_by": false,
-                  "ext": {
-                    "highlightedLabel": {
-                      "ttl": -1
-                    }
-                  },
-                  "require_some_consent": false
-                },
-                "token": "117"
-              }
-            ]
-            actual = [
-              {
-                "user_id": "18949452",
-                "user": {
-                  "id": 18949452,
-                  "name": "Financial Times",
-                  "screen_name": "FT",
-                  "location": "London",
-                  "url": "http://t.co/dnhLQpd9BY",
-                  "entities": {
-                    "url": {
-                      "urls": [
-                        {
-                          "url": "http://t.co/dnhLQpd9BY",
-                          "expanded_url": "http://www.ft.com/",
-                          "display_url": "ft.com",
-                          "indices": [
-                            0,
-                            22
-                          ]
-                        }
-                      ]
-                    },
-                    "description": {
-                      "urls": [
-                        {
-                          "url": "https://t.co/5BsmLs9y1Z",
-                          "display_url": "FT.com",
-                          "indices": [
-                            65,
-                            88
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "protected": false,
-                  "listed_count": 37009,
-                  "created_at": "Tue Jan 13 19:28:24 +0000 2009",
-                  "favourites_count": 38,
-                  "utc_offset": nil,
-                  "time_zone": nil,
-                  "geo_enabled": false,
-                  "verified": true,
-                  "statuses_count": 273860,
-                  "media_count": 51044,
-                  "contributors_enabled": false,
-                  "is_translator": false,
-                  "is_translation_enabled": false,
-                  "profile_background_color": "FFF1E0",
-                  "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
-                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
-                  "profile_banner_url": "https://pbs.twimg.com/profile_banners/18949452/1581526592",
-                  "profile_image_extensions": {
-                    "mediaStats": {
-                      "r": {
-                        "missing": nil
-                      },
-                      "ttl": -1
-                    }
-                  },
-                  "profile_banner_extensions": {},
-                  "blocking": false,
-                  "blocked_by": false,
-                  "want_retweets": false,
-                  "advertiser_account_type": "none",
                   "profile_interstitial_type": "",
                   "business_profile_state": "none",
                   "translator_type": "none",
@@ -644,6 +644,86 @@ shared_examples_for "a matcher that supports elided diffs" do
       it "does not elide anything" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = [
+              {
+                "user_id": "18949452",
+                "user": {
+                  "id": 18949452,
+                  "name": "Financial Times",
+                  "screen_name": "FT",
+                  "location": "London",
+                  "url": "http://t.co/dnhLQpd9BY",
+                  "entities": {
+                    "url": {
+                      "urls": [
+                        {
+                          "url": "http://t.co/dnhLQpd9BY",
+                          "expanded_url": "http://www.ft.com/",
+                          "display_url": "ft.com",
+                          "indices": [
+                            0,
+                            22
+                          ]
+                        }
+                      ]
+                    },
+                    "description": {
+                      "urls": [
+                        {
+                          "url": "https://t.co/5BsmLs9y1Z",
+                          "display_url": "FT.com",
+                          "indices": [
+                            65,
+                            88
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "protected": false,
+                  "listed_count": 37009,
+                  "created_at": "Tue Jan 13 19:28:24 +0000 2009",
+                  "favourites_count": 38,
+                  "utc_offset": nil,
+                  "time_zone": nil,
+                  "geo_enabled": false,
+                  "verified": true,
+                  "statuses_count": 273860,
+                  "media_count": 51044,
+                  "contributors_enabled": false,
+                  "is_translator": false,
+                  "is_translation_enabled": false,
+                  "profile_background_color": "FFF1E0",
+                  "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
+                  "profile_banner_url": "https://pbs.twimg.com/profile_banners/18949452/1581526592",
+                  "profile_image_extensions": {
+                    "mediaStats": {
+                      "r": {
+                        "missing": nil
+                      },
+                      "ttl": -1
+                    }
+                  },
+                  "profile_banner_extensions": {},
+                  "blocking": false,
+                  "blocked_by": false,
+                  "want_retweets": false,
+                  "advertiser_account_type": "none",
+                  "profile_interstitial_type": "",
+                  "business_profile_state": "none",
+                  "translator_type": "none",
+                  "followed_by": false,
+                  "ext": {
+                    "highlightedLabel": {
+                      "ttl": -1
+                    }
+                  },
+                  "require_some_consent": false
+                },
+                "token": "117"
+              }
+            ]
             expected = [
               {
                 "user_id": "18949452",
@@ -711,86 +791,6 @@ shared_examples_for "a matcher that supports elided diffs" do
                   "want_retweets": false,
                   "advertiser_account_type": "none",
                   "advertiser_account_service_levels": [],
-                  "profile_interstitial_type": "",
-                  "business_profile_state": "none",
-                  "translator_type": "none",
-                  "followed_by": false,
-                  "ext": {
-                    "highlightedLabel": {
-                      "ttl": -1
-                    }
-                  },
-                  "require_some_consent": false
-                },
-                "token": "117"
-              }
-            ]
-            actual = [
-              {
-                "user_id": "18949452",
-                "user": {
-                  "id": 18949452,
-                  "name": "Financial Times",
-                  "screen_name": "FT",
-                  "location": "London",
-                  "url": "http://t.co/dnhLQpd9BY",
-                  "entities": {
-                    "url": {
-                      "urls": [
-                        {
-                          "url": "http://t.co/dnhLQpd9BY",
-                          "expanded_url": "http://www.ft.com/",
-                          "display_url": "ft.com",
-                          "indices": [
-                            0,
-                            22
-                          ]
-                        }
-                      ]
-                    },
-                    "description": {
-                      "urls": [
-                        {
-                          "url": "https://t.co/5BsmLs9y1Z",
-                          "display_url": "FT.com",
-                          "indices": [
-                            65,
-                            88
-                          ]
-                        }
-                      ]
-                    }
-                  },
-                  "protected": false,
-                  "listed_count": 37009,
-                  "created_at": "Tue Jan 13 19:28:24 +0000 2009",
-                  "favourites_count": 38,
-                  "utc_offset": nil,
-                  "time_zone": nil,
-                  "geo_enabled": false,
-                  "verified": true,
-                  "statuses_count": 273860,
-                  "media_count": 51044,
-                  "contributors_enabled": false,
-                  "is_translator": false,
-                  "is_translation_enabled": false,
-                  "profile_background_color": "FFF1E0",
-                  "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
-                  "profile_image_url_https": "https://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",
-                  "profile_banner_url": "https://pbs.twimg.com/profile_banners/18949452/1581526592",
-                  "profile_image_extensions": {
-                    "mediaStats": {
-                      "r": {
-                        "missing": nil
-                      },
-                      "ttl": -1
-                    }
-                  },
-                  "profile_banner_extensions": {},
-                  "blocking": false,
-                  "blocked_by": false,
-                  "want_retweets": false,
-                  "advertiser_account_type": "none",
                   "profile_interstitial_type": "",
                   "business_profile_state": "none",
                   "translator_type": "none",

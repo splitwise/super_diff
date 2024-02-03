@@ -4,9 +4,9 @@ shared_examples_for "integration with ActiveSupport" do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = Time.utc(2011, 12, 13, 14, 15, 16)
-          actual = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
-          expect(expected).to eq(actual)
+          actual = Time.utc(2011, 12, 13, 14, 15, 16)
+          expected = Time.utc(2011, 12, 13, 15, 15, 16).in_time_zone("Europe/Stockholm")
+          expect(actual).to eq(expected)
         RUBY
         program =
           make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
@@ -14,7 +14,7 @@ shared_examples_for "integration with ActiveSupport" do
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do
@@ -70,9 +70,9 @@ shared_examples_for "integration with ActiveSupport" do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = {beep: :bip}
-          actual = ::ActiveSupport::OrderedOptions[beep: :boop]
-          expect(expected).to eq(actual)
+          actual = {beep: :bip}
+          expected = ::ActiveSupport::OrderedOptions[beep: :boop]
+          expect(actual).to eq(expected)
         RUBY
         program =
           make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
@@ -80,7 +80,7 @@ shared_examples_for "integration with ActiveSupport" do
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do
@@ -112,9 +112,9 @@ shared_examples_for "integration with ActiveSupport" do
     it "produces the correct failure message when used in the positive" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = Date.new(2023, 10, 14)
-          actual = DateTime.new(2023, 10, 14, 18, 22, 26)
-          expect(expected).to eq(actual)
+          actual = Date.new(2023, 10, 14)
+          expected = DateTime.new(2023, 10, 14, 18, 22, 26)
+          expect(actual).to eq(expected)
         RUBY
         program =
           make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
@@ -122,7 +122,7 @@ shared_examples_for "integration with ActiveSupport" do
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do
@@ -147,9 +147,9 @@ shared_examples_for "integration with ActiveSupport" do
     it "produces the diff for date like objects comparison" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~RUBY
-          expected = Date.new(2023, 10, 14)
-          actual = DateTime.new(2023, 10, 31, 18, 22, 26)
-          expect(expected).to eq(actual)
+          actual = Date.new(2023, 10, 14)
+          expected = DateTime.new(2023, 10, 31, 18, 22, 26)
+          expect(actual).to eq(expected)
         RUBY
         program =
           make_rspec_rails_test_program(snippet, color_enabled: color_enabled)
@@ -157,7 +157,7 @@ shared_examples_for "integration with ActiveSupport" do
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(expected).to eq(actual)",
+            snippet: "expect(actual).to eq(expected)",
             expectation:
               proc do
                 line do

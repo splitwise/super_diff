@@ -8,8 +8,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output when used in the positive" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
-              expected = { name: "b" }
               actual = SuperDiff::Test::Person.new(name: "a", age: 9)
+              expected = { name: "b" }
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -49,8 +49,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output when used in the negative" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
-              expected = { name: "a" }
               actual = SuperDiff::Test::Person.new(name: "a", age: 9)
+              expected = { name: "a" }
               expect(actual).not_to have_attributes(expected)
             TEST
             program =
@@ -83,8 +83,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
-              expected = { name: "b", foo: "bar" }
               actual = SuperDiff::Test::Person.new(name: "a", age: 9)
+              expected = { name: "b", foo: "bar" }
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -131,12 +131,6 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output when used in the positive" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
-              expected = {
-                line_1: "123 Main St.",
-                city: "Oakland",
-                state: "CA",
-                zip: "91234"
-              }
               actual = SuperDiff::Test::ShippingAddress.new(
                 line_1: "456 Ponderosa Ct.",
                 line_2: nil,
@@ -144,6 +138,12 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 state: "CA",
                 zip: "90382"
               )
+              expected = {
+                line_1: "123 Main St.",
+                city: "Oakland",
+                state: "CA",
+                zip: "91234"
+              }
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -189,12 +189,6 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output when used in the negative" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
-              expected = {
-                line_1: "123 Main St.",
-                city: "Oakland",
-                state: "CA",
-                zip: "91234"
-              }
               actual = SuperDiff::Test::ShippingAddress.new(
                 line_1: "123 Main St.",
                 line_2: nil,
@@ -202,6 +196,12 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 state: "CA",
                 zip: "91234"
               )
+              expected = {
+                line_1: "123 Main St.",
+                city: "Oakland",
+                state: "CA",
+                zip: "91234"
+              }
               expect(actual).not_to have_attributes(expected)
             TEST
             program =
@@ -237,6 +237,13 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
         it "produces the correct output" do
           as_both_colored_and_uncolored do |color_enabled|
             snippet = <<~TEST.strip
+              actual = SuperDiff::Test::ShippingAddress.new(
+                line_1: "456 Ponderosa Ct.",
+                line_2: nil,
+                city: "Hill Valley",
+                state: "CA",
+                zip: "90382"
+              )
               expected = {
                 line_1: "123 Main St.",
                 city: "Oakland",
@@ -245,13 +252,6 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
                 foo: "bar",
                 baz: "qux"
               }
-              actual = SuperDiff::Test::ShippingAddress.new(
-                line_1: "456 Ponderosa Ct.",
-                line_2: nil,
-                city: "Hill Valley",
-                state: "CA",
-                zip: "90382"
-              )
               expect(actual).to have_attributes(expected)
             TEST
             program =
@@ -307,8 +307,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
     it "displays the diff as if we were comparing hashes" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          expected = { name: "Elliot", age: 32 }
           actual = {}
+          expected = { name: "Elliot", age: 32 }
           expect(actual).to have_attributes(expected)
         TEST
 
@@ -352,6 +352,7 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
       it "displays the hash correctly" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
+            actual = {}
             expected = {
               name: "Elliot",
               shipping_address: an_object_having_attributes(
@@ -365,7 +366,6 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
               data: a_hash_including(active: true),
               created_at: a_value_within(1).of(Time.utc(2020, 4, 9))
             }
-            actual = {}
 
             expect(actual).to have_attributes(expected)
           TEST

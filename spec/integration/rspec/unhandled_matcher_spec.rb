@@ -6,12 +6,12 @@ RSpec.describe "Integration with built-in RSpec matchers", type: :integration do
       it "produces the correct failure message when used in the negative" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = hash_including(
-              number: be_a(Numeric)
-            )
             actual = {
               number: 4
             }
+            expected = hash_including(
+              number: be_a(Numeric)
+            )
             expect(actual).not_to match(expected)
           TEST
           program =
@@ -42,12 +42,12 @@ RSpec.describe "Integration with built-in RSpec matchers", type: :integration do
       it "produces the correct failure message when used in the positive" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
-            expected = hash_including(
-              number: be_a(Numeric)
-            )
             actual = {
               number: "not a number"
             }
+            expected = hash_including(
+              number: be_a(Numeric)
+            )
             expect(actual).to match(expected)
           TEST
           program =

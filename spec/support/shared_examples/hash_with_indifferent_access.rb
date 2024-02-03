@@ -6,18 +6,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = {
-                  line_1: "123 Main St.",
-                  city: "Hill Valley",
-                  state: "CA",
-                  zip: "90382",
-                }
                 actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
                   zip: "91234",
                 })
+                expected = {
+                  line_1: "123 Main St.",
+                  city: "Hill Valley",
+                  state: "CA",
+                  zip: "90382",
+                }
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -63,18 +63,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = {
-                  "line_1" => "123 Main St.",
-                  "city" => "Hill Valley",
-                  "state" => "CA",
-                  "zip" => "90382",
-                }
                 actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
                   zip: "91234",
                 })
+                expected = {
+                  "line_1" => "123 Main St.",
+                  "city" => "Hill Valley",
+                  "state" => "CA",
+                  "zip" => "90382",
+                }
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -124,18 +124,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  line_1: "456 Ponderosa Ct.",
-                  city: "Oakland",
-                  state: "CA",
-                  zip: "91234",
-                })
                 actual = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
                   zip: "90382",
                 }
+                expected = HashWithIndifferentAccess.new({
+                  line_1: "456 Ponderosa Ct.",
+                  city: "Oakland",
+                  state: "CA",
+                  zip: "91234",
+                })
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -181,18 +181,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  line_1: "456 Ponderosa Ct.",
-                  city: "Oakland",
-                  state: "CA",
-                  zip: "91234",
-                })
                 actual = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
                   "zip" => "90382",
                 }
+                expected = HashWithIndifferentAccess.new({
+                  line_1: "456 Ponderosa Ct.",
+                  city: "Oakland",
+                  state: "CA",
+                  zip: "91234",
+                })
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -240,16 +240,6 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  shipments: [
-                    HashWithIndifferentAccess.new({
-                      estimated_delivery: HashWithIndifferentAccess.new({
-                        from: '2019-05-06',
-                        to: '2019-05-06'
-                      })
-                    })
-                  ]
-                })
                 actual = {
                   shipments: [
                     {
@@ -260,6 +250,16 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     }
                   ]
                 }
+                expected = HashWithIndifferentAccess.new({
+                  shipments: [
+                    HashWithIndifferentAccess.new({
+                      estimated_delivery: HashWithIndifferentAccess.new({
+                        from: '2019-05-06',
+                        to: '2019-05-06'
+                      })
+                    })
+                  ]
+                })
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -307,16 +307,6 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  shipments: [
-                    HashWithIndifferentAccess.new({
-                      estimated_delivery: HashWithIndifferentAccess.new({
-                        from: '2019-05-06',
-                        to: '2019-05-06'
-                      })
-                    })
-                  ]
-                })
                 actual = {
                   'shipments' => [
                     {
@@ -327,6 +317,16 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     }
                   ]
                 }
+                expected = HashWithIndifferentAccess.new({
+                  shipments: [
+                    HashWithIndifferentAccess.new({
+                      estimated_delivery: HashWithIndifferentAccess.new({
+                        from: '2019-05-06',
+                        to: '2019-05-06'
+                      })
+                    })
+                  ]
+                })
                 expect(actual).to eq(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -380,18 +380,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = {
-                  line_1: "123 Main St.",
-                  city: "Hill Valley",
-                  state: "CA",
-                  zip: "90382",
-                }
                 actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
                   zip: "91234",
                 })
+                expected = {
+                  line_1: "123 Main St.",
+                  city: "Hill Valley",
+                  state: "CA",
+                  zip: "90382",
+                }
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -437,18 +437,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = {
-                  "line_1" => "123 Main St.",
-                  "city" => "Hill Valley",
-                  "state" => "CA",
-                  "zip" => "90382",
-                }
                 actual = HashWithIndifferentAccess.new({
                   line_1: "456 Ponderosa Ct.",
                   city: "Oakland",
                   state: "CA",
                   zip: "91234",
                 })
+                expected = {
+                  "line_1" => "123 Main St.",
+                  "city" => "Hill Valley",
+                  "state" => "CA",
+                  "zip" => "90382",
+                }
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -498,18 +498,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  line_1: "456 Ponderosa Ct.",
-                  city: "Oakland",
-                  state: "CA",
-                  zip: "91234",
-                })
                 actual = {
                   line_1: "123 Main St.",
                   city: "Hill Valley",
                   state: "CA",
                   zip: "90382",
                 }
+                expected = HashWithIndifferentAccess.new({
+                  line_1: "456 Ponderosa Ct.",
+                  city: "Oakland",
+                  state: "CA",
+                  zip: "91234",
+                })
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -555,18 +555,18 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  line_1: "456 Ponderosa Ct.",
-                  city: "Oakland",
-                  state: "CA",
-                  zip: "91234",
-                })
                 actual = {
                   "line_1" => "123 Main St.",
                   "city" => "Hill Valley",
                   "state" => "CA",
                   "zip" => "90382",
                 }
+                expected = HashWithIndifferentAccess.new({
+                  line_1: "456 Ponderosa Ct.",
+                  city: "Oakland",
+                  state: "CA",
+                  zip: "91234",
+                })
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -614,16 +614,6 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  shipments: [
-                    HashWithIndifferentAccess.new({
-                      estimated_delivery: HashWithIndifferentAccess.new({
-                        from: '2019-05-06',
-                        to: '2019-05-06'
-                      })
-                    })
-                  ]
-                })
                 actual = {
                   shipments: [
                     {
@@ -634,6 +624,16 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     }
                   ]
                 }
+                expected = HashWithIndifferentAccess.new({
+                  shipments: [
+                    HashWithIndifferentAccess.new({
+                      estimated_delivery: HashWithIndifferentAccess.new({
+                        from: '2019-05-06',
+                        to: '2019-05-06'
+                      })
+                    })
+                  ]
+                })
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
@@ -681,16 +681,6 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
           it "produces the correct output" do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
-                expected = HashWithIndifferentAccess.new({
-                  shipments: [
-                    HashWithIndifferentAccess.new({
-                      estimated_delivery: HashWithIndifferentAccess.new({
-                        from: '2019-05-06',
-                        to: '2019-05-06'
-                      })
-                    })
-                  ]
-                })
                 actual = {
                   'shipments' => [
                     {
@@ -701,6 +691,16 @@ shared_examples_for "integration with HashWithIndifferentAccess" do
                     }
                   ]
                 }
+                expected = HashWithIndifferentAccess.new({
+                  shipments: [
+                    HashWithIndifferentAccess.new({
+                      estimated_delivery: HashWithIndifferentAccess.new({
+                        from: '2019-05-06',
+                        to: '2019-05-06'
+                      })
+                    })
+                  ]
+                })
                 expect(actual).to match(expected)
               TEST
               program = make_program(snippet, color_enabled: color_enabled)
