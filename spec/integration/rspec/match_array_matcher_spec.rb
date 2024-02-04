@@ -379,12 +379,12 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
     end
   end
 
-  context "when the input value is a string" do
-    it "produces the correct failure message when used in the positive" do
+  context "when the input value is not an array, and especially not a value that could be turned into one" do
+    fit "produces the correct failure message, as though an array had been given" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
-          actual = ["Marty", "Jennifer", "Doc"]
-          expected = "Einie"
+          actual = [:marty, :jennifer, :doc]
+          expected = :einie
           expect(actual).to match_array(expected)
         TEST
         program = make_plain_test_program(snippet, color_enabled: color_enabled)
@@ -397,20 +397,20 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
               proc do
                 line do
                   plain "Expected "
-                  actual %|["Marty", "Jennifer", "Doc"]|
+                  actual "[:marty, :jennifer, :doc]"
                   plain " to match array with "
-                  expected %|"Einie"|
+                  expected ":einie"
                   plain "."
                 end
               end,
             diff:
               proc do
                 plain_line "  ["
-                actual_line %|+   "Marty",|
-                actual_line %|+   "Jennifer",|
-                actual_line %|+   "Doc",|
-                # expected_line %|-   "Einie"|  # TODO
-                expected_line %|-   "Einie",|
+                actual_line "+   :marty,"
+                actual_line "+   :jennifer,"
+                actual_line "+   :doc,"
+                # expected_line %|-   :einie|  # TODO
+                expected_line "-   :einie,"
                 plain_line "  ]"
               end
           )

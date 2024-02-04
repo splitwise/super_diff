@@ -803,7 +803,14 @@ module RSpec
       end
 
       def match_array(items)
-        BuiltIn::MatchArray.new(items.is_a?(String) ? [items] : items)
+        # This is a bit strange, but this is fundamentally different from
+        # splatting `items` in the argument list. It's functionally equivalent
+        # to, though not quite the same as:
+        #
+        #     items.is_a?(Array) ? items : [items]
+        #
+        items = *items
+        BuiltIn::MatchArray.new(items)
       end
     end
   end
