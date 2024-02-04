@@ -103,5 +103,16 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
+      - name: Install Zeus
+        run: gem install zeus
+      - name: Start Zeus
+        uses: JarvusInnovations/background-action@v1
+        with:
+          run: zeus start
+          wait-on: |
+            socket:.zeus.sock
+            file:.zeus.sock
+          wait-for: 15s
+          log-output-if: failure
       - name: Run tests
         run: bundle exec rake --trace
