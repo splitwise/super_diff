@@ -380,7 +380,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
   end
 
   context "when the input value is not an array, and especially not a value that could be turned into one" do
-    fit "produces the correct failure message, as though an array had been given" do
+    it "produces the correct failure message, as though an array had been given" do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           actual = [:marty, :jennifer, :doc]
