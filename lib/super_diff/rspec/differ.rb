@@ -16,6 +16,7 @@ module SuperDiff
         end
       rescue SuperDiff::Errors::NoDifferAvailableError => error
         puts "Got error: #{error}"
+        pp expected: expected, actual: actual
         ""
       end
 
