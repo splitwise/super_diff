@@ -741,4 +741,430 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
       end
     end
   end
+
+  context "with a simple RSpec matcher" do
+    context "when used in the positive" do
+      context "when the block raises a different error than what is given" do
+        context "when the message is short" do
+          it "produces the correct failure message" do
+            as_both_colored_and_uncolored do |color_enabled|
+              snippet = <<~TEST.strip
+                expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(Array))
+              TEST
+              program =
+                make_plain_test_program(snippet, color_enabled: color_enabled)
+
+              expected_output =
+                build_expected_output(
+                  color_enabled: color_enabled,
+                  snippet:
+                    "expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(Array))",
+                  expectation:
+                    proc do
+                      line do
+                        plain "Expected raised exception "
+                        actual %|#<StandardError "boo">|
+                        plain " to match "
+                        expected "#<a kind of Array>"
+                        plain "."
+                      end
+                    end
+                )
+
+              expect(program).to produce_output_when_run(
+                expected_output
+              ).in_color(color_enabled)
+            end
+          end
+        end
+
+        context "when the message is long" do
+          it "produces the correct failure message" do
+            as_both_colored_and_uncolored do |color_enabled|
+              snippet = <<~TEST.strip
+                expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError))
+              TEST
+              program =
+                make_plain_test_program(snippet, color_enabled: color_enabled)
+
+              expected_output =
+                build_expected_output(
+                  color_enabled: color_enabled,
+                  snippet:
+                    "expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError))",
+                  newline_before_expectation: true,
+                  expectation:
+                    proc do
+                      line do
+                        plain "Expected raised exception "
+                        actual %|#<StandardError "this is a super super super long message">|
+                      end
+
+                      line do
+                        plain "                 to match "
+                        expected "#<a kind of RuntimeError>"
+                      end
+                    end
+                )
+
+              expect(program).to produce_output_when_run(
+                expected_output
+              ).in_color(color_enabled)
+            end
+          end
+        end
+      end
+
+      context "when the block raises no error" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { }.to raise_error(a_kind_of(RuntimeError))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet: "expect { }.to raise_error(a_kind_of(RuntimeError))",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected block to raise error "
+                      expected "#<a kind of RuntimeError>"
+                      plain "."
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+    end
+
+    context "when used in the negative" do
+      context "when the message is short" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('boo') }.not_to raise_error(a_kind_of(StandardError))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('boo') }.not_to raise_error(a_kind_of(StandardError))",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "boo">|
+                      plain " not to match "
+                      expected "#<a kind of StandardError>"
+                      plain "."
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+
+      context "when the message is long" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('this is a super super long message') }.not_to raise_error(a_kind_of(StandardError))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('this is a super super long message') }.not_to raise_error(a_kind_of(StandardError))",
+                newline_before_expectation: true,
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "this is a super super long message">|
+                    end
+
+                    line do
+                      plain "             not to match "
+                      expected "#<a kind of StandardError>"
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+    end
+  end
+
+  context "with a compound RSpec matcher" do
+    context "when used in the positive" do
+      context "when the block raises a different error than what is given" do
+        context "when the message is short" do
+          it "produces the correct failure message" do
+            as_both_colored_and_uncolored do |color_enabled|
+              snippet = <<~TEST.strip
+                expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(Array).or eq(true))
+              TEST
+              program =
+                make_plain_test_program(snippet, color_enabled: color_enabled)
+
+              expected_output =
+                build_expected_output(
+                  color_enabled: color_enabled,
+                  snippet:
+                    "expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(Array).or eq(true))",
+                  expectation:
+                    proc do
+                      line do
+                        plain "Expected raised exception "
+                        actual %|#<StandardError "boo">|
+                        plain " to match "
+                        expected "#<a kind of Array or eq true>"
+                        plain "."
+                      end
+                    end
+                )
+
+              expect(program).to produce_output_when_run(
+                expected_output
+              ).in_color(color_enabled)
+            end
+          end
+        end
+
+        context "when the message is long" do
+          it "produces the correct failure message" do
+            as_both_colored_and_uncolored do |color_enabled|
+              snippet = <<~TEST.strip
+                expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError).and having_attributes(beep: :boop))
+              TEST
+              program =
+                make_plain_test_program(snippet, color_enabled: color_enabled)
+
+              expected_output =
+                build_expected_output(
+                  color_enabled: color_enabled,
+                  snippet:
+                    "expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError).and having_attributes(beep: :boop))",
+                  newline_before_expectation: true,
+                  expectation:
+                    proc do
+                      line do
+                        plain "Expected raised exception "
+                        actual %|#<StandardError "this is a super super super long message">|
+                      end
+
+                      line do
+                        plain "                 to match "
+                        expected "#<a kind of RuntimeError and having attributes (beep: :boop)>"
+                      end
+                    end
+                )
+
+              expect(program).to produce_output_when_run(
+                expected_output
+              ).in_color(color_enabled)
+            end
+          end
+        end
+      end
+
+      context "when the block raises no error" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { }.to raise_error(a_kind_of(RuntimeError).and having_attributes(beep: :boop))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { }.to raise_error(a_kind_of(RuntimeError).and having_attributes(beep: :boop))",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected block to raise error "
+                      expected "#<a kind of RuntimeError and having attributes (beep: :boop)>"
+                      plain "."
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+    end
+
+    context "when used in the negative" do
+      context "when the message is short" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('boo') }.not_to raise_error(a_kind_of(StandardError).or eq(true))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('boo') }.not_to raise_error(a_kind_of(StandardError).or eq(true))",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "boo">|
+                      plain " not to match "
+                      expected "#<a kind of StandardError or eq true>"
+                      plain "."
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+
+      context "when the message is long" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('this is a super super long message') }.not_to raise_error(a_kind_of(StandardError).and having_attributes(message: kind_of(String)))
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('this is a super super long message') }.not_to raise_error(a_kind_of(StandardError).and having_attributes(message: kind_of(String)))",
+                newline_before_expectation: true,
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "this is a super super long message">|
+                    end
+
+                    line do
+                      plain "             not to match "
+                      expected "#<a kind of StandardError and having attributes (message: #<a kind of String>)>"
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+    end
+  end
+
+  context "with an RSpec matcher and expected message" do
+    context "when the block raises a different error than what is given" do
+      context "when the message is short" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(RuntimeError), "boo")
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('boo') }.to raise_error(a_kind_of(RuntimeError), \"boo\")",
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "boo">|
+                      plain " to match "
+                      expected "#<a kind of RuntimeError \"boo\">"
+                      plain "."
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+
+      context "when the message is long" do
+        it "produces the correct failure message" do
+          as_both_colored_and_uncolored do |color_enabled|
+            snippet = <<~TEST.strip
+              expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError), "beep")
+            TEST
+            program =
+              make_plain_test_program(snippet, color_enabled: color_enabled)
+
+            expected_output =
+              build_expected_output(
+                color_enabled: color_enabled,
+                snippet:
+                  "expect { raise StandardError.new('this is a super super super long message') }.to raise_error(a_kind_of(RuntimeError), \"beep\")",
+                newline_before_expectation: true,
+                expectation:
+                  proc do
+                    line do
+                      plain "Expected raised exception "
+                      actual %|#<StandardError "this is a super super super long message">|
+                    end
+
+                    line do
+                      plain "                 to match "
+                      expected "#<a kind of RuntimeError \"beep\">"
+                    end
+                  end
+              )
+
+            expect(program).to produce_output_when_run(
+              expected_output
+            ).in_color(color_enabled)
+          end
+        end
+      end
+    end
+  end
 end
