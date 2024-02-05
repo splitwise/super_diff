@@ -14,8 +14,9 @@ module SuperDiff
         else
           ""
         end
-        # rescue SuperDiff::Errors::NoDifferAvailableError
-        # ""
+      rescue SuperDiff::Errors::NoDifferAvailableError => error
+        puts "Got error: #{error}"
+        ""
       end
 
       private
