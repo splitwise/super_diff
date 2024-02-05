@@ -20,6 +20,10 @@ module SuperDiff
       private
 
       def worth_diffing?
+        pp comparing_inequal_values: comparing_inequal_values?,
+           comparing_primitive_values: comparing_primitive_values?,
+           comparing_singleline_strings: comparing_singleline_strings?
+
         comparing_inequal_values? && !comparing_primitive_values? &&
           !comparing_singleline_strings?
       end

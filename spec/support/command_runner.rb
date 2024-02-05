@@ -244,7 +244,8 @@ Output:
   end
 
   def debugging_enabled?
-    ENV["DEBUG_COMMANDS"] == "1"
+    # ENV["DEBUG_COMMANDS"] == "1"
+    true
   end
 
   def debug
