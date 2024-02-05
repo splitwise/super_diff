@@ -9,12 +9,13 @@ module SuperDiff
         if worth_diffing?
           diff =
             SuperDiff::Differs::Main.call(expected, actual, omit_empty: true)
+          pp diff: diff
           "\n\n" + diff
         else
           ""
         end
-      rescue SuperDiff::Errors::NoDifferAvailableError
-        ""
+        # rescue SuperDiff::Errors::NoDifferAvailableError
+        # ""
       end
 
       private
