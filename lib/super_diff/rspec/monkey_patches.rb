@@ -710,7 +710,9 @@ module RSpec
 
       class MatchArray < ContainExactly
         def expected_for_diff
-          matchers.an_array_matching(expected)
+          value = matchers.an_array_matching(expected)
+          pp an_array_matching: value
+          value
         end
 
         def expected_action_for_matcher_text
@@ -799,6 +801,7 @@ module RSpec
 
     SuperDiff.insert_overrides(self) do
       def self.prepended(base)
+        puts "Yay, prepended was called!"
         base.class_eval { alias_matcher :an_array_matching, :match_array }
       end
 
@@ -812,6 +815,9 @@ module RSpec
         items = *items
         BuiltIn::MatchArray.new(items)
       end
+      # ::RSpec::Matchers.alias_matcher :an_array_matching, :match_array # do |desc|
+      # desc.sub("contain exactly", "an array containing exactly")
+      # end
     end
 
     p ancestors: ancestors
