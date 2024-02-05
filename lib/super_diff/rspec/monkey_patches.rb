@@ -822,6 +822,6 @@ module RSpec
 
     p ancestors: ancestors
 
-    alias_matcher :an_array_matching, :match_array
+    # alias_matcher :an_array_matching, :match_array
   end
 end
