@@ -41,7 +41,13 @@ appraisals = {
     proc do |with_rails|
       version = [">= 3.10", "< 4"]
 
-      gem "rspec", *version
+      # gem "rspec", *version
+
+      gem "rspec", "3.12.0"
+      gem "rspec-core", "3.12.0"
+      gem "rspec-expectations", "3.12.3"
+      gem "rspec-mocks", "3.12.0"
+      gem "rspec-support", "3.12.0"
 
       gem "rspec-rails" if with_rails
     end
