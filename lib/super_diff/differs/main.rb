@@ -6,6 +6,8 @@ module SuperDiff
       method_object(:expected, :actual, [indent_level: 0, omit_empty: false])
 
       def call
+        pp available_classes: available_classes
+
         if resolved_class
           resolved_class.call(expected, actual, indent_level: indent_level)
         else
