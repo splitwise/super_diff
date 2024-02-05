@@ -800,10 +800,10 @@ module RSpec
     end
 
     SuperDiff.insert_overrides(self) do
-      def self.prepended(base)
-        puts "Yay, prepended was called!"
-        base.class_eval { alias_matcher :an_array_matching, :match_array }
-      end
+      # def self.prepended(base)
+      # puts "Yay, prepended was called!"
+      # base.class_eval { alias_matcher :an_array_matching, :match_array }
+      # end
 
       def match_array(items)
         # This is a bit strange, but this is fundamentally different from
@@ -815,11 +815,13 @@ module RSpec
         items = *items
         BuiltIn::MatchArray.new(items)
       end
-      # ::RSpec::Matchers.alias_matcher :an_array_matching, :match_array # do |desc|
+      # ::RSpec::Matchers.
       # desc.sub("contain exactly", "an array containing exactly")
       # end
     end
 
     p ancestors: ancestors
+
+    alias_matcher :an_array_matching, :match_array
   end
 end
