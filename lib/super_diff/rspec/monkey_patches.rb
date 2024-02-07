@@ -722,9 +722,15 @@ module RSpec
         SuperDiff.insert_overrides(self, SuperDiff::RSpec::AugmentedMatcher)
 
         SuperDiff.insert_overrides(self) do
+          def expected_action_for_description
+            "raise"
+          end
+
           def actual_for_matcher_text
             if @actual_error
               "#<#{@actual_error.class.name} #{@actual_error.message.inspect}>"
+            else
+              "exception-free block"
             end
           end
 
@@ -733,10 +739,19 @@ module RSpec
           end
 
           def expected_for_matcher_text
-            if @expected_message
-              "#<#{describe_expected_error} #{description_of(@expected_message)}>"
+            case @expected_message
+            when nil
+              if RSpec::Matchers.is_a_describable_matcher?(@expected_error)
+                description_of(@expected_error)
+              elsif @expected_error.is_a?(Regexp)
+                "a kind of Exception with message matching #{description_of(@expected_error)}"
+              else
+                "a kind of #{@expected_error}"
+              end
+            when Regexp
+              "#{described_expected_error} with message matching #{description_of(@expected_message)}"
             else
-              "#<#{describe_expected_error}>"
+              "#{described_expected_error} with message #{description_of(@expected_message)}"
             end
           end
 
@@ -749,7 +764,7 @@ module RSpec
           end
 
           def expected_action_for_failure_message
-            @actual_error ? "match" : "raise error"
+            @actual_error ? "match" : "raise"
           end
 
           def matcher_text_builder_class
@@ -758,15 +773,11 @@ module RSpec
 
           private
 
-          def describe_expected_error
-            if @expected_error.is_a? Class
-              @expected_error.name
-            elsif @expected_error.is_a? Regexp
-              "Exception #{description_of(@expected_error)}"
-            elsif @expected_error.respond_to? :description
-              @expected_error.description
+          def described_expected_error
+            if @expected_error.is_a?(Class)
+              "a kind of #{@expected_error}"
             else
-              SuperDiff.inspect_object(@expected_error, as_lines: false)
+              description_of(@expected_error)
             end
           end
         end

@@ -5,14 +5,10 @@ module SuperDiff
         protected
 
         def actual_phrase
-          actual ? "Expected raised exception" : "Expected"
-        end
-
-        def add_actual_value
-          if actual
-            template.add_text_in_color(actual_color) { actual }
+          if actual == "exception-free block"
+            "Expected"
           else
-            template.add_text("block")
+            "Expected raised exception"
           end
         end
       end
