@@ -122,8 +122,6 @@ Thank you!
 
   ([#91])
 
-### Features
-
 - Update inspection of Doubles to include stubbed methods and their values.
   ([#91])
 
