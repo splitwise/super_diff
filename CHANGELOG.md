@@ -1,5 +1,46 @@
 # Changelog
 
+## 0.11.0 - 2024-02-10
+
+### Features
+
+- Add inspector for RSpec describable matchers not otherwise handled by an
+  explicit inspector. ([#203](https://github.com/mcmire/super_diff/issues/203),
+  [#219](https://github.com/mcmire/super_diff/issues/219))
+- Support diffing date-like objects, e.g. `Date` vs. `Date` or `Date` vs.
+  `DateTime`. ([#198](https://github.com/mcmire/super_diff/issues/198))
+
+### Fixes
+
+- Add inspector for ActiveSupport::OrderedOptions.
+  ([#199](https://github.com/mcmire/super_diff/issues/199))
+  - This prevents the gem from raising an error when the expected value is a
+    Rails response object, e.g. `expect(response).to be_forbidden`.
+- Include `extra_failure_lines` from RSpec metadata in failure output.
+  ([#208](https://github.com/mcmire/super_diff/issues/208))
+- Fix `match_array` so that it truly accepts a non-array argument, to match
+  RSpec behavior. ([#213](https://github.com/mcmire/super_diff/issues/213))
+- Fix `raise_error` so that it accepts an RSpec matcher argument.
+  ([#214](https://github.com/mcmire/super_diff/issues/214))
+
+### Improvements
+
+- Change InspectionTree so that it no longer `instance_eval`s the block it
+  takes. ([#210](https://github.com/mcmire/super_diff/issues/210))
+- Improve wording in `raise_error` failure messages.
+  ([#218](https://github.com/mcmire/super_diff/issues/218))
+
+### Contributors
+
+This release features the following contributors:
+
+- [@jas14](https://github.com/jas14)
+- [@willnet](https://github.com/willnet)
+- [@fizvlad](https://github.com/fizvlad)
+- [@wata727](https://github.com/wata727)
+
+Thank you!
+
 ## 0.10.0 - 2023-03-26
 
 ### BREAKING CHANGES
