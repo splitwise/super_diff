@@ -15,6 +15,10 @@ module SuperDiff
           "super_diff/rspec/object_inspection/inspection_tree_builders/double"
         )
         autoload(
+          :GenericDescribableMatcher,
+          "super_diff/rspec/object_inspection/inspection_tree_builders/generic_describable_matcher"
+        )
+        autoload(
           :HashIncluding,
           "super_diff/rspec/object_inspection/inspection_tree_builders/hash_including"
         )
@@ -33,10 +37,6 @@ module SuperDiff
         autoload(
           :Primitive,
           "super_diff/rspec/object_inspection/inspection_tree_builders/primitive"
-        )
-        autoload(
-          :RSpecMatcher,
-          "super_diff/rspec/object_inspection/inspection_tree_builders/rspec_matcher"
         )
         autoload(
           :ValueWithin,
