@@ -1,7 +1,7 @@
 require "spec_helper"
 
 RSpec.describe SuperDiff, type: :unit do
-  describe ".inspect_object", "for RSpec objects" do
+  describe ".inspect_object", "for RSpec aliased matchers" do
     context "given a hash-including-<something>" do
       context "given as_lines: false" do
         it "returns an inspected version of the object" do
@@ -116,7 +116,7 @@ RSpec.describe SuperDiff, type: :unit do
       end
     end
 
-    context "given a fuzzy object" do
+    context "given an object-having-<something>" do
       context "given as_lines: false" do
         it "returns an inspected version of the object" do
           string =

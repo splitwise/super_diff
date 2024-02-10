@@ -308,7 +308,7 @@ RSpec.describe "Integration with RSpec's #contain_exactly matcher",
       end
     end
 
-    context "and some of them are fuzzy objects" do
+    context "and some of them are RSpec matchers" do
       it "produces the correct failure message" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip

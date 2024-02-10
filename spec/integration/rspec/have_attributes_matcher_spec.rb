@@ -347,8 +347,8 @@ RSpec.describe "Integration with RSpec's #have_attributes matcher",
       end
     end
 
-    # TODO: Add as many fuzzy matchers as we can here
-    context "that contains fuzzy matcher objects instead of an object" do
+    # TODO: Add as many RSpec matchers as we can here
+    context "that contains RSpec matchers" do
       it "displays the hash correctly" do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip

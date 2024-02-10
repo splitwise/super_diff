@@ -42,7 +42,7 @@ RSpec.describe "RSpec's `raise_error` matcher" do
       end
     end
 
-    context "given a simple RSpec fuzzy object" do
+    context "given a simple RSpec matcher" do
       it "returns the correct output" do
         expect(raise_error(a_kind_of(RuntimeError)).description).to eq(
           "raise #<a kind of RuntimeError>"
@@ -50,7 +50,7 @@ RSpec.describe "RSpec's `raise_error` matcher" do
       end
     end
 
-    context "given a simple RSpec fuzzy object and string message" do
+    context "given a simple RSpec matcher and string message" do
       it "returns the correct output" do
         expect(raise_error(a_kind_of(RuntimeError), "boo").description).to eq(
           'raise #<a kind of RuntimeError> with message "boo"'
@@ -58,7 +58,7 @@ RSpec.describe "RSpec's `raise_error` matcher" do
       end
     end
 
-    context "given a simple RSpec fuzzy object and regexp message" do
+    context "given a simple RSpec matcher and regexp message" do
       it "returns the correct output" do
         expect(raise_error(a_kind_of(RuntimeError), /boo/i).description).to eq(
           "raise #<a kind of RuntimeError> with message matching /boo/i"
@@ -66,7 +66,7 @@ RSpec.describe "RSpec's `raise_error` matcher" do
       end
     end
 
-    context "given a compound RSpec fuzzy object" do
+    context "given a compound RSpec matcher" do
       it "returns the correct output" do
         expect(raise_error(a_kind_of(Array).or eq(true)).description).to eq(
           "raise #<a kind of Array or eq true>"

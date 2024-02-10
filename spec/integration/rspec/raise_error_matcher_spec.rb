@@ -1006,7 +1006,7 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
     end
   end
 
-  context "given a simple RSpec fuzzy object" do
+  context "given a simple RSpec matcher" do
     context "when used in the positive" do
       context "when the block raises a different error than what is given" do
         context "when the expected error and/or actual message is short" do
@@ -1184,7 +1184,7 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
     end
   end
 
-  context "given only a simple RSpec fuzzy object and string message" do
+  context "given only a simple RSpec matcher and string message" do
     context "when used in the positive" do
       context "when the block raises a different error than what is given" do
         it "produces the correct failure message" do
@@ -1260,7 +1260,7 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
     end
   end
 
-  context "given only a simple RSpec fuzzy object and regexp message" do
+  context "given only a simple RSpec matcher and regexp message" do
     context "when used in the positive" do
       context "when the block raises a different error than what is given" do
         it "produces the correct failure message" do
@@ -1338,7 +1338,7 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
 
   # NOTE: No need to test this using a string or regexp message — we've tested
   # it enough above
-  context "given a compound RSpec fuzzy object" do
+  context "given a compound RSpec matcher" do
     context "when used in the positive" do
       context "when the block raises a different error than what is given" do
         context "when the expected error and/or actual message is short" do
