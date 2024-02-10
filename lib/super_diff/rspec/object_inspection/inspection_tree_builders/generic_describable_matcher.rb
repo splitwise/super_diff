@@ -2,10 +2,9 @@ module SuperDiff
   module RSpec
     module ObjectInspection
       module InspectionTreeBuilders
-        class RSpecMatcher < SuperDiff::ObjectInspection::InspectionTreeBuilders::Base
+        class GenericDescribableMatcher < SuperDiff::ObjectInspection::InspectionTreeBuilders::Base
           def self.applies_to?(value)
-            value.is_a?(::RSpec::Matchers::BuiltIn::BaseMatcher) ||
-              value.is_a?(::RSpec::Matchers::DSL::Matcher)
+            ::RSpec::Matchers.is_a_describable_matcher?(value)
           end
 
           def call

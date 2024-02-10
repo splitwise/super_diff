@@ -113,7 +113,7 @@ module SuperDiff
         ObjectInspection::InspectionTreeBuilders::ObjectHavingAttributes,
         # ObjectInspection::InspectionTreeBuilders::Primitive,
         ObjectInspection::InspectionTreeBuilders::ValueWithin,
-        ObjectInspection::InspectionTreeBuilders::RSpecMatcher
+        ObjectInspection::InspectionTreeBuilders::GenericDescribableMatcher
       )
     end
   end
