@@ -7,33 +7,31 @@ on:
   pull_request:
     types:
       - opened
+      - closed
+      - reopened
       - synchronize
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
-  all:
+  analyze:
     runs-on: ubuntu-latest
-    needs:
-      - lint
-      - audit
-      - test
-    outputs:
-      PASSED: ${{ steps.set-output.outputs.PASSED }}
+    if: ${{ github.event_name == 'push' || github.event.action != 'closed' }}
     steps:
-      - name: Set PASSED output
-        id: set-output
-        run: echo "PASSED=true" >> "$GITHUB_OUTPUT"
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Download actionlint
+        id: download-actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/7fdc9630cc360ea1a469eed64ac6d78caeda1234/scripts/download-actionlint.bash) 1.6.23
+        shell: bash
+      - name: Check workflow files
+        run: ${{ steps.download-actionlint.outputs.executable }} -color
+        shell: bash
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
@@ -41,7 +39,12 @@ jobs:
         run: yarn --immutable
       - name: Lint
         run: yarn lint
-  audit:
+      - name: Audit
+        run: yarn audit
+
+  test:
+    needs:
+      - analyze
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,44 +63,7 @@ jobs:
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
-      - name: Install Yarn dependencies
-        run: yarn --immutable
-      - name: Audit
-        run: yarn audit
-  test:
-    needs:
-      - lint
-      - audit
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        ruby:
-          - "3.0"
-          - "3.1"
-          - "3.2"
-        rails_appraisal:
-          - rails_6_1
-          - rails_7_0
-          - no_rails
-        rspec_appraisal:
-          - rspec_lt_3_10
-          - rspec_gte_3_10
-    env:
-      BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
-    steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -116,3 +82,161 @@ jobs:
           log-output-if: failure
       - name: Run tests
         run: bundle exec rake --trace
+
+  ready-to-merge:
+    runs-on: ubuntu-latest
+    needs:
+      - analyze
+      - test
+    steps:
+      - run: echo "Analysis and tests passed. Ready to merge."
+
+  collect-release-info:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run command
+        id: command
+        run: scripts/collect-release-info.rb
+    outputs:
+      IS_NEW_RELEASE: ${{ steps.command.outputs.IS_NEW_RELEASE }}
+      RELEASE_VERSION: ${{ steps.command.outputs.RELEASE_VERSION }}
+
+  collect-docsite-release-info:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run command
+        id: command
+        run: |
+          set -x
+
+          if [[ "$IS_NEW_RELEASE" == "true" ]]; then
+            DOCSITE_RELEASE_VERSION="$RELEASE_VERSION"
+            DOCSITE_DESTINATION_PATH="releases/$RELEASE_VERSION"
+            HAS_CHANGES_TO_DOCS="true"
+          else
+            DOCSITE_RELEASE_VERSION="$GITHUB_SHA"
+            DOCSITE_DESTINATION_PATH="branches/$BRANCH_NAME/$GITHUB_SHA"
+            # Check if there any changes to docs/
+            if git diff --quiet --merge-base "origin/$GITHUB_BASE_REF" -- docs; then
+              HAS_CHANGES_TO_DOCS="false"
+            else
+              HAS_CHANGES_TO_DOCS="true"
+            fi
+          fi
+
+          {
+            echo "DOCSITE_RELEASE_VERSION=$DOCSITE_RELEASE_VERSION"
+            echo "DOCSITE_DESTINATION_PATH=$DOCSITE_DESTINATION_PATH"
+            echo "HAS_CHANGES_TO_DOCS=$HAS_CHANGES_TO_DOCS"
+          } >> "$GITHUB_OUTPUT"
+        env:
+          IS_NEW_RELEASE: ${{ needs.collect-release-info.outputs.IS_NEW_RELEASE }}
+          RELEASE_VERSION: ${{ needs.collect-release-info.outputs.RELEASE_VERSION }}
+          BRANCH_NAME: ${{ github.head_ref }}
+    outputs:
+      DOCSITE_RELEASE_VERSION: ${{ steps.command.outputs.DOCSITE_RELEASE_VERSION }}
+      DOCSITE_DESTINATION_PATH: ${{ steps.command.outputs.DOCSITE_DESTINATION_PATH }}
+      HAS_CHANGES_TO_DOCS: ${{ steps.command.outputs.HAS_CHANGES_TO_DOCS }}
+
+  build-docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - analyze
+      - collect-release-info
+      - collect-docsite-release-info
+    if: ${{ github.event_name == 'pull_request' && ((needs.collect-release-info.outputs.IS_NEW_RELEASE == 'false' && needs.collect-docsite-release-info.outputs.HAS_CHANGES_TO_DOCS == 'true') || (needs.collect-release-info.outputs.IS_NEW_RELEASE == 'true' && github.event.merged)) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      - name: Install Python dependencies
+        run: poetry install
+      - name: Build docsite
+        run: poetry run mkdocs build
+      - name: Save site/ for later jobs
+        uses: actions/cache/save@v3
+        with:
+          path: site
+          key: docsite-${{ github.sha }}
+
+  publish-docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+      - collect-docsite-release-info
+      - build-docsite
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Restore cache from previous job
+        uses: actions/cache/restore@v3
+        with:
+          path: site
+          key: docsite-${{ github.sha }}
+      - name: Copy site/ to ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }} on gh-pages
+        run: |
+          mkdir -p "$(dirname "$DOCSITE_DESTINATION_PATH")"
+          mv site "$DOCSITE_DESTINATION_PATH"
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Publish new version of docsite
+        run: |
+          git add -A .
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -m "Publish docs at $DOCSITE_DESTINATION_PATH"
+          git push
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Announce publishing of docsite as a comment on the PR
+        run: |
+          gh pr comment "$PULL_REQUEST_NUMBER" --body ":book: A new version of the docsite has been published at: <https://mcmire.github.io/super_diff/$DOCSITE_DESTINATION_PATH>"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+
+  unpublish_docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+      - collect-docsite-release-info
+    if: ${{ github.event_name == 'pull_request' && needs.collect-release-info.outputs.IS_NEW_RELEASE == 'false' && github.event.action == 'closed' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Remove ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }} on gh-pages
+        run: |
+          set -x
+          DOCSITE_DESTINATION_PARENT_PATH="$(dirname "$DOCSITE_DESTINATION_PATH")"
+          if [[ "$DOCSITE_DESTINATION_PARENT_PATH" == "releases" || "$DOCSITE_DESTINATION_PARENT_PATH" == "branches" ]]; then
+            echo "Not removing $DOCSITE_DESTINATION_PARENT_PATH."
+            exit 1
+          fi
+          rm -rf "$DOCSITE_DESTINATION_PARENT_PATH"
+          echo "DOCSITE_DESTINATION_PARENT_PATH=$DOCSITE_DESTINATION_PARENT_PATH" >> "GITHUB_ENV"
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Re-push docsite if necessary
+        run: |
+          git add -A .
+          if ! git diff --cached --quiet; then
+            git config user.name "${GITHUB_ACTOR}"
+            git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+            git commit -m "Remove $DOCSITE_DESTINATION_PARENT_PATH"
+            git push
+          fi
