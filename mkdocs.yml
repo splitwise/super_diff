@@ -1,0 +1,40 @@
+site_name: SuperDiff
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - toc.integrate
+  #plugins:
+  #- search
+
+nav:
+  - Home: index.md
+  - User Documentation:
+      - "Introduction to SuperDiff": "users/index.md"
+      - "Getting started": "users/getting-started.md"
+      - "Customizing SuperDiff": "users/customization.md"
+  - Contributor Documentation:
+      - "Contributing to SuperDiff": "contributors/index.md"
+      - Architecture:
+          - "How RSpec works": "contributors/how-rspec-works.md"
+          - "How SuperDiff works": "contributors/how-super-diff-works.md"
+
+#plugins:
+#- entangled # this also runs `entangled sync` as a pre-build action
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - smarty
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true

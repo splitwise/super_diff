@@ -1,5 +1,7 @@
 .yarn/cache
 .yarn/releases
 gemfiles
+site
+tmp
 vendor/bundle
 yarn.lock
