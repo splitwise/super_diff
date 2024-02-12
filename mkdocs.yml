@@ -1,0 +1,47 @@
+site_name: SuperDiff Documentation
+site_description: User- and contributor-facing documentation for SuperDiff
+copyright: ©️ Elliot Winkler.
+
+repo_url: https://github.com/mcmire/super_diff
+repo_name: SuperDiff on GitHub
+
+theme:
+  name: material
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.path
+    - toc.integrate
+  #plugins:
+  #- search
+
+nav:
+  - Home: index.md
+  - User Documentation:
+      - "Introduction to SuperDiff": "users/index.md"
+      - "Getting Started": "users/getting-started.md"
+      - "Customizing SuperDiff": "users/customization.md"
+  - Contributor Documentation:
+      - "Home": "contributors/index.md"
+      - "How to Contribute": "contributors/how-to-contribute.md"
+      - Architecture:
+          - "Introduction": "contributors/architecture/introduction.md"
+          - "How RSpec works": "contributors/architecture/how-rspec-works.md"
+          - "How SuperDiff works": "contributors/architecture/how-super-diff-works.md"
+
+#plugins:
+#- entangled # this also runs `entangled sync` as a pre-build action
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - smarty
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
