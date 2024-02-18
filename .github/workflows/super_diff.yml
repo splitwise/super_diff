@@ -7,33 +7,29 @@ on:
   pull_request:
     types:
       - opened
+      - reopened
       - synchronize
 concurrency:
   group: build-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 jobs:
-  all:
-    runs-on: ubuntu-latest
-    needs:
-      - lint
-      - audit
-      - test
-    outputs:
-      PASSED: ${{ steps.set-output.outputs.PASSED }}
-    steps:
-      - name: Set PASSED output
-        id: set-output
-        run: echo "PASSED=true" >> "$GITHUB_OUTPUT"
-  lint:
+  analyze:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
+      - name: Download actionlint
+        id: download-actionlint
+        run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/7fdc9630cc360ea1a469eed64ac6d78caeda1234/scripts/download-actionlint.bash) 1.6.23
+        shell: bash
+      - name: Check workflow files
+        run: ${{ steps.download-actionlint.outputs.executable }} -color
+        shell: bash
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
@@ -41,7 +37,12 @@ jobs:
         run: yarn --immutable
       - name: Lint
         run: yarn lint
-  audit:
+      - name: Audit
+        run: yarn audit
+
+  test:
+    needs:
+      - analyze
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -60,44 +61,7 @@ jobs:
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: ${{ matrix.ruby }}
-          bundler-cache: true
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: ".nvmrc"
-          cache: "yarn"
-      - name: Install Yarn dependencies
-        run: yarn --immutable
-      - name: Audit
-        run: yarn audit
-  test:
-    needs:
-      - lint
-      - audit
-    runs-on: ubuntu-20.04
-    strategy:
-      fail-fast: false
-      matrix:
-        ruby:
-          - "3.0"
-          - "3.1"
-          - "3.2"
-        rails_appraisal:
-          - rails_6_1
-          - rails_7_0
-          - no_rails
-        rspec_appraisal:
-          - rspec_lt_3_10
-          - rspec_gte_3_10
-    env:
-      BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
-    steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -116,3 +80,11 @@ jobs:
           log-output-if: failure
       - name: Run tests
         run: bundle exec rake --trace
+
+  ready-to-merge:
+    runs-on: ubuntu-latest
+    needs:
+      - analyze
+      - test
+    steps:
+      - run: echo "Analysis and tests passed. Ready to merge."
