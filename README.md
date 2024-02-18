@@ -8,8 +8,9 @@
 [issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
 [issuehunt]: https://issuehunt.io/r/mcmire/super_diff
 
-SuperDiff is a gem that hooks into RSpec
-to intelligently display the differences between two data structures of any type.
+**SuperDiff** is a Ruby gem
+which is designed to display the differences between two objects of any type
+in a familiar and intelligent fashion.
 
 📢 **[See what's changed in recent versions.][changelog]**
 
@@ -20,12 +21,13 @@ to intelligently display the differences between two data structures of any type
 The primary motivation behind this gem
 is to vastly improve upon RSpec's built-in diffing capabilities.
 
-Sometimes, whenever you use a matcher such as `eq`, `match`, `include`, or `have_attributes`,
+The primary motivation behind this gem
+is to vastly improve upon RSpec's built-in diffing capabilities.
+RSpec has many nice features,
+and one of them is that whenever you use a matcher such as `eq`, `match`, `include`, or `have_attributes`,
 you will get a diff of the two data structures you are trying to match against.
 This is great if all you want to do is compare multi-line strings.
-But if you want to compare other, more "real world" kinds of values,
-such as what you might work with when developing API endpoints
-or testing methods that make database calls and return a set of model objects,
+But if you want to compare other, more "real world" kinds of values such as API or database data,
 then you are out of luck.
 Since [RSpec merely runs your `expected` and `actual` values through Ruby's PrettyPrinter library][rspec-differ-fail]
 and then performs a diff of these strings,
@@ -33,8 +35,7 @@ the output it produces leaves much to be desired.
 
 [rspec-differ-fail]: https://github.com/rspec/rspec-support/blob/c69a231d7369dd165ad7ce4742e1a2e21e3462b5/lib/rspec/support/differ.rb#L178
 
-For instance,
-let's say you wanted to compare these two hashes:
+For instance, let's say you wanted to compare these two hashes:
 
 ```ruby
 actual = {
@@ -94,7 +95,7 @@ you'd get this instead:
 📘 For more on how to install and use SuperDiff,
 [read the user documentation][user-docs].
 
-[user-docs]: ./docs/users/index.md
+[user-docs]: ./docs/users/getting-started.md
 
 ## Support
 
