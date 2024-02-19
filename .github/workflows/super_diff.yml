@@ -143,7 +143,7 @@ jobs:
           IS_NEW_RELEASE: ${{ needs.collect-release-info.outputs.IS_NEW_RELEASE }}
           RELEASE_VERSION: ${{ needs.collect-release-info.outputs.RELEASE_VERSION }}
           BRANCH_NAME: ${{ github.head_ref }}
-          COMMIT_ID: ${{ github.event.pull_request.head.ref }}
+          COMMIT_ID: ${{ github.event.pull_request.head.sha }}
     outputs:
       DOCSITE_RELEASE_VERSION: ${{ steps.command.outputs.DOCSITE_RELEASE_VERSION }}
       DOCSITE_DESTINATION_PATH: ${{ steps.command.outputs.DOCSITE_DESTINATION_PATH }}
