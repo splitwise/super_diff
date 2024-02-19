@@ -246,7 +246,7 @@ jobs:
         run: |
           set -x
           DOCSITE_DESTINATION_PARENT_PATH="$(dirname "$DOCSITE_DESTINATION_PATH")"
-          echo "DOCSITE_DESTINATION_PARENT_PATH=$DOCSITE_DESTINATION_PARENT_PATH" >> "GITHUB_ENV"
+          echo "DOCSITE_DESTINATION_PARENT_PATH=$DOCSITE_DESTINATION_PARENT_PATH" >> "$GITHUB_ENV"
         env:
           DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
       - name: Remove ${{ env.DOCSITE_DESTINATION_PARENT_PATH }} on gh-pages
