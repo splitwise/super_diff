@@ -124,8 +124,8 @@ jobs:
             DOCSITE_DESTINATION_PATH="releases/$RELEASE_VERSION"
             HAS_CHANGES_TO_DOCS="true"
           else
-            DOCSITE_RELEASE_VERSION="$GITHUB_SHA"
-            DOCSITE_DESTINATION_PATH="branches/$BRANCH_NAME/$GITHUB_SHA"
+            DOCSITE_RELEASE_VERSION="$COMMIT_ID"
+            DOCSITE_DESTINATION_PATH="branches/$BRANCH_NAME/$COMMIT_ID"
             # Check if there any changes to docs/
             if git diff --quiet --merge-base "origin/$GITHUB_BASE_REF" -- docs; then
               HAS_CHANGES_TO_DOCS="false"
@@ -143,6 +143,7 @@ jobs:
           IS_NEW_RELEASE: ${{ needs.collect-release-info.outputs.IS_NEW_RELEASE }}
           RELEASE_VERSION: ${{ needs.collect-release-info.outputs.RELEASE_VERSION }}
           BRANCH_NAME: ${{ github.head_ref }}
+          COMMIT_ID: ${{ github.event.pull_request.head.ref }}
     outputs:
       DOCSITE_RELEASE_VERSION: ${{ steps.command.outputs.DOCSITE_RELEASE_VERSION }}
       DOCSITE_DESTINATION_PATH: ${{ steps.command.outputs.DOCSITE_DESTINATION_PATH }}
