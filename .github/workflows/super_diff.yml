@@ -7,6 +7,7 @@ on:
   pull_request:
     types:
       - opened
+      - closed
       - reopened
       - synchronize
 concurrency:
@@ -15,6 +16,7 @@ concurrency:
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' || github.event.action != 'closed' }}
     steps:
       - uses: actions/checkout@v4
       - name: Download actionlint
@@ -88,3 +90,179 @@ jobs:
       - test
     steps:
       - run: echo "Analysis and tests passed. Ready to merge."
+
+  collect-release-info:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Run command
+        id: command
+        run: scripts/collect-release-info.rb
+    outputs:
+      IS_NEW_RELEASE: ${{ steps.command.outputs.IS_NEW_RELEASE }}
+      RELEASE_VERSION: ${{ steps.command.outputs.RELEASE_VERSION }}
+
+  collect-docsite-release-info:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Run command
+        id: command
+        run: |
+          set -x
+
+          if [[ "$IS_NEW_RELEASE" == "true" ]]; then
+            DOCSITE_RELEASE_VERSION="$RELEASE_VERSION"
+            DOCSITE_DESTINATION_PATH="releases/$RELEASE_VERSION"
+            HAS_CHANGES_TO_DOCS="true"
+          else
+            DOCSITE_RELEASE_VERSION="$COMMIT_ID"
+            DOCSITE_DESTINATION_PATH="branches/$BRANCH_NAME/$COMMIT_ID"
+            # Check if there any changes to docs/
+            if git diff --quiet --merge-base "origin/$GITHUB_BASE_REF" -- docs; then
+              HAS_CHANGES_TO_DOCS="false"
+            else
+              HAS_CHANGES_TO_DOCS="true"
+            fi
+          fi
+
+          {
+            echo "DOCSITE_RELEASE_VERSION=$DOCSITE_RELEASE_VERSION"
+            echo "DOCSITE_DESTINATION_PATH=$DOCSITE_DESTINATION_PATH"
+            echo "HAS_CHANGES_TO_DOCS=$HAS_CHANGES_TO_DOCS"
+          } >> "$GITHUB_OUTPUT"
+        env:
+          IS_NEW_RELEASE: ${{ needs.collect-release-info.outputs.IS_NEW_RELEASE }}
+          RELEASE_VERSION: ${{ needs.collect-release-info.outputs.RELEASE_VERSION }}
+          BRANCH_NAME: ${{ github.head_ref }}
+          COMMIT_ID: ${{ github.event.pull_request.head.sha }}
+    outputs:
+      DOCSITE_RELEASE_VERSION: ${{ steps.command.outputs.DOCSITE_RELEASE_VERSION }}
+      DOCSITE_DESTINATION_PATH: ${{ steps.command.outputs.DOCSITE_DESTINATION_PATH }}
+      HAS_CHANGES_TO_DOCS: ${{ steps.command.outputs.HAS_CHANGES_TO_DOCS }}
+
+  build-docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - analyze
+      - collect-release-info
+      - collect-docsite-release-info
+    if: ${{ github.event_name == 'pull_request' && ((needs.collect-release-info.outputs.IS_NEW_RELEASE == 'false' && needs.collect-docsite-release-info.outputs.HAS_CHANGES_TO_DOCS == 'true') || (needs.collect-release-info.outputs.IS_NEW_RELEASE == 'true' && github.event.merged)) }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install poetry
+        run: pipx install poetry
+      - name: Set up Python
+        uses: actions/setup-python@v5
+      - name: Install Python dependencies
+        run: poetry install
+      - name: Build docsite
+        run: poetry run mkdocs build
+      - name: Save site/ for later jobs
+        uses: actions/cache/save@v3
+        with:
+          path: site
+          key: docsite-${{ github.sha }}
+
+  publish-docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+      - collect-docsite-release-info
+      - build-docsite
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Restore cache from previous job
+        uses: actions/cache/restore@v3
+        with:
+          path: site
+          key: docsite-${{ github.sha }}
+      - name: Update redirect in index (for a release)
+        if: ${{ needs.collect-release-info.outputs.IS_NEW_RELEASE == 'true' }}
+        run: |
+          cat <<-EOT > index.html
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>SuperDiff Documentation</title>
+              <meta http-equiv="refresh" content="0; url='https://mcmire.github.com/super_diff/releases/${RELEASE_VERSION}'" />
+            </head>
+            <body>
+              <p>
+                This page has moved to a different URL.
+                Please click
+                <a href="https://mcmire.github.com/super_diff/releases/${RELEASE_VERSION}">
+                  this link
+                </a>
+                if you are not redirected.
+              </p>
+            </body>
+            </html>
+          EOT
+      - name: Copy site/ to ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+        run: |
+          mkdir -p "$(dirname "$DOCSITE_DESTINATION_PATH")"
+          mv site "$DOCSITE_DESTINATION_PATH"
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Publish new version of docsite
+        run: |
+          git add -A .
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -m "Publish docs at $DOCSITE_DESTINATION_PATH"
+          git push
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Announce publishing of docsite as a comment on the PR
+        run: |
+          gh pr comment "$PULL_REQUEST_NUMBER" --body ":book: A new version of the docsite has been published at: <https://mcmire.github.io/super_diff/$DOCSITE_DESTINATION_PATH>"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+
+  unpublish_docsite:
+    runs-on: ubuntu-latest
+    needs:
+      - collect-release-info
+      - collect-docsite-release-info
+    if: ${{ github.event_name == 'pull_request' && needs.collect-release-info.outputs.IS_NEW_RELEASE == 'false' && github.event.action == 'closed' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+      - name: Set DOCSITE_DESTINATION_PARENT_PATH
+        run: |
+          set -x
+          DOCSITE_DESTINATION_PARENT_PATH="$(dirname "$DOCSITE_DESTINATION_PATH")"
+          echo "DOCSITE_DESTINATION_PARENT_PATH=$DOCSITE_DESTINATION_PARENT_PATH" >> "GITHUB_ENV"
+        env:
+          DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
+      - name: Remove ${{ env.DOCSITE_DESTINATION_PARENT_PATH }} on gh-pages
+        run: |
+          set -x
+          if [[ "$DOCSITE_DESTINATION_PARENT_PATH" == "releases" || "$DOCSITE_DESTINATION_PARENT_PATH" == "branches" ]]; then
+            echo "Not removing $DOCSITE_DESTINATION_PARENT_PATH."
+            exit 1
+          fi
+          rm -rf "$DOCSITE_DESTINATION_PARENT_PATH"
+      - name: Re-push docsite if necessary
+        run: |
+          git add -A .
+          if ! git diff --cached --quiet; then
+            git config user.name "${GITHUB_ACTOR}"
+            git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+            git commit -m "Remove $DOCSITE_DESTINATION_PARENT_PATH"
+            git push
+          fi

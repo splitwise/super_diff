@@ -18,3 +18,9 @@ zeus.server-start.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Ignore Python stuff
+poetry.lock
+
+# Ignore mkdocs stuff
+site
