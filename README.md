@@ -20,9 +20,6 @@ in a familiar and intelligent fashion.
 
 The primary motivation behind this gem
 is to vastly improve upon RSpec's built-in diffing capabilities.
-
-The primary motivation behind this gem
-is to vastly improve upon RSpec's built-in diffing capabilities.
 RSpec has many nice features,
 and one of them is that whenever you use a matcher such as `eq`, `match`, `include`, or `have_attributes`,
 you will get a diff of the two data structures you are trying to match against.
