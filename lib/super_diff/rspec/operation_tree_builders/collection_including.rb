@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module OperationTreeBuilders
-      class CollectionIncluding < SuperDiff::OperationTreeBuilders::Array
+      class CollectionIncluding < Basic::OperationTreeBuilders::Array
         def self.applies_to?(expected, actual)
           (
             SuperDiff::RSpec.a_collection_including_something?(expected) ||

@@ -10,13 +10,13 @@ module SuperDiff
           Differing strings.
 
           #{
-          Helpers.style(
+          Core::Helpers.style(
             :expected,
             "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
           )
         }
           #{
-          Helpers.style(
+          Core::Helpers.style(
             :actual,
             "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
           )

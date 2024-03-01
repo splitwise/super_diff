@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module OperationTreeBuilders
-      class HashIncluding < SuperDiff::OperationTreeBuilders::Hash
+      class HashIncluding < Basic::OperationTreeBuilders::Hash
         include ::RSpec::Matchers::Composable
 
         def self.applies_to?(expected, actual)

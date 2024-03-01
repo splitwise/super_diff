@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module OperationTreeBuilders
-      class CollectionContainingExactly < SuperDiff::OperationTreeBuilders::Base
+      class CollectionContainingExactly < Core::AbstractOperationTreeBuilder
         def self.applies_to?(expected, actual)
           SuperDiff::RSpec.a_collection_containing_exactly_something?(
             expected
@@ -47,7 +47,7 @@ module SuperDiff
 
         def add_noop_to(operations, index)
           value = actual[index]
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
+          operations << Core::UnaryOperation.new(
             name: :noop,
             collection: collection,
             key: index,
@@ -58,7 +58,7 @@ module SuperDiff
 
         def add_delete_to(operations, index)
           value = expected.expected[index]
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
+          operations << Core::UnaryOperation.new(
             name: :delete,
             collection: collection,
             key: index,
@@ -69,7 +69,7 @@ module SuperDiff
 
         def add_insert_to(operations, index)
           value = actual[index]
-          operations << ::SuperDiff::Operations::UnaryOperation.new(
+          operations << Core::UnaryOperation.new(
             name: :insert,
             collection: collection,
             key: index,

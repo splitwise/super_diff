@@ -1,12 +1,16 @@
 module SuperDiff
   module Errors
-    autoload(
-      :NoDifferAvailableError,
-      "super_diff/errors/no_differ_available_error"
-    )
-    autoload(
-      :NoOperationTreeBuilderAvailableError,
-      "super_diff/errors/no_operation_tree_builder_available_error"
-    )
+    def self.const_missing(missing_const_name)
+      if Core.const_defined?(missing_const_name)
+        warn <<~EOT
+          WARNING: SuperDiff::Errors::#{missing_const_name} is deprecated and will be removed in the next major release.
+          Please use SuperDiff::Core::#{missing_const_name} instead.
+          #{caller_locations.join("\n")}
+        EOT
+        Core.const_get(missing_const_name)
+      else
+        super
+      end
+    end
   end
 end

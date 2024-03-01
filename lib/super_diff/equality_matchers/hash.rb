@@ -10,13 +10,13 @@ module SuperDiff
           Differing hashes.
 
           #{
-          Helpers.style(
+          Core::Helpers.style(
             :expected,
             "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
           )
         }
           #{
-          Helpers.style(
+          Core::Helpers.style(
             :actual,
             "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
           )
@@ -31,7 +31,7 @@ module SuperDiff
       protected
 
       def diff
-        Differs::Hash.call(expected, actual, indent_level: 0)
+        Basic::Differs::Hash.call(expected, actual, indent_level: 0)
       end
     end
   end

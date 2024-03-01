@@ -35,7 +35,7 @@ module SuperDiff
       end
 
       def matcher_text_builder_class
-        RSpec::MatcherTextBuilders::Base
+        MatcherTextBuilders::Base
       end
 
       def matcher_text_builder_args

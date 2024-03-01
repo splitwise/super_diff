@@ -1,15 +1,17 @@
 require "super_diff"
 
+require "super_diff/rspec/differs"
+require "super_diff/rspec/inspection_tree_builders"
+require "super_diff/rspec/operation_tree_builders"
+
 module SuperDiff
   module RSpec
     autoload :AugmentedMatcher, "super_diff/rspec/augmented_matcher"
     autoload :Configuration, "super_diff/rspec/configuration"
     autoload :Differ, "super_diff/rspec/differ"
-    autoload :Differs, "super_diff/rspec/differs"
     autoload :MatcherTextBuilders, "super_diff/rspec/matcher_text_builders"
     autoload :MatcherTextTemplate, "super_diff/rspec/matcher_text_template"
     autoload :ObjectInspection, "super_diff/rspec/object_inspection"
-    autoload :OperationTreeBuilders, "super_diff/rspec/operation_tree_builders"
 
     def self.configure(&block)
       SuperDiff.configure(&block)
@@ -84,36 +86,36 @@ module SuperDiff
       @_rspec_version ||=
         begin
           require "rspec/core/version"
-          GemVersion.new(::RSpec::Core::Version::STRING)
+          Core::GemVersion.new(::RSpec::Core::Version::STRING)
         end
     end
 
     SuperDiff.configuration.tap do |config|
-      config.add_extra_differ_classes(
+      config.prepend_extra_differ_classes(
         Differs::CollectionContainingExactly,
         Differs::CollectionIncluding,
         Differs::HashIncluding,
         Differs::ObjectHavingAttributes
       )
 
-      config.add_extra_operation_tree_builder_classes(
+      config.prepend_extra_inspection_tree_builder_classes(
+        InspectionTreeBuilders::Double,
+        InspectionTreeBuilders::CollectionContainingExactly,
+        InspectionTreeBuilders::CollectionIncluding,
+        InspectionTreeBuilders::HashIncluding,
+        InspectionTreeBuilders::InstanceOf,
+        InspectionTreeBuilders::KindOf,
+        InspectionTreeBuilders::ObjectHavingAttributes,
+        # ObjectInspection::InspectionTreeBuilders::Primitive,
+        InspectionTreeBuilders::ValueWithin,
+        InspectionTreeBuilders::GenericDescribableMatcher
+      )
+
+      config.prepend_extra_operation_tree_builder_classes(
         OperationTreeBuilders::CollectionContainingExactly,
         OperationTreeBuilders::CollectionIncluding,
         OperationTreeBuilders::HashIncluding,
         OperationTreeBuilders::ObjectHavingAttributes
-      )
-
-      config.add_extra_inspection_tree_builder_classes(
-        ObjectInspection::InspectionTreeBuilders::Double,
-        ObjectInspection::InspectionTreeBuilders::CollectionContainingExactly,
-        ObjectInspection::InspectionTreeBuilders::CollectionIncluding,
-        ObjectInspection::InspectionTreeBuilders::HashIncluding,
-        ObjectInspection::InspectionTreeBuilders::InstanceOf,
-        ObjectInspection::InspectionTreeBuilders::KindOf,
-        ObjectInspection::InspectionTreeBuilders::ObjectHavingAttributes,
-        # ObjectInspection::InspectionTreeBuilders::Primitive,
-        ObjectInspection::InspectionTreeBuilders::ValueWithin,
-        ObjectInspection::InspectionTreeBuilders::GenericDescribableMatcher
       )
     end
   end

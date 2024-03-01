@@ -1598,8 +1598,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main, type: :unit do
 
           #{
           colored do
-            expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(expected)} @character="mirage", @handle="martymcfly", @health=0.3, @inventory=["flatline", "purple body shield"], @shields=0.6, @ultimate=0.8>)
-            actual_line %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} @character="lifeline", @handle="docbrown", @health=0.3, @inventory=["wingman", "mastiff"], @shields=0.6, @ultimate=0.8>)
+            expected_line %(Expected: #<SuperDiff::Test::Player:#{SuperDiff::Core::Helpers.object_address_for(expected)} @character="mirage", @handle="martymcfly", @health=0.3, @inventory=["flatline", "purple body shield"], @shields=0.6, @ultimate=0.8>)
+            actual_line %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Core::Helpers.object_address_for(actual)} @character="lifeline", @handle="docbrown", @health=0.3, @inventory=["wingman", "mastiff"], @shields=0.6, @ultimate=0.8>)
           end
         }
 
@@ -1607,7 +1607,7 @@ RSpec.describe SuperDiff::EqualityMatchers::Main, type: :unit do
 
           #{
           colored do
-            plain_line %(  #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} {)
+            plain_line %(  #<SuperDiff::Test::Player:#{SuperDiff::Core::Helpers.object_address_for(actual)} {)
             expected_line %(-   @character="mirage",)
             actual_line %(+   @character="lifeline",)
             expected_line %(-   @handle="martymcfly",)
@@ -1677,8 +1677,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main, type: :unit do
 
           #{
           colored do
-            expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Helpers.object_address_for(expected)} @name="camera", @quantity=3>)
-            actual_line %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Helpers.object_address_for(actual)} @character="Jon", @handle="mcmire", @health=4, @inventory=["sword"], @shields=11.4, @ultimate=true>)
+            expected_line %(Expected: #<SuperDiff::Test::Item:#{SuperDiff::Core::Helpers.object_address_for(expected)} @name="camera", @quantity=3>)
+            actual_line %(  Actual: #<SuperDiff::Test::Player:#{SuperDiff::Core::Helpers.object_address_for(actual)} @character="Jon", @handle="mcmire", @health=4, @inventory=["sword"], @shields=11.4, @ultimate=true>)
           end
         }
         STR

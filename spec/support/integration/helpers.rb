@@ -115,7 +115,10 @@ module SuperDiff
     end
 
     def colored(color_enabled: true, &block)
-      SuperDiff::Helpers.style(color_enabled: color_enabled, &block).to_s.chomp
+      SuperDiff::Core::Helpers
+        .style(color_enabled: color_enabled, &block)
+        .to_s
+        .chomp
     end
   end
 end

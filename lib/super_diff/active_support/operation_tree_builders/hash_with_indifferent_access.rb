@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveSupport
     module OperationTreeBuilders
-      class HashWithIndifferentAccess < SuperDiff::OperationTreeBuilders::Hash
+      class HashWithIndifferentAccess < Basic::OperationTreeBuilders::Hash
         def self.applies_to?(expected, actual)
           (
             expected.is_a?(::HashWithIndifferentAccess) && actual.is_a?(::Hash)
