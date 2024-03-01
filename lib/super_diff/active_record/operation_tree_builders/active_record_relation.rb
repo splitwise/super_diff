@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveRecord
     module OperationTreeBuilders
-      class ActiveRecordRelation < SuperDiff::OperationTreeBuilders::Array
+      class ActiveRecordRelation < Basic::OperationTreeBuilders::Array
         def self.applies_to?(expected, actual)
           expected.is_a?(::Array) && actual.is_a?(::ActiveRecord::Relation)
         end

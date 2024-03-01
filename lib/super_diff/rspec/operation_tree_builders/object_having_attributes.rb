@@ -1,7 +1,7 @@
 module SuperDiff
   module RSpec
     module OperationTreeBuilders
-      class ObjectHavingAttributes < SuperDiff::OperationTreeBuilders::DefaultObject
+      class ObjectHavingAttributes < Basic::OperationTreeBuilders::DefaultObject
         def self.applies_to?(expected, _actual)
           SuperDiff::RSpec.an_object_having_some_attributes?(expected)
         end
@@ -9,7 +9,7 @@ module SuperDiff
         protected
 
         def build_operation_tree
-          find_operation_tree_for(actual)
+          SuperDiff.find_operation_tree_for(actual)
         end
 
         def attribute_names

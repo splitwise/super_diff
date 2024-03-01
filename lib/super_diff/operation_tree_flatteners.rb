@@ -1,20 +1,23 @@
 module SuperDiff
   module OperationTreeFlatteners
-    autoload :Array, "super_diff/operation_tree_flatteners/array"
-    autoload :Base, "super_diff/operation_tree_flatteners/base"
-    autoload :Collection, "super_diff/operation_tree_flatteners/collection"
-    autoload(
-      :CustomObject,
-      "super_diff/operation_tree_flatteners/custom_object"
-    )
-    autoload(
-      :DefaultObject,
-      "super_diff/operation_tree_flatteners/default_object"
-    )
-    autoload :Hash, "super_diff/operation_tree_flatteners/hash"
-    autoload(
-      :MultilineString,
-      "super_diff/operation_tree_flatteners/multiline_string"
-    )
+    def self.const_missing(missing_const_name)
+      if missing_const_name == :Base
+        warn <<~EOT
+          WARNING: SuperDiff::OperationTreeFlatteners::#{missing_const_name} is deprecated and will be removed in the next major release.
+          Please use SuperDiff::Core::AbstractOperationTreeFlattener instead.
+          #{caller_locations.join("\n")}
+        EOT
+        Core::AbstractOperationTreeFlattener
+      elsif Basic::OperationTreeFlatteners.const_defined?(missing_const_name)
+        warn <<~EOT
+          WARNING: SuperDiff::OperationTreeFlatteners::#{missing_const_name} is deprecated and will be removed in the next major release.
+          Please use SuperDiff::Basic::OperationTreeFlatteners::#{missing_const_name} instead.
+          #{caller_locations.join("\n")}
+        EOT
+        Basic::OperationTreeFlatteners.const_get(missing_const_name)
+      else
+        super
+      end
+    end
   end
 end

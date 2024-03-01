@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveRecord
     module OperationTreeFlatteners
-      class ActiveRecordRelation < SuperDiff::OperationTreeFlatteners::Collection
+      class ActiveRecordRelation < Basic::OperationTreeFlatteners::Collection
         protected
 
         def open_token

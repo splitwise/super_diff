@@ -18,14 +18,14 @@ module SuperDiff
       protected
 
       def expected_line
-        Helpers.style(
+        Core::Helpers.style(
           :expected,
           "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
         )
       end
 
       def actual_line
-        Helpers.style(
+        Core::Helpers.style(
           :actual,
           "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
         )
@@ -45,7 +45,12 @@ module SuperDiff
       end
 
       def diff
-        Differs::Main.call(expected, actual, indent_level: 0)
+        SuperDiff.diff(
+          expected,
+          actual,
+          indent_level: 0,
+          raise_if_nothing_applies: false
+        )
       end
     end
   end

@@ -7,13 +7,12 @@ module SuperDiff
 
       def diff
         if worth_diffing?
-          diff =
-            SuperDiff::Differs::Main.call(expected, actual, omit_empty: true)
+          diff = SuperDiff.diff(expected, actual)
           "\n\n" + diff
         else
           ""
         end
-      rescue SuperDiff::Errors::NoDifferAvailableError
+      rescue Core::NoDifferAvailableError
         ""
       end
 
@@ -39,10 +38,10 @@ module SuperDiff
       end
 
       def helpers
-        @_helpers ||= Helpers.new
+        @_helpers ||= RSpecHelpers.new
       end
 
-      class Helpers
+      class RSpecHelpers
         include ::RSpec::Matchers::Composable
 
         public :values_match?

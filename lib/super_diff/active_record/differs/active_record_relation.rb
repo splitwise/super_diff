@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveRecord
     module Differs
-      class ActiveRecordRelation < SuperDiff::Differs::Base
+      class ActiveRecordRelation < Core::AbstractDiffer
         def self.applies_to?(expected, actual)
           expected.is_a?(::Array) && actual.is_a?(::ActiveRecord::Relation)
         end

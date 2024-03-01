@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveSupport
     module OperationTreeFlatteners
-      class HashWithIndifferentAccess < SuperDiff::OperationTreeFlatteners::Hash
+      class HashWithIndifferentAccess < Basic::OperationTreeFlatteners::Hash
         protected
 
         def open_token

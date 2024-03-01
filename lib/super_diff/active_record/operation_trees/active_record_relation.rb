@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveRecord
     module OperationTrees
-      class ActiveRecordRelation < SuperDiff::OperationTrees::Array
+      class ActiveRecordRelation < Basic::OperationTrees::Array
         def self.applies_to?(value)
           value.is_a?(ActiveRecord::Relation)
         end

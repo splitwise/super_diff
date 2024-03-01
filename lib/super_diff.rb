@@ -1,33 +1,38 @@
 require "attr_extras/explicit"
-require "diff-lcs"
-require "patience_diff"
 require "date"
 
 module SuperDiff
-  autoload(
-    :ColorizedDocumentExtensions,
-    "super_diff/colorized_document_extensions"
-  )
-  autoload :OperationTreeFlatteners, "super_diff/operation_tree_flatteners"
-  autoload :Configuration, "super_diff/configuration"
+  autoload :Core, "super_diff/core"
   autoload :Csi, "super_diff/csi"
-  autoload :DiffFormatters, "super_diff/diff_formatters"
   autoload :Differs, "super_diff/differs"
   autoload :EqualityMatchers, "super_diff/equality_matchers"
   autoload :Errors, "super_diff/errors"
-  autoload :GemVersion, "super_diff/gem_version"
-  autoload :Helpers, "super_diff/helpers"
-  autoload :ImplementationChecks, "super_diff/implementation_checks"
-  autoload :Line, "super_diff/line"
-  autoload :TieredLines, "super_diff/tiered_lines"
-  autoload :TieredLinesElider, "super_diff/tiered_lines_elider"
-  autoload :TieredLinesFormatter, "super_diff/tiered_lines_formatter"
   autoload :ObjectInspection, "super_diff/object_inspection"
-  autoload :OperationTrees, "super_diff/operation_trees"
   autoload :OperationTreeBuilders, "super_diff/operation_tree_builders"
+  autoload :OperationTreeFlatteners, "super_diff/operation_tree_flatteners"
+  autoload :OperationTrees, "super_diff/operation_trees"
   autoload :Operations, "super_diff/operations"
-  autoload :RecursionGuard, "super_diff/recursion_guard"
   autoload :VERSION, "super_diff/version"
+
+  def self.const_missing(missing_const_name)
+    if Core.const_defined?(missing_const_name)
+      warn <<~EOT
+        WARNING: SuperDiff::#{missing_const_name} is deprecated and will be removed in the next major release.
+        Please use SuperDiff::Core::#{missing_const_name} instead.
+        #{caller_locations.join("\n")}
+      EOT
+      Core.const_get(missing_const_name)
+    elsif Basic.const_defined?(missing_const_name)
+      warn <<~EOT
+        WARNING: SuperDiff::#{missing_const_name} is deprecated and will be removed in the next major release.
+        Please use SuperDiff::Basic::#{missing_const_name} instead.
+        #{caller_locations.join("\n")}
+      EOT
+      Basic.const_get(missing_const_name)
+    else
+      super
+    end
+  end
 
   def self.configure
     yield configuration
@@ -35,13 +40,54 @@ module SuperDiff
   end
 
   def self.configuration
-    @_configuration ||= Configuration.new
+    @_configuration ||= Core::Configuration.new
+  end
+
+  def self.diff(
+    expected,
+    actual,
+    indent_level: 0,
+    raise_if_nothing_applies: true
+  )
+    Core::DifferDispatcher.call(
+      expected,
+      actual,
+      available_classes: configuration.extra_differ_classes,
+      indent_level: indent_level,
+      raise_if_nothing_applies: raise_if_nothing_applies
+    )
+  end
+
+  def self.build_operation_tree_for(
+    expected,
+    actual,
+    extra_operation_tree_builder_classes: [],
+    raise_if_nothing_applies: false
+  )
+    Core::OperationTreeBuilderDispatcher.call(
+      expected,
+      actual,
+      available_classes:
+        configuration.extra_operation_tree_builder_classes +
+          extra_operation_tree_builder_classes,
+      raise_if_nothing_applies: raise_if_nothing_applies
+    )
+  end
+
+  def self.find_operation_tree_for(value)
+    SuperDiff::Core::OperationTreeFinder.call(
+      value,
+      available_classes: configuration.extra_operation_tree_classes
+    )
   end
 
   def self.inspect_object(object, as_lines:, **rest)
-    SuperDiff::RecursionGuard.guarding_recursion_of(object) do
+    Core::RecursionGuard.guarding_recursion_of(object) do
       inspection_tree =
-        ObjectInspection::InspectionTreeBuilders::Main.call(object)
+        Core::InspectionTreeBuilderDispatcher.call(
+          object,
+          available_classes: configuration.extra_inspection_tree_builder_classes
+        )
 
       if as_lines
         inspection_tree.render_to_lines(object, **rest)
@@ -87,3 +133,5 @@ module SuperDiff
     end
   end
 end
+
+require "super_diff/basic"

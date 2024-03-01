@@ -1,16 +1,23 @@
 module SuperDiff
   module Differs
-    autoload :Array, "super_diff/differs/array"
-    autoload :Base, "super_diff/differs/base"
-    autoload :CustomObject, "super_diff/differs/custom_object"
-    autoload :DefaultObject, "super_diff/differs/default_object"
-    autoload :Empty, "super_diff/differs/empty"
-    autoload :Hash, "super_diff/differs/hash"
-    autoload :Main, "super_diff/differs/main"
-    autoload :MultilineString, "super_diff/differs/multiline_string"
-    autoload :TimeLike, "super_diff/differs/time_like"
-    autoload :DateLike, "super_diff/differs/date_like"
+    def self.const_missing(missing_const_name)
+      if missing_const_name == :Base
+        warn <<~EOT
+          WARNING: SuperDiff::Differs::#{missing_const_name} is deprecated and will be removed in the next major release.
+          Please use SuperDiff::Core::AbstractDiffer instead.
+          #{caller_locations.join("\n")}
+        EOT
+        Core::AbstractDiffer
+      elsif Basic::Differs.const_defined?(missing_const_name)
+        warn <<~EOT
+          WARNING: SuperDiff::Differs::#{missing_const_name} is deprecated and will be removed in the next major release.
+          Please use SuperDiff::Basic::Differs::#{missing_const_name} instead.
+          #{caller_locations.join("\n")}
+        EOT
+        Basic::Differs.const_get(missing_const_name)
+      else
+        super
+      end
+    end
   end
 end
-
-require "super_diff/differs/defaults"

@@ -1,7 +1,7 @@
 module SuperDiff
   module ActiveSupport
     module Differs
-      class HashWithIndifferentAccess < SuperDiff::Differs::Hash
+      class HashWithIndifferentAccess < Basic::Differs::Hash
         def self.applies_to?(expected, actual)
           (
             expected.is_a?(::HashWithIndifferentAccess) && actual.is_a?(::Hash)
