@@ -2,6 +2,45 @@
 
 ## 0.11.0 - 2024-02-10
 
+### BREAKING CHANGES
+
+- Change InspectionTree so that it no longer `instance_eval`s the block it
+  takes. ([#210](https://github.com/mcmire/super_diff/issues/210))
+  - If you have a custom InspectionTreeBuilder, you will need to change your
+    `call` method so that instead of looking like this:
+    ```ruby
+    def call
+      SuperDiff::ObjectInspection::InspectionTree.new do
+        as_lines_when_rendering_to_lines(collection_bookend: :open) do
+          add_text object.inspect
+        end
+      end
+    end
+    ```
+    it looks something like this instead:
+    ```ruby
+    def call
+      SuperDiff::ObjectInspection::InspectionTree.new do |t1|
+        t1.as_lines_when_rendering_to_lines(collection_bookend: :open) do |t2|
+          t2.add_text object.inspect
+        end
+      end
+    end
+    ```
+    Note that the following methods yield a new InspectionTree, so the tree
+    needs to be given a new name each time. It is conventional to use `t1`,
+    `t2`, etc.:
+    - `as_lines_when_rendering_to_lines`
+    - `as_prefix_when_rendering_to_lines`
+    - `as_prelude_when_rendering_to_lines`
+    - `as_single_line`
+    - `nested`
+    - `only_when`
+    - `when_empty`
+    - `when_non_empty`
+    - `when_rendering_to_lines`
+    - `when_rendering_to_string`
+
 ### Features
 
 - Add inspector for RSpec describable matchers not otherwise handled by an
@@ -25,8 +64,6 @@
 
 ### Improvements
 
-- Change InspectionTree so that it no longer `instance_eval`s the block it
-  takes. ([#210](https://github.com/mcmire/super_diff/issues/210))
 - Improve wording in `raise_error` failure messages.
   ([#218](https://github.com/mcmire/super_diff/issues/218))
 
