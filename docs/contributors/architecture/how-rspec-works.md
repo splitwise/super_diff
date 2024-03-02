@@ -86,7 +86,7 @@ First, we will review several concepts in RSpec: [^fn1]
   The default formatter is "progress",
   [set in the configuration object][rspec-default-formatter-set],
   which maps to an instance of [`RSpec::Core::Formatters::ProgressFormatter`](https://github.com/rspec/rspec-core/blob/v3.13.0/lib/rspec/core/formatters/progress_formatter.rb).
-- [Notifications](https://github.com/rspec/rspec-core/blob/v3.13.0/lib/rspec/core/notifications.rb)
+- **[Notifications](https://github.com/rspec/rspec-core/blob/v3.13.0/lib/rspec/core/notifications.rb)**
   represent events that occur while running tests,
   such as "these tests failed"
   or "this test was skipped".
@@ -114,12 +114,14 @@ First, we will review several concepts in RSpec: [^fn1]
 
 Given the above, RSpec performs the following sequence of events:
 
+<!--prettier-ignore-start -->
+
 1. The developer adds an failing assertion to a test using the following forms
    (filling in `<actual value>`, `<matcher>`, `<block>`, and `<args...>` appropriately):
-   - `expect(<actual value>).to <matcher>(<args...>)`
-   - `expect { <block> }.to <matcher>(<args...>)`
-   - `expect(<actual value>).not_to <matcher>(<args...>)`
-   - `expect { <block> }.not_to <matcher>(<args...>)`
+    - `expect(<actual value>).to <matcher>(<args...>)`
+    - `expect { <block> }.to <matcher>(<args...>)`
+    - `expect(<actual value>).not_to <matcher>(<args...>)`
+    - `expect { <block> }.not_to <matcher>(<args...>)`
 1. The developer runs the test using the `rspec` executable.
 1. The `rspec` executable [calls `RSpec::Core::Runner.invoke`][rspec-core-runner-call].
 1. Skipping a few steps, `RSpec::Core::Runner#run_specs` is called,
@@ -127,30 +129,30 @@ Given the above, RSpec performs the following sequence of events:
 1. Skipping a few more steps, [`RSpec::Core::Example#run` is called to run the current example][rspec-core-example-run-call].
 1. From here one of two paths is followed
    depending on whether the assertion is positive (`.to`) or negative (`.not_to`).
-   - If the assertion is positive:
-     1. Within the test,
-        after `expect` is called to build a `RSpec::Expectations::ExpectationTarget`,
-        [the `to` method calls `RSpec::Expectations::PositiveExpectationHandler.handle_matcher`][rspec-positive-expectation-handler-handle-matcher-call].
-     1. The matcher is then used to know
-        whether the assertion passes or fails:
-        `PositiveExpectationHandler`
-        [calls the `matches?` method on the matcher][rspec-positive-expectation-handler-matcher-matches].
-     1. Assuming that `matches?` returns false,
-        `PositiveExpectationHandler` then [calls `RSpec::Expectations::ExpectationHelper.handle_failure`][rspec-expectation-helper-handle-failure-call-positive],
-        telling it to get the positive failure message from the matcher
-        by calling `failure_message`.
-   - If the assertion is negative:
-     1. Within the test,
-        after `expect` is called to build a `RSpec::Expectations::ExpectationTarget`,
-        [the `not_to` method calls `RSpec::Expectations::NegativeExpectationHandler.handle_matcher`][rspec-negative-expectation-handler-handle-matcher-call].
-     1. The matcher is then used to know
-        whether the assertion passes or fails:
-        `NegativeExpectationHandler`,
-        [calls the `does_not_match?` method on the matcher][rspec-negative-expectation-handler-matcher-does-not-match].
-     1. Assuming that `does_not_match?` returns false,
-        `NegativeExpectationHandler` then [calls `RSpec::Expectations::ExpectationHelper.handle_failure`][via `NegativeExpectationHandler`][rspec-expectation-helper-handle-failure-call-negative],
-        telling it to get the negative failure message from the matcher
-        by calling `failure_message_when_negated`.
+    - If the assertion is positive:
+        1. Within the test,
+           after `expect` is called to build a `RSpec::Expectations::ExpectationTarget`,
+           [the `to` method calls `RSpec::Expectations::PositiveExpectationHandler.handle_matcher`][rspec-positive-expectation-handler-handle-matcher-call].
+        1. The matcher is then used to know
+           whether the assertion passes or fails:
+           `PositiveExpectationHandler`
+           [calls the `matches?` method on the matcher][rspec-positive-expectation-handler-matcher-matches].
+        1. Assuming that `matches?` returns false,
+           `PositiveExpectationHandler` then [calls `RSpec::Expectations::ExpectationHelper.handle_failure`][rspec-expectation-helper-handle-failure-call-positive],
+           telling it to get the positive failure message from the matcher
+           by calling `failure_message`.
+    - If the assertion is negative:
+      1. Within the test,
+         after `expect` is called to build a `RSpec::Expectations::ExpectationTarget`,
+         [the `not_to` method calls `RSpec::Expectations::NegativeExpectationHandler.handle_matcher`][rspec-negative-expectation-handler-handle-matcher-call].
+      1. The matcher is then used to know
+         whether the assertion passes or fails:
+         `NegativeExpectationHandler`,
+         [calls the `does_not_match?` method on the matcher][rspec-negative-expectation-handler-matcher-does-not-match].
+      1. Assuming that `does_not_match?` returns false,
+         `NegativeExpectationHandler` then [calls `RSpec::Expectations::ExpectationHelper.handle_failure`][via `NegativeExpectationHandler`][rspec-expectation-helper-handle-failure-call-negative],
+         telling it to get the negative failure message from the matcher
+         by calling `failure_message_when_negated`.
 1. `RSpec::Expectations::ExpectationHelper.handle_failure` [calls `RSpec::Expectations.fail_with`][rspec-expectations-fail-with-call].
 1. `RSpec::Expectations.fail_with` [creates a diff using `RSpec::Matchers::MultiMatcherDiff`,
    wraps it in an exception,
@@ -191,6 +193,8 @@ Given the above, RSpec performs the following sequence of events:
    the line that failed,
    the error and backtrace,
    and other pertinent details.
+
+<!--prettier-ignore-end -->
 
 [^fn1]: Note that the analysis of the RSpec source code in this document is accurate as of RSpec v3.13.0, released February 4, 2024.
 
