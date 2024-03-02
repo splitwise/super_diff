@@ -5,8 +5,10 @@
   "private": true,
   "scripts": {
     "audit": "yarn npm audit && bundle exec bundle audit --gemfile-lock ${BUNDLE_GEMFILE:-Gemfile}",
-    "lint": "prettier --check .",
-    "lint:fix": "yarn lint --write",
+    "lint": "scripts/lint-all-files.sh --check",
+    "lint:fix": "scripts/lint-all-files.sh --write",
+    "lint:changed": "scripts/lint-changed-files.sh --include-uncommitted --check",
+    "lint:changed:fix": "scripts/lint-changed-files.sh --include-uncommitted --write",
     "setup-git-hooks": "husky install"
   },
   "devDependencies": {

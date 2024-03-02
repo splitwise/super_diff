@@ -93,6 +93,12 @@ yarn lint:fix
 Provided that you ran `bin/setup` above,
 any code you've changed will also be linted
 whenever you push a commit.
+If this step fails for any reason,
+you can fix lint violations in only changed files by running:
+
+```
+yarn lint:changed:fix
+```
 
 [prettier-editors]: https://prettier.io/docs/en/editors.html
 
