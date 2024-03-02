@@ -2,17 +2,17 @@
 
 ## SuperDiff's cast of characters
 
-- An **inspection tree builder** (or, casually, an _inspector_)
+- An **inspection tree builder**
   makes use of an **inspection tree**
   to generate a multi-line textual representation of an object,
-  similar to PrettyPrinter in Ruby or AwesomePrint,
+  similar to PrettyPrinter in the Ruby standard library or the AwesomePrint gem,
   but more appropriate for showing within a diff.
 - An **operation tree builder** makes a comparison between two objects
   (the "expected" vs. the "actual")
-  and generates an **operation tree** to represent the differences.
-- An operation tree is made up of **operations**,
+  and generates an operation tree to represent the differences.
+- An **operation tree** is made up of **operations**,
   which designate differences in the inner parts of the two objects.
-  Those differences can be of type _delete_, _insert_, or _change_.
+  Those differences can be of type _delete_, _insert_, _change_, or _noop_.
   Since objects can be nested,
   some operations can have children operations themselves,
   hence the tree.
@@ -33,9 +33,9 @@
 
 As described in ["How RSpec works"](./how-rspec-works.md#what-rspec-does),
 when an assertion in a test fails —
-which happens when a matcher whose `matches?` method returns `false`
+which happens when a matcher whose `#matches?` method returns `false`
 is passed to `expect(...).to`,
-or when a matcher whose `does_not_match?` method returns `true`
+or when a matcher whose `#does_not_match?` method returns `true`
 is passed to `expect(...).not_to` —
 RSpec will call the `RSpec::Expectations::ExpectationHelper#handle_failure` method,
 which will call `RSpec::Expectations.fail_with`.
@@ -60,7 +60,7 @@ in order to integrate fully with RSpec.
    the gem needs to provide intelligent diffing
    for all kinds of built-in matchers.
    Many matchers in RSpec are marked as non-diffable —
-   their `diffable?` method returns `false` —
+   their `#diffable?` method returns `false` —
    causing RSpec to not show a diff after the matcher's failure message
    in the failure output.
    The `contain_exactly` matcher is one such example.
@@ -88,7 +88,7 @@ Here are all of the places that SuperDiff patches RSpec:
   (to turn off syntax highlighting for code,
   as it interferes with the previous patches)
 - `RSpec::Support::ObjectFormatter`
-  (to use SuperDiff's object inspectors)
+  (to use SuperDiff's object inspection logic)
 - `RSpec::Matchers::ExpectedsForMultipleDiffs`
   (to add a key above the diff,
   add spacing around the diff,
@@ -109,10 +109,11 @@ Once a test fails
 and RSpec delegates to SuperDiff's differ,
 this sequence of events occurs:
 
-1. `SuperDiff::Differs::Main.call` is called with a pair of values: `expected` and `actual`.
-   This method looks for a differ that is suitable for the pair
+1. `SuperDiff.diff` is called with a pair of values: `expected` and `actual`.
+   This method delegates to `SuperDiff::Core::DifferDispatcher.call`,
+   which looks for a differ that is suitable for the pair
    among a set of defaults and the list of differs registered via SuperDiff's configuration.
-   It does this by calling `.applies_to?` on each,
+   It does this by calling `.applies_to?` on each one,
    passing the `expected` and `actual`;
    the first differ for whom this method returns `true` wins.
    (This is a common pattern throughout the codebase.)
@@ -121,15 +122,15 @@ this sequence of events occurs:
    although this is sometimes overridden.
 1. Once a differ is found,
    its `.call` method is called.
-   Since all differs inherit from `SuperDiff::Differs::Base`,
+   Since all differs inherit from `SuperDiff::Core::AbstractDiffer`,
    `.call` always builds an operation tree,
    but the type of operation tree to build
    — or, more specifically, the operation tree builder subclass —
    is determined by the differ itself,
-   via the `operation_tree_builder_class` method.
+   via the `#operation_tree_builder_class` method.
    For instance,
-   `SuperDiff::Differs::Array` uses a `SuperDiff::OperationTreeBuilder::Array`,
-   `SuperDiff::Differs::Hash` uses a `SuperDiff::OperationTreeBuilder::Hash`,
+   `SuperDiff::Basic::Differs::Array` uses a `SuperDiff::Basic::OperationTreeBuilders::Array`,
+   `SuperDiff::Basic::Differs::Hash` uses a `SuperDiff::Basic::OperationTreeBuilders::Hash`,
    etc.
 1. Once the differ has an operation tree builder,
    the differ calls `.call` on it
@@ -140,15 +141,15 @@ this sequence of events occurs:
    find the differences between them,
    and represent those differences as operations.
    An operation may be one of four types:
-   `insert`, `delete`, `change`, or `noop`.
+   `:insert`, `:delete`, `:change`, or `:noop`.
    In the case of collections —
    which covers most types of values —
    the diff is performed recursively.
    This means that just as collections can have multiple levels,
    so too can operation trees.
 1. Once the differ has an operation tree,
-   it then calls `to_diff` on it.
-   This method is defined in `SuperDiff::OperationTrees::Base`,
+   it then calls `#to_diff` on it.
+   This method is defined in `SuperDiff::Core::AbstractOperationTree`,
    and it starts by first flattening the tree.
 1. This means that we need an operation tree flattener class.
    Like differs,
@@ -165,12 +166,11 @@ this sequence of events occurs:
 1. Once the operation tree has been flattened,
    then if the user has configured the gem to do so,
    a step is performed to look for unchanged lines
-   (that is, operations of type `noop`)
+   (that is, operations of type `:noop`)
    and _elide_ them —
    collapse them in such a way that the surrounding context is still visible.
 1. Once a set of elided lines is obtained,
-   the operation tree runs them through a formatter —
-   so called `TieredLinesFormatter` —
+   the operation tree runs them through `SuperDiff::Core::TieredLinesFormatter`,
    which will add the `-`s and `+`s along with splashes of color
    to create the final format you see at the very end.
 
