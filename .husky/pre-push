@@ -9,22 +9,7 @@ if echo "$stdin" | grep -q "^(delete)"; then
   exit 0
 fi
 
-current_branch_name="$(git branch --show-current)"
-
-if [[ "$current_branch_name" == "main" ]]; then
-  raw_files_to_check="$(git diff origin/main...HEAD --name-only --diff-filter=d)"
-else
-  raw_files_to_check="$(git diff main...HEAD --name-only --diff-filter=d)"
-fi
-
-if [[ -n "$raw_files_to_check" ]]; then
-  echo "*** Checking for lint violations in changed files ***************"
-  echo
-
-  echo "$raw_files_to_check" | while IFS=$'\n' read -r line; do
-    printf '%s\0' "$line"
-  done | xargs -0 yarn prettier --check --ignore-unknown || exit $?
-fi
+scripts/lint-changed-files.sh --check
 
 echo
 echo "*** Auditing dependencies ***************"
