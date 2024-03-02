@@ -29,9 +29,9 @@ nav:
       - "How to Contribute": "contributors/how-to-contribute.md"
       - Architecture:
           - "Introduction": "contributors/architecture/introduction.md"
-          - "Structure": "contributors/architecture/structure.md"
           - "How RSpec works": "contributors/architecture/how-rspec-works.md"
           - "How SuperDiff works": "contributors/architecture/how-super-diff-works.md"
+          - "Structure": "contributors/architecture/structure.md"
 
 #plugins:
 #- entangled # this also runs `entangled sync` as a pre-build action
