@@ -111,8 +111,8 @@ this sequence of events occurs:
 
 1. `SuperDiff.diff` is called with a pair of values: `expected` and `actual`.
    This method delegates to `SuperDiff::Core::DifferDispatcher.call`,
-   which looks for a differ that is suitable for the pair
-   among a set of defaults and the list of differs registered via SuperDiff's configuration.
+   which looks for a differ via `SuperDiff.configuration`
+   which is suitable for the pair.
    It does this by calling `.applies_to?` on each one,
    passing the `expected` and `actual`;
    the first differ for whom this method returns `true` wins.
@@ -178,9 +178,9 @@ In summary:
 
 ```mermaid
 graph TB
-  DiffersMain["Differs::Main"] -- Differs --> Differ;
+  DifferDispatcher -- Configured differs --> Differ;
   Differ -- Operation tree builder --> OperationTree[Operation tree];
   OperationTree -- Operation tree flattener --> Lines;
   Lines -- Tiered lines elider --> ElidedLines[Elided lines];
-  ElidedLines -- Tiered lines formatter --> FinalDiff[Final diff];
+  ElidedLines -- Tiered lines formatter --> FinalDiff[Diff string];
 ```
