@@ -12,7 +12,7 @@ module SuperDiff
       end
 
       def removing_object_ids
-        first_replacing(/#<([\w:]+):0x[a-f0-9]+/, '#<\1')
+        first_replacing(/#<([\w_:]+):0x[a-f0-9]+/, '#<\1')
         self
       end
 
