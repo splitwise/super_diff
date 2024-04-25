@@ -14,7 +14,7 @@ RSpec.describe SuperDiff, type: :unit do
               as_lines: false
             )
           expect(string).to eq(
-            %(#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">)
+            %(#<SuperDiff::Test::Models::ActiveRecord::Person person_id: nil, age: 31, name: "Elliot">)
           )
         end
       end
@@ -42,7 +42,7 @@ RSpec.describe SuperDiff, type: :unit do
               an_object_having_attributes(
                 type: :delete,
                 indentation_level: 2,
-                prefix: "id: ",
+                prefix: "person_id: ",
                 value: "nil",
                 add_comma: true
               ),
@@ -91,7 +91,7 @@ RSpec.describe SuperDiff, type: :unit do
             )
 
           expect(string).to eq(
-            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person id: 2, age: 17, name: "Jennifer">]>)
+            %(#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person person_id: 1, age: 19, name: "Marty">, #<SuperDiff::Test::Models::ActiveRecord::Person person_id: 2, age: 17, name: "Jennifer">]>)
           )
         end
       end
@@ -132,7 +132,7 @@ RSpec.describe SuperDiff, type: :unit do
               an_object_having_attributes(
                 type: :delete,
                 indentation_level: 3,
-                prefix: "id: ",
+                prefix: "person_id: ",
                 value: "1",
                 add_comma: true
               ),
@@ -165,7 +165,7 @@ RSpec.describe SuperDiff, type: :unit do
               an_object_having_attributes(
                 type: :delete,
                 indentation_level: 3,
-                prefix: "id: ",
+                prefix: "person_id: ",
                 value: "2",
                 add_comma: true
               ),

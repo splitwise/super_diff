@@ -9,8 +9,12 @@ module SuperDiff
 
         protected
 
+        def id
+          expected.class.primary_key
+        end
+
         def attribute_names
-          ["id"] + (expected.attributes.keys.sort - ["id"])
+          [id] + (expected.attributes.keys.sort - [id])
         end
       end
     end

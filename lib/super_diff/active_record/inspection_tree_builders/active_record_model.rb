@@ -6,6 +6,10 @@ module SuperDiff
           value.is_a?(::ActiveRecord::Base)
         end
 
+        def id
+          object.class.primary_key
+        end
+
         def call
           Core::InspectionTree.new do |t1|
             t1.as_lines_when_rendering_to_lines(
@@ -21,13 +25,17 @@ module SuperDiff
 
             t1.nested do |t2|
               t2.insert_separated_list(
-                ["id"] + (object.attributes.keys.sort - ["id"])
+                [id] + (object.attributes.keys.sort - [id])
               ) do |t3, name|
                 t3.as_prefix_when_rendering_to_lines do |t4|
                   t4.add_text "#{name}: "
                 end
 
-                t3.add_inspection_of object.read_attribute(name)
+                if name == id
+                  t3.add_inspection_of object.id
+                else
+                  t3.add_inspection_of object.read_attribute(name)
+                end
               end
             end
 

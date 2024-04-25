@@ -86,7 +86,7 @@ shared_examples_for "integration with ActiveRecord" do
                 proc do
                   line do
                     plain "Expected "
-                    actual %|#<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot">|
+                    actual %|#<SuperDiff::Test::Models::ActiveRecord::Person person_id: nil, age: 31, name: "Elliot">|
                   end
 
                   line do
@@ -244,7 +244,7 @@ shared_examples_for "integration with ActiveRecord" do
                 proc do
                   line do
                     plain "Expected "
-                    actual %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person id: nil, age: 31, name: "Elliot"> }|
+                    actual %|{ name: "Marty McFly", shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person person_id: nil, age: 31, name: "Elliot"> }|
                   end
 
                   line do
@@ -265,7 +265,7 @@ shared_examples_for "integration with ActiveRecord" do
                   expected_line %|-     zip: "90382"|
                   expected_line "-   }>"
                   actual_line "+   shipping_address: #<SuperDiff::Test::Models::ActiveRecord::Person {"
-                  actual_line "+     id: nil,"
+                  actual_line "+     person_id: nil,"
                   actual_line "+     age: 31,"
                   actual_line %|+     name: "Elliot"|
                   actual_line "+   }>"
@@ -390,7 +390,7 @@ shared_examples_for "integration with ActiveRecord" do
                 proc do
                   line do
                     plain "Expected "
-                    actual %|[#<SuperDiff::Test::Models::ActiveRecord::Query @results=#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person id: 1, age: 20, name: "Murphy">]>>]|
+                    actual %|[#<SuperDiff::Test::Models::ActiveRecord::Query @results=#<ActiveRecord::Relation [#<SuperDiff::Test::Models::ActiveRecord::Person person_id: 1, age: 20, name: "Murphy">]>>]|
                   end
 
                   line do
@@ -404,7 +404,7 @@ shared_examples_for "integration with ActiveRecord" do
                   plain_line "    #<SuperDiff::Test::Models::ActiveRecord::Query {"
                   plain_line "      @results=#<ActiveRecord::Relation ["
                   plain_line "        #<SuperDiff::Test::Models::ActiveRecord::Person {"
-                  plain_line "          id: 1,"
+                  plain_line "          person_id: 1,"
                   # expected_line %|-         age: 19,|  # TODO
                   expected_line "-         age: 19"
                   actual_line "+         age: 20,"
