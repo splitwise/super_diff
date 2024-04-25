@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.12.0 - 2024-04-24
+
+### Features
+
+- Support the use of primary keys other than `id` when diffing ActiveRecord
+  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
+
+### Contributors
+
+This release features the following contributors:
+
+- [@benk-gc](https://github.com/benk-gc)
+
+Thank you!
+
 ## 0.11.0 - 2024-02-10
 
 ### BREAKING CHANGES
