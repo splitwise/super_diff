@@ -10,8 +10,6 @@ module SuperDiff
       )
 
       def call
-        pp available_classes: available_classes
-
         if resolved_class
           resolved_class.call(expected, actual, indent_level: indent_level)
         elsif raise_if_nothing_applies?
