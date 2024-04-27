@@ -2,6 +2,7 @@
 .yarn/releases
 gemfiles
 site
+tea.yaml
 tmp
 vendor/bundle
 yarn.lock
