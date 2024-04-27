@@ -1,0 +1,1273 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User- and contributor-facing documentation for SuperDiff">
+      
+      
+      
+      
+        <link rel="prev" href="../how-super-diff-works/">
+      
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
+    
+    
+      
+        <title>Structure - SuperDiff Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.66ac8b77.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#structure" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="SuperDiff Documentation" class="md-header__button md-logo" aria-label="SuperDiff Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SuperDiff Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Structure
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../users/" class="md-tabs__link">
+          
+  
+  User Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Contributor Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SuperDiff Documentation" class="md-nav__button md-logo" aria-label="SuperDiff Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SuperDiff Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to SuperDiff
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/customization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Customizing SuperDiff
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Contributor Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Contributor Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to-contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-rspec-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How RSpec works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-super-diff-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How SuperDiff works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation files
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Implementation files">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#top-level-lib" class="md-nav__link">
+    <span class="md-ellipsis">
+      Top level (lib/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superdiffcore-libsuper_diffcore" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff::Core (lib/super_diff/core/)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SuperDiff::Core (lib/super_diff/core/)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#initialization" class="md-nav__link">
+    <span class="md-ellipsis">
+      Initialization
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#differ" class="md-nav__link">
+    <span class="md-ellipsis">
+      Differ
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#operation-tree" class="md-nav__link">
+    <span class="md-ellipsis">
+      Operation tree
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lines
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#object-inspection" class="md-nav__link">
+    <span class="md-ellipsis">
+      Object inspection
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      Utilities
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#feature-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature modules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Feature modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#superdiffbasic-libsuper_diffbasic" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff::Basic (lib/super_diff/basic)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superdiffactivesupport-libsuper_diffactive_support" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff::ActiveSupport (lib/super_diff/active_support)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superdiffactiverecord-libsuper_diffactive_record" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff::ActiveRecord (lib/super_diff/active_record)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#superdiffrspec-libsuper_diffrspec" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff::RSpec (lib/super_diff/rspec)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#equality-matchers-libsuper_diffequality_matchers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Equality matchers (lib/super_diff/equality_matchers/)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csi-libsuper_diffcsi" class="md-nav__link">
+    <span class="md-ellipsis">
+      CSI (lib/super_diff/csi/)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tests" class="md-nav__link">
+    <span class="md-ellipsis">
+      Tests
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ruby" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ruby
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linting
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      CI
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#miscellaneous" class="md-nav__link">
+    <span class="md-ellipsis">
+      Miscellaneous
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="structure">Structure</h1>
+<p>To help you in your contributing journey,
+this page offers insight into how the SuperDiff codebase is laid out.</p>
+<p>Note that this page does not mention every single file:
+some files which are unimportant,
+such as those which only serve to require other files,
+have been omitted.</p>
+<h2 id="implementation-files">Implementation files</h2>
+<p>All implementation files in the project are located in <code>lib/</code>,
+and most are located in <code>lib/super_diff/</code>.</p>
+<p>In <code>lib/super_diff</code> there are 7 notable directories,
+which create 4 layers:</p>
+<pre class="mermaid"><code>flowchart BT
+  subgraph rails
+    active_record
+    active_support
+  end
+
+  basic --&gt; core
+  rspec --&gt; basic
+  active_record --&gt; basic
+  active_support --&gt; basic
+  active_record --&gt; core
+  active_support --&gt; core
+  rspec --&gt; core
+  equality_matchers --&gt; core
+  equality_matchers --&gt; basic
+  core --&gt; csi
+  rspec --&gt; csi</code></pre>
+<p>Following is a breakdown of each directory.</p>
+<h3 id="top-level-lib">Top level (<code>lib/</code>)</h3>
+<ul>
+<li><strong><code>super_diff.rb</code>:</strong>
+  In addition to loading the whole library,
+  this file contains helpers which are so useful that they can be called anywhere.</li>
+</ul>
+<h3 id="superdiffcore-libsuper_diffcore"><code>SuperDiff::Core</code> (<code>lib/super_diff/core/</code>)</h3>
+<p>The Core module provides building blocks, utilities, and other primitives
+that are used throughout the library.</p>
+<p>This directory can be grouped into the following themes:</p>
+<h4 id="initialization">Initialization</h4>
+<ul>
+<li><strong><code>configuration.rb</code>:</strong>
+  Stores settings for SuperDiff
+  which can be used to control the behavior of various features.</li>
+</ul>
+<h4 id="differ">Differ</h4>
+<ul>
+<li><strong><code>abstract_differ.rb</code>:</strong>
+  The superclass for all differ classes.</li>
+<li><strong><code>differ_dispatcher.rb</code>:</strong>
+  Finds the differ class that best matches a combination of &ldquo;expected&rdquo; and &ldquo;actual&rdquo; values,
+  then uses it to run the diff between them.</li>
+<li><strong><code>no_differ_available_error.rb</code>:</strong>
+  The error produced when the DifferDispatcher fails to find a matching class.</li>
+</ul>
+<h4 id="operation-tree">Operation tree</h4>
+<ul>
+<li><strong><code>abstract_operation_tree_builder.rb</code>:</strong>
+  The superclass for all operation tree builder classes,
+  defined elsewhere in SuperDiff or by users.</li>
+<li><strong><code>abstract_operation_tree.rb</code>:</strong>
+  The superclass for all operation tree classes,
+  defined elsewhere in SuperDiff or by users.</li>
+<li><strong><code>abstract_operation_tree_flattener.rb</code>:</strong>
+  The superclass for all operation tree flattener classes,
+  defined elsewhere in SuperDiff or by users.</li>
+<li><strong><code>binary_operation.rb</code>:</strong>
+  A node in an operation tree which represents a comparison between two values.</li>
+<li><strong><code>no_operation_tree_available_error.rb</code>:</strong>
+  The error produced when the OperationTreeFinder fails to find a matching class.</li>
+<li><strong><code>no_operation_tree_builder_available_error.rb</code>:</strong>
+  The error produced when the OperationTreeBuilderDispatcher fails to find a matching class.</li>
+<li><strong><code>operation_tree_builder_dispatcher.rb</code>:</strong>
+  Finds the operation tree builder class
+  that best matches a combination of &ldquo;expected&rdquo; and &ldquo;actual&rdquo; values,
+  then uses it to build the operation tree representing the difference between them.</li>
+<li><strong><code>operation_tree_finder.rb</code>:</strong>
+  Finds the operation tree matching a value.</li>
+<li><strong><code>unary_operation.rb</code>:</strong>
+  A node in an operation tree which represents an operation to a value.</li>
+</ul>
+<h4 id="lines">Lines</h4>
+<ul>
+<li><strong><code>line.rb</code>:</strong>
+  A deconstructed, mutable version of a line in the final diff output.</li>
+<li><strong><code>tiered_lines_elider.rb</code>:</strong>
+  Collapses unchanged sections of a diff,
+  represented by lines which are indented hierarchically.</li>
+<li><strong><code>tiered_lines_formatter.rb</code>:</strong>
+  Takes a collection of diff line objects and produces a diff string.</li>
+</ul>
+<h4 id="object-inspection">Object inspection</h4>
+<ul>
+<li><strong><code>inspection_tree_nodes/</code>:</strong>
+  Classes which represent directives that can be given
+  when constructing an inspection tree.
+  Different directives format the resulting text different ways
+  or even hide text if it does not match a certain condition.</li>
+<li><strong><code>abstract_inspection_tree_builder.rb</code>:</strong>
+  The superclass for all inspection tree builder classes,
+  defined elsewhere in SuperDiff or by users.</li>
+<li><strong><code>inspection_tree.rb</code>:</strong>
+  A domain-specific language used to format the contents of an object.
+  The result can either be a single-line string,
+  useful for descriptions and failure messages,
+  or a series of Line objects,
+  useful for inserting into diffs.</li>
+<li><strong><code>inspection_tree_builder_dispatcher.rb</code>:</strong>
+  Finds the inspection tree builder class that best matches a value,
+  then uses it to build the inspection tree.</li>
+<li><strong><code>no_inspection_tree_builder_available_error.rb</code>:</strong>
+  The error produced when the InspectionTreeBuilderDispatcher fails to find a matching class.</li>
+<li><strong><code>prefix_for_next_inspection_tree_node.rb</code>:</strong>
+  A special token used to represent
+  the result of the prefix passed to the <code>as_prefix_when_rendering_to_lines</code> directive.
+  This prefix needs to be handled specially in the inspection tree rendering logic.</li>
+<li><strong><code>prelude_for_next_inspection_tree_node.rb</code>:</strong>
+  A special token used to represent
+  the result of the prelude passed to the <code>as_prelude_when_rendering_to_lines</code> directive.
+  This prelude needs to be handled specially in the inspection tree rendering logic.</li>
+<li><strong><code>tiered_lines.rb</code>:</strong>
+  Represents the final output of an inspection tree,
+  broken up by lines which are indented hierarchically.</li>
+</ul>
+<h4 id="utilities">Utilities</h4>
+<ul>
+<li><strong><code>colorized_document_extensions.rb</code>:</strong>
+  Extends the ColorizedDocument DSL
+  so that text can be colored
+  using names that are not abstract
+  but rather related to SuperDiff concepts.</li>
+<li><strong><code>gem_version.rb</code>:</strong>
+  A wrapper around Gem::Version
+  which simplifies the interface
+  so that operators can be used to compare versions.</li>
+<li><strong><code>helpers.rb</code>:</strong>
+  Utility methods which can be mixed in various places to do various things.</li>
+<li><strong><code>implementation_checks.rb</code>:</strong>
+  Provides a way to define an unimplemented method.
+  Such a method will raise an error when called
+  unless it is overridden in a superclass.</li>
+<li><strong><code>recursion_guard.rb</code>:</strong>
+  A set of globally accessible methods
+  which is used to track repeated encounters of objects
+  as a data structure is descended into
+  and prevent cyclical or infinite recursion.</li>
+</ul>
+<h3 id="feature-modules">Feature modules</h3>
+<p>There are 4 directories in <code>lib/super_diff/</code> which are collectively known as <em>feature modules</em>.
+Using the primitives from the Core module,
+they implement building blocks
+to instruct SuperDiff on how to diff many kinds of objects.
+As such, you may see one or more of the following directories:</p>
+<ul>
+<li><code>*/differs/</code></li>
+<li><code>*/inspection_tree_builders/</code></li>
+<li><code>*/operation_tree_builders/</code></li>
+<li><code>*/operation_tree_flatteners/</code></li>
+<li><code>*/operation_trees/</code></li>
+</ul>
+<p>With that in mind, here is a list of feature modules.</p>
+<h4 id="superdiffbasic-libsuper_diffbasic"><code>SuperDiff::Basic</code> (<code>lib/super_diff/basic</code>)</h4>
+<p>This module is so named
+because it provides functionality that begins to make SuperDiff useful for users
+by adding support for objects that are built into Ruby.</p>
+<h4 id="superdiffactivesupport-libsuper_diffactive_support"><code>SuperDiff::ActiveSupport</code> (<code>lib/super_diff/active_support</code>)</h4>
+<p>This module makes use of the building blocks in the Basic module
+to instruct SuperDiff how to diff ActiveSupport-specific objects,
+such as HashWithIndifferentAccess.</p>
+<h4 id="superdiffactiverecord-libsuper_diffactive_record"><code>SuperDiff::ActiveRecord</code> (<code>lib/super_diff/active_record</code>)</h4>
+<p>This module makes use of the building blocks in the Basic module
+to instruct SuperDiff how to diff ActiveRecord-specific objects,
+such as models and relation objects.</p>
+<h4 id="superdiffrspec-libsuper_diffrspec"><code>SuperDiff::RSpec</code> (<code>lib/super_diff/rspec</code>)</h4>
+<p>This module is the largest one
+and makes use of the building blocks defined by the Basic module
+to provide support for expectation and argument matchers in diffs.
+It also patches sections of RSpec to replace its differ with SuperDiff&rsquo;s
+and to change failure messages so that they fit better with SuperDiff&rsquo;s philosophy.</p>
+<p>There are a few files and directories of note here:</p>
+<ul>
+<li><strong><code>matcher_text_builders/</code>:</strong>
+  These classes are used to craft descriptions and failure messages for RSpec matchers.</li>
+<li><strong><code>differ.rb</code>:</strong>
+  This class stands in for RSpec::Differ
+  and conditionally diffs an expected and actual value
+  that has been passed to a matcher.</li>
+<li><strong><code>matcher_text_template.rb</code>:</strong>
+  This class is used by matcher text builders
+  to progressively build up a string by concatenating tokens together.
+  It is similar to an inspection tree
+  in that some parts of the string can be rendered differently
+  depending on whether we&rsquo;ve chosen to display the message
+  in a single line or across multiple lines.
+  Some tokens can also be colored differently as well.</li>
+<li><strong><code>monkey_patches.rb</code>:</strong>
+  The metaphorical skeleton closet,
+  this file does the dirty and outright sinful work
+  of overriding various private APIs of the whole RSpec suite of gems
+  in order to integrate SuperDiff fully into the test framework.</li>
+</ul>
+<h3 id="equality-matchers-libsuper_diffequality_matchers">Equality matchers (<code>lib/super_diff/equality_matchers/</code>)</h3>
+<p>This directory offers a way to try out SuperDiff
+without integrating it into a test framework.
+The classes here are merely thin wrappers around building blocks in the Basic module.</p>
+<h3 id="csi-libsuper_diffcsi">CSI (<code>lib/super_diff/csi/</code>)</h3>
+<p>This directory contains a small library, private to the codebase,
+which provides a DSL for colorizing text in the running terminal emulator
+with the use of CSI escape sequences.</p>
+<h2 id="tests">Tests</h2>
+<p>Tests are located in <code>spec/</code>.
+They are divided into two kinds:</p>
+<ul>
+<li><strong>Unit tests</strong>, located in <code>spec/unit/</code>,
+  holds tests for individual classes and methods.</li>
+<li><strong>Integration tests</strong>, located in <code>spec/integration/</code>,
+  construct tiny test suites which import SuperDiff
+  and run them in isolated environments
+  to ensure that SuperDiff works as designed
+  in more real-world scenarios.</li>
+</ul>
+<p>The files in <code>spec/support/</code> (imported via <code>spec_helper.rb</code>)
+contain helpers, matchers, and tests
+that are shared among unit and integration tests,
+at their respective levels.</p>
+<p>Beyond this, <a href="https://github.com/burke/zeus">Zeus</a>, a way to speed up integration tests,
+and is run and configured via these files:</p>
+<ul>
+<li><code>bin/start-dev</code></li>
+<li><code>config/zeus_plan.rb</code></li>
+<li><code>support/test_plan.rb</code></li>
+<li><code>zeus.json</code></li>
+</ul>
+<p>The <a href="https://github.com/burke/zeus/blob/master/docs/ruby/modifying.md">official Zeus docs</a>
+is helpful for understanding how these files work together.</p>
+<h2 id="ruby">Ruby</h2>
+<p>The following files are used to set up Ruby,
+specify dependencies and gem publishing settings,
+and run tasks:</p>
+<ul>
+<li><strong><code>.ruby-version</code>:</strong>
+  Specifies the Ruby version required for development.
+  Used by tools like <code>rbenv</code> and <code>asdf.</code></li>
+<li><strong><code>bin/setup</code>:</strong>
+  Ensures that Ruby, Node, Python, and anything else necessary for development
+  is installed on your machine.</li>
+<li><strong><code>gemfiles/</code>:</strong>
+  Holds generated gemspecs and lockfiles for appraisals.</li>
+<li><strong><code>lib/super_diff/version.rb</code>:</strong>
+  Holds the current version of the gem,
+  which is used by the gemspec.
+  Updating the constant in this file changes the published version.</li>
+<li><strong><code>spec/support/current_bundle.rb</code>:</strong>
+  A support file used by common tasks
+  which tracks the currently set appraisal or sets a default.</li>
+<li><strong><code>Appraisals</code>:</strong>
+  Specifies different gemfiles for different testing environments.</li>
+<li><strong><code>Gemfile</code>:</strong>
+  Specifies common development dependencies.</li>
+<li><strong><code>Rakefile</code>:</strong>
+  Contains tasks for running tests and publishing the gem.</li>
+<li><strong><code>super_diff.gemspec</code>:</strong>
+  Standard configuration file for the gem,
+  containing the name, description, and production dependencies.</li>
+</ul>
+<h2 id="linting">Linting</h2>
+<p>The following files are used for linting and formatting the codebase:</p>
+<ul>
+<li><strong><code>.husky/</code>:</strong>
+  Contains Git hooks which are installed via <code>husky install</code>.</li>
+<li><strong><code>.yarn/</code>:</strong>
+  Holds the executable and plugins for <a href="https://yarnpkg.com/">Yarn</a>,
+  a package manager for JavaScript.</li>
+<li><strong><code>.prettierignore</code>:</strong>
+  Excludes files from being formatted with <a href="https://prettier.io/">Prettier</a>.</li>
+<li><strong><code>.prettierrc.json</code>:</strong>
+  Configures Prettier.</li>
+<li><strong><code>.nvmrc</code>:</strong>
+  Specifies the Node version required to run Prettier.
+  Used by tools like NVM and <code>asdf</code>.</li>
+<li><strong><code>.yarnrc.yml</code>:</strong>
+  Configures Yarn.</li>
+<li><strong><code>package.json</code>:</strong>
+  Specifies JavaScript dependencies needed to run Prettier.</li>
+</ul>
+<h2 id="documentation">Documentation</h2>
+<p>The following files are used for documentation purposes:</p>
+<ul>
+<li><strong><code>docs/</code>:</strong>
+  Contains the documentation that you&rsquo;re reading now!</li>
+<li><strong><code>docs-support/</code>:</strong>
+  Other files which are used for documentation purposes,
+  but are not included in any Markdown files.
+  Currently only used to generate the screenshots in the README.</li>
+<li><strong><code>.python-version</code>:</strong>
+  Specifies the Python version to use for documentation generation.
+  Used by tools like <code>pyenv</code> and <code>asdf</code>.</li>
+<li><strong><code>mkdocs.yml</code>:</strong>
+  The configuration file for <a href="https://www.mkdocs.org/">Mkdocs</a>,
+  which reads the Markdown files in <code>docs/</code> and generates an HTML version.</li>
+<li><strong><code>pyproject.toml</code>:</strong>
+  Specifies Python dependencies needed to run Mkdocs.</li>
+<li><strong><code>README.md</code>:</strong>
+  The &ldquo;front of house&rdquo; for this repository;
+  summarizes the project&rsquo;s purpose and goals and how to use it.</li>
+<li><strong><code>CHANGELOG.md</code>:</strong>
+  Describes the changes that appeared in each release over time.</li>
+<li><strong><code>LICENSE</code>:</strong>
+  The full text of the license granted to users of this gem.</li>
+</ul>
+<h2 id="ci">CI</h2>
+<p>The following files are used for CI and other automated tasks on GitHub:</p>
+<ul>
+<li><strong><code>.github/workflows/</code>:</strong>
+  Describes tasks to run on GitHub when events occur,
+  such as automatically running tests on pull requests.</li>
+<li><strong><code>scripts/collect-release-info.rb</code>:</strong>
+  A script which is used in one of the GitHub workflows
+  to determine whether a commit refers to a new release
+  and, if so, determine the release version.</li>
+</ul>
+<h2 id="miscellaneous">Miscellaneous</h2>
+<p>These files don&rsquo;t belong in a particular category:</p>
+<ul>
+<li><strong><code>.editorconfig</code>:</strong>
+  Keeps basic editor-specific configuration,
+  such as how many spaces to use, line length, etc.</li>
+<li><strong><code>.gitattributes</code>:</strong>
+  Used by Git and GitHub
+  to configure presentation of certain types of files in diffs.</li>
+<li><strong><code>.gitignore</code>:</strong>
+  Specifies files that shouldn&rsquo;t show up in the repository.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©️ Elliot Winkler.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+      
+    
+  </body>
+</html>
