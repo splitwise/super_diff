@@ -17,12 +17,14 @@ omitted for 0.12.0 are included below as well.
   [#233](https://github.com/mcmire/super_diff/pull/233),
   [#245](https://github.com/mcmire/super_diff/pull/245))
   - The `docs/` directory now holds information on contributing, which was
-    previously located at `CONTRIBUTING.md`.
-  - However, `docs/` also now includes a breakdown of how this project is
-    structured and how the diffing engine works, to aid people who want to
-    submit changes to this project.
-  - Starting with this release, the files in `docs/` will be used to publish a
-    docsite, which can be viewed at <https://mcmire.github.io/super_diff>.
+    previously located at `CONTRIBUTING.md`, as well as information on using the
+    gem, which was previously located in `README.md`.
+  - However, crucially, `docs/` also now includes a breakdown of how this
+    project is structured and how the diffing engine works. This is hopefully
+    helpful to people who want to submit changes to this project.
+  - Additionally, starting with this release, the Markdown files in `docs/` will
+    published to a docsite, which can be viewed at
+    <https://mcmire.github.io/super_diff>.
   - Publishing of the docsite is automated: when a new release is issued, a new
     version of the docsite will be published for that release under
     <https://mcmire.github.io/super_diff/releases/RELEASE_VERSION>.
