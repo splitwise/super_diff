@@ -1,6 +1,119 @@
 # Changelog
 
-## 0.12.0 - 2024-04-24
+## 0.12.1 - 2024-04-26
+
+Note that since 0.12.0 has been yanked, changes for this version are listed
+alongside changes for 0.12.1. Also, changelog entries that were mistakenly
+omitted for 0.12.0 are included below as well.
+
+### Features
+
+- Create a proper space for docs, add info on architecture, and deploy docs
+  to a docsite automatically.
+  ([#224](https://github.com/mcmire/super_diff/pull/224),
+  [#225](https://github.com/mcmire/super_diff/pull/225),
+  [#226](https://github.com/mcmire/super_diff/pull/226),
+  [#232](https://github.com/mcmire/super_diff/pull/232),
+  [#233](https://github.com/mcmire/super_diff/pull/233),
+  [#245](https://github.com/mcmire/super_diff/pull/245))
+  - The `docs/` directory now holds information on contributing, which was
+    previously located at `CONTRIBUTING.md`, as well as information on using the
+    gem, which was previously located in `README.md`.
+  - However, crucially, `docs/` also now includes a breakdown of how this
+    project is structured and how the diffing engine works. This is hopefully
+    helpful to people who want to submit changes to this project.
+  - Additionally, starting with this release, the Markdown files in `docs/` will
+    published to a docsite, which can be viewed at
+    <https://mcmire.github.io/super_diff>.
+  - Publishing of the docsite is automated: when a new release is issued, a new
+    version of the docsite will be published for that release under
+    <https://mcmire.github.io/super_diff/releases/RELEASE_VERSION>.
+    (<https://mcmire.github.io/super_diff> will always redirect to the latest
+    release.)
+  - If any file in `docs/` is modified in a pull request, a new version of the
+    docsite will also be automatically deployed just for that pull request,
+    located under
+    <https://mcmire.github.io/super_diff/branches/BRANCH_NAME/COMMIT_ID>.
+- Support the use of primary keys other than `id` when diffing ActiveRecord
+  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
+
+### Bug fixes
+
+- Remove rogue `pp` statement
+  ([#242](https://github.com/mcmire/super_diff/pull/242))
+
+### Other notable changes
+
+- Reorganize codebase ([#230](https://github.com/mcmire/super_diff/pull/230))
+  - To be able to explain the architecture of this project more easily,
+    differs, inspection tree builders, operation tree builders, operation tree
+    flatteners, and operation trees for Ruby have now been relocated under a
+    `Basic` feature module, located in `lib/super_diff/basic`, which mirrors
+    `lib/super_diff/active_record`, `lib/super_diff/active_support`, and
+    `lib/super_diff/rspec`.
+  - Additionally, all of the files that were previously in `lib/super_diff` have
+    been moved to a `Core` module, and to make the file structure a little
+    flatter, `InspectionTreeBuilders` in various feature modules have been
+    removed from the `ObjectInspection` namespace.
+  - To maintain backward compatibility, all of the original constants still
+    exist, but they've been deprecated, and attempting to use them will result
+    in a warning. They will be removed in a future version.
+  - For full transparency, here is the list of renames:
+    - The following constants that were previously available under `SuperDiff`
+      are now located under `SuperDiff::Core`:
+      - `ColorizedDocumentExtensions`
+      - `Configuration`
+      - `GemVersion`
+      - `Helpers`
+      - `ImplementationChecks`
+      - `Line`
+      - `RecursionGuard`
+      - `TieredLines`
+      - `TieredLinesElider`
+      - `TieredLinesFormatter`
+    - Everything under `SuperDiff::Differs` is now under
+      `SuperDiff::Basic::Differs`
+    - All error classes under `SuperDiff::Errors` have been moved out and are
+      now directly under `SuperDiff::Core`
+    - `SuperDiff::ObjectInspection::InspectionTree` is now
+      `SuperDiff::Core::InspectionTree`
+    - Everything under `SuperDiff::ObjectInspection::InspectionTreeBuilders` is
+      now under `SuperDiff::Core::InspectionTreeBuilders`
+    - Everything under `SuperDiff::ObjectInspection::Nodes` is now under
+      `SuperDiff::Core::InspectionTreeNodes`
+    - Everything under `SuperDiff::OperationTreeBuilders` is now under
+      `SuperDiff::Basic::OperationTreeBuilders`
+    - Everything under `SuperDiff::OperationTreeFlatteners` is now under
+      `SuperDiff::Basic::OperationTreeFlatteners`
+    - Everything under `SuperDiff::OperationTrees` is now under
+      `SuperDiff::Basic::OperationTrees`
+    - Everything under `SuperDiff::Operations` has been moved out and is now
+      directly under `SuperDiff::Core`
+    - Everything under
+    - `SuperDiff::ActiveRecord::ObjectInspection::InspectionTreeBuilders` is now
+      under `SuperDiff::ActiveRecord::InspectionTreeBuilders`
+    - Everything under
+    - `SuperDiff::ActiveSupport::ObjectInspection::InspectionTreeBuilders` is
+      now under `SuperDiff::ActiveSupport::InspectionTreeBuilders`
+    - Everything under
+    - `SuperDiff::RSpec::ObjectInspection::InspectionTreeBuilders` is now under
+      `SuperDiff::RSpec::InspectionTreeBuilders`
+
+### Contributors
+
+This release features the following contributors:
+
+- [@benk-gc](https://github.com/benk-gc)
+- [@sidane](https://github.com/sidane)
+
+Thank you!
+
+## 0.12.0 - 2024-04-24 [YANKED]
+
+> [!WARNING]
+> This release has been yanked, as it included changes that weren't properly
+> logged in the changelog. This release wasn't ideal as it contained some
+> leftover print statements, anyway.
 
 ### Features
 
