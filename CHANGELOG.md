@@ -8,6 +8,40 @@ omitted for 0.12.0 are included below as well.
 
 ### Features
 
+- Create a proper space for docs, add info on architecture, and deploy docs
+  to a docsite automatically.
+  ([#224](https://github.com/mcmire/super_diff/pull/224),
+  [#225](https://github.com/mcmire/super_diff/pull/225),
+  [#226](https://github.com/mcmire/super_diff/pull/226),
+  [#232](https://github.com/mcmire/super_diff/pull/232),
+  [#233](https://github.com/mcmire/super_diff/pull/233),
+  [#245](https://github.com/mcmire/super_diff/pull/245))
+  - The `docs/` directory now holds information on contributing, which was
+    previously located at `CONTRIBUTING.md`.
+  - However, `docs/` also now includes a breakdown of how this project is
+    structured and how the diffing engine works, to aid people who want to
+    submit changes to this project.
+  - Starting with this release, the files in `docs/` will be used to publish a
+    docsite, which can be viewed at <https://mcmire.github.io/super_diff>.
+  - Publishing of the docsite is automated: when a new release is issued, a new
+    version of the docsite will be published for that release under
+    <https://mcmire.github.io/super_diff/releases/RELEASE_VERSION>.
+    (<https://mcmire.github.io/super_diff> will always redirect to the latest
+    release.)
+  - If any file in `docs/` is modified in a pull request, a new version of the
+    docsite will also be automatically deployed just for that pull request,
+    located under
+    <https://mcmire.github.io/super_diff/branches/BRANCH_NAME/COMMIT_ID>.
+- Support the use of primary keys other than `id` when diffing ActiveRecord
+  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
+
+### Bug fixes
+
+- Remove rogue `pp` statement
+  ([#242](https://github.com/mcmire/super_diff/pull/242))
+
+### Other notable changes
+
 - Reorganize codebase ([#230](https://github.com/mcmire/super_diff/pull/230))
   - To be able to explain the architecture of this project more easily,
     differs, inspection tree builders, operation tree builders, operation tree
@@ -62,36 +96,6 @@ omitted for 0.12.0 are included below as well.
     - Everything under
     - `SuperDiff::RSpec::ObjectInspection::InspectionTreeBuilders` is now under
       `SuperDiff::RSpec::InspectionTreeBuilders`
-- Create a proper space for docs, add info on architecture, and deploy docs
-  to a docsite automatically.
-  ([#224](https://github.com/mcmire/super_diff/pull/224),
-  [#225](https://github.com/mcmire/super_diff/pull/225),
-  [#226](https://github.com/mcmire/super_diff/pull/226),
-  [#232](https://github.com/mcmire/super_diff/pull/232),
-  [#233](https://github.com/mcmire/super_diff/pull/233),
-  [#245](https://github.com/mcmire/super_diff/pull/245))
-  - The `docs/` directory now holds information on contributing, which was
-    previously located at `CONTRIBUTING.md`.
-  - However, `docs/` also now includes a breakdown of how this project is
-    structured and how the diffing engine works, to aid people who want to
-    submit changes to this project.
-  - Starting with this release, the files in `docs/` will be used to publish a
-    docsite, which can be viewed at <https://mcmire.github.io/super_diff>.
-  - Publishing of the docsite is automated: when a new release is issued, a new
-    version of the docsite will be published for that release under
-    <https://mcmire.github.io/super_diff/releases/RELEASE_VERSION>.
-    (<https://mcmire.github.io/super_diff> will always redirect to the latest
-    release.)
-  - If any file in `docs/` is modified in a pull request, a new version of the
-    docsite will also be automatically deployed just for that pull request,
-    located under
-    <https://mcmire.github.io/super_diff/branches/BRANCH_NAME/COMMIT_ID>.
-- Support the use of primary keys other than `id` when diffing ActiveRecord
-  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
-
-### Bug fixes
-
-- Remove rogue `pp` ([#242](https://github.com/mcmire/super_diff/pull/242))
 
 ### Contributors
 
