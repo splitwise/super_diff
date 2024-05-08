@@ -79,7 +79,11 @@ module SuperDiff
     end
 
     def self.aliased_matcher?(value)
-      value.is_a?(::RSpec::Matchers::AliasedMatcher)
+      if SuperDiff::RSpec.rspec_version < "3.13.0"
+        value.is_a?(::RSpec::Matchers::AliasedMatcher)
+      else # See Github issue #250.
+        value.respond_to?(:base_matcher)
+      end
     end
 
     def self.rspec_version
