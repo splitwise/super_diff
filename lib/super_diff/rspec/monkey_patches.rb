@@ -309,73 +309,146 @@ module RSpec
   end
 
   module Matchers
-    class ExpectedsForMultipleDiffs
-      SuperDiff.insert_singleton_overrides(self) do
-        # Add a key for different sides
-        def from(expected)
-          return expected if self === expected
+    if SuperDiff::RSpec.rspec_version < "3.13.0"
+      class ExpectedsForMultipleDiffs
+        SuperDiff.insert_singleton_overrides(self) do
+          # Add a key for different sides
+          def from(expected)
+            return expected if self === expected
 
-          text = colorizer.wrap("Diff:", SuperDiff.configuration.header_color)
+            text = colorizer.wrap("Diff:", SuperDiff.configuration.header_color)
 
-          if SuperDiff.configuration.key_enabled?
-            text +=
-              "\n\n" +
-                colorizer.wrap(
-                  "┌ (Key) ──────────────────────────┐",
-                  SuperDiff.configuration.border_color
-                ) + "\n" +
-                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-                colorizer.wrap(
-                  "‹-› in expected, not in actual",
-                  SuperDiff.configuration.expected_color
-                ) +
-                colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-                "\n" +
-                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-                colorizer.wrap(
-                  "‹+› in actual, not in expected",
-                  SuperDiff.configuration.actual_color
-                ) +
-                colorizer.wrap("  │", SuperDiff.configuration.border_color) +
-                "\n" +
-                colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
-                "‹ › in both expected and actual" +
-                colorizer.wrap(" │", SuperDiff.configuration.border_color) +
-                "\n" +
-                colorizer.wrap(
-                  "└─────────────────────────────────┘",
-                  SuperDiff.configuration.border_color
-                )
+            if SuperDiff.configuration.key_enabled?
+              text +=
+                "\n\n" +
+                  colorizer.wrap(
+                    "┌ (Key) ──────────────────────────┐",
+                    SuperDiff.configuration.border_color
+                  ) + "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  colorizer.wrap(
+                    "‹-› in expected, not in actual",
+                    SuperDiff.configuration.expected_color
+                  ) +
+                  colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  colorizer.wrap(
+                    "‹+› in actual, not in expected",
+                    SuperDiff.configuration.actual_color
+                  ) +
+                  colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  "‹ › in both expected and actual" +
+                  colorizer.wrap(" │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap(
+                    "└─────────────────────────────────┘",
+                    SuperDiff.configuration.border_color
+                  )
+            end
+
+            new([[expected, text]])
           end
 
-          new([[expected, text]])
+          def colorizer
+            RSpec::Core::Formatters::ConsoleCodes
+          end
         end
 
-        def colorizer
-          RSpec::Core::Formatters::ConsoleCodes
+        SuperDiff.insert_overrides(self) do
+          # Add an extra line break
+          def message_with_diff(message, differ, actual)
+            diff = diffs(differ, actual)
+
+            diff.empty? ? message : "#{message.rstrip}\n\n#{diff}"
+          end
+
+          private
+
+          # Add extra line breaks in between diffs, and colorize the word "Diff"
+          def diffs(differ, actual)
+            @expected_list
+              .map do |(expected, diff_label)|
+                diff = differ.diff(actual, expected)
+                next if diff.strip.empty?
+                diff_label + diff
+              end
+              .compact
+              .join("\n\n")
+          end
         end
       end
+    else
+      class MultiMatcherDiff
+        SuperDiff.insert_singleton_overrides(self) do
+          # Add a key for different sides
+          def from(expected, actual)
+            return expected if self === expected
 
-      SuperDiff.insert_overrides(self) do
-        # Add an extra line break
-        def message_with_diff(message, differ, actual)
-          diff = diffs(differ, actual)
+            text = colorizer.wrap("Diff:", SuperDiff.configuration.header_color)
 
-          diff.empty? ? message : "#{message.rstrip}\n\n#{diff}"
+            if SuperDiff.configuration.key_enabled?
+              text +=
+                "\n\n" +
+                  colorizer.wrap(
+                    "┌ (Key) ──────────────────────────┐",
+                    SuperDiff.configuration.border_color
+                  ) + "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  colorizer.wrap(
+                    "‹-› in expected, not in actual",
+                    SuperDiff.configuration.expected_color
+                  ) +
+                  colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  colorizer.wrap(
+                    "‹+› in actual, not in expected",
+                    SuperDiff.configuration.actual_color
+                  ) +
+                  colorizer.wrap("  │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap("│ ", SuperDiff.configuration.border_color) +
+                  "‹ › in both expected and actual" +
+                  colorizer.wrap(" │", SuperDiff.configuration.border_color) +
+                  "\n" +
+                  colorizer.wrap(
+                    "└─────────────────────────────────┘",
+                    SuperDiff.configuration.border_color
+                  )
+            end
+
+            new([[expected, text, actual]])
+          end
+
+          def colorizer
+            RSpec::Core::Formatters::ConsoleCodes
+          end
         end
 
-        private
+        SuperDiff.insert_overrides(self) do
+          # Add an extra line break
+          def message_with_diff(message, differ)
+            diff = diffs(differ)
 
-        # Add extra line breaks in between diffs, and colorize the word "Diff"
-        def diffs(differ, actual)
-          @expected_list
-            .map do |(expected, diff_label)|
-              diff = differ.diff(actual, expected)
-              next if diff.strip.empty?
-              diff_label + diff
-            end
-            .compact
-            .join("\n\n")
+            diff.empty? ? message : "#{message.rstrip}\n\n#{diff}"
+          end
+
+          private
+
+          # Add extra line breaks in between diffs, and colorize the word "Diff"
+          def diffs(differ)
+            @expected_list
+              .map do |(expected, diff_label, actual)|
+                diff = differ.diff(actual, expected)
+                next if diff.strip.empty?
+                diff_label + diff
+              end
+              .compact
+              .join("\n\n")
+          end
         end
       end
     end
