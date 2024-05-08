@@ -50,11 +50,25 @@ appraisals = {
       gem "rspec-support", "3.12.0"
 
       gem "rspec-rails" if with_rails
+    end,
+  rspec_gte_3_13:
+    proc do |with_rails|
+      version = [">= 3.13", "< 4"]
+
+      # gem "rspec", *version
+
+      gem "rspec", "3.13.0"
+      gem "rspec-core", "3.13.0"
+      gem "rspec-expectations", "3.13.0"
+      gem "rspec-mocks", "3.13.0"
+      gem "rspec-support", "3.13.0"
+
+      gem "rspec-rails" if with_rails
     end
 }
 
 rails_appraisals = %i[no_rails rails_6_0 rails_6_1 rails_7_0]
-rspec_appraisals = %i[rspec_lt_3_10 rspec_gte_3_10]
+rspec_appraisals = %i[rspec_lt_3_10 rspec_gte_3_10 rspec_gte_3_13]
 
 rails_appraisals.each do |rails_appraisal|
   rspec_appraisals.each do |rspec_appraisal|
