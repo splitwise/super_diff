@@ -8,6 +8,11 @@
 [issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
 [issuehunt]: https://issuehunt.io/r/mcmire/super_diff
 
+> [!IMPORTANT]
+> As of July 7, 2024, I am no longer maintaining this project.
+> See [this announcement](https://github.com/mcmire/super_diff/issues/256) for
+> more information.
+
 **SuperDiff** is a Ruby gem
 which is designed to display the differences between two objects of any type
 in a familiar and intelligent fashion.
