@@ -168,7 +168,7 @@ jobs:
       - name: Build docsite
         run: poetry run mkdocs build
       - name: Save site/ for later jobs
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: site
           key: docsite-${{ github.sha }}
@@ -186,7 +186,7 @@ jobs:
         with:
           ref: gh-pages
       - name: Restore cache from previous job
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           path: site
           key: docsite-${{ github.sha }}
