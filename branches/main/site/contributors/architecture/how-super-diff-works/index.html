@@ -1,0 +1,930 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="User- and contributor-facing documentation for SuperDiff">
+      
+      
+      
+      
+        <link rel="prev" href="../how-rspec-works/">
+      
+      
+        <link rel="next" href="../structure/">
+      
+      
+      <link rel="icon" href="../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.18">
+    
+    
+      
+        <title>How SuperDiff works - SuperDiff Documentation</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.66ac8b77.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#how-superdiff-works" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="SuperDiff Documentation" class="md-header__button md-logo" aria-label="SuperDiff Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            SuperDiff Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              How SuperDiff works
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../users/" class="md-tabs__link">
+          
+  
+  User Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../" class="md-tabs__link">
+          
+  
+  Contributor Documentation
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="SuperDiff Documentation" class="md-nav__button md-logo" aria-label="SuperDiff Documentation" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    SuperDiff Documentation
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    User Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            User Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction to SuperDiff
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/getting-started/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Getting Started
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../users/customization/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Customizing SuperDiff
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Contributor Documentation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Contributor Documentation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../how-to-contribute/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How to Contribute
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../introduction/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Introduction
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../how-rspec-works/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How RSpec works
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    How SuperDiff works
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    How SuperDiff works
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#superdiffs-cast-of-characters" class="md-nav__link">
+    <span class="md-ellipsis">
+      SuperDiff's cast of characters
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-superdiff-integrates-into-rspec" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where SuperDiff integrates into RSpec
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-superdiffs-diff-engine-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      How SuperDiff's diff engine works
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../structure/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Structure
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="how-superdiff-works">How SuperDiff works</h1>
+<h2 id="superdiffs-cast-of-characters">SuperDiff&rsquo;s cast of characters</h2>
+<ul>
+<li>An <strong>inspection tree builder</strong>
+  makes use of an <strong>inspection tree</strong>
+  to generate a multi-line textual representation of an object,
+  similar to PrettyPrinter in the Ruby standard library or the AwesomePrint gem,
+  but more appropriate for showing within a diff.</li>
+<li>An <strong>operation tree builder</strong> makes a comparison between two objects
+  (the &ldquo;expected&rdquo; vs. the &ldquo;actual&rdquo;)
+  and generates an operation tree to represent the differences.</li>
+<li>An <strong>operation tree</strong> is made up of <strong>operations</strong>,
+  which designate differences in the inner parts of the two objects.
+  Those differences can be of type <em>delete</em>, <em>insert</em>, <em>change</em>, or <em>noop</em>.
+  Since objects can be nested,
+  some operations can have children operations themselves,
+  hence the tree.</li>
+<li>An <strong>operation tree flattener</strong> takes an operation tree
+  and converts them to a set of <strong>lines</strong>,
+  which will aid in generating a diff.
+  Logic is applied to determine whether to place prefixes, suffixes, or commas.
+  Each operation may in fact generate more than one line
+  because the object that is specific to the operation is run through an inspector.</li>
+<li>A <strong>diff formatter</strong> takes a set of lines
+  and spits out a textual representation in the form of a conventional diff.</li>
+<li>A <strong>differ</strong> ties everything together
+  by figuring out which operation tree builder to use for a pair of expected and actual values,
+  building an operation tree,
+  and then converting it to a diff.</li>
+</ul>
+<h2 id="where-superdiff-integrates-into-rspec">Where SuperDiff integrates into RSpec</h2>
+<p>As described in <a href="../how-rspec-works/#what-rspec-does">&ldquo;How RSpec works&rdquo;</a>,
+when an assertion in a test fails —
+which happens when a matcher whose <code>#matches?</code> method returns <code>false</code>
+is passed to <code>expect(...).to</code>,
+or when a matcher whose <code>#does_not_match?</code> method returns <code>true</code>
+is passed to <code>expect(...).not_to</code> —
+RSpec will call the <code>RSpec::Expectations::ExpectationHelper#handle_failure</code> method,
+which will call <code>RSpec::Expectations.fail_with</code>.
+This method will use <code>RSpec::Matchers::ExpectedsForMultipleDiffs</code>
+and the differ object that <code>RSpec::Expectations.differ</code> returns
+to generate a diff,
+combining it with the failure message from the matcher,
+obtained by either calling <code>failure_message</code> or <code>failure_messsage_when_negated</code>,
+and then it will bundle them both into an error object.
+RSpec&rsquo;s runner will eventually capture this error and hand it to the reporter,
+which will display it via <code>RSpec::Core::Formatters::ExceptionPresenter</code>.</p>
+<p>Given this, there are a few things that SuperDiff needs to do
+in order to integrate fully with RSpec.</p>
+<ol>
+<li>First,
+   SuperDiff needs to get RSpec to use its differ instead of its own.
+   Unfortunately, while RSpec is very configurable,
+   it does not allow its differ to be substituted,
+   so the gem needs to do some amount of patching in order to achieve this.</li>
+<li>Second,
+   the gem needs to provide intelligent diffing
+   for all kinds of built-in matchers.
+   Many matchers in RSpec are marked as non-diffable —
+   their <code>#diffable?</code> method returns <code>false</code> —
+   causing RSpec to not show a diff after the matcher&rsquo;s failure message
+   in the failure output.
+   The <code>contain_exactly</code> matcher is one such example.
+   SuperDiff turns this on —
+   but the only way to do this is via patching.</li>
+<li>Lastly,
+   SuperDiff also modifies the failure messages for RSpec&rsquo;s built-in matchers
+   so that key words belonging to the &ldquo;expected&rdquo; and &ldquo;actual&rdquo; values
+   get recolored.
+   Again, the only real way to do this is via patching.</li>
+</ol>
+<p>Here are all of the places that SuperDiff patches RSpec:</p>
+<ul>
+<li><code>RSpec::Expectations.differ</code>
+  (to use <code>SuperDiff::RSpec::Differ</code> instead of RSpec&rsquo;s own differ)</li>
+<li><code>RSpec::Expectations::ExpectationHelper#handle_failure</code>
+  (to consult the matcher for the &ldquo;expected&rdquo; and &ldquo;actual&rdquo; values,
+  under special methods <code>expected_for_diff</code> and <code>actual_for_diff</code>)</li>
+<li><code>RSpec::Core::Formatters::ConsoleCodes</code>
+  (to allow for using SuperDiff&rsquo;s colors
+  and to remove the fallback in the absence of a specified color)</li>
+<li><code>RSpec::Core::Formatters::ExceptionPresenter</code>
+  (to recolor failure output)</li>
+<li><code>RSpec::Core::SyntaxHighlighter</code>
+  (to turn off syntax highlighting for code,
+  as it interferes with the previous patches)</li>
+<li><code>RSpec::Support::ObjectFormatter</code>
+  (to use SuperDiff&rsquo;s object inspection logic)</li>
+<li><code>RSpec::Matchers::ExpectedsForMultipleDiffs</code>
+  (to add a key above the diff,
+  add spacing around the diff,
+  and colorize the word &ldquo;Diff:&rdquo;)</li>
+<li><code>RSpec::Matchers::Builtin::*</code>
+  (to reword failure messages across various matchers)</li>
+<li><code>RSpec::Matchers</code>
+  (to reset the <code>an_array_matching</code> alias for <code>match_array</code>,
+  and to ensure that <code>match_array</code> preserves behavior,
+  as it is backed by MatchArray class specific to SuperDiff)</li>
+</ul>
+<h2 id="how-superdiffs-diff-engine-works">How SuperDiff&rsquo;s diff engine works</h2>
+<p>With the internals of RSpec thoroughly explored,
+the internals of SuperDiff can finally be enumerated.</p>
+<p>Once a test fails
+and RSpec delegates to SuperDiff&rsquo;s differ,
+this sequence of events occurs:</p>
+<ol>
+<li><code>SuperDiff.diff</code> is called with a pair of values: <code>expected</code> and <code>actual</code>.
+   This method delegates to <code>SuperDiff::Core::DifferDispatcher.call</code>,
+   which looks for a differ via <code>SuperDiff.configuration</code>
+   which is suitable for the pair.
+   It does this by calling <code>.applies_to?</code> on each one,
+   passing the <code>expected</code> and <code>actual</code>;
+   the first differ for whom this method returns <code>true</code> wins.
+   (This is a common pattern throughout the codebase.)
+   In most cases, if no differs are suitable,
+   then an error is raised,
+   although this is sometimes overridden.</li>
+<li>Once a differ is found,
+   its <code>.call</code> method is called.
+   Since all differs inherit from <code>SuperDiff::Core::AbstractDiffer</code>,
+   <code>.call</code> always builds an operation tree,
+   but the type of operation tree to build
+   — or, more specifically, the operation tree builder subclass —
+   is determined by the differ itself,
+   via the <code>#operation_tree_builder_class</code> method.
+   For instance,
+   <code>SuperDiff::Basic::Differs::Array</code> uses a <code>SuperDiff::Basic::OperationTreeBuilders::Array</code>,
+   <code>SuperDiff::Basic::Differs::Hash</code> uses a <code>SuperDiff::Basic::OperationTreeBuilders::Hash</code>,
+   etc.</li>
+<li>Once the differ has an operation tree builder,
+   the differ calls <code>.call</code> on it
+   to build an operation tree.
+   Different operation tree builders do different things
+   depending on the types of objects,
+   but the end goal is to iterate over both the expected and actual values in tandem,
+   find the differences between them,
+   and represent those differences as operations.
+   An operation may be one of four types:
+   <code>:insert</code>, <code>:delete</code>, <code>:change</code>, or <code>:noop</code>.
+   In the case of collections —
+   which covers most types of values —
+   the diff is performed recursively.
+   This means that just as collections can have multiple levels,
+   so too can operation trees.</li>
+<li>Once the differ has an operation tree,
+   it then calls <code>#to_diff</code> on it.
+   This method is defined in <code>SuperDiff::Core::AbstractOperationTree</code>,
+   and it starts by first flattening the tree.</li>
+<li>This means that we need an operation tree flattener class.
+   Like differs,
+   operation trees specify which operation tree flattener they want to use
+   via the <code>operation_tree_flattener_class</code> method.</li>
+<li>Once the operation tree has a flattener class,
+   it calls <code>.call</code> on the class
+   to flatten the tree.</li>
+<li>Different types of flatteners also do different things,
+   but most of them operate on collection-based operation trees.
+   Since operation trees can have multiple level,
+   the flattening must be performed recursively.
+   The end result is a list of Line objects.</li>
+<li>Once the operation tree has been flattened,
+   then if the user has configured the gem to do so,
+   a step is performed to look for unchanged lines
+   (that is, operations of type <code>:noop</code>)
+   and <em>elide</em> them —
+   collapse them in such a way that the surrounding context is still visible.</li>
+<li>Once a set of elided lines is obtained,
+   the operation tree runs them through <code>SuperDiff::Core::TieredLinesFormatter</code>,
+   which will add the <code>-</code>s and <code>+</code>s along with splashes of color
+   to create the final format you see at the very end.</li>
+</ol>
+<p>In summary:</p>
+<pre class="mermaid"><code>graph TB
+  DifferDispatcher -- Configured differs --&gt; Differ;
+  Differ -- Operation tree builder --&gt; OperationTree[Operation tree];
+  OperationTree -- Operation tree flattener --&gt; Lines;
+  Lines -- Tiered lines elider --&gt; ElidedLines[Elided lines];
+  ElidedLines -- Tiered lines formatter --&gt; FinalDiff[Diff string];</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      ©️ Elliot Winkler.
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tabs", "navigation.tabs.sticky", "navigation.path", "toc.integrate"], "search": "../../../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.3220b9d7.min.js"></script>
+      
+    
+  </body>
+</html>
