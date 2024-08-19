@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version = SuperDiff::VERSION
   s.authors = ["Elliot Winkler"]
   s.email = ["elliot.winkler@gmail.com"]
-  s.homepage = "https://github.com/mcmire/super_diff"
+  s.homepage = "https://github.com/splitwise/super_diff"
   s.summary =
     "A better way to view differences between complex data structures in RSpec."
   s.license = "MIT"
@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
     differences between two data structures of any type.
   DESC
   s.metadata = {
-    "bug_tracker_uri" => "https://github.com/mcmire/super_diff/issues",
+    "bug_tracker_uri" => "https://github.com/splitwise/super_diff/issues",
     "changelog_uri" =>
-      "https://github.com/mcmire/super_diff/blob/main/CHANGELOG.md",
+      "https://github.com/splitwise/super_diff/blob/main/CHANGELOG.md",
     "rubygems_mfa_required" => "true",
-    "source_code_uri" => "https://github.com/mcmire/super_diff"
+    "source_code_uri" => "https://github.com/splitwise/super_diff"
   }
   s.required_ruby_version = ">= 3"
 
