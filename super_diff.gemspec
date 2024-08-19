@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     "bug_tracker_uri" => "https://github.com/mcmire/super_diff/issues",
     "changelog_uri" =>
       "https://github.com/mcmire/super_diff/blob/main/CHANGELOG.md",
+    "rubygems_mfa_required" => "true",
     "source_code_uri" => "https://github.com/mcmire/super_diff"
   }
   s.required_ruby_version = ">= 3"
