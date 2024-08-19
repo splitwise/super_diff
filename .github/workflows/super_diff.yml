@@ -233,7 +233,7 @@ jobs:
       - name: Announce publishing of docsite as a comment on the PR
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          gh pr comment "$PULL_REQUEST_NUMBER" --body ":book: A new version of the docsite has been published at: <https://mcmire.github.io/super_diff/$DOCSITE_DESTINATION_PATH>"
+          gh pr comment "$PULL_REQUEST_NUMBER" --body ":book: A new version of the docsite has been published at: <https://${GITHUB_REPOSITORY_OWNER}.github.io/super_diff/$DOCSITE_DESTINATION_PATH>"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
