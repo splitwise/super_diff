@@ -3,7 +3,7 @@ site_description: User- and contributor-facing documentation for SuperDiff
 copyright: ©️ Elliot Winkler.
 
 # NOTE: Don't do this for now as it loads the version and stars dynamically
-#repo_url: https://github.com/mcmire/super_diff
+#repo_url: https://github.com/splitwise/super_diff
 #repo_name: SuperDiff on GitHub
 
 theme:

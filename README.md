@@ -2,15 +2,13 @@
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
-[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/mcmire/super_diff/super_diff.yml?branch=master
+[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/splitwise/super_diff/super_diff.yml?branch=master
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
-[issuehunt-badge]: https://img.shields.io/badge/sponsored_through-IssueHunt-2EC28C
-[issuehunt]: https://issuehunt.io/r/mcmire/super_diff
 
 > [!IMPORTANT]
 > As of July 7, 2024, I am no longer maintaining this project.
-> See [this announcement](https://github.com/mcmire/super_diff/issues/256) for
+> See [this announcement](https://github.com/splitwise/super_diff/issues/256) for
 > more information.
 
 **SuperDiff** is a Ruby gem
@@ -107,23 +105,13 @@ and you encounter a bug or have a suggestion,
 feel free to [create an issue][issues-list].
 I'll try to respond to it as soon as I can!
 
-[issues-list]: https://github.com/mcmire/super_diff/issues
+[issues-list]: https://github.com/splitwise/super_diff/issues
 
 ## Contributing
 
 Any code contributions to improve this library are welcome!
 Please see the [contributing](./docs/contributors/index.md) document
 for more on how to do that.
-
-## Sponsoring
-
-If there's a change you want implemented, you can choose to sponsor that change!
-`super_diff` is set up on IssueHunt,
-so feel free to search for an existing issue (or make your own)
-and [add a bounty][issuehunt].
-I'll get notified right away!
-
-[issuehunt]: https://issuehunt.io/r/mcmire/super_diff
 
 ## Compatibility
 
@@ -132,7 +120,7 @@ Ruby >= 3.x,
 RSpec 3.x,
 and Rails >= 6.x.
 
-[gh-actions]: https://github.com/mcmire/super_diff/actions?query=workflow%3ASuperDiff
+[gh-actions]: https://github.com/splitwise/super_diff/actions?query=workflow%3ASuperDiff
 
 ## Inspiration/Thanks
 
@@ -147,11 +135,11 @@ I made use of or was heavily inspired by these libraries:
 
 Thank you to the authors of these libraries!
 
-[original-version]: https://github.com/mcmire/super_diff/tree/old-master
+[original-version]: https://github.com/splitwise/super_diff/tree/old-master
 [diff-lcs]: https://github.com/halostatue/diff-lcs
 [pretty-printer]: https://github.com/ruby/ruby/tree/master/lib/prettyprint.rb
 [awesome-print]: https://github.com/awesome-print/awesome_print
-[inspection-tree]: https://github.com/mcmire/super_diff/blob/master/lib/super_diff/object_inspection/inspection_tree.rb
+[inspection-tree]: https://github.com/splitwise/super_diff/blob/master/lib/super_diff/object_inspection/inspection_tree.rb
 
 ## Author/License
 

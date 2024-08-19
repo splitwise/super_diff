@@ -278,4 +278,4 @@ but also offers the greatest flexibility.
 
 More information will be added here on how to do this,
 but in the meantime,
-the best example is the [RSpec integration](https://github.com/mcmire/super_diff/blob/v0.11.0/lib/super_diff/rspec.rb#L91) in SuperDiff itself.
+the best example is the [RSpec integration](https://github.com/splitwise/super_diff/blob/v0.11.0/lib/super_diff/rspec.rb#L91) in SuperDiff itself.

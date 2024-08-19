@@ -5,7 +5,7 @@ Great! Here's how you do that.
 
 ## 1. Install dependencies
 
-First, [create a fork of the SuperDiff repo](https://github.com/mcmire/super_diff/fork)
+First, [create a fork of the SuperDiff repo](https://github.com/splitwise/super_diff/fork)
 and clone it to your computer.
 
 Next, run the following command in the resulting directory

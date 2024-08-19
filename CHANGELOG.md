@@ -10,12 +10,12 @@ omitted for 0.12.0 are included below as well.
 
 - Create a proper space for docs, add info on architecture, and deploy docs
   to a docsite automatically.
-  ([#224](https://github.com/mcmire/super_diff/pull/224),
-  [#225](https://github.com/mcmire/super_diff/pull/225),
-  [#226](https://github.com/mcmire/super_diff/pull/226),
-  [#232](https://github.com/mcmire/super_diff/pull/232),
-  [#233](https://github.com/mcmire/super_diff/pull/233),
-  [#245](https://github.com/mcmire/super_diff/pull/245))
+  ([#224](https://github.com/splitwise/super_diff/pull/224),
+  [#225](https://github.com/splitwise/super_diff/pull/225),
+  [#226](https://github.com/splitwise/super_diff/pull/226),
+  [#232](https://github.com/splitwise/super_diff/pull/232),
+  [#233](https://github.com/splitwise/super_diff/pull/233),
+  [#245](https://github.com/splitwise/super_diff/pull/245))
   - The `docs/` directory now holds information on contributing, which was
     previously located at `CONTRIBUTING.md`, as well as information on using the
     gem, which was previously located in `README.md`.
@@ -24,27 +24,27 @@ omitted for 0.12.0 are included below as well.
     helpful to people who want to submit changes to this project.
   - Additionally, starting with this release, the Markdown files in `docs/` will
     published to a docsite, which can be viewed at
-    <https://mcmire.github.io/super_diff>.
+    <https://splitwise.github.io/super_diff>.
   - Publishing of the docsite is automated: when a new release is issued, a new
     version of the docsite will be published for that release under
-    <https://mcmire.github.io/super_diff/releases/RELEASE_VERSION>.
-    (<https://mcmire.github.io/super_diff> will always redirect to the latest
+    <https://splitwise.github.io/super_diff/releases/RELEASE_VERSION>.
+    (<https://splitwise.github.io/super_diff> will always redirect to the latest
     release.)
   - If any file in `docs/` is modified in a pull request, a new version of the
     docsite will also be automatically deployed just for that pull request,
     located under
-    <https://mcmire.github.io/super_diff/branches/BRANCH_NAME/COMMIT_ID>.
+    <https://splitwise.github.io/super_diff/branches/BRANCH_NAME/COMMIT_ID>.
 - Support the use of primary keys other than `id` when diffing ActiveRecord
-  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
+  models. ([#237](https://github.com/splitwise/super_diff/pull/237))
 
 ### Bug fixes
 
 - Remove rogue `pp` statement
-  ([#242](https://github.com/mcmire/super_diff/pull/242))
+  ([#242](https://github.com/splitwise/super_diff/pull/242))
 
 ### Other notable changes
 
-- Reorganize codebase ([#230](https://github.com/mcmire/super_diff/pull/230))
+- Reorganize codebase ([#230](https://github.com/splitwise/super_diff/pull/230))
   - To be able to explain the architecture of this project more easily,
     differs, inspection tree builders, operation tree builders, operation tree
     flatteners, and operation trees for Ruby have now been relocated under a
@@ -118,7 +118,7 @@ Thank you!
 ### Features
 
 - Support the use of primary keys other than `id` when diffing ActiveRecord
-  models. ([#237](https://github.com/mcmire/super_diff/pull/237))
+  models. ([#237](https://github.com/splitwise/super_diff/pull/237))
 
 ### Contributors
 
@@ -133,7 +133,7 @@ Thank you!
 ### BREAKING CHANGES
 
 - Change InspectionTree so that it no longer `instance_eval`s the block it
-  takes. ([#210](https://github.com/mcmire/super_diff/issues/210))
+  takes. ([#210](https://github.com/splitwise/super_diff/issues/210))
   - If you have a custom InspectionTreeBuilder, you will need to change your
     `call` method so that instead of looking like this:
     ```ruby
@@ -172,28 +172,28 @@ Thank you!
 ### Features
 
 - Add inspector for RSpec describable matchers not otherwise handled by an
-  explicit inspector. ([#203](https://github.com/mcmire/super_diff/issues/203),
-  [#219](https://github.com/mcmire/super_diff/issues/219))
+  explicit inspector. ([#203](https://github.com/splitwise/super_diff/issues/203),
+  [#219](https://github.com/splitwise/super_diff/issues/219))
 - Support diffing date-like objects, e.g. `Date` vs. `Date` or `Date` vs.
-  `DateTime`. ([#198](https://github.com/mcmire/super_diff/issues/198))
+  `DateTime`. ([#198](https://github.com/splitwise/super_diff/issues/198))
 
 ### Fixes
 
 - Add inspector for ActiveSupport::OrderedOptions.
-  ([#199](https://github.com/mcmire/super_diff/issues/199))
+  ([#199](https://github.com/splitwise/super_diff/issues/199))
   - This prevents the gem from raising an error when the expected value is a
     Rails response object, e.g. `expect(response).to be_forbidden`.
 - Include `extra_failure_lines` from RSpec metadata in failure output.
-  ([#208](https://github.com/mcmire/super_diff/issues/208))
+  ([#208](https://github.com/splitwise/super_diff/issues/208))
 - Fix `match_array` so that it truly accepts a non-array argument, to match
-  RSpec behavior. ([#213](https://github.com/mcmire/super_diff/issues/213))
+  RSpec behavior. ([#213](https://github.com/splitwise/super_diff/issues/213))
 - Fix `raise_error` so that it accepts an RSpec matcher argument.
-  ([#214](https://github.com/mcmire/super_diff/issues/214))
+  ([#214](https://github.com/splitwise/super_diff/issues/214))
 
 ### Improvements
 
 - Improve wording in `raise_error` failure messages.
-  ([#218](https://github.com/mcmire/super_diff/issues/218))
+  ([#218](https://github.com/splitwise/super_diff/issues/218))
 
 ### Contributors
 
@@ -226,12 +226,12 @@ Thank you!
   that the ActiveRecord-specific integration isn't loaded if ActiveRecord isn't
   available. ([#188])
 
-[#187]: https://github.com/mcmire/super_diff/pull/187
-[#190]: https://github.com/mcmire/super_diff/pull/190
-[#156]: https://github.com/mcmire/super_diff/pull/156
-[#166]: https://github.com/mcmire/super_diff/pull/166
-[#138]: https://github.com/mcmire/super_diff/pull/138
-[#188]: https://github.com/mcmire/super_diff/pull/188
+[#187]: https://github.com/splitwise/super_diff/pull/187
+[#190]: https://github.com/splitwise/super_diff/pull/190
+[#156]: https://github.com/splitwise/super_diff/pull/156
+[#166]: https://github.com/splitwise/super_diff/pull/166
+[#138]: https://github.com/splitwise/super_diff/pull/138
+[#188]: https://github.com/splitwise/super_diff/pull/188
 
 ## 0.9.0 - 2022-04-25
 
@@ -245,8 +245,8 @@ Thank you!
 - Make `SuperDiff::VERSION` accessible without requiring `super_diff/version`
   ([#147])
 
-[#146]: https://github.com/mcmire/super_diff/pull/146
-[#147]: https://github.com/mcmire/super_diff/pull/147
+[#146]: https://github.com/splitwise/super_diff/pull/146
+[#147]: https://github.com/splitwise/super_diff/pull/147
 
 ## 0.8.0 - 2021-05-14
 
@@ -298,7 +298,7 @@ Thank you!
   has a mixture of symbols and strings will be presented as though all keys are
   strings (i.e. hashrocket syntax). ([#91])
 
-[#91]: https://github.com/mcmire/super_diff/pull/91
+[#91]: https://github.com/splitwise/super_diff/pull/91
 
 ## 0.7.0 - 2021-05-07
 
@@ -311,8 +311,8 @@ Thank you!
   so that it is easy to tell the difference between two times that are extremely
   close to each other. ([#130])
 
-[#128]: https://github.com/mcmire/super_diff/pull/128
-[#130]: https://github.com/mcmire/super_diff/pull/130
+[#128]: https://github.com/splitwise/super_diff/pull/128
+[#130]: https://github.com/splitwise/super_diff/pull/130
 
 ### Fixes
 
@@ -320,7 +320,7 @@ Thank you!
   show up twice in the diff (one as a "deleted" version and another as an
   "unchanged" version). ([#129])
 
-[#129]: https://github.com/mcmire/super_diff/pull/129
+[#129]: https://github.com/splitwise/super_diff/pull/129
 
 ## 0.6.2 - 2021-04-16
 
@@ -331,8 +331,8 @@ Thank you!
 
 - Silence warnings. ([#124])
 
-[#123]: https://github.com/mcmire/super_diff/pull/123
-[#124]: https://github.com/mcmire/super_diff/pull/124
+[#123]: https://github.com/splitwise/super_diff/pull/123
+[#124]: https://github.com/splitwise/super_diff/pull/124
 
 ## 0.6.1 - 2021-02-10
 
@@ -341,7 +341,7 @@ Thank you!
 - Fix compatibility issues with newer versions of `rspec-rails` which prevented
   the gem from being loaded. ([#121])
 
-[#121]: https://github.com/mcmire/super_diff/pull/121
+[#121]: https://github.com/splitwise/super_diff/pull/121
 
 ## 0.6.0 - 2021-02-07
 
@@ -363,9 +363,9 @@ Thank you!
 
 - Ruby 3.0 is now supported. ([#118])
 
-[#107]: https://github.com/mcmire/super_diff/pull/107
-[042e8ec]: https://github.com/mcmire/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
-[#118]: https://github.com/mcmire/super_diff/pull/118
+[#107]: https://github.com/splitwise/super_diff/pull/107
+[042e8ec]: https://github.com/splitwise/super_diff/commit/042e8ecda282cd8a3d436b3bf2c0aded76187db2
+[#118]: https://github.com/splitwise/super_diff/pull/118
 
 ### Fixes
 
@@ -374,8 +374,8 @@ Thank you!
   so that if there are extra items in the actual value, they are shown with
   `+`s. ([#106])
 
-[#114]: https://github.com/mcmire/super_diff/pull/114
-[#106]: https://github.com/mcmire/super_diff/pull/106
+[#114]: https://github.com/splitwise/super_diff/pull/114
+[#106]: https://github.com/splitwise/super_diff/pull/106
 
 ### Other notable changes
 
@@ -388,14 +388,14 @@ Thank you!
 
 - Fix `match_array` so that it works when given a string. ([#110])
 
-[#110]: https://github.com/mcmire/super_diff/pull/110
+[#110]: https://github.com/splitwise/super_diff/pull/110
 
 ### Improvements
 
 - Include the license in the gemspec so that it is visible via tools such as
   `license_finder`. ([#111])
 
-[#111]: https://github.com/mcmire/super_diff/pull/111
+[#111]: https://github.com/splitwise/super_diff/pull/111
 
 ## 0.5.2 - 2020-09-04
 
@@ -403,7 +403,7 @@ Thank you!
 
 - Add missing standard library requires. ([#98])
 
-[#98]: https://github.com/mcmire/super_diff/pull/98
+[#98]: https://github.com/splitwise/super_diff/pull/98
 
 ### Other notable changes
 
@@ -416,7 +416,7 @@ Thank you!
 - Add dependency on `attr_extras` back as it was mistakenly removed in the
   previous release. ([#92])
 
-[#92]: https://github.com/mcmire/super_diff/pull/92
+[#92]: https://github.com/splitwise/super_diff/pull/92
 
 ## 0.5.0 - 2020-06-18
 
@@ -451,15 +451,15 @@ Thank you!
 
   ([#84], [#85])
 
-[#84]: https://github.com/mcmire/super_diff/pull/84
-[#85]: https://github.com/mcmire/super_diff/pull/85
+[#84]: https://github.com/splitwise/super_diff/pull/84
+[#85]: https://github.com/splitwise/super_diff/pull/85
 
 ### Features
 
 - Add inspectors for `an_instance_of`, `a_kind_of`, and `a_value_within`.
   ([#74])
 
-[#74]: https://github.com/mcmire/super_diff/pull/74
+[#74]: https://github.com/splitwise/super_diff/pull/74
 
 ### Fixes
 
@@ -467,8 +467,8 @@ Thank you!
 - Fix diff produced by (incorrect) usage of `have_attributes` with a hash as the
   actual value. ([#76])
 
-[#71]: https://github.com/mcmire/super_diff/pull/71
-[#76]: https://github.com/mcmire/super_diff/pull/76
+[#71]: https://github.com/splitwise/super_diff/pull/71
+[#76]: https://github.com/splitwise/super_diff/pull/76
 
 ### Improvements
 
@@ -493,8 +493,8 @@ Thank you!
 - Update diff between two hashes so that original ordering of keys is preserved.
   ([#81])
 
-[#80]: https://github.com/mcmire/super_diff/pull/81
-[#81]: https://github.com/mcmire/super_diff/pull/81
+[#80]: https://github.com/splitwise/super_diff/pull/81
+[#81]: https://github.com/splitwise/super_diff/pull/81
 
 ## 0.4.2 - 2020-02-11
 
@@ -502,7 +502,7 @@ Thank you!
 
 - Fix `raise_error` when used with a regex. ([#72])
 
-[#72]: https://github.com/mcmire/super_diff/pull/72
+[#72]: https://github.com/splitwise/super_diff/pull/72
 
 ## 0.4.1 - 2020-01-30
 
@@ -510,7 +510,7 @@ Thank you!
 
 - Fix multiple exception failures so that they work again. ([#66])
 
-[#66]: https://github.com/mcmire/super_diff/pull/66
+[#66]: https://github.com/splitwise/super_diff/pull/66
 
 ## 0.4.0 - 2020-01-16
 
@@ -525,7 +525,7 @@ Thank you!
 
 - Remove explicit dependency on ActiveRecord. ([#64])
 
-[#64]: https://github.com/mcmire/super_diff/pull/64
+[#64]: https://github.com/splitwise/super_diff/pull/64
 
 ## 0.3.0 - 2019-12-17
 
@@ -534,8 +534,8 @@ Thank you!
 - Add useful diff representation of Time-like values. ([#61])
 - Fix tests so they run even with a global `--color` setting. ([#62])
 
-[#61]: https://github.com/mcmire/super_diff/pull/61
-[#62]: https://github.com/mcmire/super_diff/pull/62
+[#61]: https://github.com/splitwise/super_diff/pull/61
+[#62]: https://github.com/splitwise/super_diff/pull/62
 
 ## 0.2.0 - 2019-10-04
 
