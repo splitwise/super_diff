@@ -2,7 +2,7 @@
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
-[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/splitwise/super_diff/super_diff.yml?branch=master
+[gh-actions-badge]: https://img.shields.io/github/actions/workflow/status/splitwise/super_diff/super_diff.yml?branch=main
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
 
@@ -139,7 +139,7 @@ Thank you to the authors of these libraries!
 [diff-lcs]: https://github.com/halostatue/diff-lcs
 [pretty-printer]: https://github.com/ruby/ruby/tree/master/lib/prettyprint.rb
 [awesome-print]: https://github.com/awesome-print/awesome_print
-[inspection-tree]: https://github.com/splitwise/super_diff/blob/master/lib/super_diff/object_inspection/inspection_tree.rb
+[inspection-tree]: https://github.com/splitwise/super_diff/blob/main/lib/super_diff/object_inspection/inspection_tree.rb
 
 ## Author/License
 
