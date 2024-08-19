@@ -1,4 +1,4 @@
-# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][gh-actions-badge]][gh-actions] ![Downloads][downloads-badge] [![IssueHunt][issuehunt-badge]][issuehunt]
+# SuperDiff [![Gem Version][version-badge]][rubygems] [![Build Status][gh-actions-badge]][gh-actions] ![Downloads][downloads-badge]
 
 [version-badge]: http://img.shields.io/gem/v/super_diff.svg
 [rubygems]: http://rubygems.org/gems/super_diff
