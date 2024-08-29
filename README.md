@@ -6,11 +6,6 @@
 [downloads-badge]: http://img.shields.io/gem/dtv/super_diff.svg
 [hound]: https://houndci.com
 
-> [!IMPORTANT]
-> As of July 7, 2024, I am no longer maintaining this project.
-> See [this announcement](https://github.com/splitwise/super_diff/issues/256) for
-> more information.
-
 **SuperDiff** is a Ruby gem
 which is designed to display the differences between two objects of any type
 in a familiar and intelligent fashion.
