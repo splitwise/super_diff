@@ -217,6 +217,7 @@ jobs:
           DOCSITE_RELEASE_VERSION: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_RELEASE_VERSION }}
       - name: Copy site/ to ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
         run: |
+          rm -rf "$DOCSITE_DESTINATION_PATH"
           mkdir -p "$(dirname "$DOCSITE_DESTINATION_PATH")"
           mv site "$DOCSITE_DESTINATION_PATH"
         env:
