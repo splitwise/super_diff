@@ -1,8 +1,8 @@
 .yarn/cache
 .yarn/releases
+CODE_OF_CONDUCT.md
 gemfiles
 site
-tea.yaml
 tmp
 vendor/bundle
 yarn.lock
