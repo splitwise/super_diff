@@ -2,7 +2,7 @@
 name = "super-diff"
 version = "0.0.0"
 description = "A more helpful way to view differences between complex data structures in RSpec"
-authors = ["Elliot Winkler <elliot.winkler@gmail.com>"]
+authors = ["Elliot Winkler <elliot.winkler@gmail.com>", "Splitwise, Inc. <oss-community@splitwise.com>"]
 license = "MIT"
 readme = "README.md"
 

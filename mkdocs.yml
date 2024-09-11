@@ -1,6 +1,6 @@
 site_name: SuperDiff Documentation
 site_description: User- and contributor-facing documentation for SuperDiff
-copyright: ©️ Elliot Winkler.
+copyright: ©️ Elliot Winkler; Splitwise, Inc.
 
 # NOTE: Don't do this for now as it loads the version and stars dynamically
 #repo_url: https://github.com/splitwise/super_diff

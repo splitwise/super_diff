@@ -3,8 +3,8 @@ require File.expand_path("lib/super_diff/version", __dir__)
 Gem::Specification.new do |s|
   s.name = "super_diff"
   s.version = SuperDiff::VERSION
-  s.authors = ["Elliot Winkler"]
-  s.email = ["elliot.winkler@gmail.com"]
+  s.authors = ["Elliot Winkler", "Splitwise, Inc."]
+  s.email = ["oss-community@splitwise.com"]
   s.homepage = "https://github.com/splitwise/super_diff"
   s.summary =
     "A better way to view differences between complex data structures in RSpec."

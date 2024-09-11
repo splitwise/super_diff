@@ -138,5 +138,5 @@ Thank you to the authors of these libraries!
 
 ## Author/License
 
-SuperDiff was created and is maintained by Elliot Winkler.
+SuperDiff was created by Elliot Winkler and is maintained by Splitwise, Inc.
 It is released under the [MIT license](LICENSE).
