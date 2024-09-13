@@ -34,7 +34,8 @@ module SuperDiff
         OperationTreeBuilders::Hash,
         OperationTreeBuilders::TimeLike,
         OperationTreeBuilders::DateLike,
-        OperationTreeBuilders::CustomObject
+        OperationTreeBuilders::CustomObject,
+        OperationTreeBuilders::DataObject
       )
 
       config.add_extra_operation_tree_classes(
