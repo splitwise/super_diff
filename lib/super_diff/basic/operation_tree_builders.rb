@@ -2,10 +2,13 @@ module SuperDiff
   module Basic
     module OperationTreeBuilders
       autoload :Array, "super_diff/basic/operation_tree_builders/array"
-      autoload :DataObject, "super_diff/basic/operation_tree_builders/data_object"
       autoload(
         :CustomObject,
         "super_diff/basic/operation_tree_builders/custom_object"
+      )
+      autoload(
+        :DataObject,
+        "super_diff/basic/operation_tree_builders/data_object"
       )
       autoload(
         :DefaultObject,

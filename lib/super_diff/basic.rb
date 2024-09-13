@@ -26,6 +26,7 @@ module SuperDiff
         InspectionTreeBuilders::Primitive,
         InspectionTreeBuilders::TimeLike,
         InspectionTreeBuilders::DateLike,
+        InspectionTreeBuilders::DataObject,
         InspectionTreeBuilders::DefaultObject
       )
 
