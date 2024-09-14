@@ -1,0 +1,20 @@
+.md-typeset h1 {
+  font-size: 2em;
+}
+
+.md-typeset h2 {
+  font-size: 1.7em;
+}
+
+.md-typeset h3 {
+  font-size: 1.445em;
+}
+
+.md-typeset h4 {
+  font-size: 1.23em;
+}
+
+.md-sidebar__inner > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link {
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
