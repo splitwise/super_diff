@@ -26,6 +26,7 @@ module SuperDiff
         InspectionTreeBuilders::Primitive,
         InspectionTreeBuilders::TimeLike,
         InspectionTreeBuilders::DateLike,
+        InspectionTreeBuilders::DataObject,
         InspectionTreeBuilders::DefaultObject
       )
 
@@ -34,7 +35,8 @@ module SuperDiff
         OperationTreeBuilders::Hash,
         OperationTreeBuilders::TimeLike,
         OperationTreeBuilders::DateLike,
-        OperationTreeBuilders::CustomObject
+        OperationTreeBuilders::CustomObject,
+        OperationTreeBuilders::DataObject
       )
 
       config.add_extra_operation_tree_classes(

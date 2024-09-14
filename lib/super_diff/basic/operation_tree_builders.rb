@@ -7,6 +7,10 @@ module SuperDiff
         "super_diff/basic/operation_tree_builders/custom_object"
       )
       autoload(
+        :DataObject,
+        "super_diff/basic/operation_tree_builders/data_object"
+      )
+      autoload(
         :DefaultObject,
         "super_diff/basic/operation_tree_builders/default_object"
       )
