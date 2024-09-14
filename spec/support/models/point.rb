@@ -1,5 +1,7 @@
-module SuperDiff
-  module Test
-    Point = Data.define(:x, :y)
+if defined?(Data)
+  module SuperDiff
+    module Test
+      Point = Data.define(:x, :y)
+    end
   end
 end
