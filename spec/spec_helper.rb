@@ -68,6 +68,7 @@ RSpec.configure do |config|
   unless defined?(ActiveSupport)
     config.filter_run_excluding active_support: true
   end
+  config.filter_run_excluding with_superdiff_rspec: false
 
   config.order = :random
   Kernel.srand config.seed
