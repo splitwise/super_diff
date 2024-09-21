@@ -71,12 +71,6 @@ module SuperDiff
           end
 
         options.each { |key, value| instance_variable_set("@#{key}", value) }
-
-        updated
-      end
-
-      def updated
-        SuperDiff::Csi.color_enabled = color_enabled?
       end
 
       def add_extra_diff_formatter_classes(*classes)

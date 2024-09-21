@@ -6,7 +6,7 @@ module SuperDiff
       # TODO: Simplify this
       def style(*args, color_enabled: true, **opts, &block)
         klass =
-          if color_enabled && Csi.color_enabled?
+          if color_enabled && SuperDiff.configuration.color_enabled?
             Csi::ColorizedDocument
           else
             Csi::UncolorizedDocument
