@@ -14,17 +14,17 @@ end
 The following is a list of options you can set on the configuration object
 along with their defaults:
 
-| name                   | description                                                                   | default                                                     |
-| ---------------------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------- |
-| `actual_color`         | The color used to display "actual" values in diffs                            | `:yellow`                                                   |
-| `border_color`         | The color used to display the border in diff keys                             | `:blue`                                                     |
-| `color_enabled`        | Whether to colorize output                                                    | `true` if `ENV["CI"]` or stdout is a TTY, `false` otherwise |
-| `diff_elision_enabled` | Whether to elide (remove) unchanged lines in diff                             | `false`                                                     |
-| `diff_elision_maximum` | How large a section of consecutive unchanged lines can be before being elided | `0`                                                         |
-| `elision_marker_color` | The color used to display the marker substituted for elided lines in a diff   | `:cyan`                                                     |
-| `expected_color`       | The color used to display "expected" values in diffs                          | `:magenta`                                                  |
-| `header_color`         | The color used to display the "Diff:" header in failure messages              | `:white`                                                    |
-| `key_enabled`          | Whether to show the key above diffs                                           | `true`                                                      |
+| name                   | description                                                                           | default    |
+| ---------------------- | ------------------------------------------------------------------------------------- | ---------- |
+| `actual_color`         | The color used to display "actual" values in diffs                                    | `:yellow`  |
+| `border_color`         | The color used to display the border in diff keys                                     | `:blue`    |
+| `color_enabled`        | Whether to colorize output, or `nil` to let SuperDiff decide based on the environment | `nil`      |
+| `diff_elision_enabled` | Whether to elide (remove) unchanged lines in diff                                     | `false`    |
+| `diff_elision_maximum` | How large a section of consecutive unchanged lines can be before being elided         | `0`        |
+| `elision_marker_color` | The color used to display the marker substituted for elided lines in a diff           | `:cyan`    |
+| `expected_color`       | The color used to display "expected" values in diffs                                  | `:magenta` |
+| `header_color`         | The color used to display the "Diff:" header in failure messages                      | `:white`   |
+| `key_enabled`          | Whether to show the key above diffs                                                   | `true`     |
 
 The following is a list of methods you can call on the configuration object:
 
