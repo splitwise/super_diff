@@ -23,7 +23,7 @@ module SuperDiff
       def initialize(options = {})
         @actual_color = :yellow
         @border_color = :blue
-        @color_enabled = color_enabled_by_default?
+        @color_enabled = nil
         @diff_elision_enabled = false
         @diff_elision_maximum = 0
         @elision_marker_color = :cyan
@@ -41,6 +41,8 @@ module SuperDiff
 
       def initialize_dup(original)
         super
+        @extra_diff_formatter_classes =
+          original.extra_diff_formatter_classes.dup.freeze
         @extra_differ_classes = original.extra_differ_classes.dup.freeze
         @extra_operation_tree_builder_classes =
           original.extra_operation_tree_builder_classes.dup.freeze
@@ -51,6 +53,8 @@ module SuperDiff
       end
 
       def color_enabled?
+        return color_enabled_by_default? if @color_enabled.nil?
+
         @color_enabled
       end
 
@@ -159,7 +163,7 @@ module SuperDiff
         {
           actual_color: actual_color,
           border_color: border_color,
-          color_enabled: color_enabled?,
+          color_enabled: @color_enabled,
           diff_elision_enabled: diff_elision_enabled?,
           diff_elision_maximum: diff_elision_maximum,
           elision_marker_color: elision_marker_color,
@@ -179,7 +183,13 @@ module SuperDiff
       private
 
       def color_enabled_by_default?
-        ENV["CI"] == "true" || $stdout.respond_to?(:tty?) && $stdout.tty?
+        return true if ENV["CI"] == "true"
+
+        if defined?(::SuperDiff::RSpec)
+          return ::RSpec.configuration.color_enabled?
+        end
+
+        $stdout.respond_to?(:tty?) && $stdout.tty?
       end
     end
   end
