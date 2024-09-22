@@ -3,7 +3,7 @@ module SuperDiff
     module InspectionTreeBuilders
       class Primitive < Core::AbstractInspectionTreeBuilder
         def self.applies_to?(value)
-          SuperDiff.primitive?(value) || value.is_a?(::String)
+          SuperDiff.primitive?(value)
         end
 
         def call
