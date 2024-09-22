@@ -1,11 +1,11 @@
 module SuperDiff
   module EqualityMatchers
     DEFAULTS = [
-      Primitive,
       Array,
       Hash,
       MultilineString,
       SinglelineString,
+      Primitive,
       Default
     ].freeze
   end
