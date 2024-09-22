@@ -12,24 +12,8 @@ module SuperDiff
     autoload :TwentyFourBitColor, "super_diff/csi/twenty_four_bit_color"
     autoload :UncolorizedDocument, "super_diff/csi/uncolorized_document"
 
-    class << self
-      attr_writer :color_enabled
-    end
-
     def self.reset_sequence
       ResetSequence.new
-    end
-
-    def self.color_enabled?
-      @color_enabled
-    end
-
-    def self.colorize(*args, **opts, &block)
-      if color_enabled?
-        ColorizedDocument.new(*args, **opts, &block)
-      else
-        UncolorizedDocument.new(*args, **opts, &block)
-      end
     end
 
     def self.decolorize(text)
@@ -39,21 +23,5 @@ module SuperDiff
     def self.already_colorized?(text)
       text.match?(/\e\[\d+m/)
     end
-
-    def self.inspect_colors_in(text)
-      [FourBitColor, EightBitColor, TwentyFourBitColor].reduce(
-        text
-      ) do |str, klass|
-        klass.sub_colorized_areas_in(str) do |area, color|
-          color_block = colorize("◼︎", color.to_foreground)
-
-          layer_indicator = (color.foreground? ? "(fg)" : "(bg)")
-
-          "#{color_block} #{layer_indicator} ❮#{area}❯"
-        end
-      end
-    end
-
-    self.color_enabled = false
   end
 end

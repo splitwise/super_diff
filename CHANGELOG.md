@@ -4,7 +4,13 @@
 
 ### Features
 
-- Add better support for Data object diffing. [#259](https://github.com/splitwise/super_diff/pull/224)
+- Add better support for Data object diffing. [#259](https://github.com/splitwise/super_diff/pull/259)
+- Fall back on RSpec color mode when `SuperDiff.configuration.color_enabled` is unspecified or nil. [#261](https://github.com/splitwise/super_diff/pull/261)
+
+### Breaking changes
+
+- Removed several `SuperDiff::Csi` methods. This will break any code that uses those parts of the `SuperDiff::Csi` (which is private in general).
+- `SuperDiff.configuration.color_enabled = nil` used to disable color output. It now allows SuperDiff to determine whether to colorize output based on the environment (namely RSpec color mode and whether stdout is a TTY).
 
 ## 0.12.1 - 2024-04-26
 

@@ -36,7 +36,6 @@ module SuperDiff
 
   def self.configure
     yield configuration
-    configuration.updated
   end
 
   def self.configuration
