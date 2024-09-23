@@ -1128,10 +1128,7 @@ RSpec.describe SuperDiff, type: :unit do
       context "given as_lines: false" do
         it "returns the module's name" do
           string =
-            described_class.inspect_object(
-              SuperDiff::Test,
-              as_lines: false
-            )
+            described_class.inspect_object(SuperDiff::Test, as_lines: false)
           expect(string).to eq("SuperDiff::Test")
         end
       end
