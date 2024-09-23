@@ -5,6 +5,7 @@
 ### Features
 
 - Improve inspection of Module. [#263](https://github.com/splitwise/super_diff/pull/263) by [@phorsuedzie](https://github.com/phorsuedzie)
+- Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/263)
 
 ## 0.13.0 - 2024-09-22
 

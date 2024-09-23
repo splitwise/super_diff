@@ -42,7 +42,7 @@ module SuperDiff
         attr_reader :sequence_matcher, :original_expected, :original_actual
 
         def split_into_lines(string)
-          string.scan(/.+(?:\r|\n|\r\n|\Z)/)
+          string.scan(/.*(?:\r|\n|\r\n|\Z)/)
         end
 
         def opcodes
