@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.13.0 - 2024-09-22
+
 ### Features
 
 - Add better support for Data object diffing. [#259](https://github.com/splitwise/super_diff/pull/259)
