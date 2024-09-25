@@ -113,7 +113,7 @@ module SuperDiff
 
   def self.primitive?(value)
     case value
-    when true, false, nil, Symbol, Numeric, Regexp, Class, String
+    when true, false, nil, Symbol, Numeric, Regexp, Class, Module, String
       true
     else
       false

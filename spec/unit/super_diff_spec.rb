@@ -1124,6 +1124,37 @@ RSpec.describe SuperDiff, type: :unit do
       end
     end
 
+    context "given a module" do
+      context "given as_lines: false" do
+        it "returns the module's name" do
+          string =
+            described_class.inspect_object(SuperDiff::Test, as_lines: false)
+          expect(string).to eq("SuperDiff::Test")
+        end
+      end
+
+      context "given as_lines: true" do
+        it "returns the module's name as value" do
+          tiered_lines =
+            described_class.inspect_object(
+              SuperDiff::Test,
+              as_lines: true,
+              type: :delete,
+              indentation_level: 1
+            )
+          expect(tiered_lines).to match(
+            [
+              an_object_having_attributes(
+                type: :delete,
+                indentation_level: 1,
+                value: "SuperDiff::Test"
+              )
+            ]
+          )
+        end
+      end
+    end
+
     # TODO: Add when empty
     context "given a custom object" do
       context "containing only primitive values" do
