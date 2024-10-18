@@ -14,6 +14,7 @@ module SuperDiff
         Differs::Hash,
         Differs::TimeLike,
         Differs::DateLike,
+        Differs::RangeObject,
         Differs::MultilineString,
         Differs::CustomObject,
         Differs::DefaultObject
@@ -37,6 +38,7 @@ module SuperDiff
         OperationTreeBuilders::TimeLike,
         OperationTreeBuilders::DateLike,
         OperationTreeBuilders::CustomObject,
+        OperationTreeBuilders::RangeObject,
         OperationTreeBuilders::DataObject
       )
 
