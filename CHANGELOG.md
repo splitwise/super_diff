@@ -7,6 +7,10 @@
 - Improve inspection of Module. [#263](https://github.com/splitwise/super_diff/pull/263) by [@phorsuedzie](https://github.com/phorsuedzie)
 - Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/263)
 
+### Other changes
+
+- Switch from Prettier to Rubocop. [#269](https://github.com/splitwise/super_diff/pull/269)
+
 ## 0.13.0 - 2024-09-22
 
 ### Features
