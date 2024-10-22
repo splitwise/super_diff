@@ -22,8 +22,6 @@ module SuperDiff
       )
       autoload :TimeLike, "super_diff/basic/operation_tree_builders/time_like"
       autoload :DateLike, "super_diff/basic/operation_tree_builders/date_like"
-      autoload :RangeObject,
-               "super_diff/basic/operation_tree_builders/range_object"
 
       class Main
         def self.call(*args)
