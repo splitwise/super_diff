@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class TieredLinesFormatter
@@ -29,8 +31,8 @@ module SuperDiff
       class FormattableLine
         extend AttrExtras.mixin
 
-        INDENTATION_UNIT = "  ".freeze
-        ICONS = { delete: "-", insert: "+", elision: " ", noop: " " }.freeze
+        INDENTATION_UNIT = '  '
+        ICONS = { delete: '-', insert: '+', elision: ' ', noop: ' ' }.freeze
         COLORS = {
           delete: :expected,
           insert: :actual,
@@ -41,7 +43,7 @@ module SuperDiff
         pattr_initialize :line
 
         def content
-          icon + " " + indentation + line.prefix + line.value + possible_comma
+          "#{icon} #{indentation}#{line.prefix}#{line.value}#{possible_comma}"
         end
 
         def color
@@ -69,7 +71,7 @@ module SuperDiff
         end
 
         def possible_comma
-          line.add_comma? ? "," : ""
+          line.add_comma? ? ',' : ''
         end
       end
     end

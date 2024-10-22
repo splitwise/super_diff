@@ -1,14 +1,16 @@
-require "super_diff/active_support"
+# frozen_string_literal: true
 
-require "super_diff/active_record/differs"
-require "super_diff/active_record/inspection_tree_builders"
-require "super_diff/active_record/operation_trees"
-require "super_diff/active_record/operation_tree_builders"
-require "super_diff/active_record/operation_tree_flatteners"
+require 'super_diff/active_support'
+
+require 'super_diff/active_record/differs'
+require 'super_diff/active_record/inspection_tree_builders'
+require 'super_diff/active_record/operation_trees'
+require 'super_diff/active_record/operation_tree_builders'
+require 'super_diff/active_record/operation_tree_flatteners'
 
 module SuperDiff
   module ActiveRecord
-    autoload :ObjectInspection, "super_diff/active_record/object_inspection"
+    autoload :ObjectInspection, 'super_diff/active_record/object_inspection'
 
     SuperDiff.configure do |config|
       config.prepend_extra_differ_classes(Differs::ActiveRecordRelation)
@@ -24,4 +26,4 @@ module SuperDiff
   end
 end
 
-require "super_diff/active_record/monkey_patches"
+require 'super_diff/active_record/monkey_patches'

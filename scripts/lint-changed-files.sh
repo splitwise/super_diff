@@ -5,26 +5,21 @@ get-files-to-lint() {
   local current_branch_name="$(git branch --show-current)"
 
   if [[ "$current_branch_name" == "main" ]]; then
-    git diff origin/main...HEAD --name-only --diff-filter=d
+    git diff origin/main...HEAD --name-only --diff-filter=d -- '*.rb'
   else
-    git diff main...HEAD --name-only --diff-filter=d
+    git diff main...HEAD --name-only --diff-filter=d -- '*.rb'
   fi
 
   if [[ $flag == "--include-uncommitted" ]]; then
-    git diff --name-only --diff-filter=d
+    git diff --name-only --diff-filter=d -- '*.rb'
   fi
 }
 
 main() {
-  local prettier_flag
   local include_uncommitted_flag
 
   while [[ -n "$1" ]]; do
     case "$1" in
-      --check | --write)
-        prettier_flag="$1"
-        shift
-        ;;
       --include-uncommitted)
         include_uncommitted_flag="$1"
         shift
@@ -38,11 +33,6 @@ main() {
 
   local files_to_lint="$(get-files-to-lint "$include_uncommitted_flag")"
 
-  if [[ -z "$prettier_flag" ]]; then
-    echo "ERROR: Missing --check or --write."
-    exit 1
-  fi
-
   echo "*** Checking for lint violations in changed files ***************"
   echo
 
@@ -55,7 +45,7 @@ main() {
     echo
     echo "$files_to_lint" | while IFS=$'\n' read -r line; do
       printf '%s\0' "$line"
-    done | xargs -0 yarn prettier "$prettier_flag" --ignore-unknown
+    done | xargs -0 bundle exec rubocop -a
   else
     echo "No files to lint this time."
   fi

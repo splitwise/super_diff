@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class DifferDispatcher
@@ -6,7 +8,7 @@ module SuperDiff
       method_object(
         :expected,
         :actual,
-        [:available_classes, indent_level: 0, raise_if_nothing_applies: true]
+        [:available_classes, { indent_level: 0, raise_if_nothing_applies: true }]
       )
 
       def call
@@ -15,7 +17,7 @@ module SuperDiff
         elsif raise_if_nothing_applies?
           raise NoDifferAvailableError.create(expected, actual)
         else
-          ""
+          ''
         end
       end
 

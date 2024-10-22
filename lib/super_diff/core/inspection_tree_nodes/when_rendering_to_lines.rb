@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     module InspectionTreeNodes
@@ -11,7 +13,7 @@ module SuperDiff
         end
 
         def render_to_string(*)
-          ""
+          ''
         end
 
         def render_to_lines(object, type:, indentation_level:)

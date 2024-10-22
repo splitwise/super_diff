@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module InspectionTreeBuilders
@@ -22,29 +24,29 @@ module SuperDiff
 
                 # stree-ignore
                 t3.when_rendering_to_lines do |t4|
-                    t4.add_text " {"
-                  end
+                  t4.add_text ' {'
+                end
               end
 
               # stree-ignore
               t2.when_rendering_to_string do |t3|
-                  t3.add_text " "
-                end
+                t3.add_text ' '
+              end
 
               # stree-ignore
               t2.nested do |t3|
-                  t3.insert_hash_inspection_of doubled_methods
-                end
+                t3.insert_hash_inspection_of doubled_methods
+              end
 
               t2.as_lines_when_rendering_to_lines(
                 collection_bookend: :close
               ) do |t3|
                 # stree-ignore
                 t3.when_rendering_to_lines do |t4|
-                    t4.add_text "}"
-                  end
+                  t4.add_text '}'
+                end
 
-                t3.add_text ">"
+                t3.add_text '>'
               end
             end
           end
@@ -63,26 +65,26 @@ module SuperDiff
         def inspected_class
           case object
           when ::RSpec::Mocks::InstanceVerifyingDouble
-            "InstanceDouble"
+            'InstanceDouble'
           when ::RSpec::Mocks::ClassVerifyingDouble
-            "ClassDouble"
+            'ClassDouble'
           when ::RSpec::Mocks::ObjectVerifyingDouble
-            "ObjectDouble"
+            'ObjectDouble'
           else
-            "Double"
+            'Double'
           end
         end
 
         def inspected_name
-          if object.instance_variable_get("@name")
-            object.instance_variable_get("@name").inspect
+          if object.instance_variable_get('@name')
+            object.instance_variable_get('@name').inspect
           else
-            "(anonymous)"
+            '(anonymous)'
           end
         end
 
         def doubled_methods
-          @_doubled_methods ||=
+          @doubled_methods ||=
             doubled_method_names.reduce({}) do |hash, key|
               hash.merge(key => object.public_send(key))
             end
@@ -91,7 +93,7 @@ module SuperDiff
         def doubled_method_names
           object
             .__send__(:__mock_proxy)
-            .instance_variable_get("@method_doubles")
+            .instance_variable_get('@method_doubles')
             .keys
         end
       end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class OperationTreeBuilderDispatcher
@@ -6,7 +8,7 @@ module SuperDiff
       method_object(
         :expected,
         :actual,
-        [:available_classes, raise_if_nothing_applies: true]
+        [:available_classes, { raise_if_nothing_applies: true }]
       )
 
       def call
@@ -14,8 +16,6 @@ module SuperDiff
           resolved_class.call(expected: expected, actual: actual)
         elsif raise_if_nothing_applies?
           raise NoOperationTreeBuilderAvailableError.create(expected, actual)
-        else
-          nil
         end
       end
 

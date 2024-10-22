@@ -1,9 +1,11 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
-  context "and the gem is configured with :diff_elision_maximum" do
-    context "and :diff_elision_maximum is more than 0" do
-      context "and the line tree contains a section of noops that does not span more than the maximum" do
+  context 'and the gem is configured with :diff_elision_maximum' do
+    context 'and :diff_elision_maximum is more than 0' do
+      context 'and the line tree contains a section of noops that does not span more than the maximum' do
         it "doesn't elide anything" do
           # Diff:
           #
@@ -22,7 +24,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              value: "[",
+              value: '[',
               collection_bookend: :open,
               complete_bookend: :open
             ),
@@ -76,7 +78,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              value: "]",
+              value: ']',
               collection_bookend: :close,
               complete_bookend: :close
             )
@@ -90,7 +92,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
 
           expect(line_tree_with_elisions).to match(
             [
-              an_expected_line(type: :noop, indentation_level: 0, value: "["),
+              an_expected_line(type: :noop, indentation_level: 0, value: '['),
               an_expected_line(
                 type: :noop,
                 indentation_level: 1,
@@ -138,15 +140,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 indentation_level: 1,
                 value: %("seven")
               ),
-              an_expected_line(type: :noop, indentation_level: 0, value: "]")
+              an_expected_line(type: :noop, indentation_level: 0, value: ']')
             ]
           )
         end
       end
 
-      context "and the line tree contains a section of noops that spans more than the maximum" do
-        context "and the tree is one-dimensional" do
-          context "and the line tree is just noops" do
+      context 'and the line tree contains a section of noops that spans more than the maximum' do
+        context 'and the tree is one-dimensional' do
+          context 'and the line tree is just noops' do
             it "doesn't elide anything" do
               # Diff:
               #
@@ -166,7 +168,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -226,7 +228,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -243,7 +245,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :noop,
@@ -301,16 +303,16 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the line tree contains non-noops in addition to noops" do
-            context "and the only noops that exist are above the only non-noops that exist" do
-              it "elides the beginning of the noop so as to put it at the maximum" do
+          context 'and the line tree contains non-noops in addition to noops' do
+            context 'and the only noops that exist are above the only non-noops that exist' do
+              it 'elides the beginning of the noop so as to put it at the maximum' do
                 # Diff:
                 #
                 #   [
@@ -326,7 +328,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open,
                     complete_bookend: :open
                   ),
@@ -369,7 +371,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -396,7 +398,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 1,
@@ -442,15 +444,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
               end
             end
 
-            context "and the only noops that exist are below the only non-noops that exist" do
-              it "elides the end of the noop so as to put it at the maximum" do
+            context 'and the only noops that exist are below the only non-noops that exist' do
+              it 'elides the end of the noop so as to put it at the maximum' do
                 # Diff:
                 #
                 #   [
@@ -466,7 +468,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open,
                     complete_bookend: :open
                   ),
@@ -509,7 +511,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -537,7 +539,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_line(
                       type: :delete,
@@ -583,15 +585,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
               end
             end
 
-            context "and the noops flank the non-noops" do
-              it "elides the beginning of the first noop and the end of the second noop so as to put them both at the maximum" do
+            context 'and the noops flank the non-noops' do
+              it 'elides the beginning of the first noop and the end of the second noop so as to put them both at the maximum' do
                 # Diff:
                 #
                 #   [
@@ -611,7 +613,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open,
                     complete_bookend: :open
                   ),
@@ -677,7 +679,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -707,7 +709,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 1,
@@ -781,15 +783,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
               end
             end
 
-            context "and the noops are flanked by the non-noops" do
-              it "elides as much of the middle of the noop as to put it at the maximum" do
+            context 'and the noops are flanked by the non-noops' do
+              it 'elides as much of the middle of the noop as to put it at the maximum' do
                 # Diff:
                 #
                 #   [
@@ -810,7 +812,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open,
                     complete_bookend: :open
                   ),
@@ -881,7 +883,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -913,7 +915,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_line(
                       type: :delete,
@@ -987,7 +989,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
@@ -996,8 +998,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
           end
         end
 
-        context "and the tree is multi-dimensional" do
-          context "and the line tree is just noops" do
+        context 'and the tree is multi-dimensional' do
+          context 'and the line tree is just noops' do
             it "doesn't elide anything" do
               # Diff:
               #
@@ -1022,7 +1024,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -1041,7 +1043,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open
                 ),
                 an_actual_line(
@@ -1088,7 +1090,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "]",
+                  value: ']',
                   add_comma?: true,
                   collection_bookend: :close
                 ),
@@ -1112,7 +1114,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -1129,7 +1131,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :noop,
@@ -1146,7 +1148,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :noop,
@@ -1190,7 +1192,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma?: true
                   ),
                   an_expected_line(
@@ -1213,16 +1215,16 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the line tree contains non-noops in addition to noops" do
-            context "and the sequence of noops does not cross indentation level boundaries" do
-              it "represents the smallest portion within the sequence as an elision (descending into sub-structures if necessary) to fit the whole sequence under the maximum" do
+          context 'and the line tree contains non-noops in addition to noops' do
+            context 'and the sequence of noops does not cross indentation level boundaries' do
+              it 'represents the smallest portion within the sequence as an elision (descending into sub-structures if necessary) to fit the whole sequence under the maximum' do
                 # Diff:
                 #
                 #   [
@@ -1246,7 +1248,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open,
                     complete_bookend: :open
                   ),
@@ -1265,7 +1267,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -1312,7 +1314,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -1336,7 +1338,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -1366,7 +1368,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_line(
                       type: :noop,
@@ -1383,7 +1385,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 2,
@@ -1432,7 +1434,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       add_comma: true
                     ),
                     an_expected_line(
@@ -1455,16 +1457,16 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
               end
             end
 
-            context "and the sequence of noops crosses indentation level boundaries" do
-              context "assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum" do
-                it "only elides lines which fit completely inside the selected sections" do
+            context 'and the sequence of noops crosses indentation level boundaries' do
+              context 'assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum' do
+                it 'only elides lines which fit completely inside the selected sections' do
                   # Diff:
                   #
                   #   [
@@ -1495,7 +1497,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "[",
+                      value: '[',
                       complete_bookend: :open,
                       collection_bookend: :open
                     ),
@@ -1508,7 +1510,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
@@ -1525,7 +1527,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       add_comma: true,
                       collection_bookend: :close
                     ),
@@ -1538,7 +1540,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
@@ -1556,7 +1558,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
@@ -1579,7 +1581,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "]",
+                      value: ']',
                       add_comma: true,
                       collection_bookend: :close
                     ),
@@ -1609,7 +1611,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       add_comma: true,
                       collection_bookend: :close
                     ),
@@ -1627,7 +1629,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]",
+                      value: ']',
                       collection_bookend: :close,
                       complete_bookend: :close
                     )
@@ -1644,7 +1646,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 0,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_elision(
                         indentation_level: 1,
@@ -1658,7 +1660,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                           an_expected_line(
                             type: :noop,
                             indentation_level: 1,
-                            value: "["
+                            value: '['
                           ),
                           an_expected_line(
                             type: :noop,
@@ -1674,7 +1676,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                           an_expected_line(
                             type: :noop,
                             indentation_level: 1,
-                            value: "]",
+                            value: ']',
                             add_comma: true
                           ),
                           an_expected_line(
@@ -1688,7 +1690,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_elision(
                         indentation_level: 2,
@@ -1710,7 +1712,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_line(
                         type: :delete,
@@ -1737,7 +1739,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "]",
+                        value: ']',
                         add_comma: true
                       ),
                       an_expected_elision(
@@ -1771,7 +1773,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "]",
+                        value: ']',
                         add_comma: true
                       ),
                       an_expected_elision(
@@ -1793,15 +1795,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 0,
-                        value: "]"
+                        value: ']'
                       )
                     ]
                   )
                 end
               end
 
-              context "when, after the lines that fit completely inside those boundaries are elided, the sequence of noops is still above the maximum" do
-                it "elides the lines as much as possible" do
+              context 'when, after the lines that fit completely inside those boundaries are elided, the sequence of noops is still above the maximum' do
+                it 'elides the lines as much as possible' do
                   # Diff:
                   #
                   #   [
@@ -1823,7 +1825,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "[",
+                      value: '[',
                       complete_bookend: :open,
                       collection_bookend: :open
                     ),
@@ -1836,7 +1838,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
@@ -1853,7 +1855,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       collection_bookend: :close
                     ),
                     an_actual_line(
@@ -1865,13 +1867,13 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "[",
+                      value: '[',
                       collection_bookend: :open
                     ),
                     an_actual_line(
@@ -1888,19 +1890,19 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_actual_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "]",
+                      value: ']',
                       collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       collection_bookend: :close
                     ),
                     an_actual_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]",
+                      value: ']',
                       collection_bookend: :close
                     )
                   ]
@@ -1928,7 +1930,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 0,
-                        value: "[",
+                        value: '[',
                         complete_bookend: :open,
                         collection_bookend: :open,
                         elided: false
@@ -1945,7 +1947,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                           an_expected_line(
                             type: :noop,
                             indentation_level: 1,
-                            value: "[",
+                            value: '[',
                             collection_bookend: :open
                           ),
                           an_expected_line(
@@ -1962,7 +1964,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                           an_expected_line(
                             type: :noop,
                             indentation_level: 1,
-                            value: "]",
+                            value: ']',
                             collection_bookend: :close
                           ),
                           an_expected_line(
@@ -1976,14 +1978,14 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "[",
+                        value: '[',
                         collection_bookend: :open,
                         elided: false
                       ),
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "[",
+                        value: '[',
                         collection_bookend: :open,
                         elided: false
                       ),
@@ -2003,21 +2005,21 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "]",
+                        value: ']',
                         collection_bookend: :close,
                         elided: false
                       ),
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "]",
+                        value: ']',
                         collection_bookend: :close,
                         elided: false
                       ),
                       an_expected_line(
                         type: :noop,
                         indentation_level: 0,
-                        value: "]",
+                        value: ']',
                         collection_bookend: :close,
                         elided: false
                       )
@@ -2029,8 +2031,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
           end
         end
 
-        context "and within the noops there is a long string of lines on the same level and one level deeper" do
-          it "not only elides the deeper level but also part of the long string as well to reach the max" do
+        context 'and within the noops there is a long string of lines on the same level and one level deeper' do
+          it 'not only elides the deeper level but also part of the long string as well to reach the max' do
             # Diff:
             #
             #   [
@@ -2054,8 +2056,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "[",
+                prefix: '',
+                value: '[',
                 add_comma: false,
                 complete_bookend: :open,
                 collection_bookend: :open
@@ -2063,7 +2065,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :delete,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("0"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -2072,7 +2074,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("1"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -2081,7 +2083,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("2"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -2090,7 +2092,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("3"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -2139,7 +2141,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: "{",
+                value: '{',
                 add_comma: false,
                 complete_bookend: nil,
                 collection_bookend: :open
@@ -2147,7 +2149,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                prefix: "foo:",
+                prefix: 'foo:',
                 value: %("bar"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -2156,7 +2158,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 2,
-                prefix: "baz:",
+                prefix: 'baz:',
                 value: %("qux"),
                 add_comma: false,
                 complete_bookend: nil,
@@ -2165,8 +2167,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                prefix: "",
-                value: "}",
+                prefix: '',
+                value: '}',
                 add_comma: false,
                 complete_bookend: nil,
                 collection_bookend: :close
@@ -2174,7 +2176,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :insert,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("9"),
                 add_comma: false,
                 complete_bookend: nil,
@@ -2183,8 +2185,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "]",
+                prefix: '',
+                value: ']',
                 add_comma: false,
                 complete_bookend: :close,
                 collection_bookend: :close
@@ -2211,8 +2213,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :noop,
                   indentation_level: 0,
-                  prefix: "",
-                  value: "[",
+                  prefix: '',
+                  value: '[',
                   add_comma: false,
                   complete_bookend: :open,
                   collection_bookend: :open
@@ -2220,7 +2222,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :delete,
                   indentation_level: 1,
-                  prefix: "",
+                  prefix: '',
                   value: %("0"),
                   add_comma: true,
                   complete_bookend: nil,
@@ -2232,7 +2234,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      prefix: "",
+                      prefix: '',
                       value: %("1"),
                       add_comma: true,
                       complete_bookend: nil,
@@ -2241,7 +2243,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      prefix: "",
+                      prefix: '',
                       value: %("2"),
                       add_comma: true,
                       complete_bookend: nil,
@@ -2250,7 +2252,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      prefix: "",
+                      prefix: '',
                       value: %("3"),
                       add_comma: true,
                       complete_bookend: nil,
@@ -2299,7 +2301,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "{",
+                      value: '{',
                       add_comma: false,
                       complete_bookend: nil,
                       collection_bookend: :open
@@ -2307,7 +2309,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      prefix: "foo:",
+                      prefix: 'foo:',
                       value: %("bar"),
                       add_comma: true,
                       complete_bookend: nil,
@@ -2316,7 +2318,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      prefix: "baz:",
+                      prefix: 'baz:',
                       value: %("qux"),
                       add_comma: false,
                       complete_bookend: nil,
@@ -2325,8 +2327,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      prefix: "",
-                      value: "}",
+                      prefix: '',
+                      value: '}',
                       add_comma: false,
                       complete_bookend: nil,
                       collection_bookend: :close
@@ -2336,7 +2338,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :insert,
                   indentation_level: 1,
-                  prefix: "",
+                  prefix: '',
                   value: %("9"),
                   add_comma: false,
                   complete_bookend: nil,
@@ -2345,8 +2347,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :noop,
                   indentation_level: 0,
-                  prefix: "",
-                  value: "]",
+                  prefix: '',
+                  value: ']',
                   add_comma: false,
                   complete_bookend: :close,
                   collection_bookend: :close
@@ -2358,9 +2360,9 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
       end
     end
 
-    context "and :diff_elision_maximum is 0" do
-      context "and the tree is one-dimensional" do
-        context "and the line tree is just noops" do
+    context 'and :diff_elision_maximum is 0' do
+      context 'and the tree is one-dimensional' do
+        context 'and the line tree is just noops' do
           it "doesn't elide anything" do
             # Diff:
             #
@@ -2380,7 +2382,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "[",
+                value: '[',
                 collection_bookend: :open,
                 complete_bookend: :open
               ),
@@ -2440,7 +2442,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "]",
+                value: ']',
                 collection_bookend: :close,
                 complete_bookend: :close
               )
@@ -2454,7 +2456,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
 
             expect(line_tree_with_elisions).to match(
               [
-                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(type: :noop, indentation_level: 0, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
@@ -2508,15 +2510,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   indentation_level: 1,
                   value: %("nine")
                 ),
-                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+                an_expected_line(type: :noop, indentation_level: 0, value: ']')
               ]
             )
           end
         end
 
-        context "and the line tree contains non-noops in addition to noops" do
-          context "and the only noops that exist are above the only non-noops that exist" do
-            it "elides the beginning of the noop" do
+        context 'and the line tree contains non-noops in addition to noops' do
+          context 'and the only noops that exist are above the only non-noops that exist' do
+            it 'elides the beginning of the noop' do
               # Diff:
               #
               #   [
@@ -2532,7 +2534,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -2575,7 +2577,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -2600,7 +2602,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -2646,15 +2648,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the only noops that exist are below the only non-noops that exist" do
-            it "elides the end of the noop" do
+          context 'and the only noops that exist are below the only non-noops that exist' do
+            it 'elides the end of the noop' do
               # Diff:
               #
               #   [
@@ -2670,7 +2672,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -2713,7 +2715,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -2738,7 +2740,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :delete,
@@ -2784,15 +2786,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the noops flank the non-noops" do
-            it "elides the beginning of the first noop and the end of the second noop" do
+          context 'and the noops flank the non-noops' do
+            it 'elides the beginning of the first noop and the end of the second noop' do
               # Diff:
               #
               #   [
@@ -2812,7 +2814,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -2878,7 +2880,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -2904,7 +2906,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -2978,15 +2980,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the noops are flanked by the non-noops" do
-            it "elides the noop" do
+          context 'and the noops are flanked by the non-noops' do
+            it 'elides the noop' do
               # Diff:
               #
               #   [
@@ -3007,7 +3009,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -3078,7 +3080,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -3105,7 +3107,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :delete,
@@ -3179,7 +3181,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
@@ -3188,8 +3190,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
         end
       end
 
-      context "and the tree is multi-dimensional" do
-        context "and the line tree is just noops" do
+      context 'and the tree is multi-dimensional' do
+        context 'and the line tree is just noops' do
           it "doesn't elide anything" do
             # Diff:
             #
@@ -3214,7 +3216,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "[",
+                value: '[',
                 collection_bookend: :open,
                 complete_bookend: :open
               ),
@@ -3233,7 +3235,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: "[",
+                value: '[',
                 collection_bookend: :open
               ),
               an_actual_line(
@@ -3280,7 +3282,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: "]",
+                value: ']',
                 add_comma?: true,
                 collection_bookend: :close
               ),
@@ -3304,7 +3306,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "]",
+                value: ']',
                 collection_bookend: :close,
                 complete_bookend: :close
               )
@@ -3318,7 +3320,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
 
             expect(line_tree_with_elisions).to match(
               [
-                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(type: :noop, indentation_level: 0, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
@@ -3331,7 +3333,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   value: %("beta"),
                   add_comma?: true
                 ),
-                an_expected_line(type: :noop, indentation_level: 1, value: "["),
+                an_expected_line(type: :noop, indentation_level: 1, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 2,
@@ -3374,7 +3376,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "]",
+                  value: ']',
                   add_comma?: true
                 ),
                 an_expected_line(
@@ -3394,15 +3396,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   indentation_level: 1,
                   value: %("omega")
                 ),
-                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+                an_expected_line(type: :noop, indentation_level: 0, value: ']')
               ]
             )
           end
         end
 
-        context "and the line tree contains non-noops in addition to noops" do
-          context "and the sequence of noops does not cross indentation level boundaries" do
-            it "elides the noops" do
+        context 'and the line tree contains non-noops in addition to noops' do
+          context 'and the sequence of noops does not cross indentation level boundaries' do
+            it 'elides the noops' do
               # Diff:
               #
               #   [
@@ -3426,7 +3428,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -3445,7 +3447,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open
                 ),
                 an_actual_line(
@@ -3457,7 +3459,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open
                 ),
                 an_actual_line(
@@ -3480,7 +3482,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: "]",
+                  value: ']',
                   add_comma: true,
                   collection_bookend: :close
                 ),
@@ -3492,7 +3494,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "]",
+                  value: ']',
                   add_comma: true,
                   collection_bookend: :close
                 ),
@@ -3516,7 +3518,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -3542,7 +3544,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -3562,7 +3564,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_line(
                         type: :noop,
@@ -3573,7 +3575,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_line(
                         type: :noop,
@@ -3595,7 +3597,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "]",
+                        value: ']',
                         add_comma: false
                       ),
                       an_expected_line(
@@ -3606,7 +3608,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "]",
+                        value: ']',
                         add_comma: false
                       )
                     ]
@@ -3636,16 +3638,16 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the sequence of noops crosses indentation level boundaries" do
-            context "assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum" do
-              it "only elides lines which fit completely inside the selected sections" do
+          context 'and the sequence of noops crosses indentation level boundaries' do
+            context 'assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum' do
+              it 'only elides lines which fit completely inside the selected sections' do
                 # Diff:
                 #
                 #   [
@@ -3676,7 +3678,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     complete_bookend: :open,
                     collection_bookend: :open
                   ),
@@ -3689,7 +3691,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -3706,7 +3708,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -3719,7 +3721,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -3737,7 +3739,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -3760,7 +3762,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -3790,7 +3792,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -3808,7 +3810,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -3841,7 +3843,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 1,
@@ -3855,7 +3857,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                         an_expected_line(
                           type: :noop,
                           indentation_level: 1,
-                          value: "["
+                          value: '['
                         ),
                         an_expected_line(
                           type: :noop,
@@ -3871,7 +3873,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                         an_expected_line(
                           type: :noop,
                           indentation_level: 1,
-                          value: "]",
+                          value: ']',
                           add_comma: true
                         ),
                         an_expected_line(
@@ -3885,7 +3887,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 2,
@@ -3907,7 +3909,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_line(
                       type: :delete,
@@ -3934,7 +3936,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "]",
+                      value: ']',
                       add_comma: true
                     ),
                     an_expected_elision(
@@ -3968,7 +3970,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       add_comma: true
                     ),
                     an_expected_elision(
@@ -3990,7 +3992,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
@@ -4000,8 +4002,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
         end
       end
 
-      context "and within the noops there is a long string of lines on the same level and one level deeper" do
-        it "elides all the noops" do
+      context 'and within the noops there is a long string of lines on the same level and one level deeper' do
+        it 'elides all the noops' do
           # Diff:
           #
           #   [
@@ -4025,8 +4027,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              prefix: "",
-              value: "[",
+              prefix: '',
+              value: '[',
               add_comma: false,
               complete_bookend: :open,
               collection_bookend: :open
@@ -4034,7 +4036,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :delete,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("0"),
               add_comma: true,
               complete_bookend: nil,
@@ -4043,7 +4045,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("1"),
               add_comma: true,
               complete_bookend: nil,
@@ -4052,7 +4054,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("2"),
               add_comma: true,
               complete_bookend: nil,
@@ -4061,7 +4063,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("3"),
               add_comma: true,
               complete_bookend: nil,
@@ -4110,7 +4112,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              value: "{",
+              value: '{',
               add_comma: false,
               complete_bookend: nil,
               collection_bookend: :open
@@ -4118,7 +4120,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: "foo:",
+              prefix: 'foo:',
               value: %("bar"),
               add_comma: true,
               complete_bookend: nil,
@@ -4127,7 +4129,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: "baz:",
+              prefix: 'baz:',
               value: %("qux"),
               add_comma: false,
               complete_bookend: nil,
@@ -4136,8 +4138,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
-              value: "}",
+              prefix: '',
+              value: '}',
               add_comma: false,
               complete_bookend: nil,
               collection_bookend: :close
@@ -4145,7 +4147,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :insert,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("9"),
               add_comma: false,
               complete_bookend: nil,
@@ -4154,8 +4156,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              prefix: "",
-              value: "]",
+              prefix: '',
+              value: ']',
               add_comma: false,
               complete_bookend: :close,
               collection_bookend: :close
@@ -4181,8 +4183,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "[",
+                prefix: '',
+                value: '[',
                 add_comma: false,
                 complete_bookend: :open,
                 collection_bookend: :open
@@ -4190,7 +4192,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :delete,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("0"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -4202,7 +4204,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("1"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -4211,7 +4213,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("2"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -4220,7 +4222,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("3"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -4269,7 +4271,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "{",
+                    value: '{',
                     add_comma: false,
                     complete_bookend: nil,
                     collection_bookend: :open
@@ -4277,7 +4279,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 2,
-                    prefix: "foo:",
+                    prefix: 'foo:',
                     value: %("bar"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -4286,7 +4288,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 2,
-                    prefix: "baz:",
+                    prefix: 'baz:',
                     value: %("qux"),
                     add_comma: false,
                     complete_bookend: nil,
@@ -4295,8 +4297,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
-                    value: "}",
+                    prefix: '',
+                    value: '}',
                     add_comma: false,
                     complete_bookend: nil,
                     collection_bookend: :close
@@ -4306,7 +4308,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :insert,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("9"),
                 add_comma: false,
                 complete_bookend: nil,
@@ -4315,8 +4317,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "]",
+                prefix: '',
+                value: ']',
                 add_comma: false,
                 complete_bookend: :close,
                 collection_bookend: :close
@@ -4327,9 +4329,9 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
       end
     end
 
-    context "and :diff_elision_maximum is not specified" do
-      context "and the tree is one-dimensional" do
-        context "and the line tree is just noops" do
+    context 'and :diff_elision_maximum is not specified' do
+      context 'and the tree is one-dimensional' do
+        context 'and the line tree is just noops' do
           it "doesn't elide anything" do
             # Diff:
             #
@@ -4349,7 +4351,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "[",
+                value: '[',
                 collection_bookend: :open,
                 complete_bookend: :open
               ),
@@ -4409,7 +4411,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "]",
+                value: ']',
                 collection_bookend: :close,
                 complete_bookend: :close
               )
@@ -4423,7 +4425,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
 
             expect(line_tree_with_elisions).to match(
               [
-                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(type: :noop, indentation_level: 0, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
@@ -4477,15 +4479,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   indentation_level: 1,
                   value: %("nine")
                 ),
-                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+                an_expected_line(type: :noop, indentation_level: 0, value: ']')
               ]
             )
           end
         end
 
-        context "and the line tree contains non-noops in addition to noops" do
-          context "and the only noops that exist are above the only non-noops that exist" do
-            it "elides the beginning of the noop" do
+        context 'and the line tree contains non-noops in addition to noops' do
+          context 'and the only noops that exist are above the only non-noops that exist' do
+            it 'elides the beginning of the noop' do
               # Diff:
               #
               #   [
@@ -4501,7 +4503,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -4544,7 +4546,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -4569,7 +4571,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -4615,15 +4617,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the only noops that exist are below the only non-noops that exist" do
-            it "elides the end of the noop" do
+          context 'and the only noops that exist are below the only non-noops that exist' do
+            it 'elides the end of the noop' do
               # Diff:
               #
               #   [
@@ -4639,7 +4641,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -4682,7 +4684,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -4707,7 +4709,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :delete,
@@ -4753,15 +4755,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the noops flank the non-noops" do
-            it "elides the beginning of the first noop and the end of the second noop" do
+          context 'and the noops flank the non-noops' do
+            it 'elides the beginning of the first noop and the end of the second noop' do
               # Diff:
               #
               #   [
@@ -4781,7 +4783,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -4847,7 +4849,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -4873,7 +4875,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -4947,15 +4949,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the noops are flanked by the non-noops" do
-            it "elides the noop" do
+          context 'and the noops are flanked by the non-noops' do
+            it 'elides the noop' do
               # Diff:
               #
               #   [
@@ -4976,7 +4978,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -5047,7 +5049,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -5074,7 +5076,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_line(
                     type: :delete,
@@ -5148,7 +5150,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
@@ -5157,8 +5159,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
         end
       end
 
-      context "and the tree is multi-dimensional" do
-        context "and the line tree is just noops" do
+      context 'and the tree is multi-dimensional' do
+        context 'and the line tree is just noops' do
           it "doesn't elide anything" do
             # Diff:
             #
@@ -5183,7 +5185,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "[",
+                value: '[',
                 collection_bookend: :open,
                 complete_bookend: :open
               ),
@@ -5202,7 +5204,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: "[",
+                value: '[',
                 collection_bookend: :open
               ),
               an_actual_line(
@@ -5249,7 +5251,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 1,
-                value: "]",
+                value: ']',
                 add_comma?: true,
                 collection_bookend: :close
               ),
@@ -5273,7 +5275,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_actual_line(
                 type: :noop,
                 indentation_level: 0,
-                value: "]",
+                value: ']',
                 collection_bookend: :close,
                 complete_bookend: :close
               )
@@ -5287,7 +5289,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
 
             expect(line_tree_with_elisions).to match(
               [
-                an_expected_line(type: :noop, indentation_level: 0, value: "["),
+                an_expected_line(type: :noop, indentation_level: 0, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
@@ -5300,7 +5302,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   value: %("beta"),
                   add_comma?: true
                 ),
-                an_expected_line(type: :noop, indentation_level: 1, value: "["),
+                an_expected_line(type: :noop, indentation_level: 1, value: '['),
                 an_expected_line(
                   type: :noop,
                   indentation_level: 2,
@@ -5343,7 +5345,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_expected_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "]",
+                  value: ']',
                   add_comma?: true
                 ),
                 an_expected_line(
@@ -5363,15 +5365,15 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   indentation_level: 1,
                   value: %("omega")
                 ),
-                an_expected_line(type: :noop, indentation_level: 0, value: "]")
+                an_expected_line(type: :noop, indentation_level: 0, value: ']')
               ]
             )
           end
         end
 
-        context "and the line tree contains non-noops in addition to noops" do
-          context "and the sequence of noops does not cross indentation level boundaries" do
-            it "elides the noops" do
+        context 'and the line tree contains non-noops in addition to noops' do
+          context 'and the sequence of noops does not cross indentation level boundaries' do
+            it 'elides the noops' do
               # Diff:
               #
               #   [
@@ -5395,7 +5397,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open,
                   complete_bookend: :open
                 ),
@@ -5414,7 +5416,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open
                 ),
                 an_actual_line(
@@ -5426,7 +5428,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: "[",
+                  value: '[',
                   collection_bookend: :open
                 ),
                 an_actual_line(
@@ -5449,7 +5451,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 2,
-                  value: "]",
+                  value: ']',
                   add_comma: true,
                   collection_bookend: :close
                 ),
@@ -5461,7 +5463,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 1,
-                  value: "]",
+                  value: ']',
                   add_comma: true,
                   collection_bookend: :close
                 ),
@@ -5485,7 +5487,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                 an_actual_line(
                   type: :noop,
                   indentation_level: 0,
-                  value: "]",
+                  value: ']',
                   collection_bookend: :close,
                   complete_bookend: :close
                 )
@@ -5511,7 +5513,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "["
+                    value: '['
                   ),
                   an_expected_elision(
                     indentation_level: 1,
@@ -5531,7 +5533,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_line(
                         type: :noop,
@@ -5542,7 +5544,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "["
+                        value: '['
                       ),
                       an_expected_line(
                         type: :noop,
@@ -5564,7 +5566,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 2,
-                        value: "]",
+                        value: ']',
                         add_comma: false
                       ),
                       an_expected_line(
@@ -5575,7 +5577,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                       an_expected_line(
                         type: :noop,
                         indentation_level: 1,
-                        value: "]",
+                        value: ']',
                         add_comma: false
                       )
                     ]
@@ -5605,16 +5607,16 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]"
+                    value: ']'
                   )
                 ]
               )
             end
           end
 
-          context "and the sequence of noops crosses indentation level boundaries" do
-            context "assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum" do
-              it "only elides lines which fit completely inside the selected sections" do
+          context 'and the sequence of noops crosses indentation level boundaries' do
+            context 'assuming that, after the lines that fit completely inside those boundaries are elided, the sequence of noops is below the maximum' do
+              it 'only elides lines which fit completely inside the selected sections' do
                 # Diff:
                 #
                 #   [
@@ -5645,7 +5647,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "[",
+                    value: '[',
                     complete_bookend: :open,
                     collection_bookend: :open
                   ),
@@ -5658,7 +5660,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -5675,7 +5677,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -5688,7 +5690,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -5706,7 +5708,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: "[",
+                    value: '[',
                     collection_bookend: :open
                   ),
                   an_actual_line(
@@ -5729,7 +5731,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 2,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -5759,7 +5761,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "]",
+                    value: ']',
                     add_comma: true,
                     collection_bookend: :close
                   ),
@@ -5777,7 +5779,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_actual_line(
                     type: :noop,
                     indentation_level: 0,
-                    value: "]",
+                    value: ']',
                     collection_bookend: :close,
                     complete_bookend: :close
                   )
@@ -5810,7 +5812,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 1,
@@ -5824,7 +5826,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                         an_expected_line(
                           type: :noop,
                           indentation_level: 1,
-                          value: "["
+                          value: '['
                         ),
                         an_expected_line(
                           type: :noop,
@@ -5840,7 +5842,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                         an_expected_line(
                           type: :noop,
                           indentation_level: 1,
-                          value: "]",
+                          value: ']',
                           add_comma: true
                         ),
                         an_expected_line(
@@ -5854,7 +5856,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_elision(
                       indentation_level: 2,
@@ -5876,7 +5878,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "["
+                      value: '['
                     ),
                     an_expected_line(
                       type: :delete,
@@ -5903,7 +5905,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 2,
-                      value: "]",
+                      value: ']',
                       add_comma: true
                     ),
                     an_expected_elision(
@@ -5937,7 +5939,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 1,
-                      value: "]",
+                      value: ']',
                       add_comma: true
                     ),
                     an_expected_elision(
@@ -5959,7 +5961,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                     an_expected_line(
                       type: :noop,
                       indentation_level: 0,
-                      value: "]"
+                      value: ']'
                     )
                   ]
                 )
@@ -5969,8 +5971,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
         end
       end
 
-      context "and within the noops there is a long string of lines on the same level and one level deeper" do
-        it "elides all the noops" do
+      context 'and within the noops there is a long string of lines on the same level and one level deeper' do
+        it 'elides all the noops' do
           # Diff:
           #
           #   [
@@ -5994,8 +5996,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              prefix: "",
-              value: "[",
+              prefix: '',
+              value: '[',
               add_comma: false,
               complete_bookend: :open,
               collection_bookend: :open
@@ -6003,7 +6005,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :delete,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("0"),
               add_comma: true,
               complete_bookend: nil,
@@ -6012,7 +6014,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("1"),
               add_comma: true,
               complete_bookend: nil,
@@ -6021,7 +6023,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("2"),
               add_comma: true,
               complete_bookend: nil,
@@ -6030,7 +6032,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("3"),
               add_comma: true,
               complete_bookend: nil,
@@ -6079,7 +6081,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              value: "{",
+              value: '{',
               add_comma: false,
               complete_bookend: nil,
               collection_bookend: :open
@@ -6087,7 +6089,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: "foo:",
+              prefix: 'foo:',
               value: %("bar"),
               add_comma: true,
               complete_bookend: nil,
@@ -6096,7 +6098,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 2,
-              prefix: "baz:",
+              prefix: 'baz:',
               value: %("qux"),
               add_comma: false,
               complete_bookend: nil,
@@ -6105,8 +6107,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 1,
-              prefix: "",
-              value: "}",
+              prefix: '',
+              value: '}',
               add_comma: false,
               complete_bookend: nil,
               collection_bookend: :close
@@ -6114,7 +6116,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :insert,
               indentation_level: 1,
-              prefix: "",
+              prefix: '',
               value: %("9"),
               add_comma: false,
               complete_bookend: nil,
@@ -6123,8 +6125,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
             an_actual_line(
               type: :noop,
               indentation_level: 0,
-              prefix: "",
-              value: "]",
+              prefix: '',
+              value: ']',
               add_comma: false,
               complete_bookend: :close,
               collection_bookend: :close
@@ -6150,8 +6152,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "[",
+                prefix: '',
+                value: '[',
                 add_comma: false,
                 complete_bookend: :open,
                 collection_bookend: :open
@@ -6159,7 +6161,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :delete,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("0"),
                 add_comma: true,
                 complete_bookend: nil,
@@ -6171,7 +6173,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("1"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -6180,7 +6182,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("2"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -6189,7 +6191,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
+                    prefix: '',
                     value: %("3"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -6238,7 +6240,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    value: "{",
+                    value: '{',
                     add_comma: false,
                     complete_bookend: nil,
                     collection_bookend: :open
@@ -6246,7 +6248,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 2,
-                    prefix: "foo:",
+                    prefix: 'foo:',
                     value: %("bar"),
                     add_comma: true,
                     complete_bookend: nil,
@@ -6255,7 +6257,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 2,
-                    prefix: "baz:",
+                    prefix: 'baz:',
                     value: %("qux"),
                     add_comma: false,
                     complete_bookend: nil,
@@ -6264,8 +6266,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
                   an_expected_line(
                     type: :noop,
                     indentation_level: 1,
-                    prefix: "",
-                    value: "}",
+                    prefix: '',
+                    value: '}',
                     add_comma: false,
                     complete_bookend: nil,
                     collection_bookend: :close
@@ -6275,7 +6277,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :insert,
                 indentation_level: 1,
-                prefix: "",
+                prefix: '',
                 value: %("9"),
                 add_comma: false,
                 complete_bookend: nil,
@@ -6284,8 +6286,8 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
               an_expected_line(
                 type: :noop,
                 indentation_level: 0,
-                prefix: "",
-                value: "]",
+                prefix: '',
+                value: ']',
                 add_comma: false,
                 complete_bookend: :close,
                 collection_bookend: :close
@@ -6316,7 +6318,7 @@ RSpec.describe SuperDiff::Core::TieredLinesElider, type: :unit do
   def an_expected_elision(indentation_level:, children:)
     an_expected_line(
       type: :elision,
-      value: "# ...",
+      value: '# ...',
       indentation_level: indentation_level,
       children:
         children.map do |child|

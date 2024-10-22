@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Default < Base
@@ -20,20 +22,20 @@ module SuperDiff
       def expected_line
         Core::Helpers.style(
           :expected,
-          "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
+          "Expected: #{SuperDiff.inspect_object(expected, as_lines: false)}"
         )
       end
 
       def actual_line
         Core::Helpers.style(
           :actual,
-          "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
+          "  Actual: #{SuperDiff.inspect_object(actual, as_lines: false)}"
         )
       end
 
       def diff_section
         if diff.empty?
-          ""
+          ''
         else
           <<~SECTION
 

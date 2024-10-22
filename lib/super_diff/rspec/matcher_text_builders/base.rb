@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -40,11 +42,9 @@ module SuperDiff
 
         protected
 
-        def add_extra_after_expected_to(template)
-        end
+        def add_extra_after_expected_to(template); end
 
-        def add_extra_after_error
-        end
+        def add_extra_after_error; end
 
         def actual_color
           SuperDiff.configuration.actual_color
@@ -74,7 +74,7 @@ module SuperDiff
           template.add_break
           template.insert expected_section
           add_extra_after_expected_to(template)
-          template.add_text_in_singleline_mode "."
+          template.add_text_in_singleline_mode '.'
           add_extra_after_error
         end
 
@@ -83,12 +83,12 @@ module SuperDiff
           template.add_text_in_multiline_mode do
             actual_phrase.rjust(phrase_width)
           end
-          template.add_text " "
+          template.add_text ' '
           add_actual_value
         end
 
         def actual_phrase
-          "Expected"
+          'Expected'
         end
 
         def add_actual_value
@@ -109,7 +109,7 @@ module SuperDiff
           if respond_to?(:add_expected_value_to, true)
             add_expected_value_to(template, expected_for_failure_message)
           else
-            template.add_text " "
+            template.add_text ' '
             template.add_text_in_color(
               expected_color,
               expected_for_failure_message
@@ -121,7 +121,7 @@ module SuperDiff
           if respond_to?(:add_expected_value_to, true)
             add_expected_value_to(template, expected_for_description)
           else
-            template.add_text " "
+            template.add_text ' '
             template.add_text_in_color(expected_color, expected_for_description)
           end
         end
@@ -131,13 +131,13 @@ module SuperDiff
         end
 
         def to_or_not_to
-          negated? ? "not to" : "to"
+          negated? ? 'not to' : 'to'
         end
 
         def phrase_width
           [actual_phrase, expected_phrase].map do |text|
-              Csi.decolorize(text.to_s).length
-            end
+            Csi.decolorize(text.to_s).length
+          end
             .max
         end
 

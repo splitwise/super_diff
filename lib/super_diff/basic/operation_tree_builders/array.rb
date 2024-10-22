@@ -1,4 +1,6 @@
-require "diff-lcs"
+# frozen_string_literal: true
+
+require 'diff-lcs'
 
 module SuperDiff
   module Basic
@@ -16,7 +18,7 @@ module SuperDiff
         private
 
         def lcs_callbacks
-          @_lcs_callbacks ||=
+          @lcs_callbacks ||=
             LcsCallbacks.new(
               operation_tree: operation_tree,
               expected: expected,
@@ -26,7 +28,7 @@ module SuperDiff
         end
 
         def operation_tree
-          @_operation_tree ||= OperationTrees::Array.new([])
+          @operation_tree ||= OperationTrees::Array.new([])
         end
 
         class LcsCallbacks
@@ -48,7 +50,7 @@ module SuperDiff
           end
 
           def change(event)
-            children = compare.(event.old_element, event.new_element)
+            children = compare.call(event.old_element, event.new_element)
 
             if children
               add_change_operation(event, children)

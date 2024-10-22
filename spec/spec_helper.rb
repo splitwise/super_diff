@@ -1,46 +1,43 @@
-require "pp"
+# frozen_string_literal: true
 
-if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.2")
+if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
   begin
-    require "pry-byebug"
+    require 'pry-byebug'
   rescue LoadError
   end
 
   begin
-    require "pry-nav"
+    require 'pry-nav'
   rescue LoadError
   end
 end
 
-require "climate_control"
+require 'climate_control'
 
 #---
 
-require_relative "../support/current_bundle"
+require_relative '../support/current_bundle'
 
 SuperDiff::CurrentBundle.instance.assert_appraisal!
 
 #---
 
 begin
-  require "active_record"
+  require 'active_record'
 
   active_record_available = true
 
   ActiveRecord::Base.establish_connection(
-    adapter: "sqlite3",
-    database: ":memory:"
+    adapter: 'sqlite3',
+    database: ':memory:'
   )
 rescue LoadError
   active_record_available = false
 end
 
 Dir
-  .glob(File.expand_path("support/**/*.rb", __dir__))
-  .sort
-  .reject do |file|
-    file.include?("/models/active_record/") && !active_record_available
-  end
+  .glob(File.expand_path('support/**/*.rb', __dir__))
+  .reject { |file| file.include?('/models/active_record/') && !active_record_available }
   .each { |file| require file }
 
 RSpec.configure do |config|
@@ -58,34 +55,32 @@ RSpec.configure do |config|
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
   config.filter_run_when_matching :focus
-  config.example_status_persistence_file_path = "spec/examples.txt"
+  config.example_status_persistence_file_path = 'spec/examples.txt'
   config.disable_monkey_patching!
   config.warnings = true
 
-  config.default_formatter = "documentation" if !%w[true 1].include?(ENV["CI"])
+  config.default_formatter = 'documentation' unless %w[true 1].include?(ENV.fetch('CI', nil))
 
   config.filter_run_excluding active_record: true unless active_record_available
-  unless defined?(ActiveSupport)
-    config.filter_run_excluding active_support: true
-  end
+  config.filter_run_excluding active_support: true unless defined?(ActiveSupport)
   config.filter_run_excluding with_superdiff_rspec: false
 
   config.order = :random
   Kernel.srand config.seed
 
-  config.color_mode = :on if ENV["CI"] == "true"
+  config.color_mode = :on if ENV['CI'] == 'true'
 end
 
-require "warnings_logger"
+require 'warnings_logger'
 $VERBOSE = true
 WarningsLogger.configure do |config|
-  config.project_name = "super_diff"
-  config.project_directory = Pathname.new("..").expand_path(__dir__)
+  config.project_name = 'super_diff'
+  config.project_directory = Pathname.new('..').expand_path(__dir__)
 end
 WarningsLogger.enable
 
 if active_record_available
-  require "super_diff/rspec-rails"
+  require 'super_diff/rspec-rails'
 else
-  require "super_diff/rspec"
+  require 'super_diff/rspec'
 end

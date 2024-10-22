@@ -1,5 +1,4 @@
 .DS_Store
-Gemfile.lock
 gemfiles/.bundle
 gemfiles/*.gemfile.lock
 node_modules

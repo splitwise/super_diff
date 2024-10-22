@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module ActiveRecord
     module InspectionTreeBuilders
@@ -19,8 +21,8 @@ module SuperDiff
 
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                  t3.add_text "{"
-                end
+                t3.add_text '{'
+              end
             end
 
             t1.nested do |t2|
@@ -44,10 +46,10 @@ module SuperDiff
             ) do |t2|
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                  t3.add_text "}"
-                end
+                t3.add_text '}'
+              end
 
-              t2.add_text ">"
+              t2.add_text '>'
             end
           end
         end

@@ -1,12 +1,14 @@
-require "super_diff/basic/differs"
-require "super_diff/basic/inspection_tree_builders"
-require "super_diff/basic/operation_tree_builders"
-require "super_diff/basic/operation_tree_flatteners"
-require "super_diff/basic/operation_trees"
+# frozen_string_literal: true
+
+require 'super_diff/basic/differs'
+require 'super_diff/basic/inspection_tree_builders'
+require 'super_diff/basic/operation_tree_builders'
+require 'super_diff/basic/operation_tree_flatteners'
+require 'super_diff/basic/operation_trees'
 
 module SuperDiff
   module Basic
-    autoload :DiffFormatters, "super_diff/basic/diff_formatters"
+    autoload :DiffFormatters, 'super_diff/basic/diff_formatters'
 
     SuperDiff.configuration.tap do |config|
       config.add_extra_differ_classes(

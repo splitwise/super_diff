@@ -1,6 +1,8 @@
-shared_examples_for "a matcher that supports a toggleable key" do
-  context "if key_enabled is set to true" do
-    it "produces the key" do
+# frozen_string_literal: true
+
+shared_examples_for 'a matcher that supports a toggleable key' do
+  context 'if key_enabled is set to true' do
+    it 'produces the key' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           actual = [
@@ -32,23 +34,23 @@ shared_examples_for "a matcher that supports a toggleable key" do
             expectation:
               proc do
                 line do
-                  plain "Expected "
-                  actual %|["Afghanistan", "Aland Islands", "Australia"]|
+                  plain 'Expected '
+                  actual %(["Afghanistan", "Aland Islands", "Australia"])
                 end
 
                 line do
-                  plain "   to eq "
-                  expected %|["Afghanistan", "Aland Islands", "Albania"]|
+                  plain '   to eq '
+                  expected %(["Afghanistan", "Aland Islands", "Albania"])
                 end
               end,
             diff:
               proc do
-                plain_line "  ["
-                plain_line %|    "Afghanistan",|
-                plain_line %|    "Aland Islands",|
-                expected_line %|-   "Albania"|
-                actual_line %|+   "Australia"|
-                plain_line "  ]"
+                plain_line '  ['
+                plain_line %(    "Afghanistan",)
+                plain_line %(    "Aland Islands",)
+                expected_line %(-   "Albania")
+                actual_line %(+   "Australia")
+                plain_line '  ]'
               end,
             key_enabled: true
           )
@@ -60,8 +62,8 @@ shared_examples_for "a matcher that supports a toggleable key" do
     end
   end
 
-  context "if key_enabled is set to false" do
-    it "does not produce the key" do
+  context 'if key_enabled is set to false' do
+    it 'does not produce the key' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           actual = [
@@ -94,23 +96,23 @@ shared_examples_for "a matcher that supports a toggleable key" do
             expectation:
               proc do
                 line do
-                  plain "Expected "
-                  actual %|["Afghanistan", "Aland Islands", "Australia"]|
+                  plain 'Expected '
+                  actual %(["Afghanistan", "Aland Islands", "Australia"])
                 end
 
                 line do
-                  plain "   to eq "
-                  expected %|["Afghanistan", "Aland Islands", "Albania"]|
+                  plain '   to eq '
+                  expected %(["Afghanistan", "Aland Islands", "Albania"])
                 end
               end,
             diff:
               proc do
-                plain_line "  ["
-                plain_line %|    "Afghanistan",|
-                plain_line %|    "Aland Islands",|
-                expected_line %|-   "Albania"|
-                actual_line %|+   "Australia"|
-                plain_line "  ]"
+                plain_line '  ['
+                plain_line %(    "Afghanistan",)
+                plain_line %(    "Aland Islands",)
+                expected_line %(-   "Albania")
+                actual_line %(+   "Australia")
+                plain_line '  ]'
               end
           )
 

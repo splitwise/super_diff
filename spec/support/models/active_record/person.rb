@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Test
     module Models
       module ActiveRecord
         class Person < ::ActiveRecord::Base
-          self.primary_key = "person_id"
+          self.primary_key = 'person_id'
         end
       end
     end
@@ -17,7 +19,7 @@ RSpec.configure do |config|
       .create_table(
         :people,
         id: false,
-        primary_key: "person_id",
+        primary_key: 'person_id',
         force: true
       ) do |t|
         t.primary_key :person_id, null: false

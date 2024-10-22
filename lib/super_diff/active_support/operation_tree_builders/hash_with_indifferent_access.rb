@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module ActiveSupport
     module OperationTreeBuilders
@@ -20,10 +22,10 @@ module SuperDiff
             @actual = actual.transform_keys(&:to_s)
           end
 
-          if actual.is_a?(::HashWithIndifferentAccess)
-            @expected = expected.transform_keys(&:to_s)
-            @actual = actual.to_h
-          end
+          return unless actual.is_a?(::HashWithIndifferentAccess)
+
+          @expected = expected.transform_keys(&:to_s)
+          @actual = actual.to_h
         end
 
         protected

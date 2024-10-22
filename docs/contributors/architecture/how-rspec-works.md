@@ -114,8 +114,6 @@ First, we will review several concepts in RSpec: [^fn1]
 
 Given the above, RSpec performs the following sequence of events:
 
-<!--prettier-ignore-start -->
-
 1. The developer adds an failing assertion to a test using the following forms
    (filling in `<actual value>`, `<matcher>`, `<block>`, and `<args...>` appropriately):
     - `expect(<actual value>).to <matcher>(<args...>)`
@@ -193,8 +191,6 @@ Given the above, RSpec performs the following sequence of events:
    the line that failed,
    the error and backtrace,
    and other pertinent details.
-
-<!--prettier-ignore-end -->
 
 [^fn1]: Note that the analysis of the RSpec source code in this document is accurate as of RSpec v3.13.0, released February 4, 2024.
 

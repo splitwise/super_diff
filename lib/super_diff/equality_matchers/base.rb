@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Base
@@ -11,14 +13,14 @@ module SuperDiff
         [
           :expected!,
           :actual!,
-          extra_operation_tree_builder_classes: [],
-          extra_diff_formatter_classes: []
+          { extra_operation_tree_builder_classes: [],
+            extra_diff_formatter_classes: [] }
         ]
       )
 
       def call
-        if expected == actual
-          ""
+        if expected == actual # rubocop:disable Style/GuardClause `fail` is not Kernel#fail
+          ''
         else
           fail
         end

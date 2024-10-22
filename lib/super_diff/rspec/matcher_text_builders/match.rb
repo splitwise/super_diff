@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -8,10 +10,10 @@ module SuperDiff
         end
 
         def add_extra
-          if expected_captures
-            template.add_text "with captures "
-            template.add_text_in_color :blue, description_of(expected_captures)
-          end
+          return unless expected_captures
+
+          template.add_text 'with captures '
+          template.add_text_in_color :blue, description_of(expected_captures)
         end
 
         private

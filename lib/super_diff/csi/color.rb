@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Csi
     class Color
@@ -51,10 +53,8 @@ module SuperDiff
         if %i[foreground background].include?(layer)
           layer
         else
-          raise ArgumentError.new(
-                  "Invalid layer #{layer.inspect}. " +
-                    "Layer must be :foreground or :background."
-                )
+          raise ArgumentError, "Invalid layer #{layer.inspect}. " \
+                               'Layer must be :foreground or :background.'
         end
       end
     end

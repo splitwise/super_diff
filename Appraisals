@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 rails_dependencies =
   proc do
-    gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
-    gem "jdbc-sqlite3", platform: :jruby
-    gem "net-ftp"
-    gem "combustion"
+    gem 'activerecord-jdbcsqlite3-adapter', platform: :jruby
+    gem 'jdbc-sqlite3', platform: :jruby
+    gem 'net-ftp'
+    gem 'combustion'
   end
 
 appraisals = {
@@ -11,45 +13,43 @@ appraisals = {
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "rails", "~> 6.0.0"
-      gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
+      gem 'rails', '~> 6.0.0'
+      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
     end,
   rails_6_1:
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "rails", "~> 6.1.0"
-      gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
+      gem 'rails', '~> 6.1.0'
+      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
     end,
   rails_7_0:
     proc do
       instance_eval(&rails_dependencies)
 
-      gem "rails", "~> 7.0.0"
-      gem "sqlite3", "~> 1.4.0", platform: %i[ruby mswin mingw]
+      gem 'rails', '~> 7.0.0'
+      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
     end,
   no_rails: proc {},
   rspec_lt_3_10:
     proc do |with_rails|
-      version = "~> 3.9.0"
+      version = '~> 3.9.0'
 
-      gem "rspec", version
+      gem 'rspec', version
 
-      gem "rspec-rails" if with_rails
+      gem 'rspec-rails' if with_rails
     end,
   rspec_gte_3_10:
     proc do |with_rails|
-      version = [">= 3.10", "< 4"]
-
       # gem "rspec", *version
 
-      gem "rspec", "3.12.0"
-      gem "rspec-core", "3.12.0"
-      gem "rspec-expectations", "3.12.3"
-      gem "rspec-mocks", "3.12.0"
-      gem "rspec-support", "3.12.0"
+      gem 'rspec', '3.12.0'
+      gem 'rspec-core', '3.12.0'
+      gem 'rspec-expectations', '3.12.3'
+      gem 'rspec-mocks', '3.12.0'
+      gem 'rspec-support', '3.12.0'
 
-      gem "rspec-rails" if with_rails
+      gem 'rspec-rails' if with_rails
     end
 }
 

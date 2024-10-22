@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Csi
     class ColorSequenceBlock
@@ -14,7 +16,7 @@ module SuperDiff
       def push(color)
         colors.push(color)
       end
-      alias_method :<<, :push
+      alias << push
 
       def to_s
         colors.map(&:to_s).join

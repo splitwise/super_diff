@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Main
       extend AttrExtras.mixin
 
-      method_object [:expected!, :actual!, extra_classes: []]
+      method_object [:expected!, :actual!, { extra_classes: [] }]
 
       def call
         resolved_class.call(expected: expected, actual: actual)

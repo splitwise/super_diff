@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class AbstractOperationTreeFlattener
@@ -21,7 +23,7 @@ module SuperDiff
       def beginning_lines
         if tiered_lines.empty?
           []
-        elsif indentation_level > 0
+        elsif indentation_level.positive?
           [tiered_lines[0]]
         else
           [tiered_lines[0].with_complete_bookend(:open)]
@@ -35,7 +37,7 @@ module SuperDiff
       def ending_lines
         if tiered_lines.empty?
           []
-        elsif indentation_level > 0
+        elsif indentation_level.positive?
           [tiered_lines[-1]]
         else
           [tiered_lines[-1].with_complete_bookend(:close)]
@@ -43,7 +45,7 @@ module SuperDiff
       end
 
       def tiered_lines
-        @_tiered_lines ||= build_tiered_lines
+        @tiered_lines ||= build_tiered_lines
       end
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeFlatteners
@@ -10,7 +12,7 @@ module SuperDiff
               # TODO: Test that quotes and things don't get escaped but escape
               # characters do
               value:
-                operation.value.inspect[1..-2].gsub(/\\"/, '"').gsub(/\\'/, "'")
+                operation.value.inspect[1..-2].gsub('\\"', '"').gsub("\\'", "'")
             )
           end
         end

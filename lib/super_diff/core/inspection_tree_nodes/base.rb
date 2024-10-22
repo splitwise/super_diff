@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     module InspectionTreeNodes
@@ -15,10 +17,8 @@ module SuperDiff
 
         def initialize(tree, *args, **options, &block)
           if !args.empty? && block
-            raise ArgumentError.new(
-                    "You cannot provide both an immediate value and a lazy value. " +
-                      "Either pass a block or a positional argument."
-                  )
+            raise ArgumentError, 'You cannot provide both an immediate value and a lazy value. ' \
+                                 'Either pass a block or a positional argument.'
           end
 
           @tree = tree
@@ -62,12 +62,12 @@ module SuperDiff
 
         def pretty_print(pp)
           pp.object_address_group(self) do
-            pp.seplist(pretty_print_variables, proc { pp.text "," }) do |name|
+            pp.seplist(pretty_print_variables, proc { pp.text ',' }) do |name|
               value = instance_variable_get(name)
-              pp.breakable " "
+              pp.breakable ' '
               pp.group(1) do
-                pp.text name[1..-1].to_s
-                pp.text ":"
+                pp.text name[1..].to_s
+                pp.text ':'
                 pp.breakable
                 pp.pp value
               end
@@ -80,7 +80,7 @@ module SuperDiff
         attr_reader :tree, :immediate_value, :block, :options
 
         def pretty_print_variables
-          block ? [:"@block"] : [:"@immediate_value"]
+          block ? [:@block] : [:@immediate_value]
         end
 
         def evaluate_block(object)

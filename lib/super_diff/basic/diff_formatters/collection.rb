@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module DiffFormatters
@@ -5,7 +7,7 @@ module SuperDiff
       class Collection
         extend AttrExtras.mixin
 
-        ICONS = { delete: "-", insert: "+" }.freeze
+        ICONS = { delete: '-', insert: '+' }.freeze
         STYLES = { insert: :actual, delete: :expected, noop: :plain }.freeze
 
         method_object(
@@ -51,20 +53,18 @@ module SuperDiff
             operation.left_collection,
             operation.right_collection
           ) do |already_seen|
-            if already_seen
-              raise "Infinite recursion!"
-            else
-              operation.child_operations.to_diff(
-                indent_level: indent_level + 1,
-                collection_prefix: build_item_prefix.call(operation),
-                add_comma: operation.should_add_comma_after_displaying?
-              )
-            end
+            raise 'Infinite recursion!' if already_seen
+
+            operation.child_operations.to_diff(
+              indent_level: indent_level + 1,
+              collection_prefix: build_item_prefix.call(operation),
+              add_comma: operation.should_add_comma_after_displaying?
+            )
           end
         end
 
         def handle_non_change_operation(operation)
-          icon = ICONS.fetch(operation.name, " ")
+          icon = ICONS.fetch(operation.name, ' ')
           style_name = STYLES.fetch(operation.name, :normal)
           chunk =
             build_chunk_for(
@@ -73,7 +73,7 @@ module SuperDiff
               icon: icon
             )
 
-          chunk << "," if operation.should_add_comma_after_displaying?
+          chunk << ',' if operation.should_add_comma_after_displaying?
 
           style_chunk(style_name, chunk)
         end
@@ -82,13 +82,13 @@ module SuperDiff
           if operation.value.equal?(operation.collection)
             build_chunk_from_string(
               SuperDiff::RecursionGuard::PLACEHOLDER,
-              prefix: build_item_prefix.call(operation),
+              prefix: prefix,
               icon: icon
             )
           else
             build_chunk_by_inspecting(
               operation.value,
-              prefix: build_item_prefix.call(operation),
+              prefix: prefix,
               icon: icon
             )
           end
@@ -106,9 +106,9 @@ module SuperDiff
             .with_index do |line, index|
               [
                 icon,
-                " ",
+                ' ',
                 indentation(offset: 1),
-                (index == 0 ? prefix : ""),
+                (index.zero? ? prefix : ''),
                 line
               ].join
             end
@@ -123,11 +123,11 @@ module SuperDiff
         end
 
         def indentation(offset: 0)
-          "  " * (indent_level + offset)
+          '  ' * (indent_level + offset)
         end
 
         def comma
-          add_comma? ? "," : ""
+          add_comma? ? ',' : ''
         end
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class NoOperationTreeAvailableError < StandardError
@@ -11,8 +13,8 @@ module SuperDiff
       attr_accessor :value
 
       def initialize
-        super(<<-MESSAGE)
-There is no operation tree available to handle a "value" of type #{value.class}.
+        super(<<~MESSAGE)
+          There is no operation tree available to handle a "value" of type #{value.class}.
         MESSAGE
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class OperationTreeFinder
@@ -6,14 +8,12 @@ module SuperDiff
       method_object :value, [:available_classes]
 
       def call
-        if resolved_class
-          begin
-            resolved_class.new([], underlying_object: value)
-          rescue ArgumentError
-            resolved_class.new([])
-          end
-        else
-          raise NoOperationTreeAvailableError.create(value)
+        raise NoOperationTreeAvailableError.create(value) unless resolved_class
+
+        begin
+          resolved_class.new([], underlying_object: value)
+        rescue ArgumentError
+          resolved_class.new([])
         end
       end
 

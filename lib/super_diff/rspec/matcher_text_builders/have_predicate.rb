@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -12,11 +14,11 @@ module SuperDiff
 
         def expected_action_for_failure_message
           if predicate_accessible?
-            "return a truthy result for"
+            'return a truthy result for'
           elsif private_predicate?
-            "have a public method"
+            'have a public method'
           else
-            "respond to"
+            'respond to'
           end
         end
 
@@ -29,7 +31,7 @@ module SuperDiff
         end
 
         def add_expected_value_to_failure_message(template)
-          template.add_text " "
+          template.add_text ' '
           template.add_text_in_color(
             expected_color,
             expected_for_failure_message
@@ -37,7 +39,7 @@ module SuperDiff
         end
 
         def add_expected_value_to_description(template)
-          template.add_text " "
+          template.add_text ' '
           template.add_text_in_color(
             expected_color,
             "`#{expected_for_description}`"

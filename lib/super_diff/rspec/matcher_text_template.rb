@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     class MatcherTextTemplate
@@ -13,41 +15,41 @@ module SuperDiff
         yield self if block_given?
       end
 
-      def add_text(*args, &block)
-        add_token(PlainText, *args, &block)
+      def add_text(...)
+        add_token(PlainText, ...)
       end
 
-      def add_text_in_color(*args, &block)
-        add_token(ColorizedText, *args, &block)
+      def add_text_in_color(...)
+        add_token(ColorizedText, ...)
       end
 
-      def add_text_in_singleline_mode(*args, &block)
-        add_token(PlainTextInSinglelineMode, *args, &block)
+      def add_text_in_singleline_mode(...)
+        add_token(PlainTextInSinglelineMode, ...)
       end
 
-      def add_text_in_multiline_mode(*args, &block)
-        add_token(PlainTextInMultilineMode, *args, &block)
+      def add_text_in_multiline_mode(...)
+        add_token(PlainTextInMultilineMode, ...)
       end
 
-      def add_list_in_color(*args, &block)
-        add_token(ColorizedList, *args, &block)
+      def add_list_in_color(...)
+        add_token(ColorizedList, ...)
       end
 
-      def add_break(*args, &block)
-        add_token(Break, *args, &block)
+      def add_break(...)
+        add_token(Break, ...)
       end
 
-      def insert(*args, &block)
-        add_token(Insertion, *args, &block)
+      def insert(...)
+        add_token(Insertion, ...)
       end
 
       def length_of_first_paragraph
-        Csi.decolorize(to_string_in_singleline_mode).split(/\n\n/).first.length
+        Csi.decolorize(to_string_in_singleline_mode).split("\n\n").first.length
       end
 
       def to_s(as_single_line: nil)
         if length_of_first_paragraph > MAX_LINE_LENGTH ||
-             as_single_line == false
+           as_single_line == false
           to_string_in_multiline_mode
         elsif length_of_first_paragraph <= MAX_LINE_LENGTH ||
               as_single_line == true
@@ -67,21 +69,17 @@ module SuperDiff
 
       attr_reader :tokens
 
-      def add_token(klass, *args, &block)
-        tokens << klass.new(*args, &block)
+      def add_token(klass, ...)
+        tokens << klass.new(...)
       end
 
       class Base
         def to_string_in_singleline_mode
-          raise NotImplementedError.new(
-                  "#{self.class} must support #to_string_in_singleline_mode"
-                )
+          raise NotImplementedError, "#{self.class} must support #to_string_in_singleline_mode"
         end
 
         def to_string_in_multiline_mode
-          raise NotImplementedError.new(
-                  "#{self.class} must support #to_string_in_multiline_mode"
-                )
+          raise NotImplementedError, "#{self.class} must support #to_string_in_multiline_mode"
         end
 
         def length
@@ -91,6 +89,7 @@ module SuperDiff
 
       class Text < Base
         def initialize(immediate_value = nil, &block)
+          super()
           @immediate_value = immediate_value
           @block = block
         end
@@ -104,7 +103,7 @@ module SuperDiff
         end
 
         def to_s
-          raise NotImplementedError.new("#{self.class} must support #to_s")
+          raise NotImplementedError, "#{self.class} must support #to_s"
         end
 
         protected
@@ -112,11 +111,7 @@ module SuperDiff
         attr_reader :immediate_value, :block
 
         def evaluate
-          if immediate_value && block
-            raise ArgumentError.new(
-                    "Cannot provide both immediate value and block"
-                  )
-          end
+          raise ArgumentError, 'Cannot provide both immediate value and block' if immediate_value && block
 
           immediate_value || block.call
         end
@@ -124,12 +119,12 @@ module SuperDiff
         def to_sentence(values)
           case values.length
           when 0
-            ""
+            ''
           when 1
             values[0]
           else
             # TODO: Use Oxford comma
-            values[0..-2].join(", ") + " and #{values[-1]}"
+            values[0..-2].join(', ') + " and #{values[-1]}"
           end
         end
       end
@@ -141,8 +136,8 @@ module SuperDiff
       end
 
       class ColorizedText < Text
-        def initialize(color, *args, &block)
-          super(*args, &block)
+        def initialize(color, ...)
+          super(...)
 
           @color = color
         end
@@ -165,8 +160,8 @@ module SuperDiff
       end
 
       class ColorizedList < Text
-        def initialize(color, *args, &block)
-          super(*args, &block)
+        def initialize(color, ...)
+          super(...)
 
           @color = color
         end
@@ -199,13 +194,13 @@ module SuperDiff
         end
 
         def to_string_in_multiline_mode
-          ""
+          ''
         end
       end
 
       class PlainTextInMultilineMode < Text
         def to_string_in_singleline_mode
-          ""
+          ''
         end
 
         def to_string_in_multiline_mode
@@ -215,7 +210,7 @@ module SuperDiff
 
       class Break < Base
         def to_string_in_singleline_mode
-          " "
+          ' '
         end
 
         def to_string_in_multiline_mode

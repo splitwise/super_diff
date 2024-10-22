@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class BinaryOperation
@@ -14,7 +16,7 @@ module SuperDiff
           :right_value!,
           :left_index!,
           :right_index!,
-          children: []
+          { children: [] }
         ]
       )
     end

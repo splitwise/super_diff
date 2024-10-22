@@ -1,10 +1,12 @@
-require "set"
+# frozen_string_literal: true
+
+require 'set'
 
 module SuperDiff
   module Core
     module RecursionGuard
-      RECURSION_GUARD_KEY = "super_diff_recursion_guard_key".freeze
-      PLACEHOLDER = "∙∙∙".freeze
+      RECURSION_GUARD_KEY = 'super_diff_recursion_guard_key'
+      PLACEHOLDER = '∙∙∙'
 
       def self.guarding_recursion_of(*objects, &block)
         already_seen_objects, first_seen_objects =
@@ -17,7 +19,7 @@ module SuperDiff
         end
 
         result =
-          if block.arity > 0
+          if block.arity.positive?
             block.call(already_seen_objects.any?)
           else
             block.call

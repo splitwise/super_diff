@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module UnitTests
     def match_output(expected_output)
@@ -17,13 +19,13 @@ module SuperDiff
 
       def failure_message
         message =
-          "Expected colored output to be printed, but got a mismatch.\n\n" +
-            "Expected output:\n\n" +
-            SuperDiff::Test::OutputHelpers.bookended(expected_output) + "\n" +
-            "Actual output:\n\n" +
-            SuperDiff::Test::OutputHelpers.bookended(actual_output)
+          "Expected colored output to be printed, but got a mismatch.\n\n" \
+          "Expected output:\n\n" +
+          SuperDiff::Test::OutputHelpers.bookended(expected_output) + "\n" \
+                                                                      "Actual output:\n\n" +
+          SuperDiff::Test::OutputHelpers.bookended(actual_output)
 
-        if %w[1 true].include?(ENV["SHOW_DIFF"])
+        if %w[1 true].include?(ENV['SHOW_DIFF'])
           ::RSpec::Matchers::ExpectedsForMultipleDiffs.from(
             expected_output
           ).message_with_diff(

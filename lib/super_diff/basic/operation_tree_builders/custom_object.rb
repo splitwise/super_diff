@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeBuilders
       class CustomObject < DefaultObject
         def self.applies_to?(expected, actual)
-          expected.class == actual.class &&
+          expected.instance_of?(actual.class) &&
             expected.respond_to?(:attributes_for_super_diff) &&
             actual.respond_to?(:attributes_for_super_diff)
         end

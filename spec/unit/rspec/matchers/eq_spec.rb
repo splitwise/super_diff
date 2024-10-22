@@ -1,9 +1,11 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "RSpec's `eq` matcher" do
-  describe "#description" do
-    it "returns the correct output" do
-      expect(eq(:foo).description).to eq("eq :foo")
+  describe '#description' do
+    it 'returns the correct output' do
+      expect(eq(:foo).description).to eq('eq :foo')
     end
   end
 end

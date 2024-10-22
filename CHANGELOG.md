@@ -8,6 +8,10 @@
 - Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/263)
 - Improve inspection of Range objects. [#267](https://github.com/splitwise/super_diff/pull/267)
 
+### Other changes
+
+- Switch from Prettier to Rubocop. [#269](https://github.com/splitwise/super_diff/pull/269)
+
 ## 0.13.0 - 2024-09-22
 
 ### Features

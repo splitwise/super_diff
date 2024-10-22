@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeBuilders
@@ -20,8 +22,10 @@ module SuperDiff
 
         def unary_operations_using_variant_of_patience_algorithm
           operations = []
-          aks, eks = actual.keys, expected.keys
-          previous_ei, ei = nil, 0
+          aks = actual.keys
+          eks = expected.keys
+          previous_ei = nil
+          ei = 0
           ai = 0
 
           # When diffing a hash, we're more interested in the 'actual' version
@@ -30,7 +34,8 @@ module SuperDiff
           # hash, and we start off by looping over it.
           while ai < aks.size
             ak = aks[ai]
-            av, ev = actual[ak], expected[ak]
+            av = actual[ak]
+            ev = expected[ak]
             # While we iterate over 'actual' in order, we jump all over
             # 'expected', trying to match up its keys with the keys in 'actual' as
             # much as possible.
@@ -51,23 +56,23 @@ module SuperDiff
                 # the keys in 'expected'.)
                 (previous_ei + 1).upto(ei - 1) do |ei2|
                   ek = eks[ei2]
-                  ev2, av2 = expected[ek], actual[ek]
+                  ev2 = expected[ek]
+                  av2 = actual[ek]
 
-                  if (
+                  next unless
                        (!actual.include?(ek) || ev2 != av2) &&
-                         operations.none? do |operation|
-                           %i[delete noop].include?(operation.name) &&
-                             operation.key == ek
-                         end
-                     )
-                    operations << Core::UnaryOperation.new(
-                      name: :delete,
-                      collection: expected,
-                      key: ek,
-                      value: ev2,
-                      index: ei2
-                    )
-                  end
+                       operations.none? do |operation|
+                         %i[delete noop].include?(operation.name) &&
+                         operation.key == ek
+                       end
+
+                  operations << Core::UnaryOperation.new(
+                    name: :delete,
+                    collection: expected,
+                    key: ek,
+                    value: ev2,
+                    index: ei2
+                  )
                 end
               end
 
@@ -82,10 +87,9 @@ module SuperDiff
               # (If we're here, it probably means that the key in 'actual' isn't
               # present in 'expected' or the values don't match.)
 
-              if (
-                   (operations.empty? || operations.last.name == :noop) &&
-                     (ai == 0 || eks.include?(aks[ai - 1]))
-                 )
+              if (operations.empty? || operations.last.name == :noop) &&
+                 (ai.zero? || eks.include?(aks[ai - 1]))
+
                 # If we go from a match in the last iteration to a missing or
                 # extra key in this one, or we're at the first key in 'actual' and
                 # it's missing or extra, look for deletes in the 'expected' hash
@@ -98,7 +102,7 @@ module SuperDiff
                 # or we hit some other condition (see below).
 
                 start_index =
-                  if ai > 0
+                  if ai.positive?
                     eks.index(aks[ai - 1]) + 1
                   else
                     0
@@ -106,18 +110,18 @@ module SuperDiff
 
                 start_index.upto(eks.size - 1) do |ei2|
                   ek = eks[ei2]
-                  ev, av2 = expected[ek], actual[ek]
+                  ev = expected[ek]
+                  av2 = actual[ek]
 
                   if actual.include?(ek) && ev == av2
                     # If the key in 'expected' we've landed on happens to be a
                     # match in 'actual', then stop, because it's going to be
                     # handled in some future iteration of the 'actual' loop.
                     break
-                  elsif (
-                        aks[ai + 1..-1].any? do |k|
+                  elsif aks[ai + 1..].any? do |k| # rubocop:disable Lint/DuplicateBranch for clarity
                           expected.include?(k) && expected[k] != actual[k]
                         end
-                      )
+
                     # While we backtracked a bit to iterate over 'expected', we
                     # now have to look ahead. If we will end up encountering a
                     # insert that matches this delete later, stop and go back to
@@ -135,28 +139,27 @@ module SuperDiff
                     )
                   end
 
-                  if ek == ak && ev != av
-                    # If we're pointing to the same key in 'expected' as in
-                    # 'actual', but with different values, go ahead and add an
-                    # insert now to accompany the delete added above. That way
-                    # they appear together, which will be easier to read.
-                    operations << Core::UnaryOperation.new(
-                      name: :insert,
-                      collection: actual,
-                      key: ak,
-                      value: av,
-                      index: ai
-                    )
-                  end
+                  next unless ek == ak && ev != av
+
+                  # If we're pointing to the same key in 'expected' as in
+                  # 'actual', but with different values, go ahead and add an
+                  # insert now to accompany the delete added above. That way
+                  # they appear together, which will be easier to read.
+                  operations << Core::UnaryOperation.new(
+                    name: :insert,
+                    collection: actual,
+                    key: ak,
+                    value: av,
+                    index: ai
+                  )
                 end
               end
 
-              if (
-                   expected.include?(ak) && ev != av &&
-                     operations.none? do |op|
-                       op.name == :delete && op.key == ak
-                     end
-                 )
+              if expected.include?(ak) && ev != av &&
+                 operations.none? do |op|
+                   op.name == :delete && op.key == ak
+                 end
+
                 # If we're here, it means that we didn't encounter any delete
                 # operations above for whatever reason and so we need to add a
                 # delete to represent the fact that the value for this key has

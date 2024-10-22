@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module IntegrationTests
     module TestPrograms
@@ -11,7 +13,7 @@ module SuperDiff
         end
 
         def test_plan_command
-          "run_plain_test"
+          'run_plain_test'
         end
       end
     end

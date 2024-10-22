@@ -9,12 +9,13 @@ if echo "$stdin" | grep -q "^(delete)"; then
   exit 0
 fi
 
-scripts/lint-changed-files.sh --check
+scripts/lint-changed-files.sh
 
 echo
 echo "*** Auditing dependencies ***************"
 echo
 
 yarn audit || exit $?
+bundle exec bundle-audit || exit $?
 
 echo

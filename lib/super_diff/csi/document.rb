@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Csi
     class Document
@@ -14,8 +16,8 @@ module SuperDiff
         parts.each(&block)
       end
 
-      def bold(*args, **opts, &block)
-        colorize(BoldSequence.new, *args, **opts, &block)
+      def bold(...)
+        colorize(BoldSequence.new, ...)
       end
 
       def colorize(*args, **opts, &block)
@@ -23,11 +25,10 @@ module SuperDiff
           args.partition { |arg| arg.is_a?(String) || arg.is_a?(self.class) }
 
         if colors[0].is_a?(Symbol)
-          if colors[0] == :colorize
-            raise ArgumentError, "#colorize can't call itself!"
-          else
-            public_send(colors[0], *contents, *colors[1..-1], **opts, &block)
-          end
+          raise ArgumentError, "#colorize can't call itself!" if colors[0] == :colorize
+
+          public_send(colors[0], *contents, *colors[1..], **opts, &block)
+
         elsif !block && colors.empty? && opts.empty?
           text(*contents)
         elsif block
@@ -35,10 +36,10 @@ module SuperDiff
         elsif contents.any?
           colorize_inline(contents, colors, opts)
         else
-          raise ArgumentError, "Must have something to colorize!"
+          raise ArgumentError, 'Must have something to colorize!'
         end
       end
-      alias_method :colored, :colorize
+      alias colored colorize
 
       def text(*contents, **, &block)
         if block
@@ -46,10 +47,10 @@ module SuperDiff
         elsif contents.any?
           contents.each { |part| add_part(part) }
         else
-          raise ArgumentError.new("Must have something to add to the document!")
+          raise ArgumentError, 'Must have something to add to the document!'
         end
       end
-      alias_method :plain, :text
+      alias plain text
 
       def line(*contents, indent_by: 0, &block)
         indent(by: indent_by) do
@@ -60,9 +61,7 @@ module SuperDiff
           elsif contents.any?
             text(*contents)
           else
-            raise ArgumentError.new(
-                    "Must have something to add to the document!"
-                  )
+            raise ArgumentError, 'Must have something to add to the document!'
           end
         end
 
@@ -75,7 +74,7 @@ module SuperDiff
 
       def indent(by:, &block)
         # TODO: This won't work if using `text` manually to add lines
-        indentation_stack << (by.is_a?(String) ? by : " " * by)
+        indentation_stack << (by.is_a?(String) ? by : ' ' * by)
         evaluate_block(&block)
         indentation_stack.pop
       end
@@ -116,13 +115,11 @@ module SuperDiff
           end
         elsif Csi::Color.exists?(name.to_sym)
           ColorRequest.new(name: name.to_sym, line: false)
-        else
-          nil
         end
       end
 
       def evaluate_block(&block)
-        if block.arity > 0
+        if block.arity.positive?
           block.call(self)
         else
           instance_eval(&block)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module IntegrationTests
     module TestPrograms
@@ -12,7 +14,7 @@ module SuperDiff
         end
 
         def test_plan_command
-          "run_rspec_active_support_test"
+          'run_rspec_active_support_test'
         end
       end
     end

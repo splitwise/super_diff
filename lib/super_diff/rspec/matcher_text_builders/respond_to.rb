@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -19,7 +21,7 @@ module SuperDiff
         protected
 
         def add_expected_value_to(template, expected)
-          template.add_text " "
+          template.add_text ' '
           template.add_list_in_color(expected_color, expected)
         end
 
@@ -28,7 +30,7 @@ module SuperDiff
 
           if arbitrary_keywords?
             add_arbitrary_keywords_clause_to(template)
-          elsif has_expected_keywords?
+          elsif expected_keywords?
             add_keywords_clause_to(template)
           end
 
@@ -43,8 +45,8 @@ module SuperDiff
           @arbitrary_keywords
         end
 
-        def has_expected_keywords?
-          expected_keywords && expected_keywords.count > 0
+        def expected_keywords?
+          expected_keywords&.count&.positive?
         end
 
         def unlimited_arguments?
@@ -52,34 +54,34 @@ module SuperDiff
         end
 
         def add_arity_clause_to(template)
-          template.add_text " with "
+          template.add_text ' with '
           template.add_text_in_color expected_color, expected_arity
-          template.add_text " "
-          template.add_text pluralize("argument", expected_arity)
+          template.add_text ' '
+          template.add_text pluralize('argument', expected_arity)
         end
 
         def add_arbitrary_keywords_clause_to(template)
-          template.add_text " with "
-          template.add_text_in_color expected_color, "any"
-          template.add_text " keywords"
+          template.add_text ' with '
+          template.add_text_in_color expected_color, 'any'
+          template.add_text ' keywords'
         end
 
         def add_keywords_clause_to(template)
-          template.add_text " with "
-          template.add_text pluralize("keyword", expected_keywords.length)
-          template.add_text " "
+          template.add_text ' with '
+          template.add_text pluralize('keyword', expected_keywords.length)
+          template.add_text ' '
           template.add_list_in_color expected_color, expected_keywords
         end
 
         def add_unlimited_arguments_clause_to(template)
-          if arbitrary_keywords? || has_expected_keywords?
-            template.add_text " and "
+          if arbitrary_keywords? || expected_keywords?
+            template.add_text ' and '
           else
-            template.add_text " with "
+            template.add_text ' with '
           end
 
-          template.add_text_in_color expected_color, "unlimited"
-          template.add_text " arguments"
+          template.add_text_in_color expected_color, 'unlimited'
+          template.add_text ' arguments'
         end
 
         def pluralize(word, count)

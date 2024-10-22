@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module IntegrationTests
-    PROJECT_DIRECTORY = Pathname.new("../../..").expand_path(__dir__)
+    PROJECT_DIRECTORY = Pathname.new('../../..').expand_path(__dir__)
 
-    def as_both_colored_and_uncolored
-      [true, false].each { |color_enabled| yield color_enabled }
+    def as_both_colored_and_uncolored(&block)
+      [true, false].each(&block)
     end
 
     def make_plain_test_program(
@@ -46,7 +48,7 @@ module SuperDiff
       color_enabled:,
       snippet:,
       expectation:,
-      test_name: "test passes",
+      test_name: 'test passes',
       key_enabled: true,
       newline_before_expectation: false,
       indentation: 7,
@@ -59,7 +61,7 @@ module SuperDiff
         line "1) #{test_name}", indent_by: 2
 
         line indent_by: 5 do
-          bold "Failure/Error: "
+          bold 'Failure/Error: '
           plain snippet
         end
 
@@ -71,32 +73,32 @@ module SuperDiff
           if diff
             newline
 
-            white_line "Diff:"
+            white_line 'Diff:'
 
             if key_enabled
               newline
 
-              line { blue "┌ (Key) ──────────────────────────┐" }
+              line { blue '┌ (Key) ──────────────────────────┐' }
 
               line do
-                blue "│ "
-                magenta "‹-› in expected, not in actual"
-                blue "  │"
+                blue '│ '
+                magenta '‹-› in expected, not in actual'
+                blue '  │'
               end
 
               line do
-                blue "│ "
-                yellow "‹+› in actual, not in expected"
-                blue "  │"
+                blue '│ '
+                yellow '‹+› in actual, not in expected'
+                blue '  │'
               end
 
               line do
-                blue "│ "
-                text "‹ › in both expected and actual"
-                blue " │"
+                blue '│ '
+                text '‹ › in both expected and actual'
+                blue ' │'
               end
 
-              line { blue "└─────────────────────────────────┘" }
+              line { blue '└─────────────────────────────────┘' }
             end
 
             newline

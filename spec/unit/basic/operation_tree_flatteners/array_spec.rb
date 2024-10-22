@@ -1,23 +1,25 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
-  context "given an empty tree" do
-    it "returns a set of lines which are simply the open token and close token" do
+  context 'given an empty tree' do
+    it 'returns a set of lines which are simply the open token and close token' do
       expect(described_class.call([])).to match(
         [
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close
           )
@@ -26,8 +28,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
     end
   end
 
-  context "given a tree of only noops" do
-    it "returns a series of lines from inspecting each value, creating multiple lines upon encountering inner data structures" do
+  context 'given a tree of only noops' do
+    it 'returns a series of lines from inspecting each value, creating multiple lines upon encountering inner data structures' do
       collection = Array.new(3) { :some_value }
       operation_tree =
         SuperDiff::Basic::OperationTrees::Array.new(
@@ -36,21 +38,21 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: collection,
-              value: "foo",
+              value: 'foo',
               index: 0
             ),
             double(
               :operation,
               name: :noop,
               collection: collection,
-              value: ["one fish", "two fish"],
+              value: ['one fish', 'two fish'],
               index: 1
             ),
             double(
               :operation,
               name: :noop,
               collection: collection,
-              value: "bar",
+              value: 'bar',
               index: 2
             )
           ]
@@ -63,8 +65,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open,
             add_comma: false
@@ -72,15 +74,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("foo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: nil,
             add_comma: false
@@ -88,22 +90,22 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("one fish"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("two fish"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: nil,
             add_comma: true
@@ -111,15 +113,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("bar"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close,
             add_comma: false
@@ -129,8 +131,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
     end
   end
 
-  context "given a one-dimensional tree of noops, inserts, and deletes" do
-    it "returns a series of lines from inspecting each value, creating multiple lines upon encountering inner data structures" do
+  context 'given a one-dimensional tree of noops, inserts, and deletes' do
+    it 'returns a series of lines from inspecting each value, creating multiple lines upon encountering inner data structures' do
       expected = Array.new(3) { :some_value }
       actual = Array.new(4) { :some_value }
       operation_tree =
@@ -140,35 +142,35 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :delete,
               collection: expected,
-              value: "foo",
+              value: 'foo',
               index: 0
             ),
             double(
               :operation,
               name: :insert,
               collection: actual,
-              value: "zoo",
+              value: 'zoo',
               index: 0
             ),
             double(
               :operation,
               name: :noop,
               collection: actual,
-              value: ["one fish", "two fish"],
+              value: ['one fish', 'two fish'],
               index: 1
             ),
             double(
               :operation,
               name: :noop,
               collection: actual,
-              value: "bar",
+              value: 'bar',
               index: 2
             ),
             double(
               :operation,
               name: :insert,
               collection: actual,
-              value: "baz",
+              value: 'baz',
               index: 3
             )
           ]
@@ -181,8 +183,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open,
             add_comma: false
@@ -190,22 +192,22 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :delete,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("foo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :insert,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("zoo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: nil,
             add_comma: false
@@ -213,22 +215,22 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("one fish"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("two fish"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: nil,
             add_comma: true
@@ -236,22 +238,22 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("bar"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :insert,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("baz"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close,
             add_comma: false
@@ -261,8 +263,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
     end
   end
 
-  context "given a multi-dimensional tree of operations" do
-    it "splits change operations into multiple lines" do
+  context 'given a multi-dimensional tree of operations' do
+    it 'splits change operations into multiple lines' do
       collection = Array.new(3) { :some_value }
       subcollection = Array.new(2) { :some_value }
       operation_tree =
@@ -272,7 +274,7 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: collection,
-              value: "foo",
+              value: 'foo',
               index: 0
             ),
             double(
@@ -289,21 +291,21 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
                       :operation,
                       name: :noop,
                       collection: subcollection,
-                      value: "one fish",
+                      value: 'one fish',
                       index: 0
                     ),
                     double(
                       :operation,
                       name: :delete,
                       collection: subcollection,
-                      value: "two fish",
+                      value: 'two fish',
                       index: 1
                     ),
                     double(
                       :operation,
                       name: :insert,
                       collection: subcollection,
-                      value: "blue fish",
+                      value: 'blue fish',
                       index: 1
                     )
                   ]
@@ -313,7 +315,7 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: collection,
-              value: "bar",
+              value: 'bar',
               index: 2
             )
           ]
@@ -326,8 +328,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open,
             add_comma: false
@@ -335,15 +337,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("foo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: nil,
             add_comma: false
@@ -351,29 +353,29 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("one fish"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :delete,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("two fish"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :insert,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("blue fish"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: nil,
             add_comma: true
@@ -381,15 +383,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("bar"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close,
             add_comma: false
@@ -399,8 +401,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
     end
   end
 
-  context "given a single-dimensional tree that contains a reference to itself" do
-    it "replaces the reference with a static placeholder" do
+  context 'given a single-dimensional tree that contains a reference to itself' do
+    it 'replaces the reference with a static placeholder' do
       left_collection = Array.new(3) { :some_value }
       right_collection = Array.new(2) { :some_value }
       right_collection << right_collection
@@ -412,21 +414,21 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: right_collection,
-              value: "foo",
+              value: 'foo',
               index: 0
             ),
             double(
               :operation,
               name: :noop,
               collection: right_collection,
-              value: "bar",
+              value: 'bar',
               index: 1
             ),
             double(
               :operation,
               name: :delete,
               collection: left_collection,
-              value: "baz",
+              value: 'baz',
               index: 2
             ),
             double(
@@ -446,8 +448,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open,
             add_comma: false
@@ -455,36 +457,36 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("foo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("bar"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :delete,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("baz"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :insert,
             indentation_level: 1,
-            prefix: "",
-            value: "∙∙∙",
+            prefix: '',
+            value: '∙∙∙',
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close,
             add_comma: false
@@ -494,8 +496,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
     end
   end
 
-  context "given a multi-dimensional tree that contains a reference to itself in an inner level" do
-    it "replaces the reference with a static placeholder" do
+  context 'given a multi-dimensional tree that contains a reference to itself in an inner level' do
+    it 'replaces the reference with a static placeholder' do
       collection = Array.new(3) { :some_value }
       left_subcollection = Array.new(2) { :some_value }
       right_subcollection = Array.new(1) { :some_value }
@@ -508,7 +510,7 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: collection,
-              value: "foo",
+              value: 'foo',
               index: 0
             ),
             double(
@@ -525,14 +527,14 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
                       :operation,
                       name: :noop,
                       collection: right_subcollection,
-                      value: "bar",
+                      value: 'bar',
                       index: 0
                     ),
                     double(
                       :operation,
                       name: :delete,
                       collection: left_subcollection,
-                      value: "baz",
+                      value: 'baz',
                       index: 1
                     ),
                     double(
@@ -549,7 +551,7 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
               :operation,
               name: :noop,
               collection: collection,
-              value: "qux",
+              value: 'qux',
               index: 2
             )
           ]
@@ -562,8 +564,8 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: :open,
             add_comma: false
@@ -571,15 +573,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("foo"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "[",
+            prefix: '',
+            value: '[',
             collection_bookend: :open,
             complete_bookend: nil,
             add_comma: false
@@ -587,29 +589,29 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("bar"),
             add_comma: true
           ),
           an_object_having_attributes(
             type: :delete,
             indentation_level: 2,
-            prefix: "",
+            prefix: '',
             value: %("baz"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :insert,
             indentation_level: 2,
-            prefix: "",
-            value: "∙∙∙",
+            prefix: '',
+            value: '∙∙∙',
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: nil,
             add_comma: true
@@ -617,15 +619,15 @@ RSpec.describe SuperDiff::Basic::OperationTreeFlatteners::Array do
           an_object_having_attributes(
             type: :noop,
             indentation_level: 1,
-            prefix: "",
+            prefix: '',
             value: %("qux"),
             add_comma: false
           ),
           an_object_having_attributes(
             type: :noop,
             indentation_level: 0,
-            prefix: "",
-            value: "]",
+            prefix: '',
+            value: ']',
             collection_bookend: :close,
             complete_bookend: :close,
             add_comma: false

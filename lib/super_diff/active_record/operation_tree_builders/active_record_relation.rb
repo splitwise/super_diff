@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module ActiveRecord
     module OperationTreeBuilders
@@ -15,7 +17,7 @@ module SuperDiff
         private
 
         def operation_tree
-          @_operation_tree ||= OperationTrees::ActiveRecordRelation.new([])
+          @operation_tree ||= OperationTrees::ActiveRecordRelation.new([])
         end
       end
     end

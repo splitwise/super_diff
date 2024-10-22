@@ -30,6 +30,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Install Ruby dependencies
+        run: bundle install
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
@@ -38,8 +40,10 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn --immutable
       - name: Lint
-        run: yarn lint
-      - name: Audit
+        run: bundle exec rubocop --parallel
+      - name: Audit Ruby
+        run: bundle exec bundle-audit check --update
+      - name: Audit JS
         run: yarn audit
 
   test:
@@ -70,17 +74,6 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Install Zeus
-        run: gem install zeus
-      - name: Start Zeus
-        uses: JarvusInnovations/background-action@v1
-        with:
-          run: zeus start
-          wait-on: |
-            socket:.zeus.sock
-            file:.zeus.sock
-          wait-for: 15s
-          log-output-if: failure
       - name: Run tests
         run: bundle exec rake --trace
 

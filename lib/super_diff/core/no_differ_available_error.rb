@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class NoDifferAvailableError < StandardError
@@ -12,11 +14,11 @@ module SuperDiff
       attr_accessor :expected, :actual
 
       def initialize
-        super(<<-MESSAGE)
-There is no differ available to handle an "expected" value of type
-#{expected.class}
-and an "actual" value of type
-#{actual.class}.
+        super(<<~MESSAGE)
+          There is no differ available to handle an "expected" value of type
+          #{expected.class}
+          and an "actual" value of type
+          #{actual.class}.
         MESSAGE
       end
     end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -5,10 +7,10 @@ module SuperDiff
         protected
 
         def actual_phrase
-          if actual == "exception-free block"
-            "Expected"
+          if actual == 'exception-free block'
+            'Expected'
           else
-            "Expected raised exception"
+            'Expected raised exception'
           end
         end
       end

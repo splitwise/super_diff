@@ -1,9 +1,11 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "Integration with RSpec's #match_array matcher",
                type: :integration do
-  context "when a few number of values are given" do
-    it "produces the correct failure message when used in the positive" do
+  context 'when a few number of values are given' do
+    it 'produces the correct failure message when used in the positive' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           actual = ["Marty", "Jennifer", "Doc"]
@@ -15,28 +17,28 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(actual).to match_array(expected)",
+            snippet: 'expect(actual).to match_array(expected)',
             expectation:
               proc do
                 line do
-                  plain "Expected "
-                  actual %|["Marty", "Jennifer", "Doc"]|
-                  plain " to match array with "
-                  expected %|"Einie"|
-                  plain " and "
-                  expected %|"Marty"|
-                  plain "."
+                  plain 'Expected '
+                  actual %(["Marty", "Jennifer", "Doc"])
+                  plain ' to match array with '
+                  expected %("Einie")
+                  plain ' and '
+                  expected %("Marty")
+                  plain '.'
                 end
               end,
             diff:
               proc do
-                plain_line "  ["
-                plain_line %|    "Marty",|
-                actual_line %|+   "Jennifer",|
-                actual_line %|+   "Doc",|
+                plain_line '  ['
+                plain_line %(    "Marty",)
+                actual_line %(+   "Jennifer",)
+                actual_line %(+   "Doc",)
                 # expected_line %|-   "Einie"|  # TODO
-                expected_line %|-   "Einie",|
-                plain_line "  ]"
+                expected_line %(-   "Einie",)
+                plain_line '  ]'
               end
           )
 
@@ -46,7 +48,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
       end
     end
 
-    it "produces the correct failure message when used in the negative" do
+    it 'produces the correct failure message when used in the negative' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           values = ["Einie", "Marty"]
@@ -57,17 +59,17 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(values).not_to match_array(values)",
+            snippet: 'expect(values).not_to match_array(values)',
             expectation:
               proc do
                 line do
-                  plain "Expected "
-                  actual %|["Einie", "Marty"]|
-                  plain " not to match array with "
-                  expected %|"Einie"|
-                  plain " and "
-                  expected %|"Marty"|
-                  plain "."
+                  plain 'Expected '
+                  actual %(["Einie", "Marty"])
+                  plain ' not to match array with '
+                  expected %("Einie")
+                  plain ' and '
+                  expected %("Marty")
+                  plain '.'
                 end
               end
           )
@@ -79,9 +81,9 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
     end
   end
 
-  context "when a large number of values are given" do
-    context "and they are only simple strings" do
-      it "produces the correct failure message when used in the positive" do
+  context 'when a large number of values are given' do
+    context 'and they are only simple strings' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = [
@@ -105,38 +107,38 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to match_array(expected)",
+              snippet: 'expect(actual).to match_array(expected)',
               expectation:
                 proc do
                   line do
-                    plain "           Expected "
-                    actual %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                    plain '           Expected '
+                    actual %(["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"])
                   end
 
                   line do
-                    plain "to match array with "
-                    expected %|"Doc Brown"|
-                    plain ", "
-                    expected %|"Marty McFly"|
-                    plain ", "
-                    expected %|"Biff Tannen"|
-                    plain ", "
-                    expected %|"George McFly"|
-                    plain " and "
-                    expected %|"Lorraine McFly"|
+                    plain 'to match array with '
+                    expected %("Doc Brown")
+                    plain ', '
+                    expected %("Marty McFly")
+                    plain ', '
+                    expected %("Biff Tannen")
+                    plain ', '
+                    expected %("George McFly")
+                    plain ' and '
+                    expected %("Lorraine McFly")
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  ["
-                  plain_line %|    "Marty McFly",|
-                  plain_line %|    "Doc Brown",|
-                  plain_line %|    "Lorraine McFly",|
-                  actual_line %|+   "Einie",|
-                  expected_line %|-   "Biff Tannen",|
+                  plain_line '  ['
+                  plain_line %(    "Marty McFly",)
+                  plain_line %(    "Doc Brown",)
+                  plain_line %(    "Lorraine McFly",)
+                  actual_line %(+   "Einie",)
+                  expected_line %(-   "Biff Tannen",)
                   # expected_line %|-   "George McFly"|  # TODO
-                  expected_line %|-   "George McFly",|
-                  plain_line "  ]"
+                  expected_line %(-   "George McFly",)
+                  plain_line '  ]'
                 end
             )
 
@@ -146,7 +148,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             values = [
@@ -163,24 +165,24 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(values).not_to match_array(values)",
+              snippet: 'expect(values).not_to match_array(values)',
               newline_before_expectation: true,
               expectation:
                 proc do
                   line do
-                    plain "               Expected "
-                    actual %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                    plain '               Expected '
+                    actual %(["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"])
                   end
 
                   line do
-                    plain "not to match array with "
-                    expected %|"Marty McFly"|
-                    plain ", "
-                    expected %|"Doc Brown"|
-                    plain ", "
-                    expected %|"Einie"|
-                    plain " and "
-                    expected %|"Lorraine McFly"|
+                    plain 'not to match array with '
+                    expected %("Marty McFly")
+                    plain ', '
+                    expected %("Doc Brown")
+                    plain ', '
+                    expected %("Einie")
+                    plain ' and '
+                    expected %("Lorraine McFly")
                   end
                 end
             )
@@ -192,8 +194,8 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
       end
     end
 
-    context "and some of them are regexen" do
-      it "produces the correct failure message when used in the positive" do
+    context 'and some of them are regexen' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST
             actual = [
@@ -217,39 +219,39 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to match_array(expected)",
+              snippet: 'expect(actual).to match_array(expected)',
               expectation:
                 proc do
                   line do
-                    plain "           Expected "
-                    actual %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                    plain '           Expected '
+                    actual %(["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"])
                   end
 
                   line do
-                    plain "to match array with "
-                    expected "/ Brown$/"
-                    plain ", "
-                    expected %|"Marty McFly"|
-                    plain ", "
-                    expected %|"Biff Tannen"|
-                    plain ", "
-                    expected "/Georg McFly/"
-                    plain " and "
-                    expected "/Lorrain McFly/"
+                    plain 'to match array with '
+                    expected '/ Brown$/'
+                    plain ', '
+                    expected %("Marty McFly")
+                    plain ', '
+                    expected %("Biff Tannen")
+                    plain ', '
+                    expected '/Georg McFly/'
+                    plain ' and '
+                    expected '/Lorrain McFly/'
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  ["
-                  plain_line %|    "Marty McFly",|
-                  plain_line %|    "Doc Brown",|
-                  actual_line %|+   "Einie",|
-                  actual_line %|+   "Lorraine McFly",|
-                  expected_line %|-   "Biff Tannen",|
-                  expected_line "-   /Georg McFly/,"
+                  plain_line '  ['
+                  plain_line %(    "Marty McFly",)
+                  plain_line %(    "Doc Brown",)
+                  actual_line %(+   "Einie",)
+                  actual_line %(+   "Lorraine McFly",)
+                  expected_line %(-   "Biff Tannen",)
+                  expected_line '-   /Georg McFly/,'
                   # expected_line %|-   /Lorrain McFly/|  # TODO
-                  expected_line "-   /Lorrain McFly/,"
-                  plain_line "  ]"
+                  expected_line '-   /Lorrain McFly/,'
+                  plain_line '  ]'
                 end
             )
 
@@ -259,7 +261,7 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST
             values = [
@@ -277,28 +279,26 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(values).not_to match_array(values)",
+              snippet: 'expect(values).not_to match_array(values)',
               newline_before_expectation: true,
               expectation:
                 proc do
                   line do
-                    plain "               Expected "
-                    # rubocop:disable Metrics/LineLength
-                    actual %|[/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/]|
-                    # rubocop:enable Metrics/LineLength
+                    plain '               Expected '
+                    actual %([/ Brown$/, "Marty McFly", "Biff Tannen", /Georg McFly/, /Lorrain McFly/])
                   end
 
                   line do
-                    plain "not to match array with "
-                    expected "/ Brown$/"
-                    plain ", "
-                    expected %|"Marty McFly"|
-                    plain ", "
-                    expected %|"Biff Tannen"|
-                    plain ", "
-                    expected "/Georg McFly/"
-                    plain " and "
-                    expected "/Lorrain McFly/"
+                    plain 'not to match array with '
+                    expected '/ Brown$/'
+                    plain ', '
+                    expected %("Marty McFly")
+                    plain ', '
+                    expected %("Biff Tannen")
+                    plain ', '
+                    expected '/Georg McFly/'
+                    plain ' and '
+                    expected '/Lorrain McFly/'
                   end
                 end
             )
@@ -310,8 +310,8 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
       end
     end
 
-    context "and some of them are RSpec matchers" do
-      it "produces the correct failure message" do
+    context 'and some of them are RSpec matchers' do
+      it 'produces the correct failure message' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = [
@@ -332,42 +332,40 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to match_array(expected)",
+              snippet: 'expect(actual).to match_array(expected)',
               expectation:
                 proc do
                   line do
-                    plain "           Expected "
-                    # rubocop:disable Metrics/LineLength
+                    plain '           Expected '
                     actual %|[{ foo: "bar" }, #<Double (anonymous) baz: "qux">, { blargh: "riddle" }]|
-                    # rubocop:enable Metrics/LineLength
                   end
 
                   line do
-                    plain "to match array with "
+                    plain 'to match array with '
                     expected %|#<a hash including (foo: "bar")>|
-                    plain ", "
+                    plain ', '
                     expected %|#<a collection containing exactly ("zing")>|
-                    plain " and "
+                    plain ' and '
                     expected %|#<an object having attributes (baz: "qux")>|
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  ["
-                  plain_line "    {"
-                  plain_line %|      foo: "bar"|
-                  plain_line "    },"
-                  plain_line "    #<Double (anonymous) {"
-                  plain_line %|      baz: "qux"|
-                  plain_line "    }>,"
-                  actual_line "+   {"
-                  actual_line %|+     blargh: "riddle"|
-                  actual_line "+   },"
-                  expected_line "-   #<a collection containing exactly ("
-                  expected_line %|-     "zing"|
+                  plain_line '  ['
+                  plain_line '    {'
+                  plain_line %(      foo: "bar")
+                  plain_line '    },'
+                  plain_line '    #<Double (anonymous) {'
+                  plain_line %(      baz: "qux")
+                  plain_line '    }>,'
+                  actual_line '+   {'
+                  actual_line %(+     blargh: "riddle")
+                  actual_line '+   },'
+                  expected_line '-   #<a collection containing exactly ('
+                  expected_line %(-     "zing")
                   # expected_line %|-   )>|  # TODO
-                  expected_line "-   )>,"
-                  plain_line "  ]"
+                  expected_line '-   )>,'
+                  plain_line '  ]'
                 end
             )
 
@@ -379,8 +377,8 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
     end
   end
 
-  context "when the input value is not an array, and especially not a value that could be turned into one" do
-    it "produces the correct failure message, as though an array had been given" do
+  context 'when the input value is not an array, and especially not a value that could be turned into one' do
+    it 'produces the correct failure message, as though an array had been given' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           actual = [:marty, :jennifer, :doc]
@@ -392,26 +390,26 @@ RSpec.describe "Integration with RSpec's #match_array matcher",
         expected_output =
           build_expected_output(
             color_enabled: color_enabled,
-            snippet: "expect(actual).to match_array(expected)",
+            snippet: 'expect(actual).to match_array(expected)',
             expectation:
               proc do
                 line do
-                  plain "Expected "
-                  actual "[:marty, :jennifer, :doc]"
-                  plain " to match array with "
-                  expected ":einie"
-                  plain "."
+                  plain 'Expected '
+                  actual '[:marty, :jennifer, :doc]'
+                  plain ' to match array with '
+                  expected ':einie'
+                  plain '.'
                 end
               end,
             diff:
               proc do
-                plain_line "  ["
-                actual_line "+   :marty,"
-                actual_line "+   :jennifer,"
-                actual_line "+   :doc,"
+                plain_line '  ['
+                actual_line '+   :marty,'
+                actual_line '+   :jennifer,'
+                actual_line '+   :doc,'
                 # expected_line %|-   :einie|  # TODO
-                expected_line "-   :einie,"
-                plain_line "  ]"
+                expected_line '-   :einie,'
+                plain_line '  ]'
               end
           )
 

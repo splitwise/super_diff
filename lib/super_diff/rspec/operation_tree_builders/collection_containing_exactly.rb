@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module OperationTreeBuilders
@@ -19,9 +21,7 @@ module SuperDiff
           operations = []
 
           (0...actual.length)
-            .reject do |index|
-              indexes_in_actual_but_not_in_expected.include?(index)
-            end
+            .reject { |index| indexes_in_actual_but_not_in_expected.include?(index) }
             .each { |index| add_noop_to(operations, index) }
 
           indexes_in_actual_but_not_in_expected.each do |index|
