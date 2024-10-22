@@ -1056,6 +1056,37 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     end
   end
 
+  context "when comparing ranges" do
+    it "produces the correct failure message when used in the positive" do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = "expect(1..5).to eq(5..6)"
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: snippet,
+            newline_before_expectation: true,
+            expectation:
+              proc do
+                line do
+                  plain "Expected "
+                  actual "1..5"
+                  plain " to eq "
+                  expected "5..6"
+                  plain "."
+                end
+              end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        )
+      end
+    end
+  end
+
   it_behaves_like "a matcher that supports elided diffs" do
     let(:matcher) { :eq }
   end
