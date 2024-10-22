@@ -19,9 +19,11 @@ module SuperDiff
       )
 
       def call
-        fail unless expected == actual
-
-        ''
+        if expected == actual # rubocop:disable Style/GuardClause `fail` is not Kernel#fail
+          ''
+        else
+          fail
+        end
       end
 
       protected
