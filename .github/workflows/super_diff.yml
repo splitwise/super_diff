@@ -30,6 +30,8 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
+      - name: Install Ruby dependencies
+        run: bundle install
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
