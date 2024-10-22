@@ -6,6 +6,7 @@
 
 - Improve inspection of Module. [#263](https://github.com/splitwise/super_diff/pull/263) by [@phorsuedzie](https://github.com/phorsuedzie)
 - Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/263)
+- Improve inspection of Range objects. [#267](https://github.com/splitwise/super_diff/pull/267)
 
 ## 0.13.0 - 2024-09-22
 
