@@ -1,10 +1,12 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "Integration with RSpec's #be_falsey matcher",
                type: :integration do
-  it "produces the correct failure message when used in the positive" do
+  it 'produces the correct failure message when used in the positive' do
     as_both_colored_and_uncolored do |color_enabled|
-      snippet = "expect(:foo).to be_falsey"
+      snippet = 'expect(:foo).to be_falsey'
       program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
       expected_output =
@@ -14,11 +16,11 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher",
           expectation:
             proc do
               line do
-                plain "Expected "
-                actual ":foo"
-                plain " to be "
-                expected "falsey"
-                plain "."
+                plain 'Expected '
+                actual ':foo'
+                plain ' to be '
+                expected 'falsey'
+                plain '.'
               end
             end
         )
@@ -29,9 +31,9 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher",
     end
   end
 
-  it "produces the correct failure message when used in the negative" do
+  it 'produces the correct failure message when used in the negative' do
     as_both_colored_and_uncolored do |color_enabled|
-      snippet = "expect(false).not_to be_falsey"
+      snippet = 'expect(false).not_to be_falsey'
       program = make_plain_test_program(snippet, color_enabled: color_enabled)
 
       expected_output =
@@ -41,11 +43,11 @@ RSpec.describe "Integration with RSpec's #be_falsey matcher",
           expectation:
             proc do
               line do
-                plain "Expected "
-                actual "false"
-                plain " not to be "
-                expected "falsey"
-                plain "."
+                plain 'Expected '
+                actual 'false'
+                plain ' not to be '
+                expected 'falsey'
+                plain '.'
               end
             end
         )

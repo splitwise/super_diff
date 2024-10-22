@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class MultilineString < Base
@@ -7,25 +9,25 @@ module SuperDiff
 
       def fail
         <<~OUTPUT.strip
-          Differing strings.
+            Differing strings.
 
-          #{
-          # TODO: This whole thing should not be red or green, just the values
-          Core::Helpers.style(
-            :expected,
-            "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
-          )
-        }
-          #{
-          Core::Helpers.style(
-            :actual,
-            "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
-          )
-        }
+            #{
+            # TODO: This whole thing should not be red or green, just the values
+            Core::Helpers.style(
+              :expected,
+              "Expected: #{SuperDiff.inspect_object(expected, as_lines: false)}"
+            )
+          }
+            #{
+            Core::Helpers.style(
+              :actual,
+              "  Actual: #{SuperDiff.inspect_object(actual, as_lines: false)}"
+            )
+          }
 
-          Diff:
+            Diff:
 
-          #{diff}
+            #{diff}
         OUTPUT
       end
 

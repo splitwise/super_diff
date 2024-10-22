@@ -1,30 +1,32 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Array < Base
       def self.applies_to?(value)
-        value.class == ::Array
+        value.instance_of?(::Array)
       end
 
       def fail
         <<~OUTPUT.strip
-          Differing arrays.
+            Differing arrays.
 
-          #{
-          Core::Helpers.style(
-            :expected,
-            "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
-          )
-        }
-          #{
-          Core::Helpers.style(
-            :actual,
-            "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
-          )
-        }
+            #{
+            Core::Helpers.style(
+              :expected,
+              "Expected: #{SuperDiff.inspect_object(expected, as_lines: false)}"
+            )
+          }
+            #{
+            Core::Helpers.style(
+              :actual,
+              "  Actual: #{SuperDiff.inspect_object(actual, as_lines: false)}"
+            )
+          }
 
-          Diff:
+            Diff:
 
-          #{diff}
+            #{diff}
         OUTPUT
       end
 

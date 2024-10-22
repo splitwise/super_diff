@@ -1,8 +1,0 @@
-.yarn/cache
-.yarn/releases
-CODE_OF_CONDUCT.md
-gemfiles
-site
-tmp
-vendor/bundle
-yarn.lock

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     class Differ
@@ -8,12 +10,12 @@ module SuperDiff
       def diff
         if worth_diffing?
           diff = SuperDiff.diff(expected, actual)
-          "\n\n" + diff
+          "\n\n#{diff}"
         else
-          ""
+          ''
         end
       rescue Core::NoDifferAvailableError
-        ""
+        ''
       end
 
       private
@@ -38,7 +40,7 @@ module SuperDiff
       end
 
       def helpers
-        @_helpers ||= RSpecHelpers.new
+        @helpers ||= RSpecHelpers.new
       end
 
       class RSpecHelpers

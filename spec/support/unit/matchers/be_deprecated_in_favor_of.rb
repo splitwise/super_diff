@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module UnitTests
     def be_deprecated_in_favor_of(new_constant_name)
@@ -20,19 +22,19 @@ module SuperDiff
       end
 
       def failure_message
-        "Expected stderr to start with:\n\n" +
-          SuperDiff::Test::OutputHelpers.bookended(expected_prefix) + "\n" +
-          "Actual output:\n\n" +
-          SuperDiff::Test::OutputHelpers.bookended(actual_output)
+        'Expected stderr to start with:' \
+          "\n\n#{SuperDiff::Test::OutputHelpers.bookended(expected_prefix)}" \
+          "\nActual output:" \
+          "\n\n#{SuperDiff::Test::OutputHelpers.bookended(actual_output)}"
       end
 
       private
 
       def expected_prefix
-        <<~EOT.rstrip
+        <<~WARNING.rstrip
           WARNING: #{old_constant_name} is deprecated and will be removed in the next major release.
           Please use #{new_constant_name} instead.
-        EOT
+        WARNING
       end
     end
   end

@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module Differs
       class DefaultObject < Core::AbstractDiffer
         def self.applies_to?(expected, actual)
-          expected.class == actual.class
+          expected.instance_of?(actual.class)
         end
 
         protected

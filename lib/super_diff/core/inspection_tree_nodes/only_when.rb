@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     module InspectionTreeNodes
@@ -11,6 +13,8 @@ module SuperDiff
         end
 
         def initialize(tree, test, **options, &block)
+          super(tree, **options, &block)
+
           @tree = tree
           @test = test
           @block = block
@@ -18,7 +22,7 @@ module SuperDiff
         end
 
         def render_to_string(object)
-          test_passes? ? render_to_string_in_subtree(object) : ""
+          test_passes? ? render_to_string_in_subtree(object) : ''
         end
 
         def render_to_lines(object, type:, indentation_level:)

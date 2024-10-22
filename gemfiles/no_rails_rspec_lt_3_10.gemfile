@@ -6,10 +6,11 @@ gem "appraisal", git: "https://github.com/thoughtbot/appraisal"
 gem "bundler-audit"
 gem "childprocess"
 gem "climate_control"
+gem "prettier_print"
 gem "pry-byebug", platform: :mri
 gem "pry-nav", platform: :jruby
 gem "rake"
-gem "prettier_print"
+gem "rubocop"
 gem "syntax_tree"
 gem "syntax_tree-haml"
 gem "syntax_tree-rbs"

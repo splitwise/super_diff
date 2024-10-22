@@ -1,11 +1,13 @@
-require "pathname"
-require "optparse"
+# frozen_string_literal: true
 
-require_relative "../support/current_bundle"
+require 'pathname'
+require 'optparse'
+
+require_relative '../support/current_bundle'
 
 class TestPlan
-  PROJECT_DIRECTORY = Pathname.new("..").expand_path(__dir__)
-  SUPPORT_DIR = PROJECT_DIRECTORY.join("spec/support")
+  PROJECT_DIRECTORY = Pathname.new('..').expand_path(__dir__)
+  SUPPORT_DIR = PROJECT_DIRECTORY.join('spec/support')
   INSIDE_INTEGRATION_TEST = true
 
   def initialize(
@@ -26,20 +28,20 @@ class TestPlan
   end
 
   def boot
-    ENV["BUNDLE_GEMFILE"] ||= SuperDiff::CurrentBundle
-      .instance
-      .latest_appraisal
-      .gemfile_path
-      .to_s
-    require "bundler/setup"
+    ENV['BUNDLE_GEMFILE'] ||= SuperDiff::CurrentBundle
+                              .instance
+                              .latest_appraisal
+                              .gemfile_path
+                              .to_s
+    require 'bundler/setup'
 
-    $LOAD_PATH.unshift(PROJECT_DIRECTORY.join("lib"))
+    $LOAD_PATH.unshift(PROJECT_DIRECTORY.join('lib'))
 
-    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new("3.2")
+    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
       begin
-        require "pry-byebug"
+        require 'pry-byebug'
       rescue LoadError
-        require "pry-nav"
+        require 'pry-nav'
       end
 
       # Fix Zeus for 0.13.0+
@@ -51,42 +53,41 @@ class TestPlan
     end
 
     if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?(
-         "no_rails_"
-       )
-      require "rspec"
+      'no_rails_'
+    )
+      require 'rspec'
     else
-      require "rails"
-      require "rspec"
-      require "rspec-rails"
+      require 'rails'
+      require 'rspec'
+      require 'rspec-rails'
     end
 
-    require "super_diff"
+    require 'super_diff'
     SuperDiff.const_set(:IntegrationTests, Module.new)
 
     Dir
-      .glob(SUPPORT_DIR.join("{models,matchers}/*.rb"))
-      .sort
+      .glob(SUPPORT_DIR.join('{models,matchers}/*.rb'))
       .each { |path| require path }
 
-    require SUPPORT_DIR.join("integration/matchers")
+    require SUPPORT_DIR.join('integration/matchers')
 
     RSpec.configure { |config| config.include SuperDiff::IntegrationTests }
   end
 
   def boot_active_support
-    require "active_support"
-    require "active_support/core_ext/hash/indifferent_access"
+    require 'active_support'
+    require 'active_support/core_ext/hash/indifferent_access'
   rescue LoadError => e
     # active_support may not be in the Gemfile, so that's okay
     puts "Error in TestPlan#boot_active_support: #{e.message}"
   end
 
   def boot_active_record
-    require "active_record"
+    require 'active_record'
 
     ActiveRecord::Base.establish_connection(
-      adapter: "sqlite3",
-      database: ":memory:"
+      adapter: 'sqlite3',
+      database: ':memory:'
     )
 
     RSpec.configuration do |config|
@@ -97,8 +98,7 @@ class TestPlan
     end
 
     Dir
-      .glob(SUPPORT_DIR.join("models/active_record/*.rb"))
-      .sort
+      .glob(SUPPORT_DIR.join('models/active_record/*.rb'))
       .each { |path| require path }
   rescue LoadError => e
     # active_record may not be in the Gemfile, so that's okay
@@ -113,28 +113,27 @@ class TestPlan
   def boot_rails_engine_with_action_controller
     boot_active_support
 
-    require "combustion"
+    require 'combustion'
     Combustion.initialize!(:action_controller)
   end
 
   def run_plain_test
-    run_test_with_libraries("super_diff/rspec")
+    run_test_with_libraries('super_diff/rspec')
   end
 
   def run_rspec_active_support_test
-    run_test_with_libraries("super_diff/rspec", "super_diff/active_support")
+    run_test_with_libraries('super_diff/rspec', 'super_diff/active_support')
   end
 
   def run_rspec_active_record_test
-    run_test_with_libraries("super_diff/rspec", "super_diff/active_record")
+    run_test_with_libraries('super_diff/rspec', 'super_diff/active_record')
   end
 
   def run_rspec_rails_test
-    run_test_with_libraries("super_diff/rspec-rails")
+    run_test_with_libraries('super_diff/rspec-rails')
   end
 
-  alias_method :run_rspec_rails_engine_with_action_controller_test,
-               :run_rspec_rails_test
+  alias run_rspec_rails_engine_with_action_controller_test run_rspec_rails_test
 
   private
 
@@ -167,34 +166,34 @@ class TestPlan
   end
 
   def run_test_with_libraries(*libraries)
-    option_parser.parse! if !using_outside_of_zeus?
+    option_parser.parse! unless using_outside_of_zeus?
 
     SuperDiff.configuration.merge!(
       super_diff_configuration.merge(color_enabled: color_enabled?)
     )
 
-    ENV["DISABLE_PRY"] = "true" if !pry_enabled?
+    ENV['DISABLE_PRY'] = 'true' unless pry_enabled?
 
     yield if block_given?
 
     libraries.each { |library| require library }
 
-    RSpec::Core::Runner.invoke if !using_outside_of_zeus?
+    RSpec::Core::Runner.invoke unless using_outside_of_zeus?
   end
 
   def option_parser
-    @_option_parser ||=
+    @option_parser ||=
       OptionParser.new do |opts|
-        opts.on("--[no-]color", "Enable or disable color.") do |value|
+        opts.on('--[no-]color', 'Enable or disable color.') do |value|
           @color_enabled = value
         end
 
-        opts.on("--[no-]pry", "Disable Pry.") { |value| @pry_enabled = value }
+        opts.on('--[no-]pry', 'Disable Pry.') { |value| @pry_enabled = value }
 
         opts.on(
-          "--super-diff-configuration CONFIG",
+          '--super-diff-configuration CONFIG',
           String,
-          "Configure SuperDiff."
+          'Configure SuperDiff.'
         ) do |json|
           @super_diff_configuration = JSON.parse(json).transform_keys(&:to_sym)
         end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Test
     module Models

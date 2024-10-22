@@ -1,8 +1,10 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "Integration with RSpec's #be_truthy matcher",
                type: :integration do
-  it "produces the correct failure message when used in the positive" do
+  it 'produces the correct failure message when used in the positive' do
     as_both_colored_and_uncolored do |color_enabled|
       program =
         make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
@@ -12,15 +14,15 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher",
       expected_output =
         build_expected_output(
           color_enabled: color_enabled,
-          snippet: "expect(nil).to be_truthy",
+          snippet: 'expect(nil).to be_truthy',
           expectation:
             proc do
               line do
-                plain "Expected "
-                actual "nil"
-                plain " to be "
-                expected "truthy"
-                plain "."
+                plain 'Expected '
+                actual 'nil'
+                plain ' to be '
+                expected 'truthy'
+                plain '.'
               end
             end
         )
@@ -31,7 +33,7 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher",
     end
   end
 
-  it "produces the correct failure message when used in the negative" do
+  it 'produces the correct failure message when used in the negative' do
     as_both_colored_and_uncolored do |color_enabled|
       program =
         make_plain_test_program(<<~TEST.strip, color_enabled: color_enabled)
@@ -41,15 +43,15 @@ RSpec.describe "Integration with RSpec's #be_truthy matcher",
       expected_output =
         build_expected_output(
           color_enabled: color_enabled,
-          snippet: "expect(true).not_to be_truthy",
+          snippet: 'expect(true).not_to be_truthy',
           expectation:
             proc do
               line do
-                plain "Expected "
-                actual "true"
-                plain " not to be "
-                expected "truthy"
-                plain "."
+                plain 'Expected '
+                actual 'true'
+                plain ' not to be '
+                expected 'truthy'
+                plain '.'
               end
             end
         )

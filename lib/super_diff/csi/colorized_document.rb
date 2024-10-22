@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Csi
     class ColorizedDocument < Document
@@ -19,9 +21,9 @@ module SuperDiff
         add_part(Csi.reset_sequence)
 
         color_sequence_to_reopen = color_sequences_open_in_parent.pop
-        if color_sequences_open_in_parent.any?
-          add_part(color_sequence_to_reopen)
-        end
+        return unless color_sequences_open_in_parent.any?
+
+        add_part(color_sequence_to_reopen)
       end
 
       def colorize_inline(contents, colors, opts)
@@ -54,13 +56,9 @@ module SuperDiff
         ColorSequenceBlock
           .new(colors)
           .tap do |sequence|
-            if opts[:fg]
-              sequence << Color.resolve(opts[:fg], layer: :foreground)
-            end
+            sequence << Color.resolve(opts[:fg], layer: :foreground) if opts[:fg]
 
-            if opts[:bg]
-              sequence << Color.resolve(opts[:bg], layer: :background)
-            end
+            sequence << Color.resolve(opts[:bg], layer: :background) if opts[:bg]
           end
       end
     end

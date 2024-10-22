@@ -1,10 +1,12 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "Integration with RSpec's #include matcher",
                type: :integration do
-  context "when used against an array" do
-    context "that is small" do
-      it "produces the correct failure message when used in the positive" do
+  context 'when used against an array' do
+    context 'that is small' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = ["Marty", "Jennifer", "Doc"]
@@ -17,26 +19,26 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(*expected)",
+              snippet: 'expect(actual).to include(*expected)',
               expectation:
                 proc do
                   line do
-                    plain "Expected "
-                    actual %|["Marty", "Jennifer", "Doc"]|
-                    plain " to include "
-                    expected %|"Einie"|
-                    plain "."
+                    plain 'Expected '
+                    actual %(["Marty", "Jennifer", "Doc"])
+                    plain ' to include '
+                    expected %("Einie")
+                    plain '.'
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  ["
-                  plain_line %|    "Marty",|
-                  plain_line %|    "Jennifer",|
+                  plain_line '  ['
+                  plain_line %(    "Marty",)
+                  plain_line %(    "Jennifer",)
                   # plain_line    %|    "Doc",|   # FIXME
-                  plain_line %|    "Doc"|
-                  expected_line %|-   "Einie"|
-                  plain_line "  ]"
+                  plain_line %(    "Doc")
+                  expected_line %(-   "Einie")
+                  plain_line '  ]'
                 end
             )
 
@@ -46,7 +48,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             values = ["Marty", "Einie"]
@@ -58,15 +60,15 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(values).not_to include(*values)",
+              snippet: 'expect(values).not_to include(*values)',
               expectation:
                 proc do
                   line do
-                    plain "Expected "
-                    actual %|["Marty", "Einie"]|
-                    plain " not to include "
-                    expected %|"Marty" and "Einie"|
-                    plain "."
+                    plain 'Expected '
+                    actual %(["Marty", "Einie"])
+                    plain ' not to include '
+                    expected %("Marty" and "Einie")
+                    plain '.'
                   end
                 end
             )
@@ -78,8 +80,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       end
     end
 
-    context "that is large" do
-      it "produces the correct failure message when used in the positive" do
+    context 'that is large' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = [
@@ -104,30 +106,30 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(*expected)",
+              snippet: 'expect(actual).to include(*expected)',
               expectation:
                 proc do
                   line do
-                    plain "  Expected "
-                    actual %|["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"]|
+                    plain '  Expected '
+                    actual %(["Marty McFly", "Doc Brown", "Einie", "Lorraine McFly"])
                   end
 
                   line do
-                    plain "to include "
-                    expected %|"Biff Tannen" and "George McFly"|
+                    plain 'to include '
+                    expected %("Biff Tannen" and "George McFly")
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  ["
-                  plain_line %|    "Marty McFly",|
-                  plain_line %|    "Doc Brown",|
-                  plain_line %|    "Einie",|
+                  plain_line '  ['
+                  plain_line %(    "Marty McFly",)
+                  plain_line %(    "Doc Brown",)
+                  plain_line %(    "Einie",)
                   # plain_line    %|    "Lorraine McFly",|   # FIXME
-                  plain_line %|    "Lorraine McFly"|
-                  expected_line %|-   "Biff Tannen",|
-                  expected_line %|-   "George McFly"|
-                  plain_line "  ]"
+                  plain_line %(    "Lorraine McFly")
+                  expected_line %(-   "Biff Tannen",)
+                  expected_line %(-   "George McFly")
+                  plain_line '  ]'
                 end
             )
 
@@ -137,7 +139,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = [
@@ -162,18 +164,18 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).not_to include(*expected)",
+              snippet: 'expect(actual).not_to include(*expected)',
               newline_before_expectation: true,
               expectation:
                 proc do
                   line do
-                    plain "      Expected "
-                    actual %|["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"]|
+                    plain '      Expected '
+                    actual %(["Marty McFly", "Doc Brown", "Einie", "Biff Tannen", "George McFly", "Lorraine McFly"])
                   end
 
                   line do
-                    plain "not to include "
-                    expected %|"Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly"|
+                    plain 'not to include '
+                    expected %("Marty McFly", "Doc Brown", "Einie", and "Lorraine McFly")
                   end
                 end
             )
@@ -186,9 +188,9 @@ RSpec.describe "Integration with RSpec's #include matcher",
     end
   end
 
-  context "when used against a hash" do
-    context "that is small" do
-      it "produces the correct failure message when used in the positive" do
+  context 'when used against a hash' do
+    context 'that is small' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = { city: "Burbank", zip: "90210" }
@@ -201,27 +203,27 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(expected)",
+              snippet: 'expect(actual).to include(expected)',
               expectation:
                 proc do
                   line do
-                    plain "Expected "
-                    actual %|{ city: "Burbank", zip: "90210" }|
-                    plain " to include "
+                    plain 'Expected '
+                    actual %({ city: "Burbank", zip: "90210" })
+                    plain ' to include '
                     expected %|(city: "Hill Valley", state: "CA")|
-                    plain "."
+                    plain '.'
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  {"
-                  expected_line %|-   city: "Hill Valley",|
-                  actual_line %|+   city: "Burbank",|
+                  plain_line '  {'
+                  expected_line %(-   city: "Hill Valley",)
+                  actual_line %(+   city: "Burbank",)
                   # FIXME
                   # expected_line %|-   state: "CA",|
-                  expected_line %|-   state: "CA"|
-                  plain_line %|    zip: "90210"|
-                  plain_line "  }"
+                  expected_line %(-   state: "CA")
+                  plain_line %(    zip: "90210")
+                  plain_line '  }'
                 end
             )
 
@@ -231,7 +233,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = { city: "Burbank", zip: "90210" }
@@ -244,15 +246,15 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).not_to include(expected)",
+              snippet: 'expect(actual).not_to include(expected)',
               expectation:
                 proc do
                   line do
-                    plain "Expected "
-                    actual %|{ city: "Burbank", zip: "90210" }|
-                    plain " not to include "
+                    plain 'Expected '
+                    actual %({ city: "Burbank", zip: "90210" })
+                    plain ' not to include '
                     expected %|(city: "Burbank")|
-                    plain "."
+                    plain '.'
                   end
                 end
             )
@@ -263,7 +265,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when fuzzy matching" do
+      it 'produces the correct failure message when fuzzy matching' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = { number: 42, city: "Burbank", zip: "90210" }
@@ -276,25 +278,25 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(expected)",
+              snippet: 'expect(actual).to include(expected)',
               expectation:
                 proc do
                   line do
-                    plain "Expected "
-                    actual %|{ number: 42, city: "Burbank", zip: "90210" }|
-                    plain " to include "
+                    plain 'Expected '
+                    actual %({ number: 42, city: "Burbank", zip: "90210" })
+                    plain ' to include '
                     expected %|(state: "CA")|
-                    plain "."
+                    plain '.'
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  {"
-                  plain_line "    number: 42,"
-                  plain_line %|    city: "Burbank",|
-                  plain_line %|    zip: "90210"|
-                  expected_line %|-   state: "CA"|
-                  plain_line "  }"
+                  plain_line '  {'
+                  plain_line '    number: 42,'
+                  plain_line %(    city: "Burbank",)
+                  plain_line %(    zip: "90210")
+                  expected_line %(-   state: "CA")
+                  plain_line '  }'
                 end
             )
 
@@ -305,8 +307,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
       end
     end
 
-    context "that is large" do
-      it "produces the correct failure message when used in the positive" do
+    context 'that is large' do
+      it 'produces the correct failure message when used in the positive' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = {
@@ -326,28 +328,28 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(expected)",
+              snippet: 'expect(actual).to include(expected)',
               expectation:
                 proc do
                   line do
-                    plain "  Expected "
-                    actual %|{ city: "Burbank", state: "CA", zip: "90210" }|
+                    plain '  Expected '
+                    actual %({ city: "Burbank", state: "CA", zip: "90210" })
                   end
 
                   line do
-                    plain "to include "
+                    plain 'to include '
                     expected %|(city: "Hill Valley", zip: "90382")|
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  {"
-                  expected_line %|-   city: "Hill Valley",|
-                  actual_line %|+   city: "Burbank",|
-                  plain_line %|    state: "CA",|
-                  expected_line %|-   zip: "90382"|
-                  actual_line %|+   zip: "90210"|
-                  plain_line "  }"
+                  plain_line '  {'
+                  expected_line %(-   city: "Hill Valley",)
+                  actual_line %(+   city: "Burbank",)
+                  plain_line %(    state: "CA",)
+                  expected_line %(-   zip: "90382")
+                  actual_line %(+   zip: "90210")
+                  plain_line '  }'
                 end
             )
 
@@ -357,7 +359,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when used in the negative" do
+      it 'produces the correct failure message when used in the negative' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = { city: "Hill Valley", state: "CA", zip: "90210" }
@@ -370,17 +372,17 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).not_to include(expected)",
+              snippet: 'expect(actual).not_to include(expected)',
               newline_before_expectation: true,
               expectation:
                 proc do
                   line do
-                    plain "      Expected "
-                    actual %|{ city: "Hill Valley", state: "CA", zip: "90210" }|
+                    plain '      Expected '
+                    actual %({ city: "Hill Valley", state: "CA", zip: "90210" })
                   end
 
                   line do
-                    plain "not to include "
+                    plain 'not to include '
                     expected %|(city: "Hill Valley", state: "CA")|
                   end
                 end
@@ -392,7 +394,7 @@ RSpec.describe "Integration with RSpec's #include matcher",
         end
       end
 
-      it "produces the correct failure message when fuzzy matching" do
+      it 'produces the correct failure message when fuzzy matching' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             actual = {
@@ -416,29 +418,29 @@ RSpec.describe "Integration with RSpec's #include matcher",
           expected_output =
             build_expected_output(
               color_enabled: color_enabled,
-              snippet: "expect(actual).to include(expected)",
+              snippet: 'expect(actual).to include(expected)',
               expectation:
                 proc do
                   line do
-                    plain "  Expected "
-                    actual %|{ number: 42, street: "Yoshie Circles", city: "Burbank", state: "CA", zip: "90210" }|
+                    plain '  Expected '
+                    actual %({ number: 42, street: "Yoshie Circles", city: "Burbank", state: "CA", zip: "90210" })
                   end
 
                   line do
-                    plain "to include "
+                    plain 'to include '
                     expected %|(zip: "90382")|
                   end
                 end,
               diff:
                 proc do
-                  plain_line "  {"
-                  plain_line "    number: 42,"
-                  plain_line %|    street: "Yoshie Circles",|
-                  plain_line %|    city: "Burbank",|
-                  plain_line %|    state: "CA",|
-                  expected_line %|-   zip: "90382"|
-                  actual_line %|+   zip: "90210"|
-                  plain_line "  }"
+                  plain_line '  {'
+                  plain_line '    number: 42,'
+                  plain_line %(    street: "Yoshie Circles",)
+                  plain_line %(    city: "Burbank",)
+                  plain_line %(    state: "CA",)
+                  expected_line %(-   zip: "90382")
+                  actual_line %(+   zip: "90210")
+                  plain_line '  }'
                 end
             )
 

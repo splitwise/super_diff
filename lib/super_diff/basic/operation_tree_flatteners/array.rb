@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeFlatteners
@@ -5,11 +7,11 @@ module SuperDiff
         protected
 
         def open_token
-          "["
+          '['
         end
 
         def close_token
-          "]"
+          ']'
         end
       end
     end

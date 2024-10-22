@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module IntegrationTests
     def fail_with_indented_multiline_failure_message
@@ -58,7 +60,7 @@ module SuperDiff
       end
 
       def failure_message
-        "Expected custom matcher not to fail, but did"
+        'Expected custom matcher not to fail, but did'
       end
 
       private
@@ -72,11 +74,11 @@ module SuperDiff
       end
 
       def failure_message
-        <<-MESSAGE
-This is a message that spans multiple lines.
-Here is the next line.
-  This part is indented, for whatever reason. It just kinda keeps
-  going until we finish saying whatever it is we want to say.
+        <<~MESSAGE
+          This is a message that spans multiple lines.
+          Here is the next line.
+            This part is indented, for whatever reason. It just kinda keeps
+            going until we finish saying whatever it is we want to say.
         MESSAGE
       end
     end
@@ -87,10 +89,10 @@ Here is the next line.
       end
 
       def failure_message
-        <<-MESSAGE
-This is a message that spans multiple paragraphs.
+        <<~MESSAGE
+          This is a message that spans multiple paragraphs.
 
-Here is the next paragraph.
+          Here is the next paragraph.
         MESSAGE
       end
     end
@@ -101,9 +103,9 @@ Here is the next paragraph.
       end
 
       def failure_message
-        <<-MESSAGE
-This is a message that spans multiple lines.
-Here is the next line.
+        <<~MESSAGE
+          This is a message that spans multiple lines.
+          Here is the next line.
         MESSAGE
       end
     end
@@ -114,8 +116,8 @@ Here is the next line.
       end
 
       def failure_message
-        <<-MESSAGE
-This is a message that spans only one line.
+        <<~MESSAGE
+          This is a message that spans only one line.
         MESSAGE
       end
     end
@@ -126,11 +128,11 @@ This is a message that spans only one line.
       end
 
       def failure_message_when_negated
-        <<-MESSAGE
-This is a message that spans multiple lines.
-Here is the next line.
-  This part is indented, for whatever reason. It just kinda keeps
-  going until we finish saying whatever it is we want to say.
+        <<~MESSAGE
+          This is a message that spans multiple lines.
+          Here is the next line.
+            This part is indented, for whatever reason. It just kinda keeps
+            going until we finish saying whatever it is we want to say.
         MESSAGE
       end
     end
@@ -141,10 +143,10 @@ Here is the next line.
       end
 
       def failure_message_when_negated
-        <<-MESSAGE
-This is a message that spans multiple paragraphs.
+        <<~MESSAGE
+          This is a message that spans multiple paragraphs.
 
-Here is the next paragraph.
+          Here is the next paragraph.
         MESSAGE
       end
     end
@@ -155,9 +157,9 @@ Here is the next paragraph.
       end
 
       def failure_message_when_negated
-        <<-MESSAGE
-This is a message that spans multiple lines.
-Here is the next line.
+        <<~MESSAGE
+          This is a message that spans multiple lines.
+          Here is the next line.
         MESSAGE
       end
     end
@@ -168,8 +170,8 @@ Here is the next line.
       end
 
       def failure_message_when_negated
-        <<-MESSAGE
-This is a message that spans only one line.
+        <<~MESSAGE
+          This is a message that spans only one line.
         MESSAGE
       end
     end

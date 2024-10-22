@@ -81,26 +81,20 @@ it should run twice as fast.
 
 ## 5. Run the linter
 
-Code is linted and formatted using Prettier,
-so [make sure that's set up in your editor][prettier-editors].
+Code is linted and formatted using Rubocop.
+so [make sure that's set up in your editor][rubocop-editors].
 If you don't want to do this,
 you can also fix any lint violations by running:
 
 ```
-yarn lint:fix
+bundle exec rubocop -a
 ```
 
 Provided that you ran `bin/setup` above,
 any code you've changed will also be linted
 whenever you push a commit.
-If this step fails for any reason,
-you can fix lint violations in only changed files by running:
 
-```
-yarn lint:changed:fix
-```
-
-[prettier-editors]: https://prettier.io/docs/en/editors.html
+[rubocop-editors]: https://docs.rubocop.org/rubocop/integration_with_other_tools.html#editor-integration
 
 ## 6. (Optional) Update the documentation
 

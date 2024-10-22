@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Person
   attr_accessor :name, :age
 
@@ -7,45 +9,45 @@ class Person
   end
 end
 
-describe "My test" do
-  it "does something" do
+describe 'My test' do
+  it 'does something' do
     actual = {
       customer: {
-        person: Person.new(name: "Marty McFly, Jr.", age: 17),
+        person: Person.new(name: 'Marty McFly, Jr.', age: 17),
         shipping_address: {
-          line_1: "456 Ponderosa Ct.",
-          city: "Hill Valley",
-          state: "CA",
-          zip: "90382"
+          line_1: '456 Ponderosa Ct.',
+          city: 'Hill Valley',
+          state: 'CA',
+          zip: '90382'
         }
       },
       items: [
         {
-          name: "Fender Stratocaster",
+          name: 'Fender Stratocaster',
           cost: 100_000,
           options: %w[red blue green]
         },
-        { name: "Mattel Hoverboard" }
+        { name: 'Mattel Hoverboard' }
       ]
     }
 
     expected = {
       customer: {
-        person: Person.new(name: "Marty McFly", age: 17),
+        person: Person.new(name: 'Marty McFly', age: 17),
         shipping_address: {
-          line_1: "123 Main St.",
-          city: "Hill Valley",
-          state: "CA",
-          zip: "90382"
+          line_1: '123 Main St.',
+          city: 'Hill Valley',
+          state: 'CA',
+          zip: '90382'
         }
       },
       items: [
         {
-          name: "Fender Stratocaster",
+          name: 'Fender Stratocaster',
           cost: 100_000,
           options: %w[red blue green]
         },
-        { name: "Chevy 4x4" }
+        { name: 'Chevy 4x4' }
       ]
     }
 

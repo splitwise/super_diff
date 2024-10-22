@@ -1,14 +1,14 @@
-require "spec_helper"
+# frozen_string_literal: true
+
+require 'spec_helper'
 
 RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                type: :integration do
-  # rubocop:disable Metrics/BlockLength
   %w[be be_a be_an].each do |prefix|
-    # rubocop:enable Metrics/BlockLength
     context "using #{prefix}_<predicate>" do
       context "when the predicate method doesn't exist on the object" do
-        context "when the inspected version of the actual value is short" do
-          it "produces the correct failure message" do
+        context 'when the inspected version of the actual value is short' do
+          it 'produces the correct failure message' do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = %|expect(:foo).to #{prefix}_strong|
               program =
@@ -21,13 +21,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                   expectation:
                     proc do
                       line do
-                        plain "Expected "
-                        actual ":foo"
-                        plain " to respond to "
-                        expected "strong?"
-                        plain " or "
-                        expected "strongs?"
-                        plain "."
+                        plain 'Expected '
+                        actual ':foo'
+                        plain ' to respond to '
+                        expected 'strong?'
+                        plain ' or '
+                        expected 'strongs?'
+                        plain '.'
                       end
                     end
                 )
@@ -39,8 +39,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
           end
         end
 
-        context "when the inspected version of the actual value is long" do
-          it "produces the correct failure message" do
+        context 'when the inspected version of the actual value is long' do
+          it 'produces the correct failure message' do
             as_both_colored_and_uncolored do |color_enabled|
               snippet = <<~TEST.strip
                 hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }
@@ -57,15 +57,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                   expectation:
                     proc do
                       line do
-                        plain "     Expected "
-                        actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                        plain '     Expected '
+                        actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" })
                       end
 
                       line do
-                        plain "to respond to "
-                        expected "strong?"
-                        plain " or "
-                        expected "strongs?"
+                        plain 'to respond to '
+                        expected 'strong?'
+                        plain ' or '
+                        expected 'strongs?'
                       end
                     end
                 )
@@ -78,10 +78,10 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
         end
       end
 
-      context "when the predicate method exists on the object" do
-        context "but is private" do
-          context "when the inspected version of the actual value is short" do
-            it "produces the correct failure message" do
+      context 'when the predicate method exists on the object' do
+        context 'but is private' do
+          context 'when the inspected version of the actual value is short' do
+            it 'produces the correct failure message' do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
                   class Foo
@@ -100,13 +100,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                     expectation:
                       proc do
                         line do
-                          plain "Expected "
-                          actual "#<Foo>"
-                          plain " to have a public method "
-                          expected "strong?"
-                          plain " or "
-                          expected "strongs?"
-                          plain "."
+                          plain 'Expected '
+                          actual '#<Foo>'
+                          plain ' to have a public method '
+                          expected 'strong?'
+                          plain ' or '
+                          expected 'strongs?'
+                          plain '.'
                         end
                       end
                   )
@@ -118,8 +118,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
             end
           end
 
-          context "when the inspected version of the actual value is long" do
-            it "produces the correct failure message" do
+          context 'when the inspected version of the actual value is long' do
+            it 'produces the correct failure message' do
               as_both_colored_and_uncolored do |color_enabled|
                 snippet = <<~TEST.strip
                   hash = { foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }
@@ -141,15 +141,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                     expectation:
                       proc do
                         line do
-                          plain "               Expected "
-                          actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                          plain '               Expected '
+                          actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" })
                         end
 
                         line do
-                          plain "to have a public method "
-                          expected "strong?"
-                          plain " or "
-                          expected "strongs?"
+                          plain 'to have a public method '
+                          expected 'strong?'
+                          plain ' or '
+                          expected 'strongs?'
                         end
                       end
                   )
@@ -162,11 +162,11 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
           end
         end
 
-        context "and is public" do
-          context "and returns false" do
-            context "but is called #true?" do
-              context "when the inspected version of the actual value is short" do
-                it "produces the correct failure message" do
+        context 'and is public' do
+          context 'and returns false' do
+            context 'but is called #true?' do
+              context 'when the inspected version of the actual value is short' do
+                it 'produces the correct failure message' do
                   as_both_colored_and_uncolored do |color_enabled|
                     snippet = <<~TEST.strip
                       class Foo
@@ -189,23 +189,23 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                         expectation:
                           proc do
                             line do
-                              plain "Expected "
-                              actual "#<Foo>"
-                              plain " to return a truthy result for "
-                              expected "true?"
-                              plain " or "
-                              expected "trues?"
-                              plain "."
+                              plain 'Expected '
+                              actual '#<Foo>'
+                              plain ' to return a truthy result for '
+                              expected 'true?'
+                              plain ' or '
+                              expected 'trues?'
+                              plain '.'
                             end
 
                             newline
 
                             line do
-                              plain "(Perhaps you want to use "
-                              blue "be(true)"
-                              plain " or "
-                              blue "be_truthy"
-                              plain " instead?)"
+                              plain '(Perhaps you want to use '
+                              blue 'be(true)'
+                              plain ' or '
+                              blue 'be_truthy'
+                              plain ' instead?)'
                             end
                           end
                       )
@@ -217,8 +217,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                 end
               end
 
-              context "when the inspected version of the actual value is long" do
-                it "produces the correct failure message" do
+              context 'when the inspected version of the actual value is long' do
+                it 'produces the correct failure message' do
                   as_both_colored_and_uncolored do |color_enabled|
                     snippet = <<~TEST.strip
                       hash = {
@@ -248,25 +248,25 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                         expectation:
                           proc do
                             line do
-                              plain "                     Expected "
-                              actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" }|
+                              plain '                     Expected '
+                              actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz" })
                             end
 
                             line do
-                              plain "to return a truthy result for "
-                              expected "true?"
-                              plain " or "
-                              expected "trues?"
+                              plain 'to return a truthy result for '
+                              expected 'true?'
+                              plain ' or '
+                              expected 'trues?'
                             end
 
                             newline
 
                             line do
-                              plain "(Perhaps you want to use "
-                              blue "be(true)"
-                              plain " or "
-                              blue "be_truthy"
-                              plain " instead?)"
+                              plain '(Perhaps you want to use '
+                              blue 'be(true)'
+                              plain ' or '
+                              blue 'be_truthy'
+                              plain ' instead?)'
                             end
                           end
                       )
@@ -279,8 +279,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
               end
             end
 
-            context "but is called #false?" do
-              it "produces the correct failure message" do
+            context 'but is called #false?' do
+              it 'produces the correct failure message' do
                 as_both_colored_and_uncolored do |color_enabled|
                   snippet = <<~TEST.strip
                     class X
@@ -303,13 +303,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                       expectation:
                         proc do
                           line do
-                            plain "Expected "
-                            actual "#<X>"
-                            plain " to return a truthy result for "
-                            expected "false?"
-                            plain " or "
-                            expected "falses?"
-                            plain "."
+                            plain 'Expected '
+                            actual '#<X>'
+                            plain ' to return a truthy result for '
+                            expected 'false?'
+                            plain ' or '
+                            expected 'falses?'
+                            plain '.'
                           end
                         end
                     )
@@ -321,10 +321,10 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
               end
             end
 
-            context "and is called neither #true? nor #false?" do
-              context "and is singular" do
-                context "when the inspected version of the actual value is short" do
-                  it "produces the correct failure message" do
+            context 'and is called neither #true? nor #false?' do
+              context 'and is singular' do
+                context 'when the inspected version of the actual value is short' do
+                  it 'produces the correct failure message' do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
                         class X
@@ -346,13 +346,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                           expectation:
                             proc do
                               line do
-                                plain "Expected "
-                                actual "#<X>"
-                                plain " to return a truthy result for "
-                                expected "y?"
-                                plain " or "
-                                expected "ys?"
-                                plain "."
+                                plain 'Expected '
+                                actual '#<X>'
+                                plain ' to return a truthy result for '
+                                expected 'y?'
+                                plain ' or '
+                                expected 'ys?'
+                                plain '.'
                               end
                             end
                         )
@@ -364,8 +364,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                   end
                 end
 
-                context "when the inspected version of the actual value is long" do
-                  it "produces the correct failure message" do
+                context 'when the inspected version of the actual value is long' do
+                  it 'produces the correct failure message' do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
                         hash = {
@@ -396,15 +396,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                           expectation:
                             proc do
                               line do
-                                plain "                     Expected "
-                                actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                                plain '                     Expected '
+                                actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" })
                               end
 
                               line do
-                                plain "to return a truthy result for "
-                                expected "y?"
-                                plain " or "
-                                expected "ys?"
+                                plain 'to return a truthy result for '
+                                expected 'y?'
+                                plain ' or '
+                                expected 'ys?'
                               end
                             end
                         )
@@ -417,9 +417,9 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                 end
               end
 
-              context "and is plural" do
-                context "when the inspected version of the actual value is short" do
-                  it "produces the correct failure message" do
+              context 'and is plural' do
+                context 'when the inspected version of the actual value is short' do
+                  it 'produces the correct failure message' do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
                         class X
@@ -441,13 +441,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                           expectation:
                             proc do
                               line do
-                                plain "Expected "
-                                actual "#<X>"
-                                plain " to return a truthy result for "
-                                expected "y?"
-                                plain " or "
-                                expected "ys?"
-                                plain "."
+                                plain 'Expected '
+                                actual '#<X>'
+                                plain ' to return a truthy result for '
+                                expected 'y?'
+                                plain ' or '
+                                expected 'ys?'
+                                plain '.'
                               end
                             end
                         )
@@ -459,8 +459,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                   end
                 end
 
-                context "when the inspected version of the actual value is long" do
-                  it "produces the correct failure message" do
+                context 'when the inspected version of the actual value is long' do
+                  it 'produces the correct failure message' do
                     as_both_colored_and_uncolored do |color_enabled|
                       snippet = <<~TEST.strip
                         hash = {
@@ -491,15 +491,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                           expectation:
                             proc do
                               line do
-                                plain "                     Expected "
-                                actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                                plain '                     Expected '
+                                actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" })
                               end
 
                               line do
-                                plain "to return a truthy result for "
-                                expected "y?"
-                                plain " or "
-                                expected "ys?"
+                                plain 'to return a truthy result for '
+                                expected 'y?'
+                                plain ' or '
+                                expected 'ys?'
                               end
                             end
                         )
@@ -514,9 +514,9 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
             end
           end
 
-          context "and returns true" do
-            context "when the inspected version of the actual value is short" do
-              it "produces the correct failure message when used in the negative" do
+          context 'and returns true' do
+            context 'when the inspected version of the actual value is short' do
+              it 'produces the correct failure message when used in the negative' do
                 as_both_colored_and_uncolored do |color_enabled|
                   snippet = <<~TEST.strip
                     class Foo
@@ -538,13 +538,13 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                       expectation:
                         proc do
                           line do
-                            plain "Expected "
-                            actual "#<Foo>"
-                            plain " not to return a truthy result for "
-                            expected "strong?"
-                            plain " or "
-                            expected "strongs?"
-                            plain "."
+                            plain 'Expected '
+                            actual '#<Foo>'
+                            plain ' not to return a truthy result for '
+                            expected 'strong?'
+                            plain ' or '
+                            expected 'strongs?'
+                            plain '.'
                           end
                         end
                     )
@@ -556,8 +556,8 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
               end
             end
 
-            context "when the inspected version of the actual value is long" do
-              it "produces the correct failure message when used in the negative" do
+            context 'when the inspected version of the actual value is long' do
+              it 'produces the correct failure message when used in the negative' do
                 as_both_colored_and_uncolored do |color_enabled|
                   snippet = <<~TEST.strip
                     hash = {
@@ -588,15 +588,15 @@ RSpec.describe "Integration with RSpec's #be_<predicate> matcher",
                       expectation:
                         proc do
                           line do
-                            plain "                         Expected "
-                            actual %|{ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" }|
+                            plain '                         Expected '
+                            actual %({ foo: "bar", baz: "qux", blargh: "foz", fizz: "buzz", aaaaaa: "bbbbbb" })
                           end
 
                           line do
-                            plain "not to return a truthy result for "
-                            expected "y?"
-                            plain " or "
-                            expected "ys?"
+                            plain 'not to return a truthy result for '
+                            expected 'y?'
+                            plain ' or '
+                            expected 'ys?'
                           end
                         end
                     )

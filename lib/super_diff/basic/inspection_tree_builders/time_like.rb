@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module InspectionTreeBuilders
@@ -15,16 +17,14 @@ module SuperDiff
 
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "{"
+                t3.add_text '{'
               end
             end
 
             t1.when_rendering_to_string do |t2|
               t2.add_text(
-                object.strftime("%Y-%m-%d %H:%M:%S") +
-                  (object.subsec == 0 ? "" : "+#{object.subsec.inspect}") +
-                  " " + object.strftime("%:z") +
-                  (object.zone ? " (#{object.zone})" : "")
+                "#{object.strftime('%Y-%m-%d %H:%M:%S')}#{object.subsec.zero? ? '' : "+#{object.subsec.inspect}"} " \
+                "#{object.strftime('%:z')}#{object.zone ? " (#{object.zone})" : ''}"
               )
             end
 
@@ -34,7 +34,7 @@ module SuperDiff
                   %i[year month day hour min sec subsec zone utc_offset]
                 ) do |t4, name|
                   t4.add_text name.to_s
-                  t4.add_text ": "
+                  t4.add_text ': '
                   t4.add_inspection_of object.public_send(name)
                 end
               end
@@ -45,10 +45,10 @@ module SuperDiff
             ) do |t2|
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "}"
+                t3.add_text '}'
               end
 
-              t2.add_text ">"
+              t2.add_text '>'
             end
           end
         end

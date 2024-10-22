@@ -1,30 +1,32 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Hash < Base
       def self.applies_to?(value)
-        value.class == ::Hash
+        value.instance_of?(::Hash)
       end
 
       def fail
         <<~OUTPUT.strip
-          Differing hashes.
+            Differing hashes.
 
-          #{
-          Core::Helpers.style(
-            :expected,
-            "Expected: " + SuperDiff.inspect_object(expected, as_lines: false)
-          )
-        }
-          #{
-          Core::Helpers.style(
-            :actual,
-            "  Actual: " + SuperDiff.inspect_object(actual, as_lines: false)
-          )
-        }
+            #{
+            Core::Helpers.style(
+              :expected,
+              "Expected: #{SuperDiff.inspect_object(expected, as_lines: false)}"
+            )
+          }
+            #{
+            Core::Helpers.style(
+              :actual,
+              "  Actual: #{SuperDiff.inspect_object(actual, as_lines: false)}"
+            )
+          }
 
-          Diff:
+            Diff:
 
-          #{diff}
+            #{diff}
         OUTPUT
       end
 

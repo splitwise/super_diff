@@ -1,4 +1,6 @@
-# rubocop:disable Style/BracesAroundHashParameters, Style/ClassAndModuleChildren
+# frozen_string_literal: true
+
+# rubocop:disable Style/ClassAndModuleChildren
 class ActiveRecord::Base
   # TODO: Remove this monkey patch if possible
   def attributes_for_super_diff
@@ -9,4 +11,4 @@ class ActiveRecord::Base
     ) { |hash, key| hash.merge(key.to_sym => attributes[key]) }
   end
 end
-# rubocop:enable Style/BracesAroundHashParameters, Style/ClassAndModuleChildren
+# rubocop:enable Style/ClassAndModuleChildren

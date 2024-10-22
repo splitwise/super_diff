@@ -38,8 +38,10 @@ jobs:
       - name: Install Yarn dependencies
         run: yarn --immutable
       - name: Lint
-        run: yarn lint
-      - name: Audit
+        run: bundle exec rubocop --parallel
+      - name: Audit Ruby
+        run: bundle exec bundle-audit check --update
+      - name: Audit JS
         run: yarn audit
 
   test:

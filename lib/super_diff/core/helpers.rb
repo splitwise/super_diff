@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     module Helpers
@@ -26,13 +28,13 @@ module SuperDiff
       def plural_type_for(value)
         case value
         when Numeric
-          "numbers"
+          'numbers'
         when String
-          "strings"
+          'strings'
         when Symbol
-          "symbols"
+          'symbols'
         else
-          "objects"
+          'objects'
         end
       end
 
@@ -49,26 +51,26 @@ module SuperDiff
       if jruby?
         def object_address_for(object)
           # Source: <https://github.com/jruby/jruby/blob/master/core/src/main/java/org/jruby/RubyBasicObject.java>
-          "0x%x" % object.hash
+          '0x%x' % object.hash
         end
-      elsif ruby_version_matches?(">= 2.7.0")
-        require "json"
-        require "objspace"
+      elsif ruby_version_matches?('>= 2.7.0')
+        require 'json'
+        require 'objspace'
 
         def object_address_for(object)
           # Sources: <https://bugs.ruby-lang.org/issues/15408> and <https://bugs.ruby-lang.org/issues/15626#Object-ID>
           json = JSON.parse(ObjectSpace.dump(object))
-          json.is_a?(Hash) ? "0x%016x" % Integer(json["address"], 16) : ""
+          json.is_a?(Hash) ? '0x%016x' % Integer(json['address'], 16) : ''
         end
       else
         def object_address_for(object)
-          "0x%016x" % (object.object_id * 2)
+          format('0x%016x', (object.object_id * 2))
         end
       end
 
       def with_slice_of_array_replaced(array, range, replacement)
         beginning =
-          if range.begin > 0
+          if range.begin.positive?
             array[Range.new(0, range.begin - 1)]
           else
             []

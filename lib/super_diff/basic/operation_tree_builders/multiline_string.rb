@@ -1,4 +1,6 @@
-require "patience_diff"
+# frozen_string_literal: true
+
+require 'patience_diff'
 
 module SuperDiff
   module Basic
@@ -10,7 +12,7 @@ module SuperDiff
         end
 
         def initialize(*args)
-          super(*args)
+          super
 
           @original_expected = @expected
           @original_actual = @actual

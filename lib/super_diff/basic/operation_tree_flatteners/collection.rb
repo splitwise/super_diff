@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeFlatteners
@@ -23,7 +25,7 @@ module SuperDiff
         end
 
         def inner_lines
-          @_inner_lines ||=
+          @inner_lines ||=
             operation_tree.flat_map do |operation|
               lines =
                 if operation.name == :change
@@ -52,7 +54,7 @@ module SuperDiff
         end
 
         def add_prefix_at_beginning_of_lines(lines, operation)
-          [lines[0].prefixed_with(item_prefix_for(operation))] + lines[1..-1]
+          [lines[0].prefixed_with(item_prefix_for(operation))] + lines[1..]
         end
 
         def maybe_add_comma_at_end_of_lines(lines, operation)
@@ -81,13 +83,11 @@ module SuperDiff
             operation.left_collection,
             operation.right_collection
           ) do |already_seen|
-            if already_seen
-              raise InfiniteRecursionError
-            else
-              operation.children.flatten(
-                indentation_level: indentation_level + 1
-              )
-            end
+            raise InfiniteRecursionError if already_seen
+
+            operation.children.flatten(
+              indentation_level: indentation_level + 1
+            )
           end
         end
 
@@ -117,7 +117,7 @@ module SuperDiff
         end
 
         def item_prefix_for(_operation)
-          ""
+          ''
         end
 
         def build_lines_from_inspection_of(value, type:, indentation_level:)
@@ -131,7 +131,7 @@ module SuperDiff
 
         class InfiniteRecursionError < StandardError
           def initialize(_message = nil)
-            super("Unhandled recursive data structure encountered!")
+            super('Unhandled recursive data structure encountered!')
           end
         end
       end

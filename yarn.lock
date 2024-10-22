@@ -59,15 +59,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prettier/plugin-ruby@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "@prettier/plugin-ruby@npm:3.2.2"
-  dependencies:
-    prettier: ">=2.3.0"
-  checksum: b77de48e580bc6cc1414681f1705ba89d804650cce3f384777e41c5aada9bb5d86df70d27e108412b3ecde626b8f618377b88b259f57f8117c82a15ebdc59936
-  languageName: node
-  linkType: hard
-
 "abbrev@npm:1":
   version: 1.1.1
   resolution: "abbrev@npm:1.1.1"
@@ -838,24 +829,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:>=2.3.0":
-  version: 2.8.4
-  resolution: "prettier@npm:2.8.4"
-  bin:
-    prettier: bin-prettier.js
-  checksum: c173064bf3df57b6d93d19aa98753b9b9dd7657212e33b41ada8e2e9f9884066bb9ca0b4005b89b3ab137efffdf8fbe0b462785aba20364798ff4303aadda57e
-  languageName: node
-  linkType: hard
-
-"prettier@npm:^2.8.7":
-  version: 2.8.7
-  resolution: "prettier@npm:2.8.7"
-  bin:
-    prettier: bin-prettier.js
-  checksum: fdc8f2616f099f5f0d685907f4449a70595a0fc1d081a88919604375989e0d5e9168d6121d8cc6861f21990b31665828e00472544d785d5940ea08a17660c3a6
-  languageName: node
-  linkType: hard
-
 "process-nextick-args@npm:~2.0.0":
   version: 2.0.1
   resolution: "process-nextick-args@npm:2.0.1"
@@ -1109,9 +1082,7 @@ __metadata:
   resolution: "super_diff@workspace:."
   dependencies:
     "@lavamoat/allow-scripts": ^2.3.0
-    "@prettier/plugin-ruby": ^3.2.2
     husky: ^8.0.3
-    prettier: ^2.8.7
   languageName: unknown
   linkType: soft
 

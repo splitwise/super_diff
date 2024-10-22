@@ -1,17 +1,19 @@
-require "super_diff"
+# frozen_string_literal: true
 
-require "super_diff/rspec/differs"
-require "super_diff/rspec/inspection_tree_builders"
-require "super_diff/rspec/operation_tree_builders"
+require 'super_diff'
+
+require 'super_diff/rspec/differs'
+require 'super_diff/rspec/inspection_tree_builders'
+require 'super_diff/rspec/operation_tree_builders'
 
 module SuperDiff
   module RSpec
-    autoload :AugmentedMatcher, "super_diff/rspec/augmented_matcher"
-    autoload :Configuration, "super_diff/rspec/configuration"
-    autoload :Differ, "super_diff/rspec/differ"
-    autoload :MatcherTextBuilders, "super_diff/rspec/matcher_text_builders"
-    autoload :MatcherTextTemplate, "super_diff/rspec/matcher_text_template"
-    autoload :ObjectInspection, "super_diff/rspec/object_inspection"
+    autoload :AugmentedMatcher, 'super_diff/rspec/augmented_matcher'
+    autoload :Configuration, 'super_diff/rspec/configuration'
+    autoload :Differ, 'super_diff/rspec/differ'
+    autoload :MatcherTextBuilders, 'super_diff/rspec/matcher_text_builders'
+    autoload :MatcherTextTemplate, 'super_diff/rspec/matcher_text_template'
+    autoload :ObjectInspection, 'super_diff/rspec/object_inspection'
 
     def self.configure(&block)
       SuperDiff.configure(&block)
@@ -83,9 +85,9 @@ module SuperDiff
     end
 
     def self.rspec_version
-      @_rspec_version ||=
+      @rspec_version ||=
         begin
-          require "rspec/core/version"
+          require 'rspec/core/version'
           Core::GemVersion.new(::RSpec::Core::Version::STRING)
         end
     end
@@ -121,4 +123,4 @@ module SuperDiff
   end
 end
 
-require_relative "rspec/monkey_patches"
+require_relative 'rspec/monkey_patches'

@@ -5,17 +5,11 @@
   "private": true,
   "scripts": {
     "audit": "yarn npm audit && bundle exec bundle audit --gemfile-lock ${BUNDLE_GEMFILE:-Gemfile}",
-    "lint": "scripts/lint-all-files.sh --check",
-    "lint:fix": "scripts/lint-all-files.sh --write",
-    "lint:changed": "scripts/lint-changed-files.sh --include-uncommitted --check",
-    "lint:changed:fix": "scripts/lint-changed-files.sh --include-uncommitted --write",
     "setup-git-hooks": "husky install"
   },
   "devDependencies": {
     "@lavamoat/allow-scripts": "^2.3.0",
-    "@prettier/plugin-ruby": "^3.2.2",
-    "husky": "^8.0.3",
-    "prettier": "^2.8.7"
+    "husky": "^8.0.3"
   },
   "packageManager": "yarn@3.4.1",
   "lavamoat": {

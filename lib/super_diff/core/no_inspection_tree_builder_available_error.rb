@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class NoInspectionTreeBuilderAvailableError < StandardError
@@ -11,9 +13,9 @@ module SuperDiff
       attr_accessor :object
 
       def initialize
-        super(<<-MESSAGE)
-There is no inspection tree builder available to handle a "value" of type
-#{object.class}.
+        super(<<~MESSAGE)
+          There is no inspection tree builder available to handle a "value" of type
+          #{object.class}.
         MESSAGE
       end
     end

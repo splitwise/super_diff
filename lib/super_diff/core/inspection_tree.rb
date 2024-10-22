@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class InspectionTree
@@ -21,11 +23,11 @@ module SuperDiff
       end
 
       def before_each_callbacks
-        @_before_each_callbacks ||= Hash.new { |h, k| h[k] = [] }
+        @before_each_callbacks ||= Hash.new { |h, k| h[k] = [] }
       end
 
       def render_to_string(object)
-        nodes.reduce("") do |string, node|
+        nodes.reduce('') do |string, node|
           string + node.render_to_string(object)
         end
       end
@@ -34,7 +36,7 @@ module SuperDiff
         nodes
           .each_with_index
           .reduce(
-            [TieredLines.new, "", ""]
+            [TieredLines.new, '', '']
           ) do |(tiered_lines, prelude, prefix), (node, index)|
             UpdateTieredLines.call(
               object: object,
@@ -59,10 +61,10 @@ module SuperDiff
         insert_separated_list(array) do |t, value|
           # Have to do these shenanigans so that if value is a hash, Ruby
           # doesn't try to interpret it as keyword args
-          if Helpers.ruby_version_matches?(">= 2.7.1")
+          if Helpers.ruby_version_matches?('>= 2.7.1')
             t.add_inspection_of(value, **{})
           else
-            t.add_inspection_of(*[value, {}])
+            t.add_inspection_of(value, {})
           end
         end
       end
@@ -80,16 +82,16 @@ module SuperDiff
           else
             t1.as_prefix_when_rendering_to_lines do |t2|
               t2.add_inspection_of key, as_lines: false
-              t2.add_text " => "
+              t2.add_text ' => '
             end
           end
 
           # Have to do these shenanigans so that if hash[key] is a hash, Ruby
           # doesn't try to interpret it as keyword args
-          if Helpers.ruby_version_matches?(">= 2.7.1")
+          if Helpers.ruby_version_matches?('>= 2.7.1')
             t1.add_inspection_of(hash[key], **{})
           else
-            t1.add_inspection_of(*[hash[key], {}])
+            t1.add_inspection_of(hash[key], {})
           end
         end
       end
@@ -99,10 +101,10 @@ module SuperDiff
           as_lines_when_rendering_to_lines(
             add_comma: index < enumerable.size - 1
           ) do |t1|
-            if index > 0
+            if index.positive?
               # stree-ignore
               t1.when_rendering_to_string do |t2|
-                t2.add_text " "
+                t2.add_text ' '
               end
             end
             t1.evaluate_block(value, &block)
@@ -114,36 +116,34 @@ module SuperDiff
 
       attr_reader :disallowed_node_names, :nodes
 
-      def add_node(node_class, *args, **options, &block)
-        if disallowed_node_names.include?(node_class.name)
-          raise DisallowedNodeError.create(node_name: node_class.name)
-        end
+      def add_node(node_class, ...)
+        raise DisallowedNodeError.create(node_name: node_class.name) if disallowed_node_names.include?(node_class.name)
 
-        append_node(build_node(node_class, *args, **options, &block))
+        append_node(build_node(node_class, ...))
       end
 
       def append_node(node)
         nodes.push(node)
       end
 
-      def build_node(node_class, *args, **options, &block)
-        node_class.new(self, *args, **options, &block)
+      def build_node(node_class, ...)
+        node_class.new(self, ...)
       end
 
       class UpdateTieredLines
         extend AttrExtras.mixin
 
         method_object %i[
-                        object!
-                        type!
-                        indentation_level!
-                        nodes!
-                        tiered_lines!
-                        prelude!
-                        prefix!
-                        node!
-                        index!
-                      ]
+          object!
+          type!
+          indentation_level!
+          nodes!
+          tiered_lines!
+          prelude!
+          prefix!
+          node!
+          index!
+        ]
 
         def call
           if rendering.is_a?(Array)
@@ -165,18 +165,18 @@ module SuperDiff
         def concat_with_lines
           additional_lines =
             prefix_with(prefix, prepend_with(prelude, rendering))
-          [tiered_lines + additional_lines, "", ""]
+          [tiered_lines + additional_lines, '', '']
         end
 
         def prefix_with(prefix, text)
-          prefix.empty? ? text : [text[0].prefixed_with(prefix)] + text[1..-1]
+          prefix.empty? ? text : [text[0].prefixed_with(prefix)] + text[1..]
         end
 
         def prepend_with(prelude, text)
           if prelude.empty?
             text
           else
-            [text[0].with_value_prepended(prelude)] + text[1..-1]
+            [text[0].with_value_prepended(prelude)] + text[1..]
           end
         end
 
@@ -187,7 +187,7 @@ module SuperDiff
         def add_to_last_line
           new_lines =
             tiered_lines[0..-2] +
-              [tiered_lines[-1].with_value_appended(rendering)]
+            [tiered_lines[-1].with_value_appended(rendering)]
           [new_lines, prelude, prefix]
         end
 
@@ -198,13 +198,13 @@ module SuperDiff
         def add_to_lines
           new_lines =
             tiered_lines +
-              [
-                Line.new(
-                  type: type,
-                  indentation_level: indentation_level,
-                  value: rendering
-                )
-              ]
+            [
+              Line.new(
+                type: type,
+                indentation_level: indentation_level,
+                value: rendering
+              )
+            ]
           [new_lines, prelude, prefix]
         end
 

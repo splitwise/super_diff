@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module ActiveRecord
     module OperationTreeFlatteners
@@ -5,11 +7,11 @@ module SuperDiff
         protected
 
         def open_token
-          "#<ActiveRecord::Relation ["
+          '#<ActiveRecord::Relation ['
         end
 
         def close_token
-          "]>"
+          ']>'
         end
       end
     end

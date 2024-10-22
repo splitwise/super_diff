@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class Configuration
@@ -81,83 +83,59 @@ module SuperDiff
         @extra_diff_formatter_classes =
           (@extra_diff_formatter_classes + classes).freeze
       end
-      alias_method(
-        :add_extra_diff_formatter_class,
-        :add_extra_diff_formatter_classes
-      )
+      alias add_extra_diff_formatter_class add_extra_diff_formatter_classes
 
       def prepend_extra_diff_formatter_classes(*classes)
         @extra_diff_formatter_classes =
           (classes + @extra_diff_formatter_classes).freeze
       end
-      alias_method(
-        :prepend_extra_diff_formatter_class,
-        :prepend_extra_diff_formatter_classes
-      )
+      alias prepend_extra_diff_formatter_class prepend_extra_diff_formatter_classes
 
       def add_extra_differ_classes(*classes)
         @extra_differ_classes = (@extra_differ_classes + classes).freeze
       end
-      alias_method :add_extra_differ_class, :add_extra_differ_classes
+      alias add_extra_differ_class add_extra_differ_classes
 
       def prepend_extra_differ_classes(*classes)
         @extra_differ_classes = (classes + @extra_differ_classes).freeze
       end
-      alias_method :prepend_extra_differ_class, :prepend_extra_differ_classes
+      alias prepend_extra_differ_class prepend_extra_differ_classes
 
       def add_extra_inspection_tree_builder_classes(*classes)
         @extra_inspection_tree_builder_classes =
           (@extra_inspection_tree_builder_classes + classes).freeze
       end
-      alias_method(
-        :add_extra_inspection_tree_builder_class,
-        :add_extra_inspection_tree_builder_classes
-      )
+      alias add_extra_inspection_tree_builder_class add_extra_inspection_tree_builder_classes
 
       def prepend_extra_inspection_tree_builder_classes(*classes)
         @extra_inspection_tree_builder_classes =
           (classes + @extra_inspection_tree_builder_classes).freeze
       end
-      alias_method(
-        :prepend_extra_inspection_tree_builder_class,
-        :prepend_extra_inspection_tree_builder_classes
-      )
+      alias prepend_extra_inspection_tree_builder_class prepend_extra_inspection_tree_builder_classes
 
       def add_extra_operation_tree_builder_classes(*classes)
         @extra_operation_tree_builder_classes =
           (@extra_operation_tree_builder_classes + classes).freeze
       end
-      alias_method(
-        :add_extra_operation_tree_builder_class,
-        :add_extra_operation_tree_builder_classes
-      )
+      alias add_extra_operation_tree_builder_class add_extra_operation_tree_builder_classes
 
       def prepend_extra_operation_tree_builder_classes(*classes)
         @extra_operation_tree_builder_classes =
           (classes + @extra_operation_tree_builder_classes).freeze
       end
-      alias_method(
-        :prepend_extra_operation_tree_builder_class,
-        :prepend_extra_operation_tree_builder_classes
-      )
+      alias prepend_extra_operation_tree_builder_class prepend_extra_operation_tree_builder_classes
 
       def add_extra_operation_tree_classes(*classes)
         @extra_operation_tree_classes =
           (@extra_operation_tree_classes + classes).freeze
       end
-      alias_method(
-        :add_extra_operation_tree_class,
-        :add_extra_operation_tree_classes
-      )
+      alias add_extra_operation_tree_class add_extra_operation_tree_classes
 
       def prepend_extra_operation_tree_classes(*classes)
         @extra_operation_tree_classes =
           (classes + @extra_operation_tree_classes).freeze
       end
-      alias_method(
-        :prepend_extra_operation_tree_class,
-        :prepend_extra_operation_tree_classes
-      )
+      alias prepend_extra_operation_tree_class prepend_extra_operation_tree_classes
 
       def to_h
         {
@@ -183,11 +161,9 @@ module SuperDiff
       private
 
       def color_enabled_by_default?
-        return true if ENV["CI"] == "true"
+        return true if ENV['CI'] == 'true'
 
-        if defined?(::SuperDiff::RSpec)
-          return ::RSpec.configuration.color_enabled?
-        end
+        return ::RSpec.configuration.color_enabled? if defined?(::SuperDiff::RSpec)
 
         $stdout.respond_to?(:tty?) && $stdout.tty?
       end

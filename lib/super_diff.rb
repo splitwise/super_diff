@@ -1,33 +1,35 @@
-require "attr_extras/explicit"
-require "date"
+# frozen_string_literal: true
+
+require 'attr_extras/explicit'
+require 'date'
 
 module SuperDiff
-  autoload :Core, "super_diff/core"
-  autoload :Csi, "super_diff/csi"
-  autoload :Differs, "super_diff/differs"
-  autoload :EqualityMatchers, "super_diff/equality_matchers"
-  autoload :Errors, "super_diff/errors"
-  autoload :ObjectInspection, "super_diff/object_inspection"
-  autoload :OperationTreeBuilders, "super_diff/operation_tree_builders"
-  autoload :OperationTreeFlatteners, "super_diff/operation_tree_flatteners"
-  autoload :OperationTrees, "super_diff/operation_trees"
-  autoload :Operations, "super_diff/operations"
-  autoload :VERSION, "super_diff/version"
+  autoload :Core, 'super_diff/core'
+  autoload :Csi, 'super_diff/csi'
+  autoload :Differs, 'super_diff/differs'
+  autoload :EqualityMatchers, 'super_diff/equality_matchers'
+  autoload :Errors, 'super_diff/errors'
+  autoload :ObjectInspection, 'super_diff/object_inspection'
+  autoload :OperationTreeBuilders, 'super_diff/operation_tree_builders'
+  autoload :OperationTreeFlatteners, 'super_diff/operation_tree_flatteners'
+  autoload :OperationTrees, 'super_diff/operation_trees'
+  autoload :Operations, 'super_diff/operations'
+  autoload :VERSION, 'super_diff/version'
 
   def self.const_missing(missing_const_name)
     if Core.const_defined?(missing_const_name)
-      warn <<~EOT
+      warn <<~WARNING
         WARNING: SuperDiff::#{missing_const_name} is deprecated and will be removed in the next major release.
         Please use SuperDiff::Core::#{missing_const_name} instead.
         #{caller_locations.join("\n")}
-      EOT
+      WARNING
       Core.const_get(missing_const_name)
     elsif Basic.const_defined?(missing_const_name)
-      warn <<~EOT
+      warn <<~WARNING
         WARNING: SuperDiff::#{missing_const_name} is deprecated and will be removed in the next major release.
         Please use SuperDiff::Basic::#{missing_const_name} instead.
         #{caller_locations.join("\n")}
-      EOT
+      WARNING
       Basic.const_get(missing_const_name)
     else
       super
@@ -39,7 +41,7 @@ module SuperDiff
   end
 
   def self.configuration
-    @_configuration ||= Core::Configuration.new
+    @configuration ||= Core::Configuration.new
   end
 
   def self.diff(
@@ -121,16 +123,12 @@ module SuperDiff
   end
 
   def self.insert_overrides(target_module, mod = nil, &block)
-    mod ? target_module.prepend(mod) : target_module.prepend(Module.new(&block))
+    target_module.prepend(mod || Module.new(&block))
   end
 
   def self.insert_singleton_overrides(target_module, mod = nil, &block)
-    if mod
-      target_module.singleton_class.prepend(mod)
-    else
-      target_module.singleton_class.prepend(Module.new(&block))
-    end
+    target_module.singleton_class.prepend(mod || Module.new(&block))
   end
 end
 
-require "super_diff/basic"
+require 'super_diff/basic'

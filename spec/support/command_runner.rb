@@ -1,8 +1,10 @@
-require "childprocess"
+# frozen_string_literal: true
 
-require "English"
-require "shellwords"
-require "timeout"
+require 'childprocess'
+
+require 'English'
+require 'shellwords'
+require 'timeout'
 
 class CommandRunner
   class CommandFailedError < StandardError
@@ -24,17 +26,17 @@ class CommandRunner
     private
 
     def build_message
-      message = <<-MESSAGE
-Command #{command.inspect} failed, exiting with status #{exit_status}.
+      message = <<~MESSAGE
+        Command #{command.inspect} failed, exiting with status #{exit_status}.
       MESSAGE
 
-      message << <<-MESSAGE if output
-Output:
-#{
-        SuperDiff::Test::OutputHelpers.divider("START") + output +
-          SuperDiff::Test::OutputHelpers.divider("END")
-      }
-        MESSAGE
+      message << <<~MESSAGE if output
+        Output:
+        #{
+                SuperDiff::Test::OutputHelpers.divider('START') + output +
+                  SuperDiff::Test::OutputHelpers.divider('END')
+              }
+      MESSAGE
 
       message
     end
@@ -59,17 +61,17 @@ Output:
     private
 
     def build_message
-      message = <<-MESSAGE
-Command #{formatted_command.inspect} timed out after #{timeout} seconds.
+      message = <<~MESSAGE
+        Command #{formatted_command.inspect} timed out after #{timeout} seconds.
       MESSAGE
 
-      message << <<-MESSAGE if output
-Output:
-#{
-        SuperDiff::Test::OutputHelpers.divider("START") + output +
-          SuperDiff::Test::OutputHelpers.divider("END")
-      }
-        MESSAGE
+      message << <<~MESSAGE if output
+        Output:
+        #{
+                SuperDiff::Test::OutputHelpers.divider('START') + output +
+                  SuperDiff::Test::OutputHelpers.divider('END')
+              }
+      MESSAGE
 
       message
     end
@@ -103,7 +105,7 @@ Output:
     @env.each { |key, value| @process.environment[key] = value }
     @process.io.stdout = @process.io.stderr = @writer
 
-    @wrapper = ->(block) { block.call }
+    @wrapper = lambda(&:call)
     self.directory = Dir.pwd
     @run_quickly = false
     @run_successfully = false
@@ -125,7 +127,7 @@ Output:
   end
 
   def formatted_command
-    [formatted_env, Shellwords.join(command)].reject(&:empty?).join(" ")
+    [formatted_env, Shellwords.join(command)].reject(&:empty?).join(' ')
   end
 
   def run
@@ -139,11 +141,11 @@ Output:
   end
 
   def stop
-    writer.close if !writer.closed?
+    writer.close unless writer.closed?
   end
 
   def output
-    @_output ||=
+    @output ||=
       begin
         stop
         reader.read
@@ -151,12 +153,12 @@ Output:
   end
 
   def elided_output
-    lines = output.split(/\n/)
+    lines = output.split("\n")
     new_lines = lines[0..4]
 
     new_lines << "(...#{lines.size - 10} more lines...)" if lines.size > 10
 
-    new_lines << lines[-5..-1]
+    new_lines << lines[-5..]
     new_lines.join("\n")
   end
 
@@ -170,10 +172,10 @@ Output:
 
   def fail!
     raise CommandFailedError.create(
-            command: formatted_command,
-            exit_status: exit_status,
-            output: output
-          )
+      command: formatted_command,
+      exit_status: exit_status,
+      output: output
+    )
   end
 
   def has_output?(expected_output)
@@ -201,7 +203,7 @@ Output:
   end
 
   def formatted_env
-    env.map { |key, value| "#{key}=#{value.inspect}" }.join(" ")
+    env.map { |key, value| "#{key}=#{value.inspect}" }.join(' ')
   end
 
   def run_freely
@@ -220,8 +222,7 @@ Output:
     run_with_wrapper
 
     debug do
-      "\n" + SuperDiff::Test::OutputHelpers.divider("START") + output +
-        SuperDiff::Test::OutputHelpers.divider("END")
+      "\n#{SuperDiff::Test::OutputHelpers.divider('START')}#{output}#{SuperDiff::Test::OutputHelpers.divider('END')}"
     end
   end
 
@@ -233,10 +234,10 @@ Output:
         stop
 
         raise CommandTimedOutError.create(
-                command: formatted_command,
-                timeout: timeout,
-                output: output
-              )
+          command: formatted_command,
+          timeout: timeout,
+          output: output
+        )
       end
     else
       yield
@@ -244,7 +245,7 @@ Output:
   end
 
   def debugging_enabled?
-    ENV["DEBUG_COMMANDS"] == "1"
+    ENV['DEBUG_COMMANDS'] == '1'
   end
 
   def debug

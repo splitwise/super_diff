@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeBuilders
@@ -14,10 +16,10 @@ module SuperDiff
           # If timezones are different, also show a normalized timestamp at the
           # end of the diff to help visualize why they are different moments in
           # time.
-          if actual.zone != expected.zone
-            base + ["utc"]
-          else
+          if actual.zone == expected.zone
             base
+          else
+            base + ['utc']
           end
         end
       end

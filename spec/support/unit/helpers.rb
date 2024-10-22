@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module UnitTests
     extend self
@@ -8,8 +10,8 @@ module SuperDiff
       yield.tap { SuperDiff.configuration.merge!(old_configuration) }
     end
 
-    def colored(*args, **opts, &block)
-      SuperDiff::Core::Helpers.style(*args, **opts, &block).to_s.chomp
+    def colored(...)
+      SuperDiff::Core::Helpers.style(...).to_s.chomp
     end
 
     def capture_warnings

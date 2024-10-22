@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeBuilders
@@ -7,7 +9,7 @@ module SuperDiff
         end
 
         def initialize(*args)
-          super(*args)
+          super
 
           establish_expected_and_actual_attributes
         end
@@ -15,11 +17,10 @@ module SuperDiff
         protected
 
         def unary_operations
-          attribute_names.reduce([]) do |operations, name|
+          attribute_names.each_with_object([]) do |name, operations|
             possibly_add_noop_operation_to(operations, name)
             possibly_add_delete_operation_to(operations, name)
             possibly_add_insert_operation_to(operations, name)
-            operations
           end
         end
 
@@ -32,7 +33,7 @@ module SuperDiff
         def attribute_names
           (
             expected.instance_variables.sort & actual.instance_variables.sort
-          ).map { |variable_name| variable_name[1..-1] }
+          ).map { |variable_name| variable_name[1..] }
         end
 
         private
@@ -52,15 +53,15 @@ module SuperDiff
         end
 
         def possibly_add_noop_operation_to(operations, attribute_name)
-          if should_add_noop_operation?(attribute_name)
-            operations << Core::UnaryOperation.new(
-              name: :noop,
-              collection: actual_attributes,
-              key: attribute_name,
-              index: attribute_names.index(attribute_name),
-              value: actual_attributes[attribute_name]
-            )
-          end
+          return unless should_add_noop_operation?(attribute_name)
+
+          operations << Core::UnaryOperation.new(
+            name: :noop,
+            collection: actual_attributes,
+            key: attribute_name,
+            index: attribute_names.index(attribute_name),
+            value: actual_attributes[attribute_name]
+          )
         end
 
         def should_add_noop_operation?(attribute_name)
@@ -71,15 +72,15 @@ module SuperDiff
         end
 
         def possibly_add_delete_operation_to(operations, attribute_name)
-          if should_add_delete_operation?(attribute_name)
-            operations << Core::UnaryOperation.new(
-              name: :delete,
-              collection: expected_attributes,
-              key: attribute_name,
-              index: attribute_names.index(attribute_name),
-              value: expected_attributes[attribute_name]
-            )
-          end
+          return unless should_add_delete_operation?(attribute_name)
+
+          operations << Core::UnaryOperation.new(
+            name: :delete,
+            collection: expected_attributes,
+            key: attribute_name,
+            index: attribute_names.index(attribute_name),
+            value: expected_attributes[attribute_name]
+          )
         end
 
         def should_add_delete_operation?(attribute_name)
@@ -92,15 +93,15 @@ module SuperDiff
         end
 
         def possibly_add_insert_operation_to(operations, attribute_name)
-          if should_add_insert_operation?(attribute_name)
-            operations << Core::UnaryOperation.new(
-              name: :insert,
-              collection: actual_attributes,
-              key: attribute_name,
-              index: attribute_names.index(attribute_name),
-              value: actual_attributes[attribute_name]
-            )
-          end
+          return unless should_add_insert_operation?(attribute_name)
+
+          operations << Core::UnaryOperation.new(
+            name: :insert,
+            collection: actual_attributes,
+            key: attribute_name,
+            index: attribute_names.index(attribute_name),
+            value: actual_attributes[attribute_name]
+          )
         end
 
         def should_add_insert_operation?(attribute_name)

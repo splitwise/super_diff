@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module InspectionTreeBuilders
@@ -11,7 +13,7 @@ module SuperDiff
             t1.only_when empty do |t2|
               t2.as_lines_when_rendering_to_lines do |t3|
                 t3.add_text(
-                  "#<#{object.class.name}:" + object_address_for(object) + ">"
+                  "#<#{object.class.name}:#{object_address_for(object)}>"
                 )
               end
             end
@@ -26,13 +28,13 @@ module SuperDiff
 
                 # stree-ignore
                 t3.when_rendering_to_lines do |t4|
-                  t4.add_text " {"
+                  t4.add_text ' {'
                 end
               end
 
               # stree-ignore
               t2.when_rendering_to_string do |t3|
-                t3.add_text " "
+                t3.add_text ' '
               end
 
               t2.nested do |t3|
@@ -53,10 +55,10 @@ module SuperDiff
               ) do |t3|
                 # stree-ignore
                 t3.when_rendering_to_lines do |t4|
-                  t4.add_text "}"
+                  t4.add_text '}'
                 end
 
-                t3.add_text ">"
+                t3.add_text '>'
               end
             end
           end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module EqualityMatchers
     class Base
@@ -11,17 +13,15 @@ module SuperDiff
         [
           :expected!,
           :actual!,
-          extra_operation_tree_builder_classes: [],
-          extra_diff_formatter_classes: []
+          { extra_operation_tree_builder_classes: [],
+            extra_diff_formatter_classes: [] }
         ]
       )
 
       def call
-        if expected == actual
-          ""
-        else
-          fail
-        end
+        fail unless expected == actual
+
+        ''
       end
 
       protected

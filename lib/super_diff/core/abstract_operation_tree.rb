@@ -1,4 +1,6 @@
-require "forwardable"
+# frozen_string_literal: true
+
+require 'forwardable'
 
 module SuperDiff
   module Core
@@ -32,7 +34,7 @@ module SuperDiff
       end
 
       def pretty_print(pp)
-        pp.group(1, "#<#{self.class.name} [", "]>") do
+        pp.group(1, "#<#{self.class.name} [", ']>') do
           pp.breakable
           pp.seplist(self) { |value| pp.pp value }
         end

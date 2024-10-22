@@ -1,8 +1,10 @@
-require "zeus"
-require "zeus/plan"
-require "forwardable"
+# frozen_string_literal: true
 
-require_relative "../support/test_plan"
+require 'zeus'
+require 'zeus/plan'
+require 'forwardable'
+
+require_relative '../support/test_plan'
 
 class CustomZeusPlan < Zeus::Plan
   extend Forwardable
@@ -27,6 +29,7 @@ class CustomZeusPlan < Zeus::Plan
     color_enabled: false,
     super_diff_configuration: {}
   )
+    super()
     @test_plan =
       TestPlan.new(
         using_outside_of_zeus: using_outside_of_zeus,

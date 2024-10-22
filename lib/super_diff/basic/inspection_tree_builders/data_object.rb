@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module InspectionTreeBuilders
       class DataObject < Core::AbstractInspectionTreeBuilder
         def self.applies_to?(value)
-          SuperDiff::Core::Helpers.ruby_version_matches?("~> 3.2") &&
+          SuperDiff::Core::Helpers.ruby_version_matches?('~> 3.2') &&
             value.is_a?(Data)
         end
 
@@ -16,7 +18,7 @@ module SuperDiff
 
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "{"
+                t3.add_text '{'
               end
             end
 
@@ -27,10 +29,10 @@ module SuperDiff
             ) do |t2|
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "}"
+                t3.add_text '}'
               end
 
-              t2.add_text ">"
+              t2.add_text '>'
             end
           end
         end

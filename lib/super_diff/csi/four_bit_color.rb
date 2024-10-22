@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Csi
     class FourBitColor < Color
@@ -83,10 +85,10 @@ module SuperDiff
         end
       VALID_NAMES = VALID_CODES_BY_NAME.keys
       VALID_CODE_RANGES = [30..37, 40..47, 90..97, 100..107].freeze
-      OPENING_REGEX = /\e\[(\d+)m/.freeze
+      OPENING_REGEX = /\e\[(\d+)m/
 
       def self.exists?(name)
-        VALID_CODES_BY_NAME.has_key?(name)
+        VALID_CODES_BY_NAME.key?(name)
       end
 
       def self.opening_regex
@@ -94,6 +96,7 @@ module SuperDiff
       end
 
       def initialize(value, layer: nil)
+        super()
         if value.is_a?(Symbol)
           @name = interpret_name!(value)
           @layer = interpret_layer!(layer)
@@ -124,14 +127,14 @@ module SuperDiff
       attr_reader :name
 
       def interpret_name!(name)
-        if !VALID_NAMES.include?(name)
+        unless VALID_NAMES.include?(name)
           message =
-            "#{name.inspect} is not a valid color name.\n" +
-              "Valid names are:\n"
+            "#{name.inspect} is not a valid color name.\n" \
+            "Valid names are:\n"
 
           VALID_NAMES.each { |valid_name| message << "- #{valid_name}" }
 
-          raise ArgumentError.new(message)
+          raise ArgumentError, message
         end
 
         name
@@ -146,14 +149,14 @@ module SuperDiff
       def interpret_code!(code)
         if VALID_CODE_RANGES.none? { |range| range.cover?(code) }
           message =
-            "#{code.inspect} is not a valid color code.\n" +
-              "Valid codes are:\n"
+            "#{code.inspect} is not a valid color code.\n" \
+            "Valid codes are:\n"
 
           VALID_CODE_RANGES.each do |range|
             message << "- #{range.begin} through #{range.end}\n"
           end
 
-          raise ArgumentError.new(message)
+          raise ArgumentError, message
         end
 
         COLORS_BY_CODE.fetch(code)

@@ -306,19 +306,17 @@ The following files are used for linting and formatting the codebase:
 - **`.yarn/`:**
   Holds the executable and plugins for [Yarn][yarn],
   a package manager for JavaScript.
-- **`.prettierignore`:**
-  Excludes files from being formatted with [Prettier][prettier].
-- **`.prettierrc.json`:**
-  Configures Prettier.
+- **`.rubocop.yml`:**
+  Configures Rubocop.
 - **`.nvmrc`:**
-  Specifies the Node version required to run Prettier.
+  Specifies the Node version required to run Husky.
   Used by tools like NVM and `asdf`.
 - **`.yarnrc.yml`:**
   Configures Yarn.
 - **`package.json`:**
-  Specifies JavaScript dependencies needed to run Prettier.
+  Specifies JavaScript dependencies.
 
-[prettier]: https://prettier.io/
+[rubocop]: https://rubocop.org/
 [yarn]: https://yarnpkg.com/
 
 ## Documentation

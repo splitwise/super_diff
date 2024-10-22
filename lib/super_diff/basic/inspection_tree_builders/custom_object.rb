@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module InspectionTreeBuilders
@@ -15,7 +17,7 @@ module SuperDiff
 
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "{"
+                t3.add_text '{'
               end
             end
 
@@ -28,10 +30,10 @@ module SuperDiff
             ) do |t2|
               # stree-ignore
               t2.when_rendering_to_lines do |t3|
-                t3.add_text "}"
+                t3.add_text '}'
               end
 
-              t2.add_text ">"
+              t2.add_text '>'
             end
           end
         end

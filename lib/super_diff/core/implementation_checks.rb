@@ -1,7 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     module ImplementationChecks
-      protected def unimplemented_instance_method!
+      protected
+
+      def unimplemented_instance_method!
         raise(
           NotImplementedError,
           "#{self.class} must implement ##{caller_locations(1, 1).first.label}",
@@ -9,7 +13,7 @@ module SuperDiff
         )
       end
 
-      protected def unimplemented_class_method!
+      def unimplemented_class_method!
         raise(
           NotImplementedError,
           "#{self} must implement .#{caller_locations(1, 1).first.label}",

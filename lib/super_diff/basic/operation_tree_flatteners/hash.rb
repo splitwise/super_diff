@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module OperationTreeFlatteners
@@ -5,11 +7,11 @@ module SuperDiff
         protected
 
         def open_token
-          "{"
+          '{'
         end
 
         def close_token
-          "}"
+          '}'
         end
 
         def item_prefix_for(operation)
@@ -25,7 +27,7 @@ module SuperDiff
         end
 
         def key_for(operation)
-          # Note: We could have used the right_key here too, they're both the
+          # NOTE: We could have used the right_key here too, they're both the
           # same keys
           operation.respond_to?(:left_key) ? operation.left_key : operation.key
         end

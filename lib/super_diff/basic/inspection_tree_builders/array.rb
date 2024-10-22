@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Basic
     module InspectionTreeBuilders
@@ -11,7 +13,7 @@ module SuperDiff
             t1.only_when empty do |t2|
               # stree-ignore
               t2.as_lines_when_rendering_to_lines do |t3|
-                t3.add_text "[]"
+                t3.add_text '[]'
               end
             end
 
@@ -20,7 +22,7 @@ module SuperDiff
               t2.as_lines_when_rendering_to_lines(
                 collection_bookend: :open
               ) do |t3|
-                t3.add_text "["
+                t3.add_text '['
               end
 
               # stree-ignore
@@ -32,7 +34,7 @@ module SuperDiff
               t2.as_lines_when_rendering_to_lines(
                 collection_bookend: :close
               ) do |t3|
-                t3.add_text "]"
+                t3.add_text ']'
               end
             end
           end

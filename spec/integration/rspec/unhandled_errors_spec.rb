@@ -1,10 +1,12 @@
-require "spec_helper"
+# frozen_string_literal: true
 
-RSpec.describe "Integration with RSpec and unhandled errors",
+require 'spec_helper'
+
+RSpec.describe 'Integration with RSpec and unhandled errors',
                type: :integration do
-  context "when a random exception occurs" do
-    context "and the message spans multiple lines" do
-      it "highlights the first line in red, and then leaves the rest of the message alone" do
+  context 'when a random exception occurs' do
+    context 'and the message spans multiple lines' do
+      it 'highlights the first line in red, and then leaves the rest of the message alone' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             raise "Some kind of error or whatever\\n\\nThis is another line"
@@ -20,11 +22,11 @@ RSpec.describe "Integration with RSpec and unhandled errors",
               indentation: 5,
               expectation:
                 proc do
-                  red_line "RuntimeError:"
+                  red_line 'RuntimeError:'
                   indent by: 2 do
-                    red_line "Some kind of error or whatever"
+                    red_line 'Some kind of error or whatever'
                     newline
-                    plain_line "This is another line"
+                    plain_line 'This is another line'
                   end
                 end
             )
@@ -36,8 +38,8 @@ RSpec.describe "Integration with RSpec and unhandled errors",
       end
     end
 
-    context "and the message does not span multiple lines" do
-      it "highlights the whole output after the code snippet in red" do
+    context 'and the message does not span multiple lines' do
+      it 'highlights the whole output after the code snippet in red' do
         as_both_colored_and_uncolored do |color_enabled|
           snippet = <<~TEST.strip
             raise "Some kind of error or whatever"
@@ -53,9 +55,9 @@ RSpec.describe "Integration with RSpec and unhandled errors",
               indentation: 5,
               expectation:
                 proc do
-                  red_line "RuntimeError:"
+                  red_line 'RuntimeError:'
                   indent by: 2 do
-                    red_line "Some kind of error or whatever"
+                    red_line 'Some kind of error or whatever'
                   end
                 end
             )
@@ -68,8 +70,8 @@ RSpec.describe "Integration with RSpec and unhandled errors",
     end
   end
 
-  context "when multiple exceptions occur" do
-    it "displays all exceptions, and for each exception, highlights the first line in red and leaves the rest of the message alone" do
+  context 'when multiple exceptions occur' do
+    it 'displays all exceptions, and for each exception, highlights the first line in red and leaves the rest of the message alone' do
       as_both_colored_and_uncolored do |color_enabled|
         snippet = <<~TEST.strip
           raise "Some kind of error or whatever\\n\\nThis is another line"
@@ -97,19 +99,19 @@ RSpec.describe "Integration with RSpec and unhandled errors",
           colored(color_enabled: color_enabled) do
             indent by: 5 do
               line do
-                plain "1.1) "
-                bold "Failure/Error: "
+                plain '1.1) '
+                bold 'Failure/Error: '
                 plain snippet
               end
 
               newline
 
               indent by: 5 do
-                red_line "RuntimeError:"
+                red_line 'RuntimeError:'
                 indent by: 2 do
-                  red_line "Some kind of error or whatever"
+                  red_line 'Some kind of error or whatever'
                   newline
-                  line "This is another line"
+                  line 'This is another line'
                 end
               end
             end
@@ -119,19 +121,19 @@ RSpec.describe "Integration with RSpec and unhandled errors",
           colored(color_enabled: color_enabled) do
             indent by: 5 do
               line do
-                plain "1.2) "
-                bold "Failure/Error: "
+                plain '1.2) '
+                bold 'Failure/Error: '
                 plain snippet
               end
 
               newline
 
               indent by: 5 do
-                red_line "RuntimeError:"
+                red_line 'RuntimeError:'
                 indent by: 2 do
-                  red_line "Some kind of error or whatever"
+                  red_line 'Some kind of error or whatever'
                   newline
-                  line "This is another line"
+                  line 'This is another line'
                 end
               end
             end

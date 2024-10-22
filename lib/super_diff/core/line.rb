@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class Line
       extend AttrExtras.mixin
 
-      ICONS = { delete: "-", insert: "+", noop: " " }.freeze
+      ICONS = { delete: '-', insert: '+', noop: ' ' }.freeze
       COLORS = { insert: :actual, delete: :expected, noop: :plain }.freeze
 
       rattr_initialize(
@@ -11,12 +13,12 @@ module SuperDiff
           :type!,
           :indentation_level!,
           :value!,
-          prefix: "",
-          add_comma: false,
-          children: [],
-          elided: false,
-          collection_bookend: nil,
-          complete_bookend: nil
+          { prefix: '',
+            add_comma: false,
+            children: [],
+            elided: false,
+            collection_bookend: nil,
+            complete_bookend: nil }
         ]
       )
       attr_query :add_comma?

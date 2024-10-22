@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module Core
     class AbstractOperationTreeBuilder
@@ -31,16 +33,15 @@ module SuperDiff
         operation_tree = build_operation_tree
         unmatched_delete_operations = []
 
-        unary_operations.each_with_index do |operation, index|
-          if (
-               operation.name == :insert &&
-                 (
-                   delete_operation =
-                     unmatched_delete_operations.find do |op|
-                       op.key == operation.key
-                     end
-                 ) && (insert_operation = operation)
-             )
+        unary_operations.each_with_index do |operation, _index|
+          if operation.name == :insert &&
+             (
+               delete_operation =
+                 unmatched_delete_operations.find do |op|
+                   op.key == operation.key
+                 end
+             ) && (insert_operation = operation)
+
             unmatched_delete_operations.delete(delete_operation)
 
             if (
@@ -64,9 +65,7 @@ module SuperDiff
               operation_tree << insert_operation
             end
           else
-            if operation.name == :delete
-              unmatched_delete_operations << operation
-            end
+            unmatched_delete_operations << operation if operation.name == :delete
 
             operation_tree << operation
           end
@@ -76,11 +75,9 @@ module SuperDiff
       end
 
       def possible_comparison_of(operation, next_operation)
-        if should_compare?(operation, next_operation)
-          compare(operation.value, next_operation.value)
-        else
-          nil
-        end
+        return unless should_compare?(operation, next_operation)
+
+        compare(operation.value, next_operation.value)
       end
 
       def should_compare?(operation, next_operation)

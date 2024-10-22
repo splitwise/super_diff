@@ -1,5 +1,7 @@
-require "attr_extras/explicit"
-require "json"
+# frozen_string_literal: true
+
+require 'attr_extras/explicit'
+require 'json'
 
 module SuperDiff
   module IntegrationTests
@@ -7,8 +9,8 @@ module SuperDiff
       class Base
         extend AttrExtras.mixin
 
-        PROJECT_DIRECTORY = Pathname.new("../../../..").expand_path(__dir__)
-        TEMP_DIRECTORY = PROJECT_DIRECTORY.join("tmp")
+        PROJECT_DIRECTORY = Pathname.new('../../../..').expand_path(__dir__)
+        TEMP_DIRECTORY = PROJECT_DIRECTORY.join('tmp')
 
         def initialize(
           code,
@@ -29,7 +31,7 @@ module SuperDiff
         protected
 
         def test_plan_prelude
-          ""
+          ''
         end
 
         def test_plan_command
@@ -49,7 +51,7 @@ module SuperDiff
         end
 
         def result_of_command
-          @_result_of_command ||=
+          @result_of_command ||=
             if zeus_running?
               Bundler.with_unbundled_env do
                 CommandRunner.run(Shellwords.join(command))
@@ -58,44 +60,44 @@ module SuperDiff
               CommandRunner.run(
                 Shellwords.join(command),
                 env: {
-                  "DISABLE_PRY" => "true"
+                  'DISABLE_PRY' => 'true'
                 }
               )
             end
         end
 
         def command
-          raise "RAILS_ENV is being set somehow?!" if ENV["RAILS_ENV"]
+          raise 'RAILS_ENV is being set somehow?!' if ENV['RAILS_ENV']
 
           if zeus_running?
             [
-              "zeus",
+              'zeus',
               test_plan_command,
               color_option,
-              "--no-pry",
+              '--no-pry',
               tempfile.to_s,
-              "--super-diff-configuration",
+              '--super-diff-configuration',
               JSON.generate(super_diff_configuration)
             ]
           else
-            ["rspec", "--options", "/tmp/dummy-rspec-config", tempfile.to_s]
+            ['rspec', '--options', '/tmp/dummy-rspec-config', tempfile.to_s]
           end
         end
 
         def zeus_running?
-          PROJECT_DIRECTORY.join(".zeus.sock").exist?
+          PROJECT_DIRECTORY.join('.zeus.sock').exist?
         end
 
         def color_option
-          color_enabled? ? "--color" : "--no-color"
+          color_enabled? ? '--color' : '--no-color'
         end
 
         def tempfile
-          @_tempfile ||=
+          @tempfile ||=
             begin
               TEMP_DIRECTORY.mkpath
               TEMP_DIRECTORY
-                .join("integration_spec.rb")
+                .join('integration_spec.rb')
                 .tap { |file| file.write(program) }
             end
         end
@@ -105,7 +107,7 @@ module SuperDiff
             minimal_program
           else
             <<~PROGRAM
-              require "#{PROJECT_DIRECTORY.join("support/test_plan.rb")}"
+              require "#{PROJECT_DIRECTORY.join('support/test_plan.rb')}"
 
               test_plan = TestPlan.new(
                 using_outside_of_zeus: true,
@@ -135,7 +137,7 @@ module SuperDiff
         end
 
         def reindent(code, level: 0)
-          code.strip.split("\n").map { |line| ("  " * level) + line }.join("\n")
+          code.strip.split("\n").map { |line| ('  ' * level) + line }.join("\n")
         end
       end
     end

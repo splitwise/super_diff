@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SuperDiff
   module RSpec
     module MatcherTextBuilders
@@ -18,11 +20,11 @@ module SuperDiff
 
         def expected_action_for_failure_message
           if predicate_accessible?
-            "return a truthy result for"
+            'return a truthy result for'
           elsif private_predicate?
-            "have a public method"
+            'have a public method'
           else
-            "respond to"
+            'respond to'
           end
         end
 
@@ -35,12 +37,12 @@ module SuperDiff
         end
 
         def add_expected_value_to_failure_message(template)
-          template.add_text " "
+          template.add_text ' '
           template.add_text_in_color(
             expected_color,
             "#{expected_for_failure_message}?"
           )
-          template.add_text " or "
+          template.add_text ' or '
           template.add_text_in_color(
             expected_color,
             "#{expected_for_failure_message}s?"
@@ -48,12 +50,12 @@ module SuperDiff
         end
 
         def add_expected_value_to_description(template)
-          template.add_text " "
+          template.add_text ' '
           template.add_text_in_color(
             expected_color,
             "`#{expected_for_description}?`"
           )
-          template.add_text " or "
+          template.add_text ' or '
           template.add_text_in_color(
             expected_color,
             "`#{expected_for_description}s?`"
@@ -63,18 +65,18 @@ module SuperDiff
         def add_extra_after_error
           if expected_predicate_method_name == :true?
             template.add_text "\n\n"
-            template.add_text "(Perhaps you want to use "
-            template.add_text_in_color(:blue, "be(true)")
-            template.add_text " or "
-            template.add_text_in_color(:blue, "be_truthy")
-            template.add_text " instead?)"
+            template.add_text '(Perhaps you want to use '
+            template.add_text_in_color(:blue, 'be(true)')
+            template.add_text ' or '
+            template.add_text_in_color(:blue, 'be_truthy')
+            template.add_text ' instead?)'
           elsif expected_predicate_method_name == :false?
             template.add_text "\n\n"
-            template.add_text "(Perhaps you want to use "
-            template.add_text_in_color(:blue, "be(false)")
-            template.add_text " or "
-            template.add_text_in_color(:blue, "be_falsey")
-            template.add_text " instead?)"
+            template.add_text '(Perhaps you want to use '
+            template.add_text_in_color(:blue, 'be(false)')
+            template.add_text ' or '
+            template.add_text_in_color(:blue, 'be_falsey')
+            template.add_text ' instead?)'
           end
         end
 
