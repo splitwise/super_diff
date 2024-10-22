@@ -776,19 +776,15 @@ run the following command in a separate terminal session:</p>
 </code></pre></div>
 <p>it should run twice as fast.</p>
 <h2 id="5-run-the-linter">5. Run the linter</h2>
-<p>Code is linted and formatted using Prettier,
-so <a href="https://prettier.io/docs/en/editors.html">make sure that&rsquo;s set up in your editor</a>.
+<p>Code is linted and formatted using Rubocop.
+so <a href="https://docs.rubocop.org/rubocop/integration_with_other_tools.html#editor-integration">make sure that&rsquo;s set up in your editor</a>.
 If you don&rsquo;t want to do this,
 you can also fix any lint violations by running:</p>
-<div class="highlight"><pre><span></span><code>yarn lint:fix
+<div class="highlight"><pre><span></span><code>bundle exec rubocop -a
 </code></pre></div>
 <p>Provided that you ran <code>bin/setup</code> above,
 any code you&rsquo;ve changed will also be linted
-whenever you push a commit.
-If this step fails for any reason,
-you can fix lint violations in only changed files by running:</p>
-<div class="highlight"><pre><span></span><code>yarn lint:changed:fix
-</code></pre></div>
+whenever you push a commit.</p>
 <h2 id="6-optional-update-the-documentation">6. (Optional) Update the documentation</h2>
 <p>If there&rsquo;s any part of this documentation that you wish to update,
 then in a free terminal session, run:</p>
