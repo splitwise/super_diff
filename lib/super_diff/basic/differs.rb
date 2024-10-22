@@ -4,7 +4,6 @@ module SuperDiff
       autoload :Array, "super_diff/basic/differs/array"
       autoload :CustomObject, "super_diff/basic/differs/custom_object"
       autoload :DateLike, "super_diff/basic/differs/date_like"
-      autoload :RangeObject, "super_diff/basic/differs/range_object"
       autoload :DefaultObject, "super_diff/basic/differs/default_object"
       autoload :Hash, "super_diff/basic/differs/hash"
       autoload :MultilineString, "super_diff/basic/differs/multiline_string"

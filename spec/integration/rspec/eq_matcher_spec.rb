@@ -1077,11 +1077,7 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
                   plain "."
                 end
               end,
-            diff:
-              proc do
-                expected_line "- 5..6"
-                actual_line "+ 1..5"
-              end
+            diff: nil
           )
 
         expect(program).to produce_output_when_run(expected_output).in_color(
