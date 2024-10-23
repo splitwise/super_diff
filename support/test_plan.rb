@@ -63,7 +63,7 @@ class TestPlan
     end
 
     require 'super_diff'
-    SuperDiff.const_set(:IntegrationTests, Module.new)
+    SuperDiff.const_set(:IntegrationTests, Module.new) unless defined?(::SuperDiff::IntegrationTests)
 
     Dir
       .glob(SUPPORT_DIR.join('{models,matchers}/*.rb'))
