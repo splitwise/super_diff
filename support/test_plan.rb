@@ -11,11 +11,9 @@ class TestPlan
   INSIDE_INTEGRATION_TEST = true
 
   def initialize(
-    using_outside_of_zeus: false,
     color_enabled: false,
     super_diff_configuration: {}
   )
-    @using_outside_of_zeus = using_outside_of_zeus
     @color_enabled = color_enabled
     @super_diff_configuration = super_diff_configuration
 
@@ -42,13 +40,6 @@ class TestPlan
         require 'pry-byebug'
       rescue LoadError
         require 'pry-nav'
-      end
-
-      # Fix Zeus for 0.13.0+
-      Pry::Pager.class_eval do
-        def best_available
-          Pry::Pager::NullPager.new(pry_instance.output)
-        end
       end
     end
 
@@ -139,10 +130,6 @@ class TestPlan
 
   attr_reader :libraries, :super_diff_configuration
 
-  def using_outside_of_zeus?
-    @using_outside_of_zeus
-  end
-
   def color_enabled?
     @color_enabled
   end
@@ -166,8 +153,6 @@ class TestPlan
   end
 
   def run_test_with_libraries(*libraries)
-    option_parser.parse! unless using_outside_of_zeus?
-
     SuperDiff.configuration.merge!(
       super_diff_configuration.merge(color_enabled: color_enabled?)
     )
@@ -177,26 +162,5 @@ class TestPlan
     yield if block_given?
 
     libraries.each { |library| require library }
-
-    RSpec::Core::Runner.invoke unless using_outside_of_zeus?
-  end
-
-  def option_parser
-    @option_parser ||=
-      OptionParser.new do |opts|
-        opts.on('--[no-]color', 'Enable or disable color.') do |value|
-          @color_enabled = value
-        end
-
-        opts.on('--[no-]pry', 'Disable Pry.') { |value| @pry_enabled = value }
-
-        opts.on(
-          '--super-diff-configuration CONFIG',
-          String,
-          'Configure SuperDiff.'
-        ) do |json|
-          @super_diff_configuration = JSON.parse(json).transform_keys(&:to_sym)
-        end
-      end
   end
 end

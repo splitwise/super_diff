@@ -51,45 +51,35 @@ module SuperDiff
         end
 
         def result_of_command
-          @result_of_command ||=
-            if zeus_running?
-              Bundler.with_unbundled_env do
-                CommandRunner.run(Shellwords.join(command))
-              end
-            else
-              CommandRunner.run(
-                Shellwords.join(command),
-                env: {
-                  'DISABLE_PRY' => 'true'
-                }
-              )
-            end
+          @result_of_command ||= if Process.respond_to?(:fork)
+                                   result_of_command_with_fork
+                                 else
+                                   result_of_command_with_spawn
+                                 end
         end
 
-        def command
-          raise 'RAILS_ENV is being set somehow?!' if ENV['RAILS_ENV']
-
-          if zeus_running?
-            [
-              'zeus',
-              test_plan_command,
-              color_option,
-              '--no-pry',
-              tempfile.to_s,
-              '--super-diff-configuration',
-              JSON.generate(super_diff_configuration)
-            ]
+        def result_of_command_with_fork
+          reader, writer = IO.pipe
+          pid = Process.fork
+          if pid
+            # In the parent process, read and return the child RSpec's output.
+            writer.close
+            Process.wait(pid)
+            rspec_output = reader.read
+            @_result_of_command = Struct.new(:output).new(rspec_output)
           else
-            ['rspec', '--options', '/tmp/dummy-rspec-config', tempfile.to_s]
+            # In the child process, reset RSpec to run the target test.
+            ::RSpec.reset
+
+            # NOTE: warnings_logger emits a newline to stdout with an after(:suite) hook
+            ::RSpec::Core::Runner.run(
+              ['--options', '/tmp/dummy-rspec-config', tempfile.to_s],
+              writer,
+              writer
+            )
+            writer.close
+            Kernel.exit!(0)
           end
-        end
-
-        def zeus_running?
-          PROJECT_DIRECTORY.join('.zeus.sock').exist?
-        end
-
-        def color_option
-          color_enabled? ? '--color' : '--no-color'
         end
 
         def tempfile
@@ -103,23 +93,18 @@ module SuperDiff
         end
 
         def program
-          if zeus_running?
-            minimal_program
-          else
-            <<~PROGRAM
-              require "#{PROJECT_DIRECTORY.join('support/test_plan.rb')}"
+          <<~PROGRAM
+            require "#{PROJECT_DIRECTORY.join('support/test_plan.rb')}"
 
-              test_plan = TestPlan.new(
-                using_outside_of_zeus: true,
-                color_enabled: #{color_enabled?.inspect},
-                super_diff_configuration: #{super_diff_configuration.inspect}
-              )
-              #{test_plan_prelude}
-              test_plan.#{test_plan_command}
+            test_plan = TestPlan.new(
+              color_enabled: #{color_enabled?.inspect},
+              super_diff_configuration: #{super_diff_configuration.inspect}
+            )
+            #{test_plan_prelude}
+            test_plan.#{test_plan_command}
 
-              #{minimal_program}
-            PROGRAM
-          end
+            #{minimal_program}
+          PROGRAM
         end
 
         def minimal_program
