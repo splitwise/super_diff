@@ -77,7 +77,13 @@ class CommandRunner
     end
   end
 
-  Result = Data.define(:output)
+  class Result
+    attr_reader :output
+
+    def initialize(output:)
+      @output = output
+    end
+  end
 
   def self.run(*args)
     new(*args).tap do |runner|
