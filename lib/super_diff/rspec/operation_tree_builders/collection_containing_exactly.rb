@@ -36,7 +36,7 @@ module SuperDiff
         end
 
         def build_operation_tree
-          OperationTrees::Array.new([])
+          Basic::OperationTrees::Array.new([])
         end
 
         private
