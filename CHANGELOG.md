@@ -11,6 +11,7 @@
 ### Other changes
 
 - Switch from Prettier to Rubocop. [#269](https://github.com/splitwise/super_diff/pull/269)
+- Fix outdated reference in documentation. [#270](https://github.com/splitwise/super_diff/pull/270) by [@emmanuel-ferdman](https://github.com/emmanuel-ferdman)
 
 ## 0.13.0 - 2024-09-22
 
