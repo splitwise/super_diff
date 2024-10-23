@@ -54,7 +54,7 @@ module SuperDiff
           @result_of_command ||= if Process.respond_to?(:fork)
                                    result_of_command_with_fork
                                  else
-                                   result_of_command_with_spawn
+                                   result_of_command_with_spawn # TODO
                                  end
         end
 
@@ -71,7 +71,6 @@ module SuperDiff
             # In the child process, reset RSpec to run the target test.
             ::RSpec.reset
 
-            # NOTE: warnings_logger emits a newline to stdout with an after(:suite) hook
             ::RSpec::Core::Runner.run(
               ['--options', '/tmp/dummy-rspec-config', tempfile.to_s],
               writer,
@@ -115,7 +114,7 @@ module SuperDiff
               RSpec.describe "test" do
                 it "passes" do
                   RSpec::Expectations.configuration.on_potential_false_positives = :nothing
-                  #{reindent(code, level: 2)}
+              #{reindent(code, level: 2)}
                   RSpec::Expectations.configuration.on_potential_false_positives = true
                 end
               end
