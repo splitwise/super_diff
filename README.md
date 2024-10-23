@@ -134,7 +134,7 @@ Thank you to the authors of these libraries!
 [diff-lcs]: https://github.com/halostatue/diff-lcs
 [pretty-printer]: https://github.com/ruby/ruby/tree/master/lib/prettyprint.rb
 [awesome-print]: https://github.com/awesome-print/awesome_print
-[inspection-tree]: https://github.com/splitwise/super_diff/blob/main/lib/super_diff/object_inspection/inspection_tree.rb
+[inspection-tree]: https://github.com/splitwise/super_diff/blob/main/lib/super_diff/core/inspection_tree.rb
 
 ## Author/License
 
