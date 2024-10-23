@@ -71,7 +71,6 @@ RSpec.configure do |config|
   config.color_mode = :on if ENV['CI'] == 'true'
 end
 
-require 'warnings_logger'
 $VERBOSE = true
 WarningsLogger.configure do |config|
   config.project_name = 'super_diff'

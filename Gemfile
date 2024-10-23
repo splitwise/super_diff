@@ -16,6 +16,5 @@ gem 'rubocop'
 gem 'syntax_tree'
 gem 'syntax_tree-haml'
 gem 'syntax_tree-rbs'
-gem 'warnings_logger'
 
 gemspec
