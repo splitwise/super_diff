@@ -129,7 +129,9 @@ module SuperDiff
             <<~PROGRAM
               RSpec.describe "test" do
                 it "passes" do
+                  RSpec::Expectations.configuration.on_potential_false_positives = :nothing
                   #{reindent(code, level: 2)}
+                  RSpec::Expectations.configuration.on_potential_false_positives = true
                 end
               end
             PROGRAM
