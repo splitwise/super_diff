@@ -77,6 +77,8 @@ class CommandRunner
     end
   end
 
+  Result = Data.define(:output)
+
   def self.run(*args)
     new(*args).tap do |runner|
       yield runner if block_given?
@@ -137,7 +139,7 @@ class CommandRunner
       fail! if run_successfully && !success?
     end
 
-    self
+    Result.new(output: output)
   end
 
   def stop

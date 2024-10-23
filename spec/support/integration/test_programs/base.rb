@@ -54,7 +54,7 @@ module SuperDiff
           @result_of_command ||= if Process.respond_to?(:fork)
                                    result_of_command_with_fork
                                  else
-                                   result_of_command_with_spawn # TODO
+                                   result_of_command_with_spawn
                                  end
         end
 
@@ -66,7 +66,7 @@ module SuperDiff
             writer.close
             Process.wait(pid)
             rspec_output = reader.read
-            @_result_of_command = Struct.new(:output).new(rspec_output)
+            @_result_of_command = CommandRunner::Result.new(output: rspec_output)
           else
             # In the child process, reset RSpec to run the target test.
             ::RSpec.reset
@@ -79,6 +79,15 @@ module SuperDiff
             writer.close
             Kernel.exit!(0)
           end
+        end
+
+        def result_of_command_with_spawn
+          CommandRunner.run(
+            Shellwords.join(['rspec', '--options', '/tmp/dummy-rspec-config', tempfile.to_s]),
+            env: {
+              'DISABLE_PRY' => true
+            }
+          )
         end
 
         def tempfile
