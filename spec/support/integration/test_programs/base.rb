@@ -59,26 +59,9 @@ module SuperDiff
         end
 
         def result_of_command_with_fork
-          reader, writer = IO.pipe
-          pid = Process.fork
-          if pid
-            # In the parent process, read and return the child RSpec's output.
-            writer.close
-            Process.wait(pid)
-            rspec_output = reader.read
-            @_result_of_command = CommandRunner::Result.new(output: rspec_output)
-          else
-            # In the child process, reset RSpec to run the target test.
-            ::RSpec.reset
-
-            ::RSpec::Core::Runner.run(
-              ['--options', '/tmp/dummy-rspec-config', tempfile.to_s],
-              writer,
-              writer
-            )
-            writer.close
-            Kernel.exit!(0)
-          end
+          RSpecForkedRunner.new(
+            rspec_options: ['--options', '/tmp/dummy-rspec-config', tempfile.to_s]
+          ).run
         end
 
         def result_of_command_with_spawn
