@@ -12,6 +12,7 @@
 
 - Switch from Prettier to Rubocop. [#269](https://github.com/splitwise/super_diff/pull/269)
 - Fix outdated reference in documentation. [#270](https://github.com/splitwise/super_diff/pull/270) by [@emmanuel-ferdman](https://github.com/emmanuel-ferdman)
+- Replace Zeus with forking strategy for tests. [#271](https://github.com/splitwise/super_diff/pull/271)
 
 ## 0.13.0 - 2024-09-22
 

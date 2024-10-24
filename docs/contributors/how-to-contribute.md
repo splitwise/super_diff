@@ -62,23 +62,6 @@ bin/rspec spec/integration/...
 bin/rspec spec/unit/...
 ```
 
-Note that the integration tests
-can be quite slow to run.
-If you'd like to speed them up,
-run the following command in a separate terminal session:
-
-```
-zeus start
-```
-
-Now the next time you run an integration test by saying
-
-```
-bin/rspec spec/integration/...
-```
-
-it should run twice as fast.
-
 ## 5. Run the linter
 
 Code is linted and formatted using Rubocop.

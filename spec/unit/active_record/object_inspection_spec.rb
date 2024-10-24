@@ -3,6 +3,10 @@
 require 'spec_helper'
 
 RSpec.describe SuperDiff, type: :unit do
+  before do
+    SuperDiff::Test::Models::ActiveRecord.define_tables
+  end
+
   describe '.inspect_object', 'for ActiveRecord objects', active_record: true do
     context 'given an ActiveRecord object' do
       context 'given as_lines: false' do
@@ -33,6 +37,7 @@ RSpec.describe SuperDiff, type: :unit do
               type: :delete,
               indentation_level: 1
             )
+
           expect(tiered_lines).to match(
             [
               an_object_having_attributes(

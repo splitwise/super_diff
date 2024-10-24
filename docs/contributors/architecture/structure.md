@@ -244,27 +244,16 @@ They are divided into two kinds:
   holds tests for individual classes and methods.
 - **Integration tests**, located in `spec/integration/`,
   construct tiny test suites which import SuperDiff
-  and run them in isolated environments
+  and run them in forked processes
   to ensure that SuperDiff works as designed
-  in more real-world scenarios.
+  in more real-world scenarios. We fork instead of
+  running from scratch to avoid having to reload
+  SuperDiff and other libraries for every example.
 
 The files in `spec/support/` (imported via `spec_helper.rb`)
 contain helpers, matchers, and tests
 that are shared among unit and integration tests,
 at their respective levels.
-
-Beyond this, [Zeus][zeus], a way to speed up integration tests,
-and is run and configured via these files:
-
-- `bin/start-dev`
-- `config/zeus_plan.rb`
-- `support/test_plan.rb`
-- `zeus.json`
-
-The [official Zeus docs](https://github.com/burke/zeus/blob/master/docs/ruby/modifying.md)
-is helpful for understanding how these files work together.
-
-[zeus]: https://github.com/burke/zeus
 
 ## Ruby
 
