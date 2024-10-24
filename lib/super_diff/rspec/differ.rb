@@ -22,7 +22,7 @@ module SuperDiff
 
       def worth_diffing?
         comparing_inequal_values? && !comparing_primitive_values? &&
-          !comparing_singleline_strings?
+          !comparing_proc_values? && !comparing_singleline_strings?
       end
 
       def comparing_inequal_values?
@@ -35,6 +35,10 @@ module SuperDiff
         return false if expected.is_a?(String)
 
         SuperDiff.primitive?(expected)
+      end
+
+      def comparing_proc_values?
+        expected.is_a?(Proc)
       end
 
       def comparing_singleline_strings?
