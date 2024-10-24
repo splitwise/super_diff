@@ -765,16 +765,6 @@ but you can also run them at any time:</p>
 <div class="highlight"><pre><span></span><code>bin/rspec spec/integration/...
 bin/rspec spec/unit/...
 </code></pre></div>
-<p>Note that the integration tests
-can be quite slow to run.
-If you&rsquo;d like to speed them up,
-run the following command in a separate terminal session:</p>
-<div class="highlight"><pre><span></span><code>zeus start
-</code></pre></div>
-<p>Now the next time you run an integration test by saying</p>
-<div class="highlight"><pre><span></span><code>bin/rspec spec/integration/...
-</code></pre></div>
-<p>it should run twice as fast.</p>
 <h2 id="5-run-the-linter">5. Run the linter</h2>
 <p>Code is linted and formatted using Rubocop.
 so <a href="https://docs.rubocop.org/rubocop/integration_with_other_tools.html#editor-integration">make sure that&rsquo;s set up in your editor</a>.
