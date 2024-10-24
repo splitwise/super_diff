@@ -81,8 +81,9 @@ class TestPlan
       database: ':memory:'
     )
 
-    RSpec.configuration do |config|
-      config.before do
+    ::RSpec.configure do |config|
+      config.before(:suite) do
+        SuperDiff::Test::Models::ActiveRecord.define_tables
         SuperDiff::Test::Models::ActiveRecord::Person.delete_all
         SuperDiff::Test::Models::ActiveRecord::ShippingAddress.delete_all
       end

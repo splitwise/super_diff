@@ -108,7 +108,7 @@ module SuperDiff
                   opt_before = RSpec::Expectations.configuration.on_potential_false_positives
                   begin
                     RSpec::Expectations.configuration.on_potential_false_positives = :nothing
-                #{reindent(code, level: 2)}
+                #{reindent(code, level: 3)}
                   ensure
                     RSpec::Expectations.configuration.on_potential_false_positives = opt_before
                   end
