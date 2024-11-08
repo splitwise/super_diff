@@ -22,7 +22,7 @@ module SuperDiff
 
       def worth_diffing?
         comparing_inequal_values? && !comparing_primitive_values? &&
-          !comparing_singleline_strings?
+          !comparing_proc_values? && !comparing_singleline_strings?
       end
 
       def comparing_inequal_values?
@@ -30,8 +30,15 @@ module SuperDiff
       end
 
       def comparing_primitive_values?
-        expected.is_a?(Symbol) || expected.is_a?(Integer) ||
-          [true, false, nil].include?(expected)
+        # strings are indeed primitives, but we still may want to diff them if
+        # they are multiline strings (see #comparing_singleline_strings?)
+        return false if expected.is_a?(String)
+
+        SuperDiff.primitive?(expected)
+      end
+
+      def comparing_proc_values?
+        expected.is_a?(Proc)
       end
 
       def comparing_singleline_strings?

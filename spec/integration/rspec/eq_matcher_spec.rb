@@ -1089,6 +1089,312 @@ RSpec.describe "Integration with RSpec's #eq matcher", type: :integration do
     end
   end
 
+  context 'when comparing procs (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = Proc.new { 'hello' }
+          expected = Proc.new { 'oh, hi!' }
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual '#<Proc>'
+                plain ' to eq '
+                expected '#<Proc>'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing booleans (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = true
+          expected = false
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual 'true'
+                plain ' to eq '
+                expected 'false'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing nils (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = nil
+          expected = 'something else'
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual 'nil'
+                plain ' to eq '
+                expected '"something else"'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing symbols (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = :test
+          expected = :different_symbol
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual ':test'
+                plain ' to eq '
+                expected ':different_symbol'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing numerics (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = 4
+          expected = 2.5
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual '4'
+                plain ' to eq '
+                expected '2.5'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing regexps (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = /test/
+          expected = /another regexp/
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual '/test/'
+                plain ' to eq '
+                expected '/another regexp/'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing classes (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          class Test; end
+          class AnotherClass; end
+          expect(Test.new).to eq(AnotherClass.new)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(Test.new).to eq(AnotherClass.new)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual '#<Test>'
+                plain ' to eq '
+                expected '#<AnotherClass>'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing Modules (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          module Test; end
+          module AnotherClass; end
+          expect(Test).to eq(AnotherClass)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(Test).to eq(AnotherClass)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual 'Test'
+                plain ' to eq '
+                expected 'AnotherClass'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
+  context 'when comparing strings (a kind of primitive)' do
+    it 'generates the correct expectation and does not generate a diff' do
+      as_both_colored_and_uncolored do |color_enabled|
+        snippet = <<~TEST.strip
+          actual = 'test'
+          expected = 'another string'
+          expect(actual).to eq(expected)
+        TEST
+        program = make_plain_test_program(snippet, color_enabled: color_enabled)
+
+        expected_output =
+          build_expected_output(
+            color_enabled: color_enabled,
+            snippet: 'expect(actual).to eq(expected)',
+            newline_before_expectation: false,
+            expectation: proc do
+              line do
+                plain 'Expected '
+                actual '"test"'
+                plain ' to eq '
+                expected '"another string"'
+                plain '.'
+              end
+            end,
+            diff: nil
+          )
+
+        expect(program).to produce_output_when_run(expected_output).in_color(
+          color_enabled
+        ).removing_object_ids
+      end
+    end
+  end
+
   it_behaves_like 'a matcher that supports elided diffs' do
     let(:matcher) { :eq }
   end
