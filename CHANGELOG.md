@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.14.0 - 2024-11-15
+
 ### Features
 
 - Improve inspection of Module. [#263](https://github.com/splitwise/super_diff/pull/263) by [@phorsuedzie](https://github.com/phorsuedzie)
