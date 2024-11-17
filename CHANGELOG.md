@@ -1,7 +1,5 @@
 # Changelog
 
-## [Unreleased]
-
 ## 0.14.0 - 2024-11-15
 
 ### Features
