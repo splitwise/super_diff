@@ -7,7 +7,7 @@
 ### Features
 
 - Improve inspection of Module. [#263](https://github.com/splitwise/super_diff/pull/263) by [@phorsuedzie](https://github.com/phorsuedzie)
-- Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/263)
+- Fix multiline string diff with blank lines. [#266](https://github.com/splitwise/super_diff/pull/266)
 - Improve inspection of Range objects. [#267](https://github.com/splitwise/super_diff/pull/267) by [@lucaseras](https://github.com/lucaseras)
 - Skip diffing of more un-diffable types. [#273](https://github.com/splitwise/super_diff/pull/273) by [@lucaseras](https://github.com/lucaseras)
 
