@@ -81,7 +81,16 @@ module SuperDiff
     end
 
     def self.aliased_matcher?(value)
-      value.is_a?(::RSpec::Matchers::AliasedMatcher)
+      if SuperDiff::RSpec.rspec_version < '3.13.0'
+        value.is_a?(::RSpec::Matchers::AliasedMatcher)
+      else # See Github issue #250.
+        !ordered_options?(value) && value.respond_to?(:base_matcher)
+      end
+    end
+
+    def self.ordered_options?(value)
+      defined?(::ActiveSupport::OrderedOptions) &&
+        value.is_a?(::ActiveSupport::OrderedOptions)
     end
 
     def self.rspec_version

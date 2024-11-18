@@ -65,6 +65,7 @@ jobs:
         rspec_appraisal:
           - rspec_lt_3_10
           - rspec_gte_3_10
+          - rspec_gte_3_13
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
     steps:
