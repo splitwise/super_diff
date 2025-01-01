@@ -6,6 +6,10 @@
 
 - Implement RSpec 3.13.0+ compatibility. [#258](https://github.com/splitwise/super_diff/pull/258)
 
+### Other changes
+
+- Filter super_diff from RSpec backtrace. [#275](https://github.com/splitwise/super_diff/pull/275) by [@FlorinPopaCodes](https://github.com/FlorinPopaCodes)
+
 ## 0.14.0 - 2024-11-15
 
 ### Features
