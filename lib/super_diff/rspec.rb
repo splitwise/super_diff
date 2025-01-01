@@ -133,3 +133,5 @@ module SuperDiff
 end
 
 require_relative 'rspec/monkey_patches'
+
+RSpec.configuration.filter_gems_from_backtrace('super_diff')
