@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.15.0 - 2025-01-06
+
 ### Features
 
 - Implement RSpec 3.13.0+ compatibility. [#258](https://github.com/splitwise/super_diff/pull/258)
