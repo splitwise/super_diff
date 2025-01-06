@@ -5,6 +5,7 @@ description = "A more helpful way to view differences between complex data struc
 authors = ["Elliot Winkler <elliot.winkler@gmail.com>", "Splitwise, Inc. <oss-community@splitwise.com>"]
 license = "MIT"
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 python = "^3.12"
