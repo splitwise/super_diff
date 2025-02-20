@@ -28,7 +28,7 @@ Since [RSpec merely runs your `expected` and `actual` values through Ruby's Pret
 and then performs a diff of these strings,
 the output it produces leaves much to be desired.
 
-[rspec-differ-fail]: https://github.com/rspec/rspec-support/blob/c69a231d7369dd165ad7ce4742e1a2e21e3462b5/lib/rspec/support/differ.rb#L178
+[rspec-differ-fail]: https://github.com/rspec/rspec/blob/rspec-support-v3.13.2/rspec-support/lib/rspec/support/differ.rb#L180-L192
 
 For instance, let's say you wanted to compare these two hashes:
 

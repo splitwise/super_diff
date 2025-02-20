@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Other changes
+
+- Updated permalink to rspec differ in README.md [#258](https://github.com/splitwise/super_diff/pull/276) by [@sealocal](https://github.com/sealocal)
+
 ## 0.15.0 - 2025-01-06
 
 ### Features
