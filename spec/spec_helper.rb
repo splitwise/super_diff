@@ -23,6 +23,7 @@ SuperDiff::CurrentBundle.instance.assert_appraisal!
 #---
 
 begin
+  require 'logger'
   require 'active_record'
 
   active_record_available = true

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Other changes
+
+- Fix `logger` dependency issues in CI. [#277](https://github.com/splitwise/super_diff/pull/277)
+
 ## 0.15.0 - 2025-01-06
 
 ### Features
