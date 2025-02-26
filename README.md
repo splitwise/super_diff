@@ -113,7 +113,7 @@ for more on how to do that.
 `super_diff` is [tested][gh-actions] to work with
 Ruby >= 3.x,
 RSpec 3.x,
-and Rails >= 6.x.
+and Rails >= 6.1.
 
 [gh-actions]: https://github.com/splitwise/super_diff/actions?query=workflow%3ASuperDiff
 

@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Features
+
+- Add official Rails 7.1 support. [#278](https://github.com/splitwise/super_diff/pull/278)
+
 ### Other changes
 
 - Fix `logger` dependency issues in CI. [#277](https://github.com/splitwise/super_diff/pull/277)
