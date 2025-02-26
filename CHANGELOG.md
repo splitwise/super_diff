@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Breaking changes
+
+- Dropped support for Ruby 3.0, which reached EOL in April 2024. [#280](https://github.com/splitwise/super_diff/pull/280)
+
 ### Features
 
 - Add official Rails 7.1 support. [#278](https://github.com/splitwise/super_diff/pull/278)

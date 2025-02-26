@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
     'rubygems_mfa_required' => 'true',
     'source_code_uri' => 'https://github.com/splitwise/super_diff'
   }
-  s.required_ruby_version = '>= 3.0'
+  s.required_ruby_version = '>= 3.1'
 
   s.files = %w[README.md super_diff.gemspec] + Dir['lib/**/*']
   s.executables = Dir['exe/**/*'].map { |f| File.basename(f) }
