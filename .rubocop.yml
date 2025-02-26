@@ -33,9 +33,15 @@ Lint/SuppressedException:
     - 'spec/spec_helper.rb'
     - 'support/test_plan.rb'
 
+Naming/BlockForwarding:
+  EnforcedStyle: explicit
+
 Naming/FileName:
   Exclude:
     - 'lib/super_diff/rspec-rails.rb'
 
 Naming/VariableNumber:
   Enabled: false
+
+Style/ArgumentsForwarding:
+  UseAnonymousForwarding: false
