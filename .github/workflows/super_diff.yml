@@ -62,6 +62,7 @@ jobs:
           - rails_7_0
           - rails_7_1
           - rails_7_2
+          - rails_8_0
           - no_rails
         rspec_appraisal:
           - rspec_lt_3_10
