@@ -2,8 +2,13 @@
 
 ## [Unreleased]
 
+### Features
+
+- Add official Rails 7.1 support. [#278](https://github.com/splitwise/super_diff/pull/278)
+
 ### Other changes
 
+- Fix `logger` dependency issues in CI. [#277](https://github.com/splitwise/super_diff/pull/277)
 - Updated permalink to rspec differ in README.md [#258](https://github.com/splitwise/super_diff/pull/276) by [@sealocal](https://github.com/sealocal)
 
 ## 0.15.0 - 2025-01-06
