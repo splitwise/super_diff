@@ -10,6 +10,7 @@
 
 - Add official Rails 7.1 support. [#278](https://github.com/splitwise/super_diff/pull/278)
 - Add official Rails 7.2 support. [#279](https://github.com/splitwise/super_diff/pull/279)
+- Add official Rails 8.0 support. [#281](https://github.com/splitwise/super_diff/pull/281)
 
 ### Other changes
 
