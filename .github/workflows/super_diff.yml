@@ -68,6 +68,9 @@ jobs:
           - rspec_lt_3_10
           - rspec_gte_3_10
           - rspec_gte_3_13
+        exclude:
+        - ruby: "3.1"
+          rails_appraisal: "rails_8_0"
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
     steps:
