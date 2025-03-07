@@ -12,6 +12,11 @@
 - Add official Rails 7.2 support. [#279](https://github.com/splitwise/super_diff/pull/279)
 - Add official Rails 8.0 support. [#281](https://github.com/splitwise/super_diff/pull/281)
 
+### Bug fixes
+
+- Fix `attributes_for_super_diff` (in monkey patch of `ActiveRecord::Base`) which would fail for classes that don't have a primary key.
+  ([#282](https://github.com/splitwise/super_diff/pull/282))
+
 ### Other changes
 
 - Fix `logger` dependency issues in CI. [#277](https://github.com/splitwise/super_diff/pull/277)
