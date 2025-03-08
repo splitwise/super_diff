@@ -16,6 +16,8 @@ module SuperDiff
         end
 
         def attribute_names
+          return expected.attributes.keys.sort if id.nil?
+
           [id] + (expected.attributes.keys.sort - [id])
         end
       end

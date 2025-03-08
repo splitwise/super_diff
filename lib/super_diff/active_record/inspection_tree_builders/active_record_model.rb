@@ -27,7 +27,11 @@ module SuperDiff
 
             t1.nested do |t2|
               t2.insert_separated_list(
-                [id] + (object.attributes.keys.sort - [id])
+                if id.nil?
+                  object.attributes.keys.sort
+                else
+                  [id] + (object.attributes.keys.sort - [id])
+                end
               ) do |t3, name|
                 t3.as_prefix_when_rendering_to_lines do |t4|
                   t4.add_text "#{name}: "
