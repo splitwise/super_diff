@@ -14,7 +14,7 @@
 
 ### Bug fixes
 
-- Fix `attributes_for_super_diff` (in monkey patch of `ActiveRecord::Base`) which would fail for classes that don't have a primary key.
+- Fix ActiveRecord's `attributes_for_super_diff` and tree builders related to Active Records to handle models that do not have a primary key.
   ([#282](https://github.com/splitwise/super_diff/pull/282))
 
 ### Other changes
