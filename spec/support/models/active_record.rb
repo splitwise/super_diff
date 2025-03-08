@@ -7,6 +7,7 @@ module SuperDiff
         def self.define_tables
           SuperDiff::Test::Models::ActiveRecord::Person.define_table
           SuperDiff::Test::Models::ActiveRecord::ShippingAddress.define_table
+          SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.define_table
         end
       end
     end
