@@ -111,7 +111,7 @@ for more on how to do that.
 ## Compatibility
 
 `super_diff` is [tested][gh-actions] to work with
-Ruby >= 3.x,
+Ruby >= 3.1,
 RSpec 3.x,
 and Rails >= 6.1.
 
