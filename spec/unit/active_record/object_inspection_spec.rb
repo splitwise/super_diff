@@ -79,6 +79,24 @@ RSpec.describe SuperDiff, type: :unit do
       end
     end
 
+    context 'given an ActiveRecord object without a primary key' do
+      context 'given as_lines: false' do
+        it 'returns an inspected version of the object' do
+          string =
+            described_class.inspect_object(
+              SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.new(
+                value: 123,
+                at: Time.parse('2015-07-04T17:05:37Z')
+              ),
+              as_lines: false
+            )
+          expect(string).to eq(
+            %(#<SuperDiff::Test::Models::ActiveRecord::TimeSeriesData at: #<Time 2015-07-04 17:05:37 +00:00 (UTC)>, value: 123>)
+          )
+        end
+      end
+    end
+
     context 'given an ActiveRecord::Relation object' do
       context 'given as_lines: false' do
         it 'returns an inspected version of the Relation' do

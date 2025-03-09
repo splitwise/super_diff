@@ -61,6 +61,48 @@ shared_examples_for 'integration with ActiveRecord' do
       end
     end
 
+    context 'when comparing two instances of an ActiveRecord model that does not have a primary key' do
+      it 'produces the correct output' do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            actual = SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.new(
+              value: 456,
+              at: Time.parse('2015-07-04T17:05:37Z'),
+            )
+            expected = SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.new(
+              value: 123,
+              at: Time.parse('2015-07-04T17:05:37Z'),
+            )
+            expect(actual).to eq(expected)
+          TEST
+          program = make_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: 'expect(actual).to eq(expected)',
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain 'Expected '
+                    actual %(#<SuperDiff::Test::Models::ActiveRecord::TimeSeriesData at: #<Time 2015-07-04 17:05:37 +00:00 (UTC)>, value: 456>)
+                  end
+
+                  line do
+                    plain '   to eq '
+                    expected %(#<SuperDiff::Test::Models::ActiveRecord::TimeSeriesData at: #<Time 2015-07-04 17:05:37 +00:00 (UTC)>, value: 123>)
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
+        end
+      end
+    end
+
     context 'when comparing instances of two different ActiveRecord models' do
       it 'produces the correct output' do
         as_both_colored_and_uncolored do |color_enabled|
@@ -94,6 +136,48 @@ shared_examples_for 'integration with ActiveRecord' do
                   line do
                     plain '   to eq '
                     expected %(#<SuperDiff::Test::Models::ActiveRecord::ShippingAddress id: nil, city: "Hill Valley", line_1: "123 Main St.", line_2: "", state: "CA", zip: "90382">)
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
+        end
+      end
+    end
+
+    context 'when comparing instances of two different ActiveRecord models with one not having a primary key' do
+      it 'produces the correct output' do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            actual = SuperDiff::Test::Models::ActiveRecord::Person.new(
+              name: "Elliot",
+              age: 31,
+            )
+            expected = SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.new(
+              value: 123,
+              at: Time.parse('2015-07-04T17:05:37Z'),
+            )
+            expect(actual).to eq(expected)
+          TEST
+          program = make_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: 'expect(actual).to eq(expected)',
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain 'Expected '
+                    actual %(#<SuperDiff::Test::Models::ActiveRecord::Person person_id: nil, age: 31, name: "Elliot">)
+                  end
+
+                  line do
+                    plain '   to eq '
+                    expected %(#<SuperDiff::Test::Models::ActiveRecord::TimeSeriesData at: #<Time 2015-07-04 17:05:37 +00:00 (UTC)>, value: 123>)
                   end
                 end
             )

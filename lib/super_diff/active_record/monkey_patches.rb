@@ -7,7 +7,7 @@ class ActiveRecord::Base
     id_attr = self.class.primary_key
 
     (attributes.keys.sort - [id_attr]).reduce(
-      { id_attr.to_sym => id }
+      id_attr.nil? ? {} : { id_attr.to_sym => id }
     ) { |hash, key| hash.merge(key.to_sym => attributes[key]) }
   end
 end
