@@ -643,7 +643,7 @@ you will get a diff of the two data structures you are trying to match against.
 This is great if all you want to do is compare multi-line strings.
 But if you want to compare other, more &ldquo;real world&rdquo; kinds of values such as API or database data,
 then you are out of luck.
-Since <a href="https://github.com/rspec/rspec-support/blob/c69a231d7369dd165ad7ce4742e1a2e21e3462b5/lib/rspec/support/differ.rb#L178">RSpec merely runs your <code>expected</code> and <code>actual</code> values through Ruby&rsquo;s PrettyPrinter library</a>
+Since <a href="https://github.com/rspec/rspec/blob/rspec-support-v3.13.2/rspec-support/lib/rspec/support/differ.rb#L180-L192">RSpec merely runs your <code>expected</code> and <code>actual</code> values through Ruby&rsquo;s PrettyPrinter library</a>
 and then performs a diff of these strings,
 the output it produces leaves much to be desired.</p>
 <p>For instance, let&rsquo;s say you wanted to compare these two hashes:</p>
