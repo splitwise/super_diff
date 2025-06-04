@@ -118,18 +118,7 @@ module SuperDiff
                     # match in 'actual', then stop, because it's going to be
                     # handled in some future iteration of the 'actual' loop.
                     break
-                  elsif aks[ai + 1..].any? do |k| # rubocop:disable Lint/DuplicateBranch for clarity
-                          expected.include?(k) && expected[k] != actual[k]
-                        end
-
-                    # While we backtracked a bit to iterate over 'expected', we
-                    # now have to look ahead. If we will end up encountering a
-                    # insert that matches this delete later, stop and go back to
-                    # iterating over 'actual'. This is because the delete we would
-                    # have added now will be added later when we encounter the
-                    # associated insert, so we don't want to add it twice.
-                    break
-                  else
+                  elsif operations.none? { |op| op.key == ek }
                     operations << Core::UnaryOperation.new(
                       name: :delete,
                       collection: expected,

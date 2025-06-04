@@ -24,8 +24,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash do
     end
 
     it 'has at most two entries per key' do
-      pending 'fix for issue #99'
-
       groups = tree.group_by(&:key)
 
       groups.each do |key, value|
