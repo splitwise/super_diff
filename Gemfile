@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-gem 'appraisal', github: 'thoughtbot/appraisal'
+gem 'appraisal', '~> 2.5'
 gem 'bundler-audit'
 gem 'childprocess'
 gem 'climate_control'
