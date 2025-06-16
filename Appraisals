@@ -14,28 +14,28 @@ appraisals = {
       instance_eval(&rails_dependencies)
 
       gem 'rails', '~> 6.1.0'
-      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
+      gem 'sqlite3', '~> 1.4', platform: %i[ruby mswin mingw]
     end,
   rails_7_0:
     proc do
       instance_eval(&rails_dependencies)
 
       gem 'rails', '~> 7.0.0'
-      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
+      gem 'sqlite3', '~> 1.4', platform: %i[ruby mswin mingw]
     end,
   rails_7_1:
     proc do
       instance_eval(&rails_dependencies)
 
       gem 'rails', '~> 7.1.0'
-      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
+      gem 'sqlite3', '~> 1.4', platform: %i[ruby mswin mingw]
     end,
   rails_7_2:
     proc do
       instance_eval(&rails_dependencies)
 
       gem 'rails', '~> 7.2.0'
-      gem 'sqlite3', '~> 1.4.0', platform: %i[ruby mswin mingw]
+      gem 'sqlite3', '~> 1.4', platform: %i[ruby mswin mingw]
     end,
   rails_8_0:
     proc do

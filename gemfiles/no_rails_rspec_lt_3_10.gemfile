@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "appraisal", git: "https://github.com/thoughtbot/appraisal"
+gem "appraisal", "~> 2.5"
 gem "bundler-audit"
 gem "childprocess"
 gem "climate_control"
