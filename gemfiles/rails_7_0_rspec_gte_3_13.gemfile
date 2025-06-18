@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-gem "appraisal", git: "https://github.com/thoughtbot/appraisal"
+gem "appraisal", "~> 2.5"
 gem "bundler-audit"
 gem "childprocess"
 gem "climate_control"
@@ -19,7 +19,7 @@ gem "jdbc-sqlite3", platform: :jruby
 gem "net-ftp"
 gem "combustion"
 gem "rails", "~> 7.0.0"
-gem "sqlite3", "~> 1.4.0", platform: [:ruby, :mswin, :mingw]
+gem "sqlite3", "~> 1.4", platform: [:ruby, :mswin, :mingw]
 gem "rspec", "3.13.0"
 gem "rspec-core", "3.13.0"
 gem "rspec-expectations", "3.13.0"
