@@ -1487,4 +1487,39 @@ RSpec.describe "Integration with RSpec's #raise_error matcher",
       end
     end
   end
+
+  context 'when part of an expectation chain' do
+    context 'when the expected error and/or actual message is short' do
+      it 'produces the correct failure message' do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            expect { raise StandardError.new('boo') }.to raise_error(RuntimeError, 'bar').and(change(Random, :rand))
+          TEST
+          program =
+            make_plain_test_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet:
+                "expect { raise StandardError.new('boo') }.to raise_error(RuntimeError, 'bar').and(change(Random, :rand))",
+              expectation:
+                proc do
+                  line do
+                    plain 'Expected raised exception '
+                    actual %(#<StandardError "boo">)
+                    plain ' to match '
+                    expected 'a kind of RuntimeError with message "bar"'
+                    plain '.'
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(
+            expected_output
+          ).in_color(color_enabled)
+        end
+      end
+    end
+  end
 end
