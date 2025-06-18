@@ -39,7 +39,8 @@ or when a matcher whose `#does_not_match?` method returns `true`
 is passed to `expect(...).not_to` —
 RSpec will call the `RSpec::Expectations::ExpectationHelper#handle_failure` method,
 which will call `RSpec::Expectations.fail_with`.
-This method will use `RSpec::Matchers::ExpectedsForMultipleDiffs`
+This method will use `RSpec::Matchers::MultiMatcherDiff`
+(or in RSpec < 3.13.0, `RSpec::Matchers::ExpectedsForMultipleDiffs`)
 and the differ object that `RSpec::Expectations.differ` returns
 to generate a diff,
 combining it with the failure message from the matcher,
@@ -89,7 +90,7 @@ Here are all of the places that SuperDiff patches RSpec:
   as it interferes with the previous patches)
 - `RSpec::Support::ObjectFormatter`
   (to use SuperDiff's object inspection logic)
-- `RSpec::Matchers::ExpectedsForMultipleDiffs`
+- `RSpec::Matchers::ExpectedsForMultipleDiffs` and `RSpec::Matchers::MultiMatcherDiff`
   (to add a key above the diff,
   add spacing around the diff,
   and colorize the word "Diff:")

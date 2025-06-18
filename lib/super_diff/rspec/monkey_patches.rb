@@ -352,6 +352,26 @@ module RSpec
             new([[expected, text]])
           end
 
+          def for_many_matchers(matchers)
+            # Look for expected_for_diff and actual_for_diff if possible
+            diff_tuples = matchers.map do |m|
+              expected = if m.respond_to?(:expected_for_diff)
+                           m.expected_for_diff
+                         else
+                           m.expected
+                         end
+
+              actual = if m.respond_to?(:actual_for_diff)
+                         m.actual_for_diff
+                       else
+                         m.actual
+                       end
+              [expected, diff_label_for(m), actual]
+            end
+
+            new(diff_tuples)
+          end
+
           def colorizer
             RSpec::Core::Formatters::ConsoleCodes
           end
@@ -421,6 +441,26 @@ module RSpec
             end
 
             new([[expected, text, actual]])
+          end
+
+          def for_many_matchers(matchers)
+            # Look for expected_for_diff and actual_for_diff if possible
+            diff_tuples = matchers.map do |m|
+              expected = if m.respond_to?(:expected_for_diff)
+                           m.expected_for_diff
+                         else
+                           m.expected
+                         end
+
+              actual = if m.respond_to?(:actual_for_diff)
+                         m.actual_for_diff
+                       else
+                         m.actual
+                       end
+              [expected, diff_label_for(m), actual]
+            end
+
+            new(diff_tuples)
           end
 
           def colorizer

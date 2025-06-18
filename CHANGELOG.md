@@ -16,6 +16,7 @@
 
 - Fix ActiveRecord's `attributes_for_super_diff` and tree builders related to Active Records to handle models that do not have a primary key.
   [#282](https://github.com/splitwise/super_diff/pull/282) by [@atranson-electra](https://github.com/atranson-electra)
+- Fix failure case for chained matchers. [#288](https://github.com/splitwise/super_diff/pull/288)
 
 ### Other changes
 
