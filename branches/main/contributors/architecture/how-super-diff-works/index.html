@@ -729,7 +729,8 @@ or when a matcher whose <code>#does_not_match?</code> method returns <code>true<
 is passed to <code>expect(...).not_to</code> —
 RSpec will call the <code>RSpec::Expectations::ExpectationHelper#handle_failure</code> method,
 which will call <code>RSpec::Expectations.fail_with</code>.
-This method will use <code>RSpec::Matchers::ExpectedsForMultipleDiffs</code>
+This method will use <code>RSpec::Matchers::MultiMatcherDiff</code>
+(or in RSpec &lt; 3.13.0, <code>RSpec::Matchers::ExpectedsForMultipleDiffs</code>)
 and the differ object that <code>RSpec::Expectations.differ</code> returns
 to generate a diff,
 combining it with the failure message from the matcher,
@@ -778,7 +779,7 @@ in order to integrate fully with RSpec.</p>
   as it interferes with the previous patches)</li>
 <li><code>RSpec::Support::ObjectFormatter</code>
   (to use SuperDiff&rsquo;s object inspection logic)</li>
-<li><code>RSpec::Matchers::ExpectedsForMultipleDiffs</code>
+<li><code>RSpec::Matchers::ExpectedsForMultipleDiffs</code> and <code>RSpec::Matchers::MultiMatcherDiff</code>
   (to add a key above the diff,
   add spacing around the diff,
   and colorize the word &ldquo;Diff:&rdquo;)</li>
