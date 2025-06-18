@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.16.0 - 2025-06-17
+
 ### Breaking changes
 
 - Dropped support for Ruby 3.0, which reached EOL in April 2024. [#280](https://github.com/splitwise/super_diff/pull/280)
