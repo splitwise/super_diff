@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Features
+
+- Add official Ruby 3.4 support. [#289](https://github.com/splitwise/super_diff/pull/289)
+
+### Other changes
+
+- Fix bundler gem caching in CI. [#289](https://github.com/splitwise/super_diff/pull/289)
+
 ## 0.16.0 - 2025-06-17
 
 ### Breaking changes
