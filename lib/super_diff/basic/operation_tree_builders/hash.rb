@@ -108,10 +108,10 @@ module SuperDiff
 
                 start_index.upto(eks.size - 1) do |ei2|
                   ek = eks[ei2]
-                  ev = expected[ek]
+                  ev2 = expected[ek]
                   av2 = actual[ek]
 
-                  if actual.include?(ek) && ev == av2
+                  if actual.include?(ek) && ev2 == av2
                     # If the key in 'expected' we've landed on happens to be a
                     # match in 'actual', then stop, because it's going to be
                     # handled in some future iteration of the 'actual' loop.
@@ -145,12 +145,12 @@ module SuperDiff
                       name: :delete,
                       collection: expected,
                       key: ek,
-                      value: ev,
+                      value: ev2,
                       index: ei2
                     )
                   end
 
-                  next unless ek == ak && ev != av
+                  next unless ek == ak && ev2 != av
 
                   # If we're pointing to the same key in 'expected' as in
                   # 'actual', but with different values, go ahead and add an

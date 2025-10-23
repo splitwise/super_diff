@@ -284,8 +284,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash do
       end
 
       it 'constructs the correct operation tree' do
-        pending 'fix for #99'
-
         expect(tree).to match(
           [
             having_attributes(key: :c, name: :delete, value: 3),
