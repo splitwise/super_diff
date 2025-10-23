@@ -17,7 +17,6 @@ class TestPlan
     @color_enabled = color_enabled
     @super_diff_configuration = super_diff_configuration
 
-    @pry_enabled = true
     @libraries = []
   end
 
@@ -32,16 +31,9 @@ class TestPlan
                               .gemfile_path
                               .to_s
     require 'bundler/setup'
+    require 'debug'
 
     $LOAD_PATH.unshift(PROJECT_DIRECTORY.join('lib'))
-
-    if Gem::Version.new(RUBY_VERSION) < Gem::Version.new('3.2')
-      begin
-        require 'pry-byebug'
-      rescue LoadError
-        require 'pry-nav'
-      end
-    end
 
     if SuperDiff::CurrentBundle.instance.current_appraisal.name.start_with?(
       'no_rails_'
@@ -135,10 +127,6 @@ class TestPlan
     @color_enabled
   end
 
-  def pry_enabled?
-    @pry_enabled
-  end
-
   def reconnect_activerecord
     return unless defined?(ActiveRecord::Base)
 
@@ -157,8 +145,6 @@ class TestPlan
     SuperDiff.configuration.merge!(
       super_diff_configuration.merge(color_enabled: color_enabled?)
     )
-
-    ENV['DISABLE_PRY'] = 'true' unless pry_enabled?
 
     yield if block_given?
 

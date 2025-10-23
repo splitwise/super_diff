@@ -6,9 +6,8 @@ gem "appraisal", "~> 2.5"
 gem "bundler-audit"
 gem "childprocess"
 gem "climate_control"
+gem "debug"
 gem "prettier_print"
-gem "pry-byebug", platform: :mri
-gem "pry-nav", platform: :jruby
 gem "rake"
 gem "rubocop"
 gem "syntax_tree"
