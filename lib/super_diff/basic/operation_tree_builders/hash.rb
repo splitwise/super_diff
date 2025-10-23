@@ -25,7 +25,6 @@ module SuperDiff
           aks = actual.keys
           eks = expected.keys
           previous_ei = nil
-          ei = 0
 
           # When diffing a hash, we're more interested in the 'actual' version
           # than the 'expected' version, because that's the ultimate truth.
@@ -116,10 +115,7 @@ module SuperDiff
                     # match in 'actual', then stop, because it's going to be
                     # handled in some future iteration of the 'actual' loop.
                     break
-                  elsif aks[ai + 1..].any? do |k| # rubocop:disable Lint/DuplicateBranch for clarity
-                          expected.include?(k) && expected[k] != actual[k]
-                        end
-
+                  elsif aks[ai + 1..].include?(ek) # rubocop:disable Lint/DuplicateBranch -- for clarity
                     # While we backtracked a bit to iterate over 'expected', we
                     # now have to look ahead. If we will end up encountering a
                     # insert that matches this delete later, stop and go back to
