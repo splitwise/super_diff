@@ -24,8 +24,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash do
     end
 
     it 'orders key operations according to actual' do
-      pending 'fix for issue #99'
-
       expect(tree).to match(
         [
           having_attributes(key: :a, name: :delete, value: 1),
@@ -38,8 +36,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash do
     end
 
     it 'has at most two entries per key' do
-      pending 'fix for issue #99'
-
       groups = tree.group_by(&:key)
 
       groups.each do |key, value|

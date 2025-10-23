@@ -26,14 +26,12 @@ module SuperDiff
           eks = expected.keys
           previous_ei = nil
           ei = 0
-          ai = 0
 
           # When diffing a hash, we're more interested in the 'actual' version
           # than the 'expected' version, because that's the ultimate truth.
           # Therefore, the diff is presented from the perspective of the 'actual'
           # hash, and we start off by looping over it.
-          while ai < aks.size
-            ak = aks[ai]
+          aks.each_with_index do |ak, ai|
             av = actual[ak]
             ev = expected[ak]
             # While we iterate over 'actual' in order, we jump all over
@@ -129,6 +127,19 @@ module SuperDiff
                     # have added now will be added later when we encounter the
                     # associated insert, so we don't want to add it twice.
                     break
+                  elsif operations.any? { |op| op.key == ek && op.name == :delete }
+                    # We already removed this expected key in the outer loop,
+                    # specifically from a value mismatch where the key appears
+                    # in `actual` before it appears in `expected`. Don't remove
+                    # it again.
+
+                    # NOTE: the op.name == :delete is technically redundant,
+                    # but hopefully clarifying.
+                    # :noop is covered by the first branch in this if/else.
+                    # :insert alone isn't possible here; that would imply `ek`
+                    # was in `actual` but _not_ `expected`, yet we're looking at
+                    # a key in `ek` right now.
+                    next
                   else
                     operations << Core::UnaryOperation.new(
                       name: :delete,
@@ -188,7 +199,6 @@ module SuperDiff
               end
             end
 
-            ai += 1
             previous_ei = ei
           end
 
