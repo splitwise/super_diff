@@ -11,7 +11,7 @@ module SuperDiff
         protected
 
         def unary_operations
-          unary_operations_using_variant_of_patience_algorithm
+          unary_operations_using_longest_common_key_subsequence
         end
 
         def build_operation_tree
@@ -20,7 +20,7 @@ module SuperDiff
 
         private
 
-        def unary_operations_using_variant_of_patience_algorithm
+        def unary_operations_using_longest_common_key_subsequence
           aks = actual.keys
           eks = expected.keys
 
