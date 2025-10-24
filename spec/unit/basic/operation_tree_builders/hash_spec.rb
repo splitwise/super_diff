@@ -24,8 +24,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
     end
 
     it 'orders key operations according to actual' do
-      pending 'fix for issue #99'
-
       expect(tree).to match(
         [
           having_attributes(key: :a, name: :delete, value: 1),
@@ -38,8 +36,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
     end
 
     it 'has at most two entries per key' do
-      pending 'fix for issue #99'
-
       groups = tree.group_by(&:key)
 
       groups.each do |key, value|
@@ -151,13 +147,13 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
         }
       end
 
-      it 'does not colocate the delete and insert operations' do
+      it 'colocates the delete and insert operations' do
         expect(tree).to match(
           [
             having_attributes(key: :a, name: :noop),
-            having_attributes(key: :c, name: :delete),
             having_attributes(key: :b, name: :noop),
-            having_attributes(key: :c, name: :insert)
+            having_attributes(key: :c, name: :delete, value: 99),
+            having_attributes(key: :c, name: :insert, value: 3)
           ]
         )
       end
@@ -185,11 +181,11 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
         expect(tree).to match(
           [
             having_attributes(key: :a, name: :noop),
-            having_attributes(key: :d, name: :delete, value: 4),  # replaced later in actual key order
-            having_attributes(key: :z, name: :delete),            # missing from actual
-            having_attributes(key: :b, name: :noop),
-            having_attributes(key: :c, name: :insert),            # missing from expected
-            having_attributes(key: :d, name: :insert, value: 99) # actual value in actual order
+            having_attributes(key: :z, name: :delete, value: 26), # missing from actual
+            having_attributes(key: :b, name: :noop, value: 2),
+            having_attributes(key: :c, name: :insert, value: 3),  # missing from expected
+            having_attributes(key: :d, name: :delete, value: 4),
+            having_attributes(key: :d, name: :insert, value: 99)
           ]
         )
       end
@@ -212,9 +208,9 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
       it 'appends all insert operations at the end' do
         expect(tree).to match(
           [
+            having_attributes(key: :z, name: :delete, value: 26),
             having_attributes(key: :a, name: :noop, value: 1),
-            having_attributes(key: :z, name: :delete),
-            having_attributes(key: :b, name: :delete)
+            having_attributes(key: :b, name: :delete, value: 2)
           ]
         )
       end
@@ -288,8 +284,6 @@ RSpec.describe SuperDiff::Basic::OperationTreeBuilders::Hash, type: :unit do
       end
 
       it 'constructs the correct operation tree' do
-        pending 'fix for #99'
-
         expect(tree).to match(
           [
             having_attributes(key: :c, name: :delete, value: 3),

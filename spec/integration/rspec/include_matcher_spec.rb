@@ -294,8 +294,8 @@ RSpec.describe "Integration with RSpec's #include matcher",
                   plain_line '  {'
                   plain_line '    number: 42,'
                   plain_line %(    city: "Burbank",)
-                  plain_line %(    zip: "90210")
                   expected_line %(-   state: "CA")
+                  plain_line %(    zip: "90210")
                   plain_line '  }'
                 end
             )
