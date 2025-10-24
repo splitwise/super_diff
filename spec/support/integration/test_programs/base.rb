@@ -67,9 +67,7 @@ module SuperDiff
         def result_of_command_with_spawn
           CommandRunner.run(
             Shellwords.join(['rspec', '--options', '/tmp/dummy-rspec-config', tempfile.to_s]),
-            env: {
-              'DISABLE_PRY' => true
-            }
+            env: {}
           )
         end
 
