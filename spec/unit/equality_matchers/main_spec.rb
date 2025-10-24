@@ -1266,8 +1266,8 @@ RSpec.describe SuperDiff::EqualityMatchers::Main, type: :unit do
                 actual_line '+   is_translator: false,'
                 actual_line '+   is_translation_enabled: false,'
                 plain_line %(    profile_background_color: "FFF1E0",)
-                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
                 expected_line %(-   profile_image_url: "http://pbs.twimg.com/profile_images/931156393108885504/EqEMtLhM_normal.jpg",)
+                plain_line %(    profile_background_image_url_https: "https://abs.twimg.com/images/themes/theme1/bg.png",)
                 plain_line %(    profile_banner_url: "https://pbs.twimg.com/profile_banners/18949452/1581526592",)
                 plain_line '    profile_background_tile: false'
                 plain_line '  }'
