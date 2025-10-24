@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.17.0 - 2025-10-24
+
 ### Features
 
 - Add official Ruby 3.4 support. [#289](https://github.com/splitwise/super_diff/pull/289) by [@olleolleolle](https://github.com/olleolleolle)
