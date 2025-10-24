@@ -30,6 +30,10 @@ module SuperDiff
       TestPrograms::RSpecActiveSupport.new(test, color_enabled: color_enabled)
     end
 
+    def make_rspec_action_dispatch_program(test, color_enabled:)
+      TestPrograms::RSpecActionDispatch.new(test, color_enabled: color_enabled)
+    end
+
     def make_rspec_rails_test_program(test, color_enabled:)
       TestPrograms::RSpecRails.new(test, color_enabled: color_enabled)
     end

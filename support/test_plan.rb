@@ -62,7 +62,14 @@ class TestPlan
     require 'active_support/core_ext/hash/indifferent_access'
   rescue LoadError => e
     # active_support may not be in the Gemfile, so that's okay
-    puts "Error in TestPlan#boot_active_support: #{e.message}"
+    puts "Error in TestPlan##{__method__}: #{e.message}"
+  end
+
+  def boot_action_dispatch
+    require 'action_dispatch'
+  rescue LoadError => e
+    # action_dispatch may not be in the Gemfile, so that's okay
+    puts "Error in TestPlan##{__method__}: #{e.message}"
   end
 
   def boot_active_record
@@ -86,7 +93,7 @@ class TestPlan
       .each { |path| require path }
   rescue LoadError => e
     # active_record may not be in the Gemfile, so that's okay
-    puts "Error in TestPlan#boot_active_record: #{e.message}"
+    puts "Error in TestPlan##{__method__}: #{e.message}"
   end
 
   def boot_rails
@@ -111,6 +118,10 @@ class TestPlan
 
   def run_rspec_active_record_test
     run_test_with_libraries('super_diff/rspec', 'super_diff/active_record')
+  end
+
+  def run_rspec_action_dispatch_test
+    run_test_with_libraries('super_diff/rspec', 'super_diff/action_dispatch')
   end
 
   def run_rspec_rails_test
