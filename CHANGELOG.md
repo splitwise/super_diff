@@ -6,6 +6,10 @@
 
 - Add official Ruby 3.4 support. [#289](https://github.com/splitwise/super_diff/pull/289) by [@olleolleolle](https://github.com/olleolleolle)
 
+### Bug fixes
+
+- Fix hash diffing algorithm. [#293](https://github.com/splitwise/super_diff/pull/293)
+
 ### Other changes
 
 - Fix bundler gem caching in CI. [#289](https://github.com/splitwise/super_diff/pull/289) by [@olleolleolle](https://github.com/olleolleolle)
