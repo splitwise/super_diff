@@ -2,9 +2,13 @@
 
 ## [Unreleased]
 
+### Other changes
+
+- Add max major version constraints to dependencies. [#296](https://github.com/splitwise/super_diff/pull/296)
+
 ## 0.18.0 - 2025-12-05
 
-## Features
+### Features
 
 - Abbreviate ActionDispatch::Request inspection. [#294](https://github.com/splitwise/super_diff/pull/294)
 
