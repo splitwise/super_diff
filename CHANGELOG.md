@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## 0.18.0 - 2025-12-05
+
+## Features
+
+- Abbreviate ActionDispatch::Request inspection. [#294](https://github.com/splitwise/super_diff/pull/294)
+
 ## 0.17.0 - 2025-10-24
 
 ### Features
