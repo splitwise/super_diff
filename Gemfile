@@ -12,8 +12,5 @@ gem 'debug'
 gem 'prettier_print'
 gem 'rake'
 gem 'rubocop'
-gem 'syntax_tree'
-gem 'syntax_tree-haml'
-gem 'syntax_tree-rbs'
 
 gemspec

@@ -26,10 +26,6 @@ GEM
       reline (>= 0.3.8)
     diff-lcs (1.5.1)
     erb (5.1.1)
-    haml (6.3.0)
-      temple (>= 0.8.2)
-      thor
-      tilt
     io-console (0.8.1)
     irb (1.15.2)
       pp (>= 0.6.0)
@@ -37,7 +33,6 @@ GEM
       reline (>= 0.4.2)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
-    logger (1.6.1)
     optimist (3.1.0)
     parallel (1.26.3)
     parser (3.3.5.0)
@@ -55,8 +50,6 @@ GEM
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.0.6)
-    rbs (3.6.1)
-      logger
     rdoc (6.15.0)
       erb
       psych (>= 4.0.0)
@@ -78,19 +71,7 @@ GEM
       parser (>= 3.3.1.0)
     ruby-progressbar (1.13.0)
     stringio (3.1.7)
-    syntax_tree (6.2.0)
-      prettier_print (>= 1.2.0)
-    syntax_tree-haml (4.0.3)
-      haml (>= 5.2)
-      prettier_print (>= 1.2.1)
-      syntax_tree (>= 6.0.0)
-    syntax_tree-rbs (1.0.0)
-      prettier_print
-      rbs
-      syntax_tree (>= 2.0.1)
-    temple (0.10.3)
     thor (1.4.0)
-    tilt (2.4.0)
     tsort (0.2.0)
     unicode-display_width (2.6.0)
 
@@ -110,9 +91,6 @@ DEPENDENCIES
   rake
   rubocop
   super_diff!
-  syntax_tree
-  syntax_tree-haml
-  syntax_tree-rbs
 
 BUNDLED WITH
    2.5.20
