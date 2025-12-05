@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.files = %w[README.md super_diff.gemspec] + Dir['lib/**/*']
   s.executables = Dir['exe/**/*'].map { |f| File.basename(f) }
 
-  s.add_dependency 'attr_extras', '>= 6.2.4'
-  s.add_dependency 'diff-lcs'
-  s.add_dependency 'patience_diff'
+  s.add_dependency 'attr_extras', '>= 6.2.4', '< 8'
+  s.add_dependency 'diff-lcs', '~> 1.5'
+  s.add_dependency 'patience_diff', '~> 1.2'
 end
