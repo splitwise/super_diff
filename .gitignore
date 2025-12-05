@@ -6,6 +6,7 @@ pkg
 spec/examples.txt
 spec/internal
 tmp
+*.gem
 
 # Ignore Yarn stuff
 .pnp.*
