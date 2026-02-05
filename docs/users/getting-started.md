@@ -86,6 +86,18 @@ such as matchers.
 
 You can now continue on to [customizing SuperDiff](./customization.md).
 
+## Binary Strings
+
+SuperDiff can diff binary strings (`Encoding::ASCII_8BIT`) using a hex-dump
+format and a binary-safe inspection label.
+To enable this, add:
+
+```ruby
+require "super_diff/binary_string"
+```
+
+You can create binary strings with `String#b` or by forcing the encoding.
+
 ## Using parts of SuperDiff directly
 
 Although SuperDiff is primarily designed to integrate with RSpec,
