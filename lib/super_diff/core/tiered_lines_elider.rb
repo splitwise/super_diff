@@ -41,12 +41,7 @@ module SuperDiff
 
       def panes
         @panes ||=
-          BuildPanes.call(dirty_panes: padded_dirty_panes, lines: lines)
-      end
-
-      def padded_dirty_panes
-        @padded_dirty_panes ||=
-          combine_congruent_panes(dirty_panes)
+          BuildPanes.call(dirty_panes: dirty_panes, lines: lines)
       end
 
       def dirty_panes
@@ -172,10 +167,6 @@ module SuperDiff
 
       def combine_congruent_boxes(boxes)
         combine(boxes, on: :indentation_level)
-      end
-
-      def combine_congruent_panes(panes)
-        combine(panes, on: :type)
       end
 
       def combine(spannables, on:)
