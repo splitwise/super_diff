@@ -46,11 +46,7 @@ module SuperDiff
 
       def padded_dirty_panes
         @padded_dirty_panes ||=
-          combine_congruent_panes(
-            dirty_panes
-              .map(&:padded)
-              .map { |pane| pane.capped_to(0, lines.size - 1) }
-          )
+          combine_congruent_panes(dirty_panes)
       end
 
       def dirty_panes
@@ -346,19 +342,6 @@ module SuperDiff
 
         def extended_to(new_end)
           self.class.new(type: type, range: range.begin..new_end)
-        end
-
-        def padded
-          self.class.new(type: type, range: Range.new(range.begin, range.end))
-        end
-
-        def capped_to(beginning, ending)
-          new_beginning = [range.begin, beginning].max
-          new_ending = [range.end, ending].min
-          self.class.new(
-            type: type,
-            range: Range.new(new_beginning, new_ending)
-          )
         end
       end
 
