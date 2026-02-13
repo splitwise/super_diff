@@ -153,15 +153,22 @@ module SuperDiff
       end
 
       def filter_out_boxes_fully_contained_in_others(boxes)
-        sorted_boxes =
-          boxes.sort_by do |box|
-            [box.indentation_level, box.range.begin, box.range.end]
-          end
+        # First, sorts boxes by beginning ascending, range descending. (Boxes may
+        # never share beginnings, so the latter may be useless, but this is at least
+        # sufficient if unnecessary.)
+        #
+        # Then, iterate through each box, keeping track of the farthest "end" of any
+        # box seen so far. If the current box we are on ends before (or on) that farthest
+        # end, we know there is some box earlier in the sequence that begins <= this one
+        # (because of the prior sorting), and ends >= this one; that is, the current box
+        # is fully contained, and we can filter it out.
+        sorted = boxes.sort_by { |box| [box.range.begin, -box.range.end] }
+        max_end = -1
 
-        boxes.reject do |box2|
-          sorted_boxes.any? do |box1|
-            !box1.equal?(box2) && box1.fully_contains?(box2)
-          end
+        sorted.reject do |box|
+          contained = box.range.end <= max_end
+          max_end = box.range.end if box.range.end > max_end
+          contained
         end
       end
 
