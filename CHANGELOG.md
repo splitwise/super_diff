@@ -6,6 +6,7 @@
 
 - Add max major version constraints to dependencies. [#296](https://github.com/splitwise/super_diff/pull/296)
 - Remove unused `syntax_tree` gems from development. [#297](https://github.com/splitwise/super_diff/pull/297)
+- Simplify tiered lines elider. [#302](https://github.com/splitwise/super_diff/pull/302)
 
 ## 0.18.0 - 2025-12-05
 
