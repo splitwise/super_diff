@@ -131,7 +131,7 @@ module SuperDiff
       def normalized_box_groups_at_decreasing_indentation_levels_within(pane)
         box_groups_at_decreasing_indentation_levels_within(pane).map(
           &method(:filter_out_boxes_fully_contained_in_others)
-        ).map(&method(:combine_congruent_boxes))
+        ).map(&method(:combine_contiguous_boxes))
       end
 
       def box_groups_at_decreasing_indentation_levels_within(pane)
@@ -168,7 +168,7 @@ module SuperDiff
         end
       end
 
-      def combine_congruent_boxes(boxes)
+      def combine_contiguous_boxes(boxes)
         combine(boxes, on: :indentation_level)
       end
 
