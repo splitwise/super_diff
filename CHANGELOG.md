@@ -12,8 +12,8 @@
 - Pin all actions to full commit SHA. [#305](https://github.com/splitwise/super_diff/pull/305)
 - Do not attempt to sub-diff multiline strings. [#304](https://github.com/splitwise/super_diff/pull/304)
 - Tweak TieredLinesElider. [#307](https://github.com/splitwise/super_diff/pull/307)
-- Drop official support for Rails 6.1, which reached EOL in October 2024. []()
-- Add official support for Rails 8.1. []()
+- Drop official support for Rails 6.1, which reached EOL in October 2024. [#308](https://github.com/splitwise/super_diff/pull/308)
+- Add official support for Rails 8.1. [#308](https://github.com/splitwise/super_diff/pull/308)
 
 ## 0.18.0 - 2025-12-05
 
