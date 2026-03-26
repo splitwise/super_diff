@@ -14,8 +14,8 @@ gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
 gem "jdbc-sqlite3", platform: :jruby
 gem "net-ftp"
 gem "combustion"
-gem "rails", "~> 6.1.0"
-gem "sqlite3", "~> 1.4", platform: [:ruby, :mswin, :mingw]
+gem "rails", "~> 8.1.0"
+gem "sqlite3", ">= 2.1", platform: [:ruby, :mswin, :mingw]
 gem "rspec", "3.12.0"
 gem "rspec-core", "3.12.0"
 gem "rspec-expectations", "3.12.3"

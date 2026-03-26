@@ -57,11 +57,11 @@ jobs:
           - "3.3"
           - "3.4"
         rails_appraisal:
-          - rails_6_1
           - rails_7_0
           - rails_7_1
           - rails_7_2
           - rails_8_0
+          - rails_8_1
           - no_rails
         rspec_appraisal:
           - rspec_lt_3_10
@@ -69,9 +69,9 @@ jobs:
           - rspec_gte_3_13
         exclude:
         - ruby: "3.1"
+          rails_appraisal: "rails_8_1"
+        - ruby: "3.1"
           rails_appraisal: "rails_8_0"
-        - ruby: "3.4"
-          rails_appraisal: "rails_6_1"
         - ruby: "3.4"
           rails_appraisal: "rails_7_0"
     env:
