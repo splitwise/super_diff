@@ -43,6 +43,13 @@ module SuperDiff
 
         attr_reader :sequence_matcher, :original_expected, :original_actual
 
+        # override
+        def should_compare?(_operation, _next_operation)
+          # Don't try to build a nested operation tree for individual line changes, even if
+          # there's an applicable string operation tree builder.
+          false
+        end
+
         def split_into_lines(string)
           string.scan(/.*(?:\r|\n|\r\n|\Z)/)
         end
