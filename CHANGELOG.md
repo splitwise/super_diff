@@ -9,6 +9,7 @@
 - Simplify tiered lines elider. [#302](https://github.com/splitwise/super_diff/pull/302)
 - Support elision for flat line trees. [#300](https://github.com/splitwise/super_diff/pull/300) by [@gschlager](https://github.com/gschlager)
 - Fix integration snippet indentation. [#299](https://github.com/splitwise/super_diff/pull/299) by [@gschlager](https://github.com/gschlager)
+- Pin all actions to full commit SHA. [#305](https://github.com/splitwise/super_diff/pull/305)
 
 ## 0.18.0 - 2025-12-05
 

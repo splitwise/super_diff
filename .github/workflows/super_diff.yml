@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' || github.event.action != 'closed' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Download actionlint
         id: download-actionlint
         run: bash <(curl https://raw.githubusercontent.com/rhysd/actionlint/7fdc9630cc360ea1a469eed64ac6d78caeda1234/scripts/download-actionlint.bash) 1.6.23
@@ -27,11 +27,11 @@ jobs:
         run: ${{ steps.download-actionlint.outputs.executable }} -color
         shell: bash
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1.297.0
         with:
           bundler-cache: true # `bundle install` and cache gems.
       - name: Use Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
         with:
           node-version-file: ".nvmrc"
           cache: "yarn"
@@ -77,9 +77,9 @@ jobs:
     env:
       BUNDLE_GEMFILE: gemfiles/${{ matrix.rails_appraisal }}_${{ matrix.rspec_appraisal }}.gemfile
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1.297.0
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
@@ -97,9 +97,9 @@ jobs:
   collect-release-info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@c515ec17f69368147deb311832da000dd229d338 # v1.297.0
         with:
           bundler-cache: true
       - name: Run command
@@ -114,7 +114,7 @@ jobs:
     needs:
       - collect-release-info
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
       - name: Run command
@@ -160,17 +160,17 @@ jobs:
       - collect-docsite-release-info
     if: ${{ needs.collect-docsite-release-info.outputs.HAS_DOCS_CHANGES_TO_RELEASE == 'true' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Install poetry
         run: pipx install poetry==2.0.0
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
       - name: Install Python dependencies
         run: poetry install
       - name: Build docsite
         run: poetry run mkdocs build
       - name: Save site/ for later jobs
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: site
           key: docsite-${{ github.sha }}
@@ -184,11 +184,11 @@ jobs:
       # to check that here
       - build-docsite
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: gh-pages
       - name: Restore cache from previous job
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@668228422ae6a00e4ad889ee87cd7109ec5666a7 # v5.0.4
         with:
           path: site
           key: docsite-${{ github.sha }}
@@ -249,7 +249,7 @@ jobs:
       - collect-docsite-release-info
     if: ${{ github.event_name == 'pull_request' && needs.collect-release-info.outputs.IS_NEW_RELEASE == 'false' && github.event.action == 'closed' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           ref: gh-pages
       - name: Set DOCSITE_DESTINATION_PARENT_PATH
