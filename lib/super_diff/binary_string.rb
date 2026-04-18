@@ -14,12 +14,6 @@ module SuperDiff
 
     SuperDiff.configure do |config|
       config.prepend_extra_differ_classes(Differs::BinaryString)
-      config.prepend_extra_operation_tree_builder_classes(
-        OperationTreeBuilders::BinaryString
-      )
-      config.prepend_extra_operation_tree_classes(
-        OperationTrees::BinaryString
-      )
       config.prepend_extra_inspection_tree_builder_classes(
         InspectionTreeBuilders::BinaryString
       )

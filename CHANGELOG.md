@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Features
+
+- Add opt-in binary string diff support. [#301](https://github.com/splitwise/super_diff/pull/301) by [@gschlager](https://github.com/gschlager)
+
 ### Other changes
 
 - Add max major version constraints to dependencies. [#296](https://github.com/splitwise/super_diff/pull/296)

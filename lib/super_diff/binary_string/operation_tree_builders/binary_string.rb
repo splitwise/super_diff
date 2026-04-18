@@ -24,12 +24,6 @@ module SuperDiff
           OperationTrees::BinaryString.new([])
         end
 
-        # Prevent creation of BinaryOperation objects which the flattener
-        # cannot handle
-        def should_compare?(_operation, _next_operation)
-          false
-        end
-
         private
 
         def split_into_lines(string)
