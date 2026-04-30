@@ -420,6 +420,15 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#binary-strings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Binary Strings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#using-parts-of-superdiff-directly" class="md-nav__link">
     <span class="md-ellipsis">
       Using parts of SuperDiff directly
@@ -753,6 +762,13 @@ run the following command to add SuperDiff to your project:</p>
 and SuperDiff will be able to diff objects that ship with RSpec,
 such as matchers.</p>
 <p>You can now continue on to <a href="../customization/">customizing SuperDiff</a>.</p>
+<h2 id="binary-strings">Binary Strings</h2>
+<p>SuperDiff can diff binary strings (<code>Encoding::ASCII_8BIT</code>) using a hex-dump
+format and a binary-safe inspection label.
+To enable this, add:</p>
+<div class="highlight"><pre><span></span><code><span class="nb">require</span><span class="w"> </span><span class="s2">&quot;super_diff/binary_string&quot;</span>
+</code></pre></div>
+<p>You can create binary strings with <code>String#b</code> or by forcing the encoding.</p>
 <h2 id="using-parts-of-superdiff-directly">Using parts of SuperDiff directly</h2>
 <p>Although SuperDiff is primarily designed to integrate with RSpec,
 it can also be used on its own in other kinds of applications.</p>
