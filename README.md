@@ -92,6 +92,17 @@ you'd get this instead:
 
 [user-docs]: ./docs/users/getting-started.md
 
+### Optional Extensions
+
+If you need diffs for binary strings (`Encoding::ASCII_8BIT`),
+require the binary string integration:
+
+```ruby
+require "super_diff/binary_string"
+```
+
+This enables hex-dump diffs and keeps binary data out of the expectation text.
+
 ## Support
 
 My goal for this library is to improve your development experience.

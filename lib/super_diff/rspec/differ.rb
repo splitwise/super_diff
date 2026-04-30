@@ -42,8 +42,14 @@ module SuperDiff
       end
 
       def comparing_singleline_strings?
+        return false if comparing_binary_strings?
+
         expected.is_a?(String) && actual.is_a?(String) &&
           !expected.include?("\n") && !actual.include?("\n")
+      end
+
+      def comparing_binary_strings?
+        defined?(BinaryString) && BinaryString.applies_to?(expected, actual)
       end
 
       def helpers
