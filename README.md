@@ -90,7 +90,7 @@ you'd get this instead:
 📘 For more on how to install and use SuperDiff,
 [read the user documentation][user-docs].
 
-[user-docs]: ./docs/users/getting-started.md
+[user-docs]: https://splitwise.github.io/super_diff/
 
 ### Optional Extensions
 
