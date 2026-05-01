@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## 0.19.0 - 2026-05-01
+
 ### Features
 
 - Add opt-in binary string diff support. [#301](https://github.com/splitwise/super_diff/pull/301) by [@gschlager](https://github.com/gschlager)
