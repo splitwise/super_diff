@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Other changes
+- Fixed "Using parts of SuperDiff directly" documentation. [#313](https://github.com/splitwise/super_diff/pull/313)
+
 ## 0.19.0 - 2026-05-01
 
 ### Features
