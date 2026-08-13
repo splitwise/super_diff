@@ -780,11 +780,10 @@ it can also be used on its own in other kinds of applications.</p>
 </code></pre></div>
 <p>If you want to compare two objects and display a friendly diff,
 you can use the equality matcher interface:</p>
-<div class="highlight"><pre><span></span><code><span class="no">SuperDiff</span><span class="o">::</span><span class="no">EqualityMatchers</span><span class="o">::</span><span class="no">Main</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><code><span class="no">SuperDiff</span><span class="o">::</span><span class="no">EqualityMatchers</span><span class="o">::</span><span class="no">Main</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="ss">expected</span><span class="p">:</span><span class="w"> </span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="ss">actual</span><span class="p">:</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span>
 </code></pre></div>
-<p>Or, if you want to compare two objects and get a lower-level list of operations,
-you can use the differ interface:</p>
-<div class="highlight"><pre><span></span><code><span class="no">SuperDiff</span><span class="o">::</span><span class="no">Differs</span><span class="o">::</span><span class="no">Main</span><span class="o">.</span><span class="n">call</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span>
+<p>Or, if you want to compare two objects and get a lower-level tree of operations (see <code>UnaryOperation</code> and <code>BinaryOperation</code>), you can use the operation tree builder:</p>
+<div class="highlight"><pre><span></span><code><span class="no">SuperDiff</span><span class="o">.</span><span class="n">build_operation_tree_for</span><span class="p">(</span><span class="n">expected</span><span class="p">,</span><span class="w"> </span><span class="n">actual</span><span class="p">)</span>
 </code></pre></div>
 
 
