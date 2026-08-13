@@ -119,12 +119,11 @@ If you want to compare two objects and display a friendly diff,
 you can use the equality matcher interface:
 
 ```ruby
-SuperDiff::EqualityMatchers::Main.call(expected, actual)
+SuperDiff::EqualityMatchers::Main.call(expected: expected, actual: actual)
 ```
 
-Or, if you want to compare two objects and get a lower-level list of operations,
-you can use the differ interface:
+Or, if you want to compare two objects and get a lower-level tree of operations (see `UnaryOperation` and `BinaryOperation`), you can use the operation tree builder:
 
 ```ruby
-SuperDiff::Differs::Main.call(expected, actual)
+SuperDiff.build_operation_tree_for(expected, actual)
 ```
