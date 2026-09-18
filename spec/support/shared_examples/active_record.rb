@@ -103,6 +103,50 @@ shared_examples_for 'integration with ActiveRecord' do
       end
     end
 
+    context 'when comparing two instances of an ActiveRecord model that has a composite primary key' do
+      it 'produces the correct output' do
+        as_both_colored_and_uncolored do |color_enabled|
+          snippet = <<~TEST.strip
+            actual = SuperDiff::Test::Models::ActiveRecord::Order.new(
+              store_id: 456,
+              sku: 'hi',
+              latest_outcome: 1,
+            )
+            expected = SuperDiff::Test::Models::ActiveRecord::Order.new(
+              store_id: 123,
+              sku: 'hello',
+              latest_outcome: 2,
+            )
+            expect(actual).to eq(expected)
+          TEST
+          program = make_program(snippet, color_enabled: color_enabled)
+
+          expected_output =
+            build_expected_output(
+              color_enabled: color_enabled,
+              snippet: 'expect(actual).to eq(expected)',
+              newline_before_expectation: true,
+              expectation:
+                proc do
+                  line do
+                    plain 'Expected '
+                    actual %(#<SuperDiff::Test::Models::ActiveRecord::Order ["store_id", "sku"]: [456, "hi"], details: nil, latest_outcome: 1, sku: "hi", store_id: 456>)
+                  end
+
+                  line do
+                    plain '   to eq '
+                    expected %(#<SuperDiff::Test::Models::ActiveRecord::Order ["store_id", "sku"]: [123, "hello"], details: nil, latest_outcome: 2, sku: "hello", store_id: 123>)
+                  end
+                end
+            )
+
+          expect(program).to produce_output_when_run(expected_output).in_color(
+            color_enabled
+          )
+        end
+      end
+    end
+
     context 'when comparing instances of two different ActiveRecord models' do
       it 'produces the correct output' do
         as_both_colored_and_uncolored do |color_enabled|
