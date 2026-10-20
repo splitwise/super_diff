@@ -6,6 +6,7 @@ rails_dependencies =
     gem 'jdbc-sqlite3', platform: :jruby
     gem 'net-ftp'
     gem 'combustion'
+    gem 'capybara'
   end
 
 appraisals = {
