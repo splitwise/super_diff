@@ -4,7 +4,7 @@
 
 ### Other changes
 - Fixed "Using parts of SuperDiff directly" documentation. [#313](https://github.com/splitwise/super_diff/pull/313)
-- Allow diff-lcs 2. [#317](https://github.com/splitwise/super_diff/pull/317)
+- Allow diff-lcs 2. [#317](https://github.com/splitwise/super_diff/pull/317) by [@andrewfader](https://github.com/andrewfader)
 
 ## 0.19.0 - 2026-05-01
 
