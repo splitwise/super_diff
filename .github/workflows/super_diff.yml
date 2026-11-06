@@ -15,7 +15,7 @@ concurrency:
   cancel-in-progress: true
 jobs:
   analyze:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     if: ${{ github.event_name == 'push' || github.event.action != 'closed' }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -47,7 +47,7 @@ jobs:
   test:
     needs:
       - analyze
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     strategy:
       fail-fast: false
       matrix:
@@ -87,7 +87,7 @@ jobs:
         run: bundle exec rake --trace
 
   ready-to-merge:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - analyze
       - test
@@ -95,7 +95,7 @@ jobs:
       - run: echo "Analysis and tests passed. Ready to merge."
 
   collect-release-info:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Set up Ruby
@@ -110,7 +110,7 @@ jobs:
       RELEASE_VERSION: ${{ steps.command.outputs.RELEASE_VERSION }}
 
   collect-docsite-release-info:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - collect-release-info
     steps:
@@ -153,7 +153,7 @@ jobs:
       HAS_DOCS_CHANGES_TO_RELEASE: ${{ steps.command.outputs.HAS_DOCS_CHANGES_TO_RELEASE }}
 
   build-docsite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - analyze
       - collect-release-info
@@ -176,7 +176,7 @@ jobs:
           key: docsite-${{ github.sha }}
 
   publish-docsite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - collect-release-info
       - collect-docsite-release-info
@@ -243,7 +243,7 @@ jobs:
           DOCSITE_DESTINATION_PATH: ${{ needs.collect-docsite-release-info.outputs.DOCSITE_DESTINATION_PATH }}
 
   unpublish_docsite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     needs:
       - collect-release-info
       - collect-docsite-release-info
