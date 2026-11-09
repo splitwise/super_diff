@@ -4,11 +4,12 @@
 class ActiveRecord::Base
   # TODO: Remove this monkey patch if possible
   def attributes_for_super_diff
-    id_attr = self.class.primary_key
+    id_attrs = Array(self.class.primary_key).compact
+    other_attrs = attributes.keys.sort - id_attrs
+    attributes_to_hash = ->(keys, hash) { keys.reduce(hash) { |memo, key| memo.merge(key.to_sym => attributes[key]) } }
 
-    (attributes.keys.sort - [id_attr]).reduce(
-      id_attr.nil? ? {} : { id_attr.to_sym => id }
-    ) { |hash, key| hash.merge(key.to_sym => attributes[key]) }
+    attributes_to_hash.call(id_attrs, {})
+                      .then { |result| attributes_to_hash.call(other_attrs, result) }
   end
 end
 # rubocop:enable Style/ClassAndModuleChildren

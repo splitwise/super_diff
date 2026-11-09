@@ -8,6 +8,7 @@ module SuperDiff
           SuperDiff::Test::Models::ActiveRecord::Person.define_table
           SuperDiff::Test::Models::ActiveRecord::ShippingAddress.define_table
           SuperDiff::Test::Models::ActiveRecord::TimeSeriesData.define_table
+          SuperDiff::Test::Models::ActiveRecord::Order.define_table
         end
       end
     end
