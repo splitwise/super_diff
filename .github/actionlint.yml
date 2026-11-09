@@ -1,0 +1,6 @@
+---
+# At the time of writing, the latest actionlint version (1.7.12) doesn't
+# recognize the ubuntu-26.04 images.
+self-hosted-runner:
+  labels:
+    - ubuntu-26.04
