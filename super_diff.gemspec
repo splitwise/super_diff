@@ -28,6 +28,6 @@ Gem::Specification.new do |s|
   s.executables = Dir['exe/**/*'].map { |f| File.basename(f) }
 
   s.add_dependency 'attr_extras', '>= 6.2.4', '< 8'
-  s.add_dependency 'diff-lcs', '~> 1.5'
+  s.add_dependency 'diff-lcs', '>= 1.5', '< 3'
   s.add_dependency 'patience_diff', '~> 1.2'
 end
