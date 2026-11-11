@@ -134,4 +134,6 @@ end
 
 require_relative 'rspec/monkey_patches'
 
+require 'super_diff/capybara' if defined?(Capybara)
+
 RSpec.configuration.filter_gems_from_backtrace('super_diff')

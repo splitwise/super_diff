@@ -31,6 +31,12 @@ rescue LoadError
   # ActionDispatch isn't available (presumably because we're not testing it)
 end
 
+begin
+  require 'capybara'
+rescue LoadError
+  # Capybara isn't available (presumably because we're not testing it)
+end
+
 Dir
   .glob(File.expand_path('support/**/*.rb', __dir__))
   .reject { |file| file.include?('/models/active_record/') && !active_record_available }
@@ -59,6 +65,7 @@ RSpec.configure do |config|
 
   config.filter_run_excluding active_record: true unless active_record_available
   config.filter_run_excluding action_dispatch: true unless defined?(ActionDispatch)
+  config.filter_run_excluding capybara: true unless defined?(Capybara)
   config.filter_run_excluding active_support: true unless defined?(ActiveSupport)
   config.filter_run_excluding with_superdiff_rspec: false
 
