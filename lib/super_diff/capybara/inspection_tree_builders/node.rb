@@ -8,8 +8,7 @@ module SuperDiff
       # rendered the way Capybara prints it.
       class Node < Core::AbstractInspectionTreeBuilder
         def self.applies_to?(value)
-          value.is_a?(::Capybara::Node::Base) ||
-            value.is_a?(::Capybara::Driver::Node)
+          SuperDiff::Capybara.applies_to?(value)
         end
 
         def call

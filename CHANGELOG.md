@@ -4,7 +4,7 @@
 
 ### Features
 
-- Inspect Capybara nodes without walking into the driver.
+- Inspect and diff Capybara nodes without walking into the driver.
 
 ### Other changes
 - Fixed "Using parts of SuperDiff directly" documentation. [#313](https://github.com/splitwise/super_diff/pull/313)

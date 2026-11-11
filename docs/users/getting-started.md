@@ -89,7 +89,7 @@ You can now continue on to [customizing SuperDiff](./customization.md).
 ## Capybara
 
 A Capybara node holds the session, and through it the driver and the browser.
-SuperDiff prints nodes the way Capybara inspects them
+SuperDiff prints and diffs nodes the way Capybara inspects them
 instead of walking into the browser connection.
 This is loaded by `super_diff/rspec` when Capybara is already loaded;
 otherwise, add:
