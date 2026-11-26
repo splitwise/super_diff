@@ -39,6 +39,15 @@ RSpec.describe SuperDiff::Core::Helpers do
           expect(helper.object_address_for(1.0)).to eq('')
         end
 
+        it 'returns an empty string for large Floats whose ObjectSpace.dump is invalid JSON' do
+          expect(helper.object_address_for(100_000.1)).to eq('')
+          expect(helper.object_address_for(-100_000.1)).to eq('')
+        end
+
+        it 'returns an empty string for Symbols' do
+          expect(helper.object_address_for(:sym)).to eq('')
+        end
+
         it 'returns an object address for Objects' do
           object = Object.new
           address = JSON.parse(ObjectSpace.dump(object))['address']
